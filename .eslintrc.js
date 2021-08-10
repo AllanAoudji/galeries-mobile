@@ -22,6 +22,7 @@ module.exports = {
                 tsx: 'never',
             },
         ],
+        'global-require': 'off',
         'no-use-before-define': 'off',
         'no-unused-vars': 2,
         'prettier/prettier': 2,
@@ -37,7 +38,6 @@ module.exports = {
             node: {
                 extensions: ['.js', '.jsx', '.ts', '.tsx'],
             },
-            typescript: {},
         },
     },
 };
