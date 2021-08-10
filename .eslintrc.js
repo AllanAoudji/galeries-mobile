@@ -13,6 +13,15 @@ module.exports = {
             'error',
             { variables: false },
         ],
+        'import/extensions': [
+            'error',
+            {
+                js: 'never',
+                jsx: 'never',
+                ts: 'never',
+                tsx: 'never',
+            },
+        ],
         'no-use-before-define': 'off',
         'no-unused-vars': 2,
         'prettier/prettier': 2,
