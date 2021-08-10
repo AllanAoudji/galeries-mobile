@@ -1,5 +1,13 @@
 module.exports = {
     extends: ['airbnb-base', 'plugin:prettier/recommended'],
+    overrides: [
+        {
+            files: ['*.tsx'],
+            rules: {
+                'no-undef': 'off',
+            },
+        },
+    ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
         esmaVersion: 12,
