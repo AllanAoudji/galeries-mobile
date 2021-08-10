@@ -1,38 +1,27 @@
 import { Link } from '@react-navigation/native';
 import * as React from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { View } from 'react-native';
+
+import { CustomButton, CustomTextInput, Typography } from '../../../components';
 
 const SigninScreen = () => (
     <View>
-        <Text>SIGNIN</Text>
+        <Typography color="secondary-light" fontFamily="light" fontSize={36}>
+            SIGNIN
+        </Typography>
         <View>
-            <View>
-                <Text>user name</Text>
-                <TextInput />
-            </View>
-            <View>
-                <Text>email</Text>
-                <TextInput />
-            </View>
-            <View>
-                <Text>password</Text>
-                <TextInput />
-            </View>
-            <View>
-                <Text>confirm password</Text>
-                <TextInput />
-            </View>
-            <View>
-                <Text>beta key</Text>
-                <TextInput />
-            </View>
-            <Pressable>
-                <Text>signin</Text>
-            </Pressable>
+            <CustomTextInput label="user name" />
+            <CustomTextInput label="email" />
+            <CustomTextInput label="password" />
+            <CustomTextInput label="confirm password" />
+            <CustomTextInput label="beta key" />
+            <CustomButton title="signin" />
             <View>
                 <Link to={{ screen: 'Login' }}>
-                    <Text>You already have an account?</Text>
-                    <Text>Click here.</Text>
+                    <Typography color="primary-dark" fontFamily="light">
+                        You already have an account?
+                    </Typography>
+                    <Typography color="primary-dark">Click here.</Typography>
                 </Link>
             </View>
         </View>

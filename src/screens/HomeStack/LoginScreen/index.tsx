@@ -1,31 +1,36 @@
 import { Link } from '@react-navigation/native';
 import * as React from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+
+import { CustomButton, CustomTextInput, Typography } from '../../../components';
 
 const LoginScreen = () => {
     return (
         <View>
-            <Text>LOGIN</Text>
+            <Typography
+                color="secondary-light"
+                fontFamily="light"
+                fontSize={36}
+            >
+                LOGIN
+            </Typography>
             <View>
-                <View>
-                    <Text>email or user name</Text>
-                    <TextInput />
-                </View>
-                <View>
-                    <Text>password</Text>
-                    <TextInput />
-                </View>
+                <CustomTextInput label="email or user name" />
+                <CustomTextInput label="password" />
                 <Link to={{ screen: 'ForgotYourPassword' }}>
-                    <Text>Forgot your password?</Text>
+                    <Typography color="primary-dark" fontFamily="bold">
+                        Forgot your password?
+                    </Typography>
                 </Link>
-                <Pressable>
-                    <Text>login</Text>
-                </Pressable>
+                <CustomButton title="login" />
                 <View>
                     <Link to={{ screen: 'Signin' }}>
-                        <Text>You don't have an account yet?</Text>
-                        <Text>Click here.</Text>
+                        <Typography color="primary-dark" fontFamily="light">
+                            You don't have an account yet?
+                        </Typography>
+                        <Typography color="primary-dark">
+                            Click here.
+                        </Typography>
                     </Link>
                 </View>
             </View>
