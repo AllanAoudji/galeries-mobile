@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-const Login = () => {
+const LoginScreen = () => {
     return (
         <View>
             <Text>LOGIN</Text>
@@ -33,4 +33,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginScreen;

@@ -2,7 +2,7 @@ import { Link } from '@react-navigation/native';
 import * as React from 'react';
 import { Pressable, Text, View } from 'react-native';
 
-const Landing = () => (
+const LandingScreen = () => (
     <View>
         <Text>Welcome to</Text>
         <Text>GALERIES</Text>
@@ -21,4 +21,4 @@ const Landing = () => (
     </View>
 );
 
-export default Landing;
+export default LandingScreen;

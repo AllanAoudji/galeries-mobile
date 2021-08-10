@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 
-const ForgotYourPassword = () => (
+const ForgotYourPasswordScreen = () => (
     <View>
         <Text>FORGOT YOUR PASSWORD?</Text>
         <View>
@@ -17,4 +17,4 @@ const ForgotYourPassword = () => (
     </View>
 );
 
-export default ForgotYourPassword;
+export default ForgotYourPasswordScreen;

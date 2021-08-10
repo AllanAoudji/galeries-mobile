@@ -2,7 +2,7 @@ import { Link } from '@react-navigation/native';
 import * as React from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 
-const Signin = () => (
+const SigninScreen = () => (
     <View>
         <Text>SIGNIN</Text>
         <View>
@@ -39,4 +39,4 @@ const Signin = () => (
     </View>
 );
 
-export default Signin;
+export default SigninScreen;

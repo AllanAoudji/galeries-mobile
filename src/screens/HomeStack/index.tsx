@@ -4,10 +4,10 @@ import {
 } from '@react-navigation/stack';
 import * as React from 'react';
 
-import ForgotYouPassword from './ForgotYouPassword';
-import LangingScreen from './Landing';
-import LoginScreen from './Login';
-import SigninScreen from './Signin';
+import ForgotYouPasswordScreen from './ForgotYouPasswordScreen';
+import LangingScreen from './LandingScreen';
+import LoginScreen from './LoginScreen';
+import SigninScreen from './SigninScreen';
 
 const Stack = createStackNavigator();
 
@@ -22,7 +22,7 @@ const HomeStack = () => {
         >
             <Stack.Screen
                 name="ForgotYourPassword"
-                component={ForgotYouPassword}
+                component={ForgotYouPasswordScreen}
             />
             <Stack.Screen name="Landing" component={LangingScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
