@@ -1,20 +1,38 @@
 import * as React from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { View } from 'react-native';
+import styled from 'styled-components/native';
+
+import {
+    CustomButton,
+    CustomTextInput,
+    FormScreen,
+    Typography,
+} from '../../../components';
+
+const TextInputsContainer = styled.View`
+    margin-bottom: 45px;
+`;
+const TextContainer = styled.View`
+    margin-bottom: 30px;
+`;
 
 const ForgotYourPasswordScreen = () => (
-    <View>
-        <Text>FORGOT YOUR PASSWORD?</Text>
-        <View>
-            <Text>Register your email to reset your password</Text>
+    <FormScreen
+        body={
             <View>
-                <Text>email or user name</Text>
-                <TextInput />
+                <TextInputsContainer>
+                    <TextContainer>
+                        <Typography color="primary-dark" fontSize={18}>
+                            Register your email to reset your password
+                        </Typography>
+                    </TextContainer>
+                    <CustomTextInput label="email or user name" />
+                </TextInputsContainer>
+                <CustomButton title="reset your password" />
             </View>
-            <Pressable>
-                <Text>reset your password</Text>
-            </Pressable>
-        </View>
-    </View>
+        }
+        title="FORGOT YOUR PASSWORD"
+    />
 );
 
 export default ForgotYourPasswordScreen;

@@ -24,7 +24,7 @@ const Container = styled.Pressable<PropsContainer>`
     border-color: #414cb4;
     border-radius: ${(props) => (props.small ? '5px' : '50px')};
     border-width: ${(props) => (props.variant === 'stroke' ? '2px' : '0px')};
-    height: ${(props) => (props.small ? '35px' : '45px')};
+    height: ${(props) => (props.small ? '35px' : '42px')};
     justify-content: center;
     opacity: ${(props) => (props.disable ? '0.5' : 1)};
 `;

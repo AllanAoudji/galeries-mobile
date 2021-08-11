@@ -18,6 +18,7 @@ type Props = {
         | 'white';
     fontFamily?: 'bold' | 'light' | 'oblique' | 'roman';
     fontSize?: 12 | 14 | 18 | 24 | 36 | 48 | 64;
+    textAlign?: 'center' | 'left' | 'right';
 };
 
 const colors = {
@@ -57,12 +58,14 @@ const Container = styled.Text<Props>`
     color: ${(props) => colors[props.color || 'black']};
     font-family: ${(props) => fontFamilies[props.fontFamily || 'roman']};
     font-size: ${(props) => fontSizes[props.fontSize || 14]};
+    text-align: ${(props) => props.textAlign || 'left'};
 `;
 
 Container.defaultProps = {
     color: 'black',
     fontFamily: 'roman',
     fontSize: 14,
+    textAlign: 'left',
 };
 
 const Typography: React.FC<Props> = ({
@@ -70,9 +73,15 @@ const Typography: React.FC<Props> = ({
     color = 'black',
     fontFamily = 'roman',
     fontSize = 14,
+    textAlign = 'left',
 }): JSX.Element => {
     return (
-        <Container color={color} fontFamily={fontFamily} fontSize={fontSize}>
+        <Container
+            color={color}
+            fontFamily={fontFamily}
+            fontSize={fontSize}
+            textAlign={textAlign}
+        >
             {children}
         </Container>
     );

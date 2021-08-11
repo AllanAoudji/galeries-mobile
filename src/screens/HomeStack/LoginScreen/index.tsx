@@ -1,40 +1,74 @@
 import { Link } from '@react-navigation/native';
 import * as React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { View } from 'react-native';
+import styled from 'styled-components/native';
 
-import { CustomButton, CustomTextInput, Typography } from '../../../components';
+import {
+    CustomButton,
+    CustomTextInput,
+    FormScreen,
+    Typography,
+} from '../../../components';
+
+const CustomLink = styled(Link)`
+    padding: 40px 10px;
+`;
+const ForgotYourPasswordLinkContainer = styled.View`
+    align-items: flex-end;
+    margin-top: 5px;
+`;
+const ForgotYourPasswordLink = styled(Link)`
+    padding: 10px 0px 10px 40px;
+`;
+const TextContainer = styled.View`
+    align-items: center;
+`;
+const TextInputsContainer = styled.View`
+    margin: 45px 0 35px 0px;
+`;
 
 const LoginScreen = () => {
     return (
-        <View>
-            <Typography
-                color="secondary-light"
-                fontFamily="light"
-                fontSize={36}
-            >
-                LOGIN
-            </Typography>
-            <View>
-                <CustomTextInput label="email or user name" />
-                <CustomTextInput label="password" />
-                <Link to={{ screen: 'ForgotYourPassword' }}>
-                    <Typography color="primary-dark" fontFamily="bold">
-                        Forgot your password?
-                    </Typography>
-                </Link>
-                <CustomButton title="login" />
+        <FormScreen
+            body={
                 <View>
-                    <Link to={{ screen: 'Signin' }}>
-                        <Typography color="primary-dark" fontFamily="light">
+                    <TextInputsContainer>
+                        <CustomTextInput label="email or user name" />
+                        <CustomTextInput label="password" />
+                        <ForgotYourPasswordLinkContainer>
+                            <ForgotYourPasswordLink
+                                to={{ screen: 'ForgotYourPassword' }}
+                            >
+                                <Typography
+                                    color="primary-dark"
+                                    fontFamily="bold"
+                                >
+                                    Forgot your password?
+                                </Typography>
+                            </ForgotYourPasswordLink>
+                        </ForgotYourPasswordLinkContainer>
+                    </TextInputsContainer>
+                    <CustomButton title="login" />
+                </View>
+            }
+            footer={
+                <CustomLink to={{ screen: 'Signin' }}>
+                    <TextContainer>
+                        <Typography
+                            color="primary-dark"
+                            fontFamily="light"
+                            fontSize={12}
+                        >
                             You don't have an account yet?
                         </Typography>
-                        <Typography color="primary-dark">
+                        <Typography color="primary-dark" fontSize={12}>
                             Click here.
                         </Typography>
-                    </Link>
-                </View>
-            </View>
-        </View>
+                    </TextContainer>
+                </CustomLink>
+            }
+            title="LOGIN"
+        />
     );
 };
 

@@ -1,31 +1,57 @@
 import { Link } from '@react-navigation/native';
 import * as React from 'react';
 import { View } from 'react-native';
+import styled from 'styled-components/native';
 
-import { CustomButton, CustomTextInput, Typography } from '../../../components';
+import {
+    CustomButton,
+    CustomTextInput,
+    FormScreen,
+    Typography,
+} from '../../../components';
+
+const CustomLink = styled(Link)`
+    padding: 40px 10px;
+`;
+const TextContainer = styled.View`
+    align-items: center;
+`;
+const TextInputsContainer = styled.View`
+    margin-bottom: 45px;
+`;
 
 const SigninScreen = () => (
-    <View>
-        <Typography color="secondary-light" fontFamily="light" fontSize={36}>
-            SIGNIN
-        </Typography>
-        <View>
-            <CustomTextInput label="user name" />
-            <CustomTextInput label="email" />
-            <CustomTextInput label="password" />
-            <CustomTextInput label="confirm password" />
-            <CustomTextInput label="beta key" />
-            <CustomButton title="signin" />
+    <FormScreen
+        body={
             <View>
-                <Link to={{ screen: 'Login' }}>
-                    <Typography color="primary-dark" fontFamily="light">
+                <TextInputsContainer>
+                    <CustomTextInput label="user name" />
+                    <CustomTextInput label="email" />
+                    <CustomTextInput label="password" />
+                    <CustomTextInput label="confirm password" />
+                    <CustomTextInput label="beta key" />
+                </TextInputsContainer>
+                <CustomButton title="signin" />
+            </View>
+        }
+        footer={
+            <CustomLink to={{ screen: 'Login' }}>
+                <TextContainer>
+                    <Typography
+                        color="primary-dark"
+                        fontFamily="light"
+                        fontSize={12}
+                    >
                         You already have an account?
                     </Typography>
-                    <Typography color="primary-dark">Click here.</Typography>
-                </Link>
-            </View>
-        </View>
-    </View>
+                    <Typography color="primary-dark" fontSize={12}>
+                        Click here.
+                    </Typography>
+                </TextContainer>
+            </CustomLink>
+        }
+        title="signin"
+    />
 );
 
 export default SigninScreen;
