@@ -1,24 +1,28 @@
-import { Link } from '@react-navigation/native';
 import * as React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { View } from 'react-native';
 
-const LandingScreen = () => (
-    <View>
-        <Text>Welcome to</Text>
-        <Text>GALERIES</Text>
-        <Text>An app to share pictures with</Text>
-        <Text>your friends and famiy</Text>
-        <Link to={{ screen: 'Login' }}>
-            <View>
-                <Text>login</Text>
-            </View>
-        </Link>
-        <Pressable>
-            <View>
-                <Text>signin</Text>
-            </View>
-        </Pressable>
-    </View>
-);
+import CustomButton from '../../../components/CustomButton';
+import Typography from '../../../components/Typography';
+
+const LandingScreen = () => {
+    return (
+        <View>
+            <Typography fontFamily="light" fontSize={36}>
+                Welcome to
+            </Typography>
+            <Typography fontFamily="bold" fontSize={36}>
+                GALERIES
+            </Typography>
+            <Typography fontFamily="light" fontSize={18}>
+                An app to share pictures with
+            </Typography>
+            <Typography fontFamily="light" fontSize={18}>
+                your friends and famiy
+            </Typography>
+            <CustomButton title="login" />
+            <CustomButton title="signin" variant="stroke" />
+        </View>
+    );
+};
 
 export default LandingScreen;

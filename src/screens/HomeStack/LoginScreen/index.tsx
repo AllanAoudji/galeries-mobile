@@ -1,35 +1,62 @@
-import { Link } from '@react-navigation/native';
 import * as React from 'react';
-import { Pressable, Text, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View } from 'react-native';
+
+import {
+    CustomButton,
+    CustomTextInput,
+    FormScreen,
+    Typography,
+} from '../../../components';
+import {
+    CustomLink,
+    ForgotYourPasswordLink,
+    ForgotYourPasswordLinkContainer,
+    TextContainer,
+    TextInputsContainer,
+} from './styles';
 
 const LoginScreen = () => {
     return (
-        <View>
-            <Text>LOGIN</Text>
-            <View>
+        <FormScreen
+            body={
                 <View>
-                    <Text>email or user name</Text>
-                    <TextInput />
+                    <TextInputsContainer>
+                        <CustomTextInput label="email or user name" />
+                        <CustomTextInput label="password" />
+                        <ForgotYourPasswordLinkContainer>
+                            <ForgotYourPasswordLink
+                                to={{ screen: 'ForgotYourPassword' }}
+                            >
+                                <Typography
+                                    color="primary-dark"
+                                    fontFamily="bold"
+                                >
+                                    Forgot your password?
+                                </Typography>
+                            </ForgotYourPasswordLink>
+                        </ForgotYourPasswordLinkContainer>
+                    </TextInputsContainer>
+                    <CustomButton title="login" />
                 </View>
-                <View>
-                    <Text>password</Text>
-                    <TextInput />
-                </View>
-                <Link to={{ screen: 'ForgotYourPassword' }}>
-                    <Text>Forgot your password?</Text>
-                </Link>
-                <Pressable>
-                    <Text>login</Text>
-                </Pressable>
-                <View>
-                    <Link to={{ screen: 'Signin' }}>
-                        <Text>You don't have an account yet?</Text>
-                        <Text>Click here.</Text>
-                    </Link>
-                </View>
-            </View>
-        </View>
+            }
+            footer={
+                <CustomLink to={{ screen: 'Signin' }}>
+                    <TextContainer>
+                        <Typography
+                            color="primary-dark"
+                            fontFamily="light"
+                            fontSize={12}
+                        >
+                            You don't have an account yet?
+                        </Typography>
+                        <Typography color="primary-dark" fontSize={12}>
+                            Click here.
+                        </Typography>
+                    </TextContainer>
+                </CustomLink>
+            }
+            title="LOGIN"
+        />
     );
 };
 
