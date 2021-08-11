@@ -6,6 +6,8 @@
     "paths": {
       "#components": ["./src/components"],
       "#components/*": ["./src/components/*"],
+      "#contexts/*": ["./src/contexts/*"],
+      "#helpers/*": ["./src/helpers/*"],
       "#screens/*": ["./src/screens/*"],
     },
     "strict": true
