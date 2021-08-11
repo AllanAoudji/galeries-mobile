@@ -17,12 +17,13 @@ import {
 type Props = {
     body: React.ReactNode;
     footer?: React.ReactNode;
+    handleOnPressReturn?: () => void;
     title: string;
 };
 
 const { height } = Dimensions.get('window');
 
-const FormScreen = ({ body, footer, title }: Props) => {
+const FormScreen = ({ body, footer, handleOnPressReturn, title }: Props) => {
     const [keyboardIsVisible, setKeyboardIsVisible] =
         React.useState<boolean>(false);
 
@@ -59,6 +60,9 @@ const FormScreen = ({ body, footer, title }: Props) => {
                 <ReturnButton
                     currentHeight={StatusBar.currentHeight}
                     hide={keyboardIsVisible}
+                    onPress={() => {
+                        if (handleOnPressReturn) handleOnPressReturn();
+                    }}
                 >
                     <Typography color="secondary-light">RETURN</Typography>
                 </ReturnButton>

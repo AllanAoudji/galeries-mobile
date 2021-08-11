@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import {
     CustomButton,
@@ -7,6 +8,8 @@ import {
     FormScreen,
     Typography,
 } from '#components';
+
+import { LoginScreenNavigationProp } from '../types';
 
 import {
     CustomLink,
@@ -17,6 +20,13 @@ import {
 } from './styles';
 
 const LoginScreen = () => {
+    const navigation = useNavigation<LoginScreenNavigationProp>();
+
+    const handleOnPressForgotYourPassword = () =>
+        navigation.navigate('ForgotYourPassword');
+    const handleOnPressReturn = () => navigation.navigate('Landing');
+    const handleOnPressSignin = () => navigation.navigate('Signin');
+
     return (
         <FormScreen
             body={
@@ -26,7 +36,7 @@ const LoginScreen = () => {
                         <CustomTextInput label="password" />
                         <ForgotYourPasswordLinkContainer>
                             <ForgotYourPasswordLink
-                                to={{ screen: 'ForgotYourPassword' }}
+                                onPress={handleOnPressForgotYourPassword}
                             >
                                 <Typography
                                     color="primary-dark"
@@ -41,7 +51,7 @@ const LoginScreen = () => {
                 </View>
             }
             footer={
-                <CustomLink to={{ screen: 'Signin' }}>
+                <CustomLink onPress={handleOnPressSignin}>
                     <TextContainer>
                         <Typography
                             color="primary-dark"
@@ -56,7 +66,8 @@ const LoginScreen = () => {
                     </TextContainer>
                 </CustomLink>
             }
-            title="LOGIN"
+            handleOnPressReturn={handleOnPressReturn}
+            title="login"
         />
     );
 };

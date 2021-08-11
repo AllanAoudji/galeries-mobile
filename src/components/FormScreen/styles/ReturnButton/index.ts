@@ -5,7 +5,7 @@ type Props = {
     hide: boolean;
 };
 
-const ReturnButton = styled.View<Props>`
+const ReturnButton = styled.Pressable<Props>`
     left: 0;
     opacity: ${(props) => (props.hide ? 0 : 1)};
     padding: 30px;

@@ -1,9 +1,17 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { View } from 'react-native';
 
 import { CustomButton, Typography } from '#components';
 
+import { LandingScreenNavigationProp } from '../types';
+
 const LandingScreen = () => {
+    const navigation = useNavigation<LandingScreenNavigationProp>();
+
+    const handleOnPressLogin = () => navigation.navigate('Login');
+    const handleOnPressSignin = () => navigation.navigate('Signin');
+
     return (
         <View>
             <Typography fontFamily="light" fontSize={36}>
@@ -18,8 +26,12 @@ const LandingScreen = () => {
             <Typography fontFamily="light" fontSize={18}>
                 your friends and famiy
             </Typography>
-            <CustomButton title="login" />
-            <CustomButton title="signin" variant="stroke" />
+            <CustomButton onPress={handleOnPressLogin} title="login" />
+            <CustomButton
+                onPress={handleOnPressSignin}
+                title="signin"
+                variant="stroke"
+            />
         </View>
     );
 };
