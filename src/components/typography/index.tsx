@@ -3,23 +3,10 @@ import * as React from 'react';
 import { Container } from './styles';
 
 type Props = {
-    color?:
-        | 'black'
-        | 'danger'
-        | 'primary'
-        | 'primary-dark'
-        | 'primary-light'
-        | 'secondary'
-        | 'secondary-dark'
-        | 'secondary-light'
-        | 'success'
-        | 'tertiary'
-        | 'tertiary-dark'
-        | 'tertiary-light'
-        | 'white';
-    fontFamily?: 'bold' | 'light' | 'oblique' | 'roman';
-    fontSize?: 12 | 14 | 18 | 24 | 36 | 48 | 64;
-    textAlign?: 'center' | 'left' | 'right';
+    color?: keyof Colors;
+    fontFamily?: keyof FontFamilies;
+    fontSize?: keyof FontSizes;
+    textAlign?: keyof TextAlign;
 };
 
 const Typography: React.FC<Props> = ({

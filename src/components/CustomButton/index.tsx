@@ -4,13 +4,12 @@ import Typography from '#components/Typography';
 
 import { Container } from './styles';
 
-type Variant = 'fill' | 'stroke';
 type Props = {
     disable?: boolean;
     onPress?: () => void;
     small?: boolean;
     title: string;
-    variant?: Variant;
+    variant?: ButtonVariant;
 };
 
 const CustomButton = ({

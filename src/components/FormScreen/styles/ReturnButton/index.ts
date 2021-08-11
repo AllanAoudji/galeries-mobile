@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+import convertPixelToNum from '#helpers/convertPixelToNum';
+
 type Props = {
     currentHeight?: number;
     hide: boolean;
@@ -8,8 +10,9 @@ type Props = {
 const ReturnButton = styled.Pressable<Props>`
     left: 0;
     opacity: ${(props) => (props.hide ? 0 : 1)};
-    padding: 30px;
-    padding-top: ${(props) => `${10 + (props.currentHeight || 0)}px`};
+    padding: ${({ theme }) => theme.spacings.small};
+    padding-top: ${({ currentHeight, theme }) =>
+        `${convertPixelToNum(theme.spacings.small) + (currentHeight || 0)}px`};
     position: absolute;
     top: 0;
 `;

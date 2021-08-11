@@ -6,7 +6,8 @@ type Props = {
 
 const Header = styled.View<Props>`
     align-items: flex-end;
-    margin: 142px 60px 0 60px;
+    margin: ${({ theme }) =>
+        `142px ${theme.spacings.large} 0 ${theme.spacings.large}`};
     opacity: ${(props) => (props.hide ? 0 : 1)};
 `;
 

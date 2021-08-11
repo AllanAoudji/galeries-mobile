@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Dimensions, Keyboard, StatusBar } from 'react-native';
+import { useTheme } from 'styled-components/native';
 
 import Typography from '#components/Typography';
 
@@ -27,6 +28,8 @@ const FormScreen = ({ body, footer, handleOnPressReturn, title }: Props) => {
     const [keyboardIsVisible, setKeyboardIsVisible] =
         React.useState<boolean>(false);
 
+    const theme = useTheme();
+
     React.useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
@@ -44,7 +47,10 @@ const FormScreen = ({ body, footer, handleOnPressReturn, title }: Props) => {
     }, []);
 
     return (
-        <Container colors={['#78fff7', '#7483ff']} height={height}>
+        <Container
+            colors={[theme.colors.tertiary, theme.colors.primary]}
+            height={height}
+        >
             <Header hide={keyboardIsVisible}>
                 <Typography
                     color="secondary-light"

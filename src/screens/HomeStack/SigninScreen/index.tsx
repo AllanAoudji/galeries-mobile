@@ -9,11 +9,10 @@ import {
     Typography,
 } from '#components';
 
-import { SigninScreenNavigationProp } from '../types';
 import { CustomLink, TextContainer, TextInputsContainer } from './styles';
 
 const SigninScreen = () => {
-    const navigation = useNavigation<SigninScreenNavigationProp>();
+    const navigation = useNavigation<Screen.Home.SigninScreenNavigationProp>();
 
     const handleOnPressLogin = () => navigation.navigate('Login');
     const handleOnPressReturn = () => navigation.navigate('Landing');

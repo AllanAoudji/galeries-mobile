@@ -9,6 +9,8 @@ module.exports = (api) => {
                     root: ['./app'],
                     alias: {
                         '#components': './src/components',
+                        '#contexts': './src/contexts',
+                        '#helpers': './src/helpers',
                         '#screens': './src/screens',
                     },
                 },

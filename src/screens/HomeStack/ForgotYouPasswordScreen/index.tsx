@@ -9,11 +9,11 @@ import {
     Typography,
 } from '#components';
 
-import { ForgotYourPasswordNavigationProp } from '../types';
 import { TextContainer, TextInputsContainer } from './styles';
 
 const ForgotYourPasswordScreen = () => {
-    const navigation = useNavigation<ForgotYourPasswordNavigationProp>();
+    const navigation =
+        useNavigation<Screen.Home.ForgotYourPasswordNavigationProp>();
 
     const handleOnPressReturn = () => navigation.navigate('Login');
 

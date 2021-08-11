@@ -5,7 +5,7 @@ const Separator = styled.View`
     background-color: #fffff4;
     height: 2px;
     margin-top: 10px;
-    width: 45px;
+    width: ${({ theme }) => theme.spacings.normal};
 `;
 
 export default Separator;
