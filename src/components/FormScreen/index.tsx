@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Dimensions, Keyboard, StatusBar } from 'react-native';
 
+import Typography from '#components/Typography';
+
 import {
     Body,
     BodyScrollView,
@@ -11,7 +13,6 @@ import {
     ReturnButton,
     Separator,
 } from './styles';
-import Typography from '../Typography';
 
 type Props = {
     body: React.ReactNode;

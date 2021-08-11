@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Pressable } from 'react-native';
 
-import Typography from '../Typography';
+import Typography from '#components/Typography';
 
 import {
     ErrorContainer,

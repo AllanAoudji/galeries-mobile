@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import 'react-native-gesture-handler';
 
-import HomeStack from './src/screens/HomeStack';
+import HomeStack from '#screens/HomeStack';
 
 export default function App() {
     const [loaded] = useFonts({

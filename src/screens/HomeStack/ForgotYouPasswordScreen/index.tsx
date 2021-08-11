@@ -6,7 +6,7 @@ import {
     CustomTextInput,
     FormScreen,
     Typography,
-} from '../../../components';
+} from '#components';
 import { TextContainer, TextInputsContainer } from './styles';
 
 const ForgotYourPasswordScreen = () => (
