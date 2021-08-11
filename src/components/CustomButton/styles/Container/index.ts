@@ -1,10 +1,9 @@
 import styled from 'styled-components/native';
 
-type Variant = 'fill' | 'stroke';
 type Props = {
     disable?: boolean;
     small?: boolean;
-    variant?: Variant;
+    variant?: ButtonVariant;
 };
 
 const Container = styled.Pressable<Props>`

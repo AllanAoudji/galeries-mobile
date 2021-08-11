@@ -36,6 +36,7 @@ const theme: DefaultTheme = {
         },
     },
     spacings: {
+        huge: `${DEFAULT_SPACING * 6}px`,
         small: `${DEFAULT_SPACING * 2}px`,
         smallest: `${DEFAULT_SPACING}px`,
         normal: `${DEFAULT_SPACING * 3}px`,

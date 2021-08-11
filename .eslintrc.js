@@ -7,7 +7,7 @@ module.exports = {
     ],
     overrides: [
         {
-            files: ['*.tsx'],
+            files: ['*.ts', '*.tsx'],
             rules: {
                 'no-undef': 'off',
             },

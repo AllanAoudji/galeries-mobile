@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
 
 const Body = styled.View`
-    background-color: #fffff4;
-    border-top-right-radius: 45px;
-    padding-top: 30px;
+    background-color: ${({ theme }) => theme.colors['secondary-light']};
+    border-top-right-radius: ${({ theme }) => theme.spacings.normal};
+    padding-top: ${({ theme }) => theme.spacings.small};
 `;
 
 export default Body;

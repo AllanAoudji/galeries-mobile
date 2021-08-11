@@ -9,8 +9,6 @@ import {
     Typography,
 } from '#components';
 
-import { LoginScreenNavigationProp } from '../types';
-
 import {
     CustomLink,
     ForgotYourPasswordLink,
@@ -20,7 +18,7 @@ import {
 } from './styles';
 
 const LoginScreen = () => {
-    const navigation = useNavigation<LoginScreenNavigationProp>();
+    const navigation = useNavigation<Screen.Home.LoginScreenNavigationProp>();
 
     const handleOnPressForgotYourPassword = () =>
         navigation.navigate('ForgotYourPassword');
@@ -73,3 +71,6 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
+
+// TODO:
+// theme spacing

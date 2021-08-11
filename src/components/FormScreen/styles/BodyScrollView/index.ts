@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 
 const BodyScrollView = styled.ScrollView`
-    padding-left: 45px;
-    padding-right: 45px;
+    padding-left: ${({ theme }) => theme.spacings.normal};
+    padding-right: ${({ theme }) => theme.spacings.normal};
 `;
 
 export default BodyScrollView;

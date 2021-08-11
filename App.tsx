@@ -1,8 +1,9 @@
+import 'react-native-gesture-handler';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import 'react-native-gesture-handler';
 
 import ThemeProvider from '#contexts/ThemeContext';
 import HomeStack from '#screens/HomeStack';

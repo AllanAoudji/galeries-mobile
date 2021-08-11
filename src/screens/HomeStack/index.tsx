@@ -9,19 +9,12 @@ import LangingScreen from './LandingScreen';
 import LoginScreen from './LoginScreen';
 import SigninScreen from './SigninScreen';
 
-type HomeStackParamList = {
-    ForgotYourPassword: undefined;
-    Landing: undefined;
-    Login: undefined;
-    Signin: undefined;
-};
-
-const Stack = createStackNavigator<HomeStackParamList>();
+const Stack = createStackNavigator<Screen.Home.HomeStackParamList>();
 
 const HomeStack = () => {
     return (
         <Stack.Navigator
-            initialRouteName="Landing"
+            initialRouteName="Login"
             screenOptions={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerShown: false,

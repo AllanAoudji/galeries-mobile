@@ -4,10 +4,8 @@ import { View } from 'react-native';
 
 import { CustomButton, Typography } from '#components';
 
-import { LandingScreenNavigationProp } from '../types';
-
 const LandingScreen = () => {
-    const navigation = useNavigation<LandingScreenNavigationProp>();
+    const navigation = useNavigation<Screen.Home.LandingScreenNavigationProp>();
 
     const handleOnPressLogin = () => navigation.navigate('Login');
     const handleOnPressSignin = () => navigation.navigate('Signin');
