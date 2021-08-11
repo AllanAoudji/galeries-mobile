@@ -1,20 +1,18 @@
 import * as React from 'react';
 import { Pressable } from 'react-native';
-import styled from 'styled-components/native';
 
 import Typography from '../Typography';
 
-type PropsComponent = {
+import {
+    ErrorContainer,
+    LabelAnimation,
+    LabelContainer,
+    TextInputStyled,
+} from './styles';
+
+type Props = {
     label?: string;
     error?: string;
-};
-type PropsLavelAnimation = {
-    hasFocus: boolean;
-    hasValue: boolean;
-};
-type PropsTextInputStyled = {
-    hasError: boolean;
-    hasFocus: boolean;
 };
 
 const normalizeError = (error: string | undefined) => {
@@ -28,46 +26,23 @@ const normalizeError = (error: string | undefined) => {
     return capitalizeErrorWithDot;
 };
 
-const ErrorContainer = styled.View`
-    align-items: flex-end;
-    height: 17px;
-    justify-content: center;
-`;
-const LabelAnimation = styled.View<PropsLavelAnimation>`
-    opacity: ${(props) => (props.hasFocus ? 1 : 0.5)};
-    position: absolute;
-    top: ${(props) => (props.hasFocus || props.hasValue ? 0 : '21px')};
-`;
-const LabelContainer = styled.View`
-    height: 14px;
-`;
-const TextInputStyled = styled.TextInput<PropsTextInputStyled>`
-    border-bottom-color: ${(props) => (props.hasError ? '#fb6d51' : '#414cb4')};
-    border-bottom-width: 2px;
-    color: #212226;
-    font-family: 'HelveticaLtStRoman';
-    font-size: 14px;
-    height: 30px;
-    opacity: ${(props) => (props.hasFocus ? 1 : 0.5)};
-`;
-
-const CustomTextInput = ({ label, error }: PropsComponent) => {
+const CustomTextInput = ({ label, error }: Props) => {
     const textInputRef = React.useRef<any>(null);
 
     const [hasFocus, setHasFocus] = React.useState<boolean>(false);
     const [value, setValue] = React.useState<string>('');
 
-    const handleChangeText = (e: string) => setValue(e);
+    const handleOnChangeText = (e: string) => setValue(e);
     const handleOnBlur = () => setHasFocus(false);
     const handleOnFocus = () => setHasFocus(true);
-    const handlePress = () => {
+    const handleOnPress = () => {
         if (textInputRef.current) {
             textInputRef.current.focus();
         }
     };
 
     return (
-        <Pressable onPress={handlePress}>
+        <Pressable onPress={handleOnPress}>
             {label && (
                 <LabelContainer>
                     <LabelAnimation hasFocus={hasFocus} hasValue={!!value}>
@@ -84,7 +59,7 @@ const CustomTextInput = ({ label, error }: PropsComponent) => {
                 hasError={!!error}
                 hasFocus={hasFocus}
                 onBlur={handleOnBlur}
-                onChangeText={handleChangeText}
+                onChangeText={handleOnChangeText}
                 onFocus={handleOnFocus}
                 ref={textInputRef}
                 selectionColor={error ? '#fb6d51' : '#414cb4'}

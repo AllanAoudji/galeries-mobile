@@ -1,7 +1,5 @@
-import { Link } from '@react-navigation/native';
 import * as React from 'react';
 import { View } from 'react-native';
-import styled from 'styled-components/native';
 
 import {
     CustomButton,
@@ -9,23 +7,13 @@ import {
     FormScreen,
     Typography,
 } from '../../../components';
-
-const CustomLink = styled(Link)`
-    padding: 40px 10px;
-`;
-const ForgotYourPasswordLinkContainer = styled.View`
-    align-items: flex-end;
-    margin-top: 5px;
-`;
-const ForgotYourPasswordLink = styled(Link)`
-    padding: 10px 0px 10px 40px;
-`;
-const TextContainer = styled.View`
-    align-items: center;
-`;
-const TextInputsContainer = styled.View`
-    margin: 45px 0 35px 0px;
-`;
+import {
+    CustomLink,
+    ForgotYourPasswordLink,
+    ForgotYourPasswordLinkContainer,
+    TextContainer,
+    TextInputsContainer,
+} from './styles';
 
 const LoginScreen = () => {
     return (

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import styled from 'styled-components/native';
 
 import {
     CustomButton,
@@ -8,13 +7,7 @@ import {
     FormScreen,
     Typography,
 } from '../../../components';
-
-const TextInputsContainer = styled.View`
-    margin-bottom: 45px;
-`;
-const TextContainer = styled.View`
-    margin-bottom: 30px;
-`;
+import { TextContainer, TextInputsContainer } from './styles';
 
 const ForgotYourPasswordScreen = () => (
     <FormScreen

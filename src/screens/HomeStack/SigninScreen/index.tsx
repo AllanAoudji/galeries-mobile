@@ -1,7 +1,5 @@
-import { Link } from '@react-navigation/native';
 import * as React from 'react';
 import { View } from 'react-native';
-import styled from 'styled-components/native';
 
 import {
     CustomButton,
@@ -9,16 +7,7 @@ import {
     FormScreen,
     Typography,
 } from '../../../components';
-
-const CustomLink = styled(Link)`
-    padding: 40px 10px;
-`;
-const TextContainer = styled.View`
-    align-items: center;
-`;
-const TextInputsContainer = styled.View`
-    margin-bottom: 45px;
-`;
+import { CustomLink, TextContainer, TextInputsContainer } from './styles';
 
 const SigninScreen = () => (
     <FormScreen
