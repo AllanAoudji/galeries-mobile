@@ -1,5 +1,10 @@
 module.exports = {
-    extends: ['airbnb-base', 'plugin:prettier/recommended'],
+    extends: [
+        'airbnb-base',
+        'plugin:prettier/recommended',
+        "plugin:@typescript-eslint/recommended",
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    ],
     overrides: [
         {
             files: ['*.tsx'],
@@ -12,8 +17,15 @@ module.exports = {
     parserOptions: {
         esmaVersion: 12,
         sourceType: 'module',
+        tsconfigRootDir: './',
     },
-    plugins: ['react', 'react-native', '@typescript-eslint', 'prettier'],
+    plugins: [
+        'react',
+        'react-native',
+        '@typescript-eslint',
+        'prettier',
+        'import',
+    ],
     rules: {
         '@typescript-eslint/explicit-member-accessibility': 'off',
         '@typescript-eslint/no-unused-vars': 2,
@@ -31,6 +43,16 @@ module.exports = {
             },
         ],
         'global-require': 'off',
+        'import/no-extraneous-dependencies': [
+            'error',
+            {
+                devDependencies: [
+                    '**/*.d.ts',
+                    '**/*.test.tsx',
+                    '**/*.spec.tsx',
+                ],
+            },
+        ],
         'no-use-before-define': 'off',
         'no-unused-vars': 2,
         'prettier/prettier': 2,
@@ -43,6 +65,7 @@ module.exports = {
     },
     settings: {
         'import/resolver': {
+            typescript: {},
             node: {
                 extensions: ['.js', '.jsx', '.ts', '.tsx'],
             },

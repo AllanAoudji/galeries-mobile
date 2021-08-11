@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import CustomButton from '../../../components/CustomButton';
-import Typography from '../../../components/Typography';
+import { CustomButton, Typography } from '#components';
 
 const LandingScreen = () => {
     return (

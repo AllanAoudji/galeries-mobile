@@ -6,7 +6,8 @@ import {
     CustomTextInput,
     FormScreen,
     Typography,
-} from '../../../components';
+} from '#components';
+
 import { CustomLink, TextContainer, TextInputsContainer } from './styles';
 
 const SigninScreen = () => (

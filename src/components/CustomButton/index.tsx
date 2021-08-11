@@ -1,7 +1,8 @@
 import * as React from 'react';
 
+import Typography from '#components/Typography';
+
 import { Container } from './styles';
-import Typography from '../Typography';
 
 type Variant = 'fill' | 'stroke';
 type Props = {
