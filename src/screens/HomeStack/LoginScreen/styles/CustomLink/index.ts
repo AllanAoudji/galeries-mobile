@@ -1,7 +1,6 @@
-import { Link } from '@react-navigation/native';
 import styled from 'styled-components/native';
 
-const CustomLink = styled(Link)`
+const CustomLink = styled.Pressable`
     padding: 40px 10px;
 `;
 

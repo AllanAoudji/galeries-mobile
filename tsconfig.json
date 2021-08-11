@@ -1,9 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
-    "esModuleInterop": true,
     "moduleResolution": "node",
     "paths": {
       "#components": ["./src/components"],

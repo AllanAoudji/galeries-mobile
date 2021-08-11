@@ -1,7 +1,6 @@
-import { Link } from '@react-navigation/native';
 import styled from 'styled-components/native';
 
-const ForgotYourPasswordLink = styled(Link)`
+const ForgotYourPasswordLink = styled.Pressable`
     padding: 10px 0px 10px 40px;
 `;
 
