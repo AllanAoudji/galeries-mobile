@@ -1,7 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 
 declare global {
-    type ButtonVariant = 'fill' | 'stroke';
     type Colors = {
         black: string;
         danger: string;
@@ -70,5 +69,9 @@ declare global {
                 'Signin'
             >;
         }
+    }
+    namespace Variant {
+        type Button = 'fill' | 'stroke';
+        type Logo = 'large' | 'largest' | 'normal' | 'small' | 'smallest';
     }
 }
