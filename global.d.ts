@@ -73,5 +73,6 @@ declare global {
     namespace Variant {
         type Button = 'fill' | 'stroke';
         type Logo = 'large' | 'largest' | 'normal' | 'small' | 'smallest';
+        type Pictogram = 'large' | 'normal' | 'small';
     }
 }

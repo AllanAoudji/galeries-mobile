@@ -3,6 +3,7 @@ import { Dimensions, Keyboard, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 import Typography from '#components/Typography';
+import Pictogram from '#components/Pictogram';
 
 import {
     Body,
@@ -63,15 +64,18 @@ const FormScreen = ({ body, footer, handleOnPressReturn, title }: Props) => {
                 <Separator />
             </Header>
             <Form onPress={Keyboard.dismiss}>
-                <ReturnButton
-                    currentHeight={StatusBar.currentHeight}
-                    hide={keyboardIsVisible}
-                    onPress={() => {
-                        if (handleOnPressReturn) handleOnPressReturn();
-                    }}
-                >
-                    <Typography color="secondary-light">RETURN</Typography>
-                </ReturnButton>
+                {handleOnPressReturn && (
+                    <ReturnButton
+                        currentHeight={StatusBar.currentHeight}
+                        hide={keyboardIsVisible}
+                        onPress={handleOnPressReturn}
+                    >
+                        <Pictogram
+                            color="secondary-light"
+                            variant="arrow-left"
+                        />
+                    </ReturnButton>
+                )}
                 <Body>
                     <BodyScrollView>
                         {body}

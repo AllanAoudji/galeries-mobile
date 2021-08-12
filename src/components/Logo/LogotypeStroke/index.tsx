@@ -6,18 +6,18 @@ type Props = {
 };
 
 const height = {
-    small: 40,
-    smallest: 40,
-    normal: 100,
     large: 155,
     largest: 155,
+    normal: 100,
+    small: 40,
+    smallest: 40,
 };
 const width = {
-    small: 35,
-    smallest: 35,
-    normal: 88,
     large: 135,
     largest: 135,
+    normal: 88,
+    small: 35,
+    smallest: 35,
 };
 
 const LogotypeStroke = ({ size = 'normal' }: Props) => (
