@@ -14,7 +14,7 @@ const Stack = createStackNavigator<Screen.Home.HomeStackParamList>();
 const HomeStack = () => {
     return (
         <Stack.Navigator
-            initialRouteName="Login"
+            initialRouteName="Landing"
             screenOptions={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 headerShown: false,

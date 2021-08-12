@@ -29,7 +29,12 @@ const ForgotYourPasswordScreen = () => {
                         </TextContainer>
                         <CustomTextInput label="email or user name" />
                     </TextInputsContainer>
-                    <CustomButton title="reset your password" />
+                    <CustomButton mb="smallest" title="reset your password" />
+                    <CustomButton
+                        onPress={handleOnPressReturn}
+                        title="cancel"
+                        variant="stroke"
+                    />
                 </View>
             }
             handleOnPressReturn={handleOnPressReturn}
