@@ -44,6 +44,7 @@ declare global {
         left: string;
         right: string;
     };
+
     namespace Screen {
         namespace Home {
             type HomeStackParamList = {
@@ -70,6 +71,25 @@ declare global {
             >;
         }
     }
+
+    namespace Store {
+        type Action = {
+            payload?: {
+                data: any;
+                meta?: {
+                    entity: Entity;
+                };
+            };
+            type: USER_SET;
+        };
+        type Entity = '[USER]';
+        namespace Models {
+            type User = {
+                userName: string;
+            };
+        }
+    }
+
     namespace Variant {
         type Button = 'fill' | 'stroke';
         type Logo = 'large' | 'largest' | 'normal' | 'small' | 'smallest';
