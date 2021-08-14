@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 
 type Props = {
     hasError: boolean;
-    hasFocus: boolean;
 };
 
 const TextInputStyled = styled.TextInput<Props>`
@@ -12,7 +11,6 @@ const TextInputStyled = styled.TextInput<Props>`
     font-family: 'HelveticaLtStRoman';
     font-size: 14px;
     height: 30px;
-    opacity: ${(props) => (props.hasFocus ? 1 : 0.5)};
 `;
 
 export default TextInputStyled;

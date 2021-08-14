@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Pressable } from 'react-native';
+import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 
 import Typography from '#components/Typography';
 
 import {
+    Container,
     ErrorContainer,
     LabelAnimation,
     LabelContainer,
@@ -11,8 +12,14 @@ import {
 } from './styles';
 
 type Props = {
-    label?: string;
+    editable?: boolean;
     error?: string;
+    label?: string;
+    onBlur: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+    onChangeText: (text: string) => void;
+    secureTextEntry?: boolean;
+    touched?: boolean;
+    value: string;
 };
 
 const normalizeError = (error: string | undefined) => {
@@ -26,14 +33,24 @@ const normalizeError = (error: string | undefined) => {
     return capitalizeErrorWithDot;
 };
 
-const CustomTextInput = ({ label, error }: Props) => {
+const CustomTextInput = ({
+    editable,
+    error,
+    label,
+    onBlur,
+    onChangeText,
+    secureTextEntry,
+    touched,
+    value,
+}: Props) => {
     const textInputRef = React.useRef<any>(null);
 
     const [hasFocus, setHasFocus] = React.useState<boolean>(false);
-    const [value, setValue] = React.useState<string>('');
 
-    const handleOnChangeText = (e: string) => setValue(e);
-    const handleOnBlur = () => setHasFocus(false);
+    const handleOnBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+        setHasFocus(false);
+        onBlur(e);
+    };
     const handleOnFocus = () => setHasFocus(true);
     const handleOnPress = () => {
         if (textInputRef.current) {
@@ -42,12 +59,16 @@ const CustomTextInput = ({ label, error }: Props) => {
     };
 
     return (
-        <Pressable onPress={handleOnPress}>
+        <Container
+            editable={editable || true}
+            hasFocus={hasFocus}
+            onPress={handleOnPress}
+        >
             {label && (
                 <LabelContainer>
                     <LabelAnimation hasFocus={hasFocus} hasValue={!!value}>
                         <Typography
-                            color={error ? 'danger' : 'primary-dark'}
+                            color={error && touched ? 'danger' : 'primary-dark'}
                             fontSize={hasFocus || value ? 12 : 14}
                         >
                             {label.toLowerCase()}
@@ -56,21 +77,22 @@ const CustomTextInput = ({ label, error }: Props) => {
                 </LabelContainer>
             )}
             <TextInputStyled
+                editable={editable}
                 hasError={!!error}
-                hasFocus={hasFocus}
                 onBlur={handleOnBlur}
-                onChangeText={handleOnChangeText}
+                onChangeText={onChangeText}
                 onFocus={handleOnFocus}
                 ref={textInputRef}
+                secureTextEntry={secureTextEntry}
                 selectionColor={error ? '#fb6d51' : '#414cb4'}
                 value={value}
             />
             <ErrorContainer>
                 <Typography color="danger" fontFamily="bold" fontSize={12}>
-                    {normalizeError(error)}
+                    {error && touched ? normalizeError(error) : null}
                 </Typography>
             </ErrorContainer>
-        </Pressable>
+        </Container>
     );
 };
 

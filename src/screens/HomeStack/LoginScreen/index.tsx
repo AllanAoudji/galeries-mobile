@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { END_POINT_LOGIN } from '#helpers/constants';
+import { END_POINT } from '#helpers/constants';
 import request from '#helpers/request';
 
 import {
@@ -34,14 +34,13 @@ const LoginScreen = () => {
             body: {},
             authToken: '',
             method: 'POST',
-            url: END_POINT_LOGIN,
+            url: END_POINT.LOGIN,
         })
             .then((response) => {
                 res = response;
             })
             .catch((error) => {
                 err = error;
-                console.log(err.response.data);
             });
     };
 
