@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
@@ -26,6 +27,7 @@ const initialValues = {
 };
 
 const SigninScreen = () => {
+    const dispatch = useDispatch();
     const formik = useFormik({
         initialValues,
         onSubmit: async (values) => {
@@ -59,22 +61,28 @@ const SigninScreen = () => {
                                     userName: err.response.data.errors.userName,
                                 });
                             } else {
-                                setNotification({
-                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                    type: 'error',
-                                });
+                                dispatch(
+                                    setNotification({
+                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                        status: 'error',
+                                    })
+                                );
                             }
                         } else {
-                            setNotification({
-                                text: err.response.data.errors,
-                                type: 'error',
-                            });
+                            dispatch(
+                                setNotification({
+                                    text: err.response.data.errors,
+                                    status: 'error',
+                                })
+                            );
                         }
                     } else {
-                        setNotification({
-                            text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                            type: 'error',
-                        });
+                        dispatch(
+                            setNotification({
+                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                status: 'error',
+                            })
+                        );
                     }
                 })
                 .finally(() => {

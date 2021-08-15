@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import Typography from '#components/Typography';
+import normalizeError from '#helpers/normalizeError';
 
 import {
     Container,
@@ -26,17 +27,6 @@ type Props = {
     secureTextEntry?: boolean;
     touched: boolean;
     value: string;
-};
-
-const normalizeError = (error: string | undefined) => {
-    if (!error) {
-        return null;
-    }
-    const capitalizeError = error[0].toUpperCase() + error.slice(1);
-    const capitalizeErrorWithDot = capitalizeError.endsWith('.')
-        ? capitalizeError
-        : `${capitalizeError}.`;
-    return capitalizeErrorWithDot;
 };
 
 const CustomTextInput = ({

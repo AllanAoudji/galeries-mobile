@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import * as React from 'react';
 import { View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 
@@ -29,6 +30,7 @@ const initialValues = {
 };
 
 const LoginScreen = () => {
+    const dispatch = useDispatch();
     const formik = useFormik({
         initialValues,
         onSubmit: async (values) => {
@@ -56,22 +58,28 @@ const LoginScreen = () => {
                                             .userNameOrEmail,
                                 });
                             } else {
-                                setNotification({
-                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                    type: 'error',
-                                });
+                                dispatch(
+                                    setNotification({
+                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                        status: 'error',
+                                    })
+                                );
                             }
                         } else {
-                            setNotification({
-                                text: err.response.data.errors,
-                                type: 'error',
-                            });
+                            dispatch(
+                                setNotification({
+                                    text: err.response.data.errors,
+                                    status: 'error',
+                                })
+                            );
                         }
                     } else {
-                        setNotification({
-                            text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                            type: 'error',
-                        });
+                        dispatch(
+                            setNotification({
+                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                status: 'error',
+                            })
+                        );
                     }
                 })
                 .finally(() => {

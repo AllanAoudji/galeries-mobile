@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 
+import { Notification } from '#components';
 import ThemeProvider from '#contexts/ThemeContext';
 import HomeStack from '#screens/HomeStack';
 import store from '#store';
@@ -27,6 +28,7 @@ export default function App() {
             <Provider store={store}>
                 <NavigationContainer>
                     <HomeStack />
+                    <Notification />
                     <StatusBar style="auto" />
                 </NavigationContainer>
             </Provider>

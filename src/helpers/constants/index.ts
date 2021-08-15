@@ -1,5 +1,7 @@
 export const API = 'https://galeries-server.herokuapp.com/';
 
+export const CLOSE_NOTIFICATION_DELAY = 2000;
+
 export const END_POINT = {
     FORGOT_PASSWORD: '/users/password/',
     LOGIN: '/users/login/',

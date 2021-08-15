@@ -31,7 +31,7 @@ declare global {
     namespace Store {
         type Action = {
             payload?: {
-                data: Store.Models.Notification | Store.Models.User | null;
+                data: OneOf<Reducer>;
                 meta?: {
                     entity: Entity;
                 };
@@ -39,10 +39,14 @@ declare global {
             type: string;
         };
         type Entity = '[NOTIFICATION]' | '[USER]';
+        type Reducer = {
+            notification: Store.Models.Notification | null;
+            user: Store.Models.User | null;
+        };
         namespace Models {
             type Notification = {
+                status: 'error' | 'success';
                 text: string;
-                type: 'error' | 'success';
             };
             type User = {
                 currentProfilePicute?: string | null;
