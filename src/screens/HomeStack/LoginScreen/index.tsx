@@ -6,13 +6,14 @@ import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
+import moment from 'moment';
 import {
     CustomButton,
     CustomTextInput,
     FormScreen,
     Typography,
 } from '#components';
-import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
+import { ASYNC_STORAGE, END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
 import { loginSchema } from '#helpers/schemas';
 import { setNotification } from '#store/actions';
@@ -56,12 +57,16 @@ const LoginScreen = () => {
                         );
                     } else {
                         try {
+                            const normalizeExpiredIn = moment()
+                                .add(res.data.data.expiresIn, 's')
+                                .valueOf()
+                                .toString();
                             await AsyncStorage.setItem(
-                                '@authToken_expiresIn',
-                                res.data.data.expiresIn.toString()
+                                ASYNC_STORAGE.AUTH_TOKEN_EXPIRES_IN,
+                                normalizeExpiredIn
                             );
                             await AsyncStorage.setItem(
-                                '@authToken_token',
+                                ASYNC_STORAGE.AUTH_TOKEN_TOKEN,
                                 res.data.data.token
                             );
                         } catch (err) {
