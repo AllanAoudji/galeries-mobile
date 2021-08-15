@@ -61,8 +61,10 @@ const ForgotYourPasswordScreen = () => {
         validateOnChange: false,
         validationSchema: forgotPassworSchema,
     });
+
     const navigation =
         useNavigation<Screen.Home.ForgotYourPasswordNavigationProp>();
+
     const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<{
         email: string;
@@ -70,12 +72,15 @@ const ForgotYourPasswordScreen = () => {
         email: '',
     });
 
-    const handleOnPressReturn = () => navigation.navigate('Login');
     const disableButton = (() => {
         const clientHasError = formik.submitCount > 0 && !!formik.errors.email;
         const serverHasError = !!serverErrors.email;
         return clientHasError || serverHasError;
     })();
+
+    const handleOnPressReturn = () => {
+        if (!loading) navigation.navigate('Login');
+    };
 
     return (
         <FormScreen

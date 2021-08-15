@@ -74,7 +74,9 @@ const LoginScreen = () => {
         validateOnChange: false,
         validationSchema: loginSchema,
     });
+
     const navigation = useNavigation<Screen.Home.LoginScreenNavigationProp>();
+
     const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<{
         password: string;
@@ -84,10 +86,24 @@ const LoginScreen = () => {
         userNameOrEmail: '',
     });
 
-    const handleOnPressForgotYourPassword = () =>
-        navigation.navigate('ForgotYourPassword');
-    const handleOnPressReturn = () => navigation.navigate('Landing');
-    const handleOnPressSignin = () => navigation.navigate('Signin');
+    const disableButton = (() => {
+        const clientHasError =
+            formik.submitCount > 0 &&
+            (!!formik.errors.password || !!formik.errors.userNameOrEmail);
+        const serverHasError =
+            !!serverErrors.password || !!serverErrors.userNameOrEmail;
+        return clientHasError || serverHasError;
+    })();
+
+    const handleOnPressForgotYourPassword = () => {
+        if (!loading) navigation.navigate('ForgotYourPassword');
+    };
+    const handleOnPressReturn = () => {
+        if (!loading) navigation.navigate('Landing');
+    };
+    const handleOnPressSignin = () => {
+        if (!loading) navigation.navigate('Signin');
+    };
 
     return (
         <FormScreen
@@ -146,6 +162,7 @@ const LoginScreen = () => {
                         </ForgotYourPasswordLinkContainer>
                     </TextInputsContainer>
                     <CustomButton
+                        disable={disableButton}
                         loading={loading}
                         onPress={formik.handleSubmit}
                         title="login"

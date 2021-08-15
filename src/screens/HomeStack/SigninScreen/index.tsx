@@ -93,8 +93,29 @@ const SigninScreen = () => {
         userName: '',
     });
 
-    const handleOnPressLogin = () => navigation.navigate('Login');
-    const handleOnPressReturn = () => navigation.navigate('Landing');
+    const disableButton = (() => {
+        const clientHasError =
+            formik.submitCount > 0 &&
+            (!!formik.errors.betaKey ||
+                !!formik.errors.confirmPassword ||
+                !!formik.errors.email ||
+                !!formik.errors.password ||
+                !!formik.errors.userName);
+        const serverHasError =
+            !!serverErrors.betaKey ||
+            !!serverErrors.confirmPassword ||
+            !!serverErrors.email ||
+            !!serverErrors.password ||
+            !!serverErrors.userName;
+        return clientHasError || serverHasError;
+    })();
+
+    const handleOnPressLogin = () => {
+        if (!loading) navigation.navigate('Login');
+    };
+    const handleOnPressReturn = () => {
+        if (!loading) navigation.navigate('Landing');
+    };
 
     return (
         <FormScreen
@@ -169,6 +190,7 @@ const SigninScreen = () => {
                         />
                     </TextInputsContainer>
                     <CustomButton
+                        disable={disableButton}
                         loading={loading}
                         onPress={formik.handleSubmit}
                         title="signin"
