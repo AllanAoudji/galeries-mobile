@@ -77,7 +77,7 @@ const FormScreen = ({ body, footer, handleOnPressReturn, title }: Props) => {
                     </ReturnButton>
                 )}
                 <Body>
-                    <BodyScrollView>
+                    <BodyScrollView keyboardShouldPersistTaps="always">
                         {body}
                         <Footer>{footer}</Footer>
                     </BodyScrollView>

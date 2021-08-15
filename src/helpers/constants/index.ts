@@ -1,9 +1,9 @@
 export const API = 'https://galeries-server.herokuapp.com/';
 
 export const END_POINT = {
-    FORGOT_PASSWORD: '/users/password',
+    FORGOT_PASSWORD: '/users/password/',
     LOGIN: '/users/login/',
-    SIGNIN: '/users/signin/',
+    SIGNIN: '/users/signin/beta/',
 };
 
 export const ERROR_MESSAGE = {

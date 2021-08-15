@@ -1,7 +1,7 @@
-import axios from 'axios';
+import { AxiosError } from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { Keyboard, View } from 'react-native';
+import { View } from 'react-native';
 import { useFormik } from 'formik';
 
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
@@ -28,53 +28,57 @@ const SigninScreen = () => {
     const formik = useFormik({
         initialValues,
         onSubmit: async (values) => {
-            Keyboard.dismiss();
-            try {
-                request({
-                    body: values,
-                    authToken: '',
-                    method: 'POST',
-                    url: END_POINT.SIGNIN,
-                });
-            } catch (err) {
-                if (
-                    axios.isAxiosError(err) &&
-                    err.response &&
-                    err.response.data.errors
-                ) {
-                    if (typeof err.response.data.errors === 'object') {
-                        if (
-                            err.response.data.errors.betaKey ||
-                            err.response.data.errors.confirmPassword ||
-                            err.response.data.errors.email ||
-                            err.response.data.errors.password ||
-                            err.response.data.errors.userName
-                        ) {
-                            setServerErrors({
-                                betaKey:
-                                    err.response.data.errors.confirmPassword,
-                                confirmPassword:
-                                    err.response.data.errors.confirmPassword,
-                                email: err.response.data.errors.email,
-                                password: err.response.data.errors.password,
-                                userName: err.response.data.errors.userName,
-                            });
+            setLoading(true);
+            request({
+                body: values,
+                authToken: '',
+                method: 'POST',
+                url: END_POINT.SIGNIN,
+            })
+                .then((res) => {
+                    console.log('success', res);
+                })
+                .catch((err: AxiosError) => {
+                    if (err.response && err.response.data.errors) {
+                        if (typeof err.response.data.errors === 'object') {
+                            if (
+                                err.response.data.errors.betaKey ||
+                                err.response.data.errors.confirmPassword ||
+                                err.response.data.errors.email ||
+                                err.response.data.errors.password ||
+                                err.response.data.errors.userName
+                            ) {
+                                setServerErrors({
+                                    betaKey: err.response.data.errors.betaKey,
+                                    confirmPassword:
+                                        err.response.data.errors
+                                            .confirmPassword,
+                                    email: err.response.data.errors.email,
+                                    password: err.response.data.errors.password,
+                                    userName: err.response.data.errors.userName,
+                                });
+                            } else {
+                                console.log(
+                                    ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE
+                                );
+                            }
                         } else {
-                            console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
+                            console.log(err.response.data.errors);
                         }
                     } else {
-                        console.log(err.response.data.errors);
+                        console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
                     }
-                } else {
-                    console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
-                }
-            }
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
         },
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: signinSchema,
     });
     const navigation = useNavigation<Screen.Home.SigninScreenNavigationProp>();
+    const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<{
         betaKey: string;
         confirmPassword: string;
@@ -132,6 +136,7 @@ const SigninScreen = () => {
                                 formik.setFieldValue('password', e);
                             }}
                             touched={formik.touched.password || false}
+                            secureTextEntry
                             value={formik.values.password}
                         />
                         <CustomTextInput
@@ -146,6 +151,7 @@ const SigninScreen = () => {
                                 formik.setFieldValue('confirmPassword', e);
                             }}
                             touched={formik.touched.confirmPassword || false}
+                            secureTextEntry
                             value={formik.values.confirmPassword}
                         />
                         <CustomTextInput
@@ -163,6 +169,7 @@ const SigninScreen = () => {
                         />
                     </TextInputsContainer>
                     <CustomButton
+                        loading={loading}
                         onPress={formik.handleSubmit}
                         title="signin"
                     />

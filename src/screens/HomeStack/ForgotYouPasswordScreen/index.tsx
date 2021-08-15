@@ -1,7 +1,7 @@
-import axios from 'axios';
+import { AxiosError } from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { Keyboard, View } from 'react-native';
+import { View } from 'react-native';
 import { useFormik } from 'formik';
 
 import {
@@ -24,35 +24,38 @@ const ForgotYourPasswordScreen = () => {
     const formik = useFormik({
         initialValues,
         onSubmit: async (values) => {
-            Keyboard.dismiss();
-            try {
-                request({
-                    body: values,
-                    authToken: '',
-                    method: 'POST',
-                    url: END_POINT.FORGOT_PASSWORD,
-                });
-            } catch (err) {
-                if (
-                    axios.isAxiosError(err) &&
-                    err.response &&
-                    err.response.data.errors
-                ) {
-                    if (typeof err.response.data.errors === 'object') {
-                        if (err.response.data.errors.email) {
-                            setServerErrors({
-                                email: err.response.data.errors.email,
-                            });
+            setLoading(true);
+            request({
+                body: values,
+                authToken: '',
+                method: 'POST',
+                url: END_POINT.FORGOT_PASSWORD,
+            })
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch((err: AxiosError) => {
+                    if (err.response && err.response.data.errors) {
+                        if (typeof err.response.data.errors === 'object') {
+                            if (err.response.data.errors.email) {
+                                setServerErrors({
+                                    email: err.response.data.errors.email,
+                                });
+                            } else {
+                                console.log(
+                                    ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE
+                                );
+                            }
                         } else {
-                            console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
+                            console.log(err.response.data.errors);
                         }
                     } else {
-                        console.log(err.response.data.errors);
+                        console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
                     }
-                } else {
-                    console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
-                }
-            }
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
         },
         validateOnBlur: true,
         validateOnChange: false,
@@ -60,6 +63,7 @@ const ForgotYourPasswordScreen = () => {
     });
     const navigation =
         useNavigation<Screen.Home.ForgotYourPasswordNavigationProp>();
+    const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<{
         email: string;
     }>({
@@ -80,9 +84,13 @@ const ForgotYourPasswordScreen = () => {
                         </TextContainer>
                         <CustomTextInput
                             error={formik.errors.email || serverErrors.email}
-                            label="email or user name"
+                            label="email"
                             onBlur={formik.handleBlur('email')}
                             onChangeText={(e: string) => {
+                                setServerErrors((prevState) => ({
+                                    ...prevState,
+                                    email: '',
+                                }));
                                 formik.setFieldError('email', '');
                                 formik.setFieldValue('email', e);
                             }}
@@ -91,6 +99,7 @@ const ForgotYourPasswordScreen = () => {
                         />
                     </TextInputsContainer>
                     <CustomButton
+                        loading={loading}
                         mb="smallest"
                         onPress={formik.handleSubmit}
                         title="reset your password"

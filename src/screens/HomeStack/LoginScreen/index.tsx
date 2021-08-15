@@ -1,6 +1,6 @@
-import axios from 'axios';
+import { AxiosError } from 'axios';
 import * as React from 'react';
-import { Keyboard, View } from 'react-native';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 
@@ -31,46 +31,51 @@ const LoginScreen = () => {
     const formik = useFormik({
         initialValues,
         onSubmit: async (values) => {
-            Keyboard.dismiss();
-            try {
-                request({
-                    body: values,
-                    authToken: '',
-                    method: 'POST',
-                    url: END_POINT.LOGIN,
-                });
-            } catch (err) {
-                if (
-                    axios.isAxiosError(err) &&
-                    err.response &&
-                    err.response.data.errors
-                ) {
-                    if (typeof err.response.data.errors === 'object') {
-                        if (
-                            err.response.data.errors.password ||
-                            err.response.data.errors.userNameOrEmail
-                        ) {
-                            setServerErrors({
-                                password: err.response.data.errors.password,
-                                userNameOrEmail:
-                                    err.response.data.errors.userNameOrEmail,
-                            });
+            setLoading(true);
+            request({
+                body: values,
+                authToken: '',
+                method: 'POST',
+                url: END_POINT.LOGIN,
+            })
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch((err: AxiosError) => {
+                    if (err.response && err.response.data.errors) {
+                        if (typeof err.response.data.errors === 'object') {
+                            if (
+                                err.response.data.errors.password ||
+                                err.response.data.errors.userNameOrEmail
+                            ) {
+                                setServerErrors({
+                                    password: err.response.data.errors.password,
+                                    userNameOrEmail:
+                                        err.response.data.errors
+                                            .userNameOrEmail,
+                                });
+                            } else {
+                                console.log(
+                                    ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE
+                                );
+                            }
                         } else {
-                            console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
+                            console.log(err.response.data.errors);
                         }
                     } else {
-                        console.log(err.response.data.errors);
+                        console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
                     }
-                } else {
-                    console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
-                }
-            }
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
         },
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: loginSchema,
     });
     const navigation = useNavigation<Screen.Home.LoginScreenNavigationProp>();
+    const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<{
         password: string;
         userNameOrEmail: string;
@@ -121,6 +126,7 @@ const LoginScreen = () => {
                                 formik.setFieldError('password', '');
                                 formik.setFieldValue('password', e);
                             }}
+                            secureTextEntry
                             touched={formik.touched.password || false}
                             value={formik.values.password}
                         />
@@ -137,7 +143,11 @@ const LoginScreen = () => {
                             </ForgotYourPasswordLink>
                         </ForgotYourPasswordLinkContainer>
                     </TextInputsContainer>
-                    <CustomButton onPress={formik.handleSubmit} title="login" />
+                    <CustomButton
+                        loading={loading}
+                        onPress={formik.handleSubmit}
+                        title="login"
+                    />
                 </View>
             }
             footer={

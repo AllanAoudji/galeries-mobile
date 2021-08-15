@@ -7,6 +7,7 @@ import { Container } from './styles';
 type Props = {
     disable?: boolean;
     onPress?: () => void;
+    loading?: boolean;
     mb?: keyof Style.Spacings;
     ml?: keyof Style.Spacings;
     mr?: keyof Style.Spacings;
@@ -18,6 +19,7 @@ type Props = {
 
 const CustomButton = ({
     disable = false,
+    loading = false,
     mb,
     ml,
     mr,
@@ -28,9 +30,9 @@ const CustomButton = ({
     variant = 'fill',
 }: Props) => (
     <Container
-        disable={disable}
+        disable={disable || loading}
         onPress={() => {
-            if (onPress) onPress();
+            if (onPress && (!disable || !loading)) onPress();
         }}
         mb={mb}
         ml={ml}
@@ -44,7 +46,7 @@ const CustomButton = ({
             fontFamily="bold"
             fontSize={small ? 14 : 24}
         >
-            {title.toLowerCase()}
+            {loading ? 'loading' : title.toLowerCase()}
         </Typography>
     </Container>
 );
