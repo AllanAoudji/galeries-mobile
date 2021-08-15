@@ -18,7 +18,7 @@ type Props = {
     onBlur: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
     onChangeText: (text: string) => void;
     secureTextEntry?: boolean;
-    touched?: boolean;
+    touched: boolean;
     value: string;
 };
 
@@ -78,7 +78,7 @@ const CustomTextInput = ({
             )}
             <TextInputStyled
                 editable={editable}
-                hasError={!!error}
+                hasError={!!error && touched}
                 onBlur={handleOnBlur}
                 onChangeText={onChangeText}
                 onFocus={handleOnFocus}

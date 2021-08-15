@@ -2,12 +2,12 @@ import styled from 'styled-components/native';
 
 type Props = {
     disable?: boolean;
-    mb?: keyof Spacings;
-    ml?: keyof Spacings;
-    mr?: keyof Spacings;
-    mt?: keyof Spacings;
+    mb?: keyof Style.Spacings;
+    ml?: keyof Style.Spacings;
+    mr?: keyof Style.Spacings;
+    mt?: keyof Style.Spacings;
     small?: boolean;
-    variant?: Variant.Button;
+    variant?: Style.Variant.Button;
 };
 
 const Container = styled.Pressable<Props>`

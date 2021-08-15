@@ -7,13 +7,13 @@ import { Container } from './styles';
 type Props = {
     disable?: boolean;
     onPress?: () => void;
-    mb?: keyof Spacings;
-    ml?: keyof Spacings;
-    mr?: keyof Spacings;
-    mt?: keyof Spacings;
+    mb?: keyof Style.Spacings;
+    ml?: keyof Style.Spacings;
+    mr?: keyof Style.Spacings;
+    mt?: keyof Style.Spacings;
     small?: boolean;
     title: string;
-    variant?: Variant.Button;
+    variant?: Style.Variant.Button;
 };
 
 const CustomButton = ({

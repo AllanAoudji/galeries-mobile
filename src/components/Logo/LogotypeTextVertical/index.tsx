@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Defs, LinearGradient, Path, Stop, Svg } from 'react-native-svg';
 
 type Props = {
-    size?: Variant.Logo;
+    size?: Style.Variant.Logo;
 };
 
 const height = {
