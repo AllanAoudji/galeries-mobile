@@ -1,8 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import { AxiosError } from 'axios';
 import * as React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 
 import {
@@ -37,12 +38,41 @@ const LoginScreen = () => {
             setLoading(true);
             request({
                 body: values,
-                authToken: '',
                 method: 'POST',
                 url: END_POINT.LOGIN,
             })
-                .then((res) => {
-                    console.log(res);
+                .then(async (res) => {
+                    if (
+                        !res.data.data &&
+                        !res.data.data.expiresIn &&
+                        typeof res.data.data.expiresIn !== 'number' &&
+                        !res.data.data.token
+                    ) {
+                        dispatch(
+                            setNotification({
+                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                status: 'error',
+                            })
+                        );
+                    } else {
+                        try {
+                            await AsyncStorage.setItem(
+                                '@authToken_expiresIn',
+                                res.data.data.expiresIn.toString()
+                            );
+                            await AsyncStorage.setItem(
+                                '@authToken_token',
+                                res.data.data.token
+                            );
+                        } catch (err) {
+                            dispatch(
+                                setNotification({
+                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                    status: 'error',
+                                })
+                            );
+                        }
+                    }
                 })
                 .catch((err: AxiosError) => {
                     if (err.response && err.response.data.errors) {
