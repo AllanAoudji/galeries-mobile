@@ -31,15 +31,19 @@ declare global {
     namespace Store {
         type Action = {
             payload?: {
-                data: any;
+                data: Store.Models.Notification | Store.Models.User | null;
                 meta?: {
                     entity: Entity;
                 };
             };
             type: string;
         };
-        type Entity = '[USER]';
+        type Entity = '[NOTIFICATION]' | '[USER]';
         namespace Models {
+            type Notification = {
+                text: string;
+                type: 'error' | 'success';
+            };
             type User = {
                 currentProfilePicute?: string | null;
                 userName: string;

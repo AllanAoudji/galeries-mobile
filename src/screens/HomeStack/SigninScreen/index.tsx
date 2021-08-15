@@ -13,6 +13,7 @@ import {
     Typography,
 } from '#components';
 import { signinSchema } from '#helpers/schemas';
+import { setNotification } from '#store/actions';
 
 import { CustomLink, TextContainer, TextInputsContainer } from './styles';
 
@@ -58,15 +59,22 @@ const SigninScreen = () => {
                                     userName: err.response.data.errors.userName,
                                 });
                             } else {
-                                console.log(
-                                    ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE
-                                );
+                                setNotification({
+                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                    type: 'error',
+                                });
                             }
                         } else {
-                            console.log(err.response.data.errors);
+                            setNotification({
+                                text: err.response.data.errors,
+                                type: 'error',
+                            });
                         }
                     } else {
-                        console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
+                        setNotification({
+                            text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                            type: 'error',
+                        });
                     }
                 })
                 .finally(() => {

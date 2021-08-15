@@ -13,6 +13,7 @@ import {
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
 import { forgotPassworSchema } from '#helpers/schemas';
+import { setNotification } from '#store/actions';
 
 import { TextContainer, TextInputsContainer } from './styles';
 
@@ -42,15 +43,22 @@ const ForgotYourPasswordScreen = () => {
                                     email: err.response.data.errors.email,
                                 });
                             } else {
-                                console.log(
-                                    ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE
-                                );
+                                setNotification({
+                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                    type: 'error',
+                                });
                             }
                         } else {
-                            console.log(err.response.data.errors);
+                            setNotification({
+                                text: err.response.data.errors,
+                                type: 'error',
+                            });
                         }
                     } else {
-                        console.log(ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE);
+                        setNotification({
+                            text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                            type: 'error',
+                        });
                     }
                 })
                 .finally(() => {
