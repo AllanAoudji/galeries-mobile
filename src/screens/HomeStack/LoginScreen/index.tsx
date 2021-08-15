@@ -100,6 +100,7 @@ const LoginScreen = () => {
                                 serverErrors.userNameOrEmail
                             }
                             label="email or user name"
+                            loading={loading}
                             onBlur={formik.handleBlur('userNameOrEmail')}
                             onChangeText={(e: string) => {
                                 setServerErrors((prevState) => ({
@@ -117,6 +118,7 @@ const LoginScreen = () => {
                                 formik.errors.password || serverErrors.password
                             }
                             label="password"
+                            loading={loading}
                             onBlur={formik.handleBlur('password')}
                             onChangeText={(e: string) => {
                                 setServerErrors((prevState) => ({

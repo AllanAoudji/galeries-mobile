@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { ActivityIndicator } from 'react-native';
+import { useTheme } from 'styled-components/native';
 
 import Typography from '#components/Typography';
 
@@ -28,27 +30,42 @@ const CustomButton = ({
     small = false,
     title,
     variant = 'fill',
-}: Props) => (
-    <Container
-        disable={disable || loading}
-        onPress={() => {
-            if (onPress && (!disable || !loading)) onPress();
-        }}
-        mb={mb}
-        ml={ml}
-        mr={mr}
-        mt={mt}
-        small={small}
-        variant={variant}
-    >
-        <Typography
-            color={variant === 'fill' ? 'secondary-light' : 'primary-dark'}
-            fontFamily="bold"
-            fontSize={small ? 14 : 24}
+}: Props) => {
+    const theme = useTheme();
+
+    return (
+        <Container
+            disable={disable || loading}
+            onPress={() => {
+                if (onPress && !disable && !loading) onPress();
+            }}
+            mb={mb}
+            ml={ml}
+            mr={mr}
+            mt={mt}
+            small={small}
+            variant={variant}
         >
-            {loading ? 'loading' : title.toLowerCase()}
-        </Typography>
-    </Container>
-);
+            <Typography
+                color={variant === 'fill' ? 'secondary-light' : 'primary-dark'}
+                fontFamily="bold"
+                fontSize={small ? 14 : 24}
+            >
+                {loading ? (
+                    <ActivityIndicator
+                        size="small"
+                        color={
+                            variant === 'fill'
+                                ? theme.colors['secondary-light']
+                                : theme.colors['primary-dark']
+                        }
+                    />
+                ) : (
+                    title.toLowerCase()
+                )}
+            </Typography>
+        </Container>
+    );
+};
 
 export default CustomButton;

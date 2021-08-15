@@ -1,12 +1,14 @@
 import styled from 'styled-components/native';
 
 type Props = {
-    hasFocus: boolean;
     editable: boolean;
+    hasFocus: boolean;
+    loading: boolean;
 };
 
 const Container = styled.Pressable<Props>`
-    opacity: ${({ editable, hasFocus }) => (hasFocus || !editable ? 1 : 0.5)};
+    opacity: ${({ editable, hasFocus, loading }) =>
+        hasFocus && editable && !loading ? 1 : 0.5};
 `;
 
 export default Container;

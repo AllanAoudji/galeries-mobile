@@ -15,6 +15,7 @@ type Props = {
     editable?: boolean;
     error?: string;
     label?: string;
+    loading?: boolean;
     onBlur: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
     onChangeText: (text: string) => void;
     secureTextEntry?: boolean;
@@ -34,9 +35,10 @@ const normalizeError = (error: string | undefined) => {
 };
 
 const CustomTextInput = ({
-    editable,
+    editable = true,
     error,
     label,
+    loading = false,
     onBlur,
     onChangeText,
     secureTextEntry,
@@ -62,13 +64,22 @@ const CustomTextInput = ({
         <Container
             editable={editable || true}
             hasFocus={hasFocus}
+            loading={loading}
             onPress={handleOnPress}
         >
             {label && (
                 <LabelContainer>
                     <LabelAnimation hasFocus={hasFocus} hasValue={!!value}>
                         <Typography
-                            color={error && touched ? 'danger' : 'primary-dark'}
+                            color={(() => {
+                                if (error && touched) {
+                                    return 'danger';
+                                }
+                                if (loading) {
+                                    return 'black';
+                                }
+                                return 'primary-dark';
+                            })()}
                             fontSize={hasFocus || value ? 12 : 14}
                         >
                             {label.toLowerCase()}
@@ -77,8 +88,9 @@ const CustomTextInput = ({
                 </LabelContainer>
             )}
             <TextInputStyled
-                editable={editable}
+                editable={editable && !loading}
                 hasError={!!error && touched}
+                loading={loading}
                 onBlur={handleOnBlur}
                 onChangeText={onChangeText}
                 onFocus={handleOnFocus}

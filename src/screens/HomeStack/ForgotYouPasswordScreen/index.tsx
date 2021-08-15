@@ -71,6 +71,11 @@ const ForgotYourPasswordScreen = () => {
     });
 
     const handleOnPressReturn = () => navigation.navigate('Login');
+    const disableButton = (() => {
+        const clientHasError = formik.submitCount > 0 && !!formik.errors.email;
+        const serverHasError = !!serverErrors.email;
+        return clientHasError || serverHasError;
+    })();
 
     return (
         <FormScreen
@@ -85,6 +90,7 @@ const ForgotYourPasswordScreen = () => {
                         <CustomTextInput
                             error={formik.errors.email || serverErrors.email}
                             label="email"
+                            loading={loading}
                             onBlur={formik.handleBlur('email')}
                             onChangeText={(e: string) => {
                                 setServerErrors((prevState) => ({
@@ -99,6 +105,7 @@ const ForgotYourPasswordScreen = () => {
                         />
                     </TextInputsContainer>
                     <CustomButton
+                        disable={disableButton}
                         loading={loading}
                         mb="smallest"
                         onPress={formik.handleSubmit}
