@@ -76,12 +76,18 @@ const SigninScreen = () => {
     });
     const navigation = useNavigation<Screen.Home.SigninScreenNavigationProp>();
     const [serverErrors, setServerErrors] = React.useState<{
-        betaKey?: string;
-        confirmPassword?: string;
-        email?: string;
-        password?: string;
-        userName?: string;
-    }>({});
+        betaKey: string;
+        confirmPassword: string;
+        email: string;
+        password: string;
+        userName: string;
+    }>({
+        betaKey: '',
+        confirmPassword: '',
+        email: '',
+        password: '',
+        userName: '',
+    });
 
     const handleOnPressLogin = () => navigation.navigate('Login');
     const handleOnPressReturn = () => navigation.navigate('Landing');

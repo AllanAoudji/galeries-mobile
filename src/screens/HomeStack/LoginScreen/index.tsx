@@ -4,16 +4,15 @@ import { Keyboard, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 
-import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
-import request from '#helpers/request';
-import { loginSchema } from '#helpers/schemas';
-
 import {
     CustomButton,
     CustomTextInput,
     FormScreen,
     Typography,
 } from '#components';
+import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
+import request from '#helpers/request';
+import { loginSchema } from '#helpers/schemas';
 
 import {
     CustomLink,
@@ -73,9 +72,12 @@ const LoginScreen = () => {
     });
     const navigation = useNavigation<Screen.Home.LoginScreenNavigationProp>();
     const [serverErrors, setServerErrors] = React.useState<{
-        password?: string;
-        userNameOrEmail?: string;
-    }>({});
+        password: string;
+        userNameOrEmail: string;
+    }>({
+        password: '',
+        userNameOrEmail: '',
+    });
 
     const handleOnPressForgotYourPassword = () =>
         navigation.navigate('ForgotYourPassword');
@@ -135,7 +137,7 @@ const LoginScreen = () => {
                             </ForgotYourPasswordLink>
                         </ForgotYourPasswordLinkContainer>
                     </TextInputsContainer>
-                    <CustomButton title="login" onPress={formik.handleSubmit} />
+                    <CustomButton onPress={formik.handleSubmit} title="login" />
                 </View>
             }
             footer={
