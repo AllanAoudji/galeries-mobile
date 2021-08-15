@@ -94,6 +94,7 @@ const ForgotYourPasswordScreen = () => {
                         </TextContainer>
                         <CustomTextInput
                             error={formik.errors.email || serverErrors.email}
+                            keyboardType="email-address"
                             label="email"
                             loading={loading}
                             onBlur={formik.handleBlur('email')}

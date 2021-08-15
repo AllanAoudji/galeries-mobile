@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
+import {
+    KeyboardType,
+    NativeSyntheticEvent,
+    TextInputFocusEventData,
+} from 'react-native';
 
 import Typography from '#components/Typography';
 
@@ -14,6 +18,7 @@ import {
 type Props = {
     editable?: boolean;
     error?: string;
+    keyboardType?: KeyboardType;
     label?: string;
     loading?: boolean;
     onBlur: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
@@ -37,6 +42,7 @@ const normalizeError = (error: string | undefined) => {
 const CustomTextInput = ({
     editable = true,
     error,
+    keyboardType = 'default',
     label,
     loading = false,
     onBlur,
@@ -90,6 +96,7 @@ const CustomTextInput = ({
             <TextInputStyled
                 editable={editable && !loading}
                 hasError={!!error && touched}
+                keyboardType={keyboardType}
                 loading={loading}
                 onBlur={handleOnBlur}
                 onChangeText={onChangeText}

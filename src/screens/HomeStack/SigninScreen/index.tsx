@@ -137,6 +137,7 @@ const SigninScreen = () => {
                         />
                         <CustomTextInput
                             error={formik.errors.email || serverErrors.email}
+                            keyboardType="email-address"
                             label="email"
                             onBlur={formik.handleBlur('email')}
                             onChangeText={(e: string) => {
