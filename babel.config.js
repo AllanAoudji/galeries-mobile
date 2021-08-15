@@ -12,6 +12,7 @@ module.exports = (api) => {
                         '#contexts': './src/contexts',
                         '#helpers': './src/helpers',
                         '#screens': './src/screens',
+                        '#store': './src/store',
                     },
                 },
             ],

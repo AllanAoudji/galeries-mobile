@@ -4,9 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
+import { Provider } from 'react-redux';
 
+import { Notification } from '#components';
 import ThemeProvider from '#contexts/ThemeContext';
 import HomeStack from '#screens/HomeStack';
+import store from '#store';
 
 export default function App() {
     const [loaded] = useFonts({
@@ -22,10 +25,13 @@ export default function App() {
 
     return (
         <ThemeProvider>
-            <NavigationContainer>
-                <HomeStack />
-                <StatusBar style="auto" />
-            </NavigationContainer>
+            <Provider store={store}>
+                <NavigationContainer>
+                    <HomeStack />
+                    <Notification />
+                    <StatusBar style="auto" />
+                </NavigationContainer>
+            </Provider>
         </ThemeProvider>
     );
 }

@@ -3,10 +3,10 @@ import * as React from 'react';
 import { Container } from './styles';
 
 type Props = {
-    color?: keyof Colors;
-    fontFamily?: keyof FontFamilies;
-    fontSize?: keyof FontSizes;
-    textAlign?: keyof TextAlign;
+    color?: keyof Style.Colors;
+    fontFamily?: keyof Style.FontFamilies;
+    fontSize?: keyof Style.FontSizes;
+    textAlign?: keyof Style.TextAlign;
 };
 
 const Typography: React.FC<Props> = ({

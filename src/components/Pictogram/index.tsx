@@ -4,8 +4,8 @@ import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
 
 type Props = {
-    color?: keyof Colors;
-    size?: Variant.Pictogram;
+    color?: keyof Style.Colors;
+    size?: Style.Variant.Pictogram;
     variant: 'arrow-left' | 'arrow-right';
 };
 

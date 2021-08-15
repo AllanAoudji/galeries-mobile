@@ -7,7 +7,7 @@ import LogotypeTextVertical from './LogotypeTextVertical';
 import Text from './Text';
 
 type Props = {
-    size?: Variant.Logo;
+    size?: Style.Variant.Logo;
     variant:
         | 'logotype-fill'
         | 'logotype-stroke'

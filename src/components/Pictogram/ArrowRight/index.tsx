@@ -3,8 +3,8 @@ import { Svg, Path } from 'react-native-svg';
 import { useTheme } from 'styled-components/native';
 
 type Props = {
-    color?: keyof Colors;
-    size?: Variant.Pictogram;
+    color?: keyof Style.Colors;
+    size?: Style.Variant.Pictogram;
 };
 
 const height = {

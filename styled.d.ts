@@ -2,11 +2,11 @@ import 'styled-components';
 
 declare module 'styled-components' {
     export interface DefaultTheme {
-        colors: Colors;
+        colors: Style.Colors;
         font: {
-            families: FontFamilies;
-            sizes: FontSizes;
+            families: Style.FontFamilies;
+            sizes: Style.FontSizes;
         };
-        spacings: Spacings;
+        spacings: Style.Spacings;
     }
 }

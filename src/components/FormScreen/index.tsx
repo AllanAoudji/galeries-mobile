@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Dimensions, Keyboard, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
-import Typography from '#components/Typography';
-import Pictogram from '#components/Pictogram';
+import { Pictogram, Typography } from '#components';
 
 import {
     Body,
@@ -77,7 +76,7 @@ const FormScreen = ({ body, footer, handleOnPressReturn, title }: Props) => {
                     </ReturnButton>
                 )}
                 <Body>
-                    <BodyScrollView>
+                    <BodyScrollView keyboardShouldPersistTaps="always">
                         {body}
                         <Footer>{footer}</Footer>
                     </BodyScrollView>
