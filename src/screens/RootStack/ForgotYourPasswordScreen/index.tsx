@@ -30,7 +30,6 @@ const ForgotYourPasswordScreen = () => {
             setLoading(true);
             request({
                 body: values,
-                authToken: '',
                 method: 'POST',
                 url: END_POINT.FORGOT_PASSWORD,
             })
