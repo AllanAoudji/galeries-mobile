@@ -26,6 +26,3 @@ export default function App() {
         </ThemeProvider>
     );
 }
-
-// TODO:
-// https://stackoverflow.com/questions/53040094/how-to-get-current-route-name-in-react-navigation
