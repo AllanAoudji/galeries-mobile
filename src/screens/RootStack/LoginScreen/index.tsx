@@ -16,7 +16,7 @@ import {
 import { ASYNC_STORAGE, END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
 import { loginSchema } from '#helpers/schemas';
-import { setNotification } from '#store/actions';
+import { fetchUser, setNotification } from '#store/actions';
 
 import {
     CustomLink,
@@ -69,6 +69,7 @@ const LoginScreen = () => {
                                 ASYNC_STORAGE.AUTH_TOKEN_TOKEN,
                                 res.data.data.token
                             );
+                            dispatch(fetchUser());
                         } catch (err) {
                             dispatch(
                                 setNotification({

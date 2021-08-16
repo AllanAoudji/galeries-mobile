@@ -5,6 +5,7 @@ import {
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { SplashScreen } from '#components';
 import { fetchUser } from '#store/actions';
 import { userSelector } from '#store/selectors';
 
@@ -13,7 +14,6 @@ import ForgotYourPasswordScreen from './ForgotYourPasswordScreen';
 import LangingScreen from './LandingScreen';
 import LoginScreen from './LoginScreen';
 import SigninScreen from './SigninScreen';
-import { SplashScreen } from '#components';
 
 const Stack = createStackNavigator<Screen.Home.HomeStackParamList>();
 
@@ -26,7 +26,7 @@ const HomeStack = () => {
         dispatch(fetchUser());
     }, []);
     React.useEffect(() => {
-        if (user.status === 'PENDING' || user.status === 'FETCHING') {
+        if (user.status === 'FETCHING') {
             setLoading(true);
         } else {
             setLoading(false);
