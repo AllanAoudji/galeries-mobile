@@ -28,6 +28,7 @@ export const ERROR_MESSAGE = {
     FIELD_SHOULD_BE_A_PASSWORD:
         'need at least on lowercase, one uppercase, one number and one special char',
     FIELD_SHOULD_MATCH: (type: 'password') => `must match ${type}`,
+    USER_SHOULD_NOT_BE_AUTHENTICATED: 'you are already authenticated',
 };
 
 export const FIELD_REQUIREMENT = {

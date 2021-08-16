@@ -101,6 +101,11 @@ const LoginScreen = () => {
                                     })
                                 );
                             }
+                        } else if (
+                            err.response.data.errors ===
+                            ERROR_MESSAGE.USER_SHOULD_NOT_BE_AUTHENTICATED
+                        ) {
+                            dispatch(fetchUser());
                         } else {
                             dispatch(
                                 setNotification({
