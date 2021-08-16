@@ -13,16 +13,29 @@ import ForgotYourPasswordScreen from './ForgotYourPasswordScreen';
 import LangingScreen from './LandingScreen';
 import LoginScreen from './LoginScreen';
 import SigninScreen from './SigninScreen';
+import { SplashScreen } from '#components';
 
 const Stack = createStackNavigator<Screen.Home.HomeStackParamList>();
 
 const HomeStack = () => {
+    const [loading, setLoading] = React.useState<boolean>(true);
     const dispatch = useDispatch();
     const user = useSelector(userSelector);
 
     React.useEffect(() => {
         dispatch(fetchUser());
     }, []);
+    React.useEffect(() => {
+        if (user.status === 'PENDING' || user.status === 'FETCHING') {
+            setLoading(true);
+        } else {
+            setLoading(false);
+        }
+    }, [user]);
+
+    if (loading) {
+        return <SplashScreen />;
+    }
 
     return (
         <Stack.Navigator
