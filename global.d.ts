@@ -1,5 +1,6 @@
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Method } from 'axios';
 
 declare global {
@@ -55,6 +56,35 @@ declare global {
             type SigninScreenNavigationProp = StackNavigationProp<
                 HomeStackParamList,
                 'Signin'
+            >;
+        }
+        namespace Main {
+            type MainStackParamList = {
+                Galeries: undefined;
+                Home: undefined;
+                'New Galerie': undefined;
+                Notifications: undefined;
+                Profile: undefined;
+            };
+            type GaleriesNavigationProp = BottomTabNavigationProp<
+                MainStackParamList,
+                'Galeries'
+            >;
+            type HomeNavigationProp = BottomTabNavigationProp<
+                MainStackParamList,
+                'Home'
+            >;
+            type NewGalerieNavigationProp = BottomTabNavigationProp<
+                MainStackParamList,
+                'New Galerie'
+            >;
+            type NotificationNavigationProp = BottomTabNavigationProp<
+                MainStackParamList,
+                'Notifications'
+            >;
+            type ProfileNavigationProp = BottomTabNavigationProp<
+                MainStackParamList,
+                'Profile'
             >;
         }
     }
@@ -132,12 +162,23 @@ declare global {
             64: string;
         };
         type Pictograms =
+            | 'add/subscribe-fill'
+            | 'add/subscribe-stroke'
             | 'arrow-left'
             | 'arrow-right'
+            | 'galeries-fill'
+            | 'galeries-stroke'
+            | 'hamburger-menu'
+            | 'heart-fill'
+            | 'heart-stroke'
+            | 'home-fill'
+            | 'home-stroke'
             | 'logout-left'
             | 'logout-right'
             | 'moderation-fill'
             | 'moderation-stroke'
+            | 'profile-fill'
+            | 'profile-stroke'
             | 'settings-fill'
             | 'settings-stroke'
             | 'ticket-fill'

@@ -17,16 +17,12 @@ const defaultHeight = {
     small: 15,
 };
 const defaultWidth = {
-    large: 49,
-    normal: 25,
-    small: 17,
+    large: 42,
+    normal: 21,
+    small: 14,
 };
 
-const ArrowRight = ({
-    color = 'black',
-    customSize,
-    size = 'normal',
-}: Props) => {
+const HeartFill = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     const theme = useTheme();
     const height = React.useMemo(() => {
         if (customSize) return customSize.height;
@@ -38,13 +34,13 @@ const ArrowRight = ({
     }, [customSize, size]);
 
     return (
-        <Svg fill="none" height={height} viewBox="0 0 25 22" width={width}>
+        <Svg fill="none" height={height} viewBox="0 0 21 22" width={width}>
             <Path
-                d="M0 11.0011C0 10.6711 0.133304 10.3686 0.338814 10.1486C0.549878 9.92864 0.844257 9.79664 1.16641 9.79664H20.7176L13.6859 2.02542C13.4748 1.79442 13.3693 1.49743 13.3693 1.20594C13.3693 0.886954 13.4914 0.562466 13.7414 0.325974C14.2135 -0.12501 14.9522 -0.103012 15.391 0.38647L25 11.0011L15.3966 21.6212C14.9578 22.1052 14.2191 22.1327 13.7469 21.6817C13.5026 21.4452 13.3748 21.1207 13.3748 20.8018C13.3748 20.5048 13.4803 20.2133 13.6914 19.9823L20.7176 12.2056H1.16641C0.522106 12.2056 0 11.6666 0 11.0011Z"
+                d="M19.4253 11.2035L19.2736 11.3905L10.4984 22L1.72868 11.3905L1.57691 11.2035C-0.813354 8.3215 -0.444787 4.015 2.40077 1.595C3.65824 0.5225 5.19213 0 6.71518 0C8.04311 0 9.37103 0.396 10.4984 1.177C11.6312 0.4015 12.9537 0 14.2817 0C15.8047 0 17.3386 0.5225 18.5961 1.595C21.4416 4.015 21.8156 8.3215 19.4253 11.2035Z"
                 fill={theme.colors[color]}
             />
         </Svg>
     );
 };
 
-export default ArrowRight;
+export default HeartFill;
