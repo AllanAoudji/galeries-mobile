@@ -34,7 +34,6 @@ const SigninScreen = () => {
             setLoading(true);
             request({
                 body: values,
-                authToken: '',
                 method: 'POST',
                 url: END_POINT.SIGNIN,
             })
@@ -109,7 +108,7 @@ const SigninScreen = () => {
         userName: '',
     });
 
-    const disableButton = (() => {
+    const disableButton = React.useMemo(() => {
         const clientHasError =
             formik.submitCount > 0 &&
             (!!formik.errors.betaKey ||
@@ -124,14 +123,14 @@ const SigninScreen = () => {
             !!serverErrors.password ||
             !!serverErrors.userName;
         return clientHasError || serverHasError;
-    })();
+    }, [formik.submitCount, formik.errors, serverErrors]);
 
-    const handleOnPressLogin = () => {
+    const handleOnPressLogin = React.useCallback(() => {
         if (!loading) navigation.navigate('Login');
-    };
-    const handleOnPressReturn = () => {
+    }, [loading]);
+    const handleOnPressReturn = React.useCallback(() => {
         if (!loading) navigation.navigate('Landing');
-    };
+    }, [loading]);
 
     return (
         <FormScreen

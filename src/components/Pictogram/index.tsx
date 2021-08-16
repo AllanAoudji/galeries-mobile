@@ -40,7 +40,7 @@ const Pictograms = ({
     size = 'normal',
     variant,
 }: Props) => {
-    const PictogramVariant = variants[variant];
+    const PictogramVariant = React.useMemo(() => variants[variant], [variant]);
 
     return (
         <PictogramVariant color={color} size={size} customSize={customSize} />

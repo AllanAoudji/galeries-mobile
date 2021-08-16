@@ -21,11 +21,26 @@ const DrawerContent = ({
 }: DrawerContentComponentProps & Props) => {
     const dispatch = useDispatch();
 
-    const handlePressMain = () => navigation.navigate('Main');
-    const handlePressLogout = () => dispatch(fetchLogout());
-    const handlePressModeration = () => navigation.navigate('Moderation');
-    const handlePressSendTicket = () => navigation.navigate('SendTicket');
-    const handlePressSettings = () => navigation.navigate('Settings');
+    const handlePressMain = React.useCallback(
+        () => navigation.navigate('Main'),
+        []
+    );
+    const handlePressLogout = React.useCallback(
+        () => dispatch(fetchLogout()),
+        []
+    );
+    const handlePressModeration = React.useCallback(
+        () => navigation.navigate('Moderation'),
+        []
+    );
+    const handlePressSendTicket = React.useCallback(
+        () => navigation.navigate('SendTicket'),
+        []
+    );
+    const handlePressSettings = React.useCallback(
+        () => navigation.navigate('Settings'),
+        []
+    );
 
     return (
         <Container>

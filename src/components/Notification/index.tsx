@@ -25,10 +25,10 @@ const Notification = () => {
         if (timer.current) clearTimeout(timer.current);
     });
 
-    const handleOnPress = () => {
+    const handleOnPress = React.useCallback(() => {
         if (timer.current) clearTimeout(timer.current);
         dispatch(resetNotification());
-    };
+    }, []);
 
     return (
         <Container

@@ -27,7 +27,7 @@ const apiMiddleware: Middleware =
                         dispatch(apiSuccess(res.data, entity));
                     })
                     .catch((err: AxiosError) => {
-                        console.log(err);
+                        console.log(err.response);
                     });
             }
         }

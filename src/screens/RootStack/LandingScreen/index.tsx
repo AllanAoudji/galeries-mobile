@@ -9,8 +9,14 @@ import { CatchPhraseContainer, Container, Header } from './styles';
 const LandingScreen = () => {
     const navigation = useNavigation<Screen.Home.LandingScreenNavigationProp>();
 
-    const handleOnPressLogin = () => navigation.navigate('Login');
-    const handleOnPressSignin = () => navigation.navigate('Signin');
+    const handleOnPressLogin = React.useCallback(
+        () => navigation.navigate('Login'),
+        []
+    );
+    const handleOnPressSignin = React.useCallback(
+        () => navigation.navigate('Signin'),
+        []
+    );
 
     return (
         <Container>
