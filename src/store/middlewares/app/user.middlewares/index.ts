@@ -1,12 +1,14 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Middleware } from 'redux';
 
-import { END_POINT } from '#helpers/constants';
+import { ERROR_MESSAGE, END_POINT } from '#helpers/constants';
 import {
     API_ERROR,
     API_SUCCESS,
     USER,
     USER_FETCH,
     apiRequest,
+    setNotification,
     setUser,
 } from '#store/actions';
 
@@ -16,7 +18,15 @@ const errorUser: Middleware =
     (action: Store.Action) => {
         next(action);
         if (action.type === `${USER} ${API_ERROR}`) {
-            dispatch(setUser({ status: 'ERROR' }));
+            AsyncStorage.clear().finally(() => {
+                dispatch(
+                    setNotification({
+                        status: 'error',
+                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                    })
+                );
+                dispatch(setUser({ data: null, status: 'ERROR' }));
+            });
         }
     };
 
@@ -26,7 +36,11 @@ const fetchUser: Middleware =
     (action: Store.Action) => {
         next(action);
         if (action.type === USER_FETCH) {
-            dispatch(setUser({ status: 'FETCHING' }));
+            dispatch(
+                setUser({
+                    status: 'FETCHING',
+                })
+            );
             dispatch(
                 apiRequest({
                     entity: USER,

@@ -1,8 +1,9 @@
 import { AxiosError } from 'axios';
 import { Middleware } from 'redux';
 
+import { ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
-import { API_REQUEST, apiSuccess } from '#store/actions';
+import { API_REQUEST, apiError, apiSuccess } from '#store/actions';
 
 const apiMiddleware: Middleware =
     ({ dispatch }) =>
@@ -27,7 +28,17 @@ const apiMiddleware: Middleware =
                         dispatch(apiSuccess(res.data, entity));
                     })
                     .catch((err: AxiosError) => {
-                        console.log(err);
+                        let error: string;
+                        if (
+                            err.response &&
+                            err.response.data.errors &&
+                            typeof err.response.data.errors === 'string'
+                        ) {
+                            error = err.response.data.errors;
+                        } else {
+                            error = ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE;
+                        }
+                        dispatch(apiError(error, entity));
                     });
             }
         }

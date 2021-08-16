@@ -28,13 +28,14 @@ const LogoutLeft = ({
     size = 'normal',
 }: Props) => {
     const theme = useTheme();
-    let height: number = defaultHeight[size];
-    let width: number = defaultWidth[size];
-
-    if (customSize) {
-        height = customSize.height;
-        width = customSize.width;
-    }
+    const height = React.useMemo(() => {
+        if (customSize) return customSize.height;
+        return defaultHeight[size];
+    }, [customSize, size]);
+    const width = React.useMemo(() => {
+        if (customSize) return customSize.width;
+        return defaultWidth[size];
+    }, [customSize, size]);
 
     return (
         <Svg fill="none" height={height} width={width} viewBox="0 0 22 22">

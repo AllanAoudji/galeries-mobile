@@ -3,11 +3,9 @@ import {
     createStackNavigator,
 } from '@react-navigation/stack';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { SplashScreen } from '#components';
-import { fetchUser } from '#store/actions';
-import { userSelector } from '#store/selectors';
+import { userDataSelector } from '#store/selectors';
 
 import DesktopScreen from './DesktopScreen';
 import ForgotYourPasswordScreen from './ForgotYourPasswordScreen';
@@ -18,24 +16,7 @@ import SigninScreen from './SigninScreen';
 const Stack = createStackNavigator<Screen.Home.HomeStackParamList>();
 
 const HomeStack = () => {
-    const [loading, setLoading] = React.useState<boolean>(true);
-    const dispatch = useDispatch();
-    const user = useSelector(userSelector);
-
-    React.useEffect(() => {
-        dispatch(fetchUser());
-    }, []);
-    React.useEffect(() => {
-        if (user.status === 'FETCHING') {
-            setLoading(true);
-        } else {
-            setLoading(false);
-        }
-    }, [user]);
-
-    if (loading) {
-        return <SplashScreen />;
-    }
+    const userData = useSelector(userDataSelector);
 
     return (
         <Stack.Navigator
@@ -45,7 +26,7 @@ const HomeStack = () => {
                 headerShown: false,
             }}
         >
-            {user.data ? (
+            {userData ? (
                 <Stack.Screen name="Desktop" component={DesktopScreen} />
             ) : (
                 <>

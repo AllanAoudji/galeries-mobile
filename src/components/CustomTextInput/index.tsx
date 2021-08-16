@@ -45,16 +45,19 @@ const CustomTextInput = ({
 
     const [hasFocus, setHasFocus] = React.useState<boolean>(false);
 
-    const handleOnBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-        setHasFocus(false);
-        onBlur(e);
-    };
-    const handleOnFocus = () => setHasFocus(true);
-    const handleOnPress = () => {
+    const handleOnBlur = React.useCallback(
+        (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+            setHasFocus(false);
+            onBlur(e);
+        },
+        []
+    );
+    const handleOnFocus = React.useCallback(() => setHasFocus(true), []);
+    const handleOnPress = React.useCallback(() => {
         if (textInputRef.current) {
             textInputRef.current.focus();
         }
-    };
+    }, []);
 
     return (
         <Container

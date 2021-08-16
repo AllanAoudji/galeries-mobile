@@ -87,15 +87,15 @@ const ForgotYourPasswordScreen = () => {
         email: '',
     });
 
-    const disableButton = (() => {
+    const disableButton = React.useMemo(() => {
         const clientHasError = formik.submitCount > 0 && !!formik.errors.email;
         const serverHasError = !!serverErrors.email;
         return clientHasError || serverHasError;
-    })();
+    }, [formik.submitCount, formik.errors, serverErrors]);
 
-    const handleOnPressReturn = () => {
+    const handleOnPressReturn = React.useCallback(() => {
         if (!loading) navigation.navigate('Login');
-    };
+    }, []);
 
     return (
         <FormScreen

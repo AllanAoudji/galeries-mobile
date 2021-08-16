@@ -12,6 +12,19 @@ type Data = {
     url: string;
 };
 
+export const apiError: (error: string, entity: Store.Entity) => Store.Action = (
+    error,
+    entity
+) => ({
+    payload: {
+        data: error,
+        meta: {
+            entity,
+        },
+    },
+    type: `${entity} ${API_ERROR}`,
+});
+
 export const apiRequest: (data: Data) => Store.Action = ({
     body,
     entity,

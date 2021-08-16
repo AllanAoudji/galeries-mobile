@@ -25,7 +25,7 @@ const variants = {
 };
 
 const Logo = ({ size = 'normal', variant }: Props) => {
-    const LogoVariant = variants[variant];
+    const LogoVariant = React.useMemo(() => variants[variant], [variant]);
 
     return <LogoVariant size={size} />;
 };

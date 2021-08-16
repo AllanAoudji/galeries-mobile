@@ -101,6 +101,11 @@ const LoginScreen = () => {
                                     })
                                 );
                             }
+                        } else if (
+                            err.response.data.errors ===
+                            ERROR_MESSAGE.USER_SHOULD_NOT_BE_AUTHENTICATED
+                        ) {
+                            dispatch(fetchUser());
                         } else {
                             dispatch(
                                 setNotification({
@@ -138,24 +143,24 @@ const LoginScreen = () => {
         userNameOrEmail: '',
     });
 
-    const disableButton = (() => {
+    const disableButton = React.useMemo(() => {
         const clientHasError =
             formik.submitCount > 0 &&
             (!!formik.errors.password || !!formik.errors.userNameOrEmail);
         const serverHasError =
             !!serverErrors.password || !!serverErrors.userNameOrEmail;
         return clientHasError || serverHasError;
-    })();
+    }, [formik.submitCount, formik.errors, serverErrors]);
 
-    const handleOnPressForgotYourPassword = () => {
+    const handleOnPressForgotYourPassword = React.useCallback(() => {
         if (!loading) navigation.navigate('ForgotYourPassword');
-    };
-    const handleOnPressReturn = () => {
+    }, [loading]);
+    const handleOnPressReturn = React.useCallback(() => {
         if (!loading) navigation.navigate('Landing');
-    };
-    const handleOnPressSignin = () => {
+    }, [loading]);
+    const handleOnPressSignin = React.useCallback(() => {
         if (!loading) navigation.navigate('Signin');
-    };
+    }, [loading]);
 
     return (
         <FormScreen
