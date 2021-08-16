@@ -11,7 +11,12 @@ const Tab = createBottomTabNavigator<Screen.Main.MainStackParamList>();
 
 const MainStack = () => {
     return (
-        <Tab.Navigator initialRouteName="Home">
+        <Tab.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
             <Tab.Screen name="Home" component={HomeScreen} />
             <Tab.Screen name="Galeries" component={GaleriesScreen} />
             <Tab.Screen name="New Galerie" component={NewGalerieScreen} />

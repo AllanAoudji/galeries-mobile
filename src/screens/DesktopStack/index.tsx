@@ -2,7 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import { DrawerContent } from '#components';
+import { DrawerContent, HeaderDrawer } from '#components';
 import { userSelector } from '#store/selectors';
 
 import MainScreen from './MainScreen';
@@ -31,9 +31,9 @@ const DesktopStack = () => {
                 />
             )}
             initialRouteName="Main"
-            // screenOptions={{
-            //     headerShown: false,
-            // }}
+            screenOptions={{
+                header: (props) => <HeaderDrawer {...props} />,
+            }}
         >
             <Drawer.Screen name="Main" component={MainScreen} />
             <Drawer.Screen name="Settings" component={SettingsScreen} />
