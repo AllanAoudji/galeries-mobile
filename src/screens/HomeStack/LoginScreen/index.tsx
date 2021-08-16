@@ -1,17 +1,19 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import { AxiosError } from 'axios';
 import * as React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 
+import moment from 'moment';
 import {
     CustomButton,
     CustomTextInput,
     FormScreen,
     Typography,
 } from '#components';
-import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
+import { ASYNC_STORAGE, END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
 import { loginSchema } from '#helpers/schemas';
 import { setNotification } from '#store/actions';
@@ -37,12 +39,45 @@ const LoginScreen = () => {
             setLoading(true);
             request({
                 body: values,
-                authToken: '',
                 method: 'POST',
                 url: END_POINT.LOGIN,
             })
-                .then((res) => {
-                    console.log(res);
+                .then(async (res) => {
+                    if (
+                        !res.data.data &&
+                        !res.data.data.expiresIn &&
+                        typeof res.data.data.expiresIn !== 'number' &&
+                        !res.data.data.token
+                    ) {
+                        dispatch(
+                            setNotification({
+                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                status: 'error',
+                            })
+                        );
+                    } else {
+                        try {
+                            const normalizeExpiredIn = moment()
+                                .add(res.data.data.expiresIn, 's')
+                                .valueOf()
+                                .toString();
+                            await AsyncStorage.setItem(
+                                ASYNC_STORAGE.AUTH_TOKEN_EXPIRES_IN,
+                                normalizeExpiredIn
+                            );
+                            await AsyncStorage.setItem(
+                                ASYNC_STORAGE.AUTH_TOKEN_TOKEN,
+                                res.data.data.token
+                            );
+                        } catch (err) {
+                            dispatch(
+                                setNotification({
+                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                    status: 'error',
+                                })
+                            );
+                        }
+                    }
                 })
                 .catch((err: AxiosError) => {
                     if (err.response && err.response.data.errors) {

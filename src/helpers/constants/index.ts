@@ -1,10 +1,16 @@
 export const API = 'https://galeries-server.herokuapp.com/';
 
+export const ASYNC_STORAGE = {
+    AUTH_TOKEN_EXPIRES_IN: '@authToken_expiresIn',
+    AUTH_TOKEN_TOKEN: '@authToken_token',
+};
+
 export const CLOSE_NOTIFICATION_DELAY = 2000;
 
 export const END_POINT = {
     FORGOT_PASSWORD: '/users/password/',
     LOGIN: '/users/login/',
+    REFRESH_TOKEN: '/users/refreshToken',
     SIGNIN: '/users/signin/beta/',
 };
 

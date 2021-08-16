@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Typography } from '#components';
+import Typography from '#components/Typography';
 import normalizeError from '#helpers/normalizeError';
 import { CLOSE_NOTIFICATION_DELAY } from '#helpers/constants';
 import { resetNotification } from '#store/actions';
 import { notificationSelector } from '#store/selectors';
 
-import { Button, Container } from './styles';
+import { Button, Container, InnerContainer } from './styles';
 
 const Notification = () => {
     const dispatch = useDispatch();
@@ -32,9 +31,19 @@ const Notification = () => {
     };
 
     return (
-        <Pressable onPress={handleOnPress}>
+        <Container
+            style={{
+                bottom: 0,
+                position: 'absolute',
+                zIndex: 1,
+                width: '100%',
+            }}
+        >
             {notification && (
-                <Container status={notification.status}>
+                <InnerContainer
+                    status={notification.status}
+                    onPress={handleOnPress}
+                >
                     <Typography color="secondary-light" fontSize={18}>
                         {normalizeError(notification.text)}
                     </Typography>
@@ -47,9 +56,9 @@ const Notification = () => {
                             hide
                         </Typography>
                     </Button>
-                </Container>
+                </InnerContainer>
             )}
-        </Pressable>
+        </Container>
     );
 };
 

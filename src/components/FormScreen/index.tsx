@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Dimensions, Keyboard, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
-import { Pictogram, Typography } from '#components';
+import Typography from '#components/Typography';
+import Pictogram from '#components/Pictogram';
 
 import {
     Body,
