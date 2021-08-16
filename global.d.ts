@@ -1,8 +1,33 @@
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Method } from 'axios';
 
 declare global {
     namespace Screen {
+        namespace Desktop {
+            type DesktopDrawerParamsList = {
+                Main: undefined;
+                Moderation: undefined;
+                SendTicket: undefined;
+                Settings: undefined;
+            };
+            type MainScreenNavigationProp = DrawerNavigationProp<
+                DesktopDrawerParamsList,
+                'Main'
+            >;
+            type ModerationScreenNavigationProp = DrawerNavigationProp<
+                DesktopDrawerParamsList,
+                'Moderation'
+            >;
+            type SendTicketScreenNavigationProp = DrawerNavigationProp<
+                DesktopDrawerParamsList,
+                'SendTicket'
+            >;
+            type SettingsScreenNavigationProp = DrawerNavigationProp<
+                DesktopDrawerParamsList,
+                'Settings'
+            >;
+        }
         namespace Home {
             type HomeStackParamList = {
                 Desktop: undefined;
@@ -47,7 +72,7 @@ declare global {
             };
             type: string;
         };
-        type Entity = '[NOTIFICATION]' | '[USER]';
+        type Entity = '[NOTIFICATION]' | '[LOGOUT]' | '[USER]';
         type Reducer = {
             notification: Store.Models.Notification | null;
             user: {
@@ -106,6 +131,17 @@ declare global {
             48: string;
             64: string;
         };
+        type Pictograms =
+            | 'arrow-left'
+            | 'arrow-right'
+            | 'logout-left'
+            | 'logout-right'
+            | 'moderation-fill'
+            | 'moderation-stroke'
+            | 'settings-fill'
+            | 'settings-stroke'
+            | 'ticket-fill'
+            | 'ticket-stroke';
         type Spacings = {
             huge: string;
             small: string;

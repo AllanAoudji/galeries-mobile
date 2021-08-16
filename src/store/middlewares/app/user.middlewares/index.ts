@@ -2,6 +2,7 @@ import { Middleware } from 'redux';
 
 import { END_POINT } from '#helpers/constants';
 import {
+    API_ERROR,
     API_SUCCESS,
     USER,
     USER_FETCH,
@@ -9,12 +10,23 @@ import {
     setUser,
 } from '#store/actions';
 
+const errorUser: Middleware =
+    ({ dispatch }) =>
+    (next) =>
+    (action: Store.Action) => {
+        next(action);
+        if (action.type === `${USER} ${API_ERROR}`) {
+            dispatch(setUser({ status: 'ERROR' }));
+        }
+    };
+
 const fetchUser: Middleware =
     ({ dispatch }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
         if (action.type === USER_FETCH) {
+            dispatch(setUser({ status: 'FETCHING' }));
             dispatch(
                 apiRequest({
                     entity: USER,
@@ -25,7 +37,7 @@ const fetchUser: Middleware =
         }
     };
 
-const getUser: Middleware =
+const successUser: Middleware =
     ({ dispatch }) =>
     (next) =>
     (action: Store.Action) => {
@@ -33,10 +45,15 @@ const getUser: Middleware =
         if (action.type === `${USER} ${API_SUCCESS}`) {
             if (action.payload) {
                 if (action.payload.data.action === 'GET') {
-                    dispatch(setUser(action.payload.data.data.user, 'SUCCESS'));
+                    dispatch(
+                        setUser({
+                            data: action.payload.data.data.user,
+                            status: 'SUCCESS',
+                        })
+                    );
                 }
             }
         }
     };
 
-export default [fetchUser, getUser];
+export default [errorUser, fetchUser, successUser];

@@ -11,6 +11,7 @@ export const END_POINT = {
     FORGOT_PASSWORD: '/users/password/',
     GET_ME: '/users/me',
     LOGIN: '/users/login/',
+    LOGOUT: '/users/logout',
     REFRESH_TOKEN: '/users/refreshToken',
     SIGNIN: '/users/signin/beta/',
 };

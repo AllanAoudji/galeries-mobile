@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Typography } from '#components';
 
-export default () => {
-    return <Typography>Hello World!</Typography>;
-};
+import DesktopStack from '#screens/DesktopStack';
+
+const DesktopScreen = () => <DesktopStack />;
+
+export default DesktopScreen;
