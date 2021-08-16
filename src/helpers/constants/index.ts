@@ -9,6 +9,7 @@ export const CLOSE_NOTIFICATION_DELAY = 2000;
 
 export const END_POINT = {
     FORGOT_PASSWORD: '/users/password/',
+    GET_ME: '/users/me',
     LOGIN: '/users/login/',
     REFRESH_TOKEN: '/users/refreshToken',
     SIGNIN: '/users/signin/beta/',

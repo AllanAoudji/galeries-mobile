@@ -1,14 +1,20 @@
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Method } from 'axios';
 
 declare global {
     namespace Screen {
         namespace Home {
             type HomeStackParamList = {
+                Desktop: undefined;
                 ForgotYourPassword: undefined;
                 Landing: undefined;
                 Login: undefined;
                 Signin: undefined;
             };
+            type DesktopNavigationProp = StackNavigationProp<
+                HomeStackParamList,
+                'Desktop'
+            >;
             type ForgotYourPasswordNavigationProp = StackNavigationProp<
                 HomeStackParamList,
                 'ForgotYourPassword'
@@ -31,9 +37,12 @@ declare global {
     namespace Store {
         type Action = {
             payload?: {
-                data: OneOf<Reducer>;
+                data: any;
                 meta?: {
-                    entity: Entity;
+                    entity?: Entity;
+                    method?: Method;
+                    params?: string;
+                    url?: string;
                 };
             };
             type: string;
@@ -41,15 +50,26 @@ declare global {
         type Entity = '[NOTIFICATION]' | '[USER]';
         type Reducer = {
             notification: Store.Models.Notification | null;
-            user: Store.Models.User | null;
+            user: {
+                status: Status;
+                data: Store.Models.User | null;
+            };
         };
+        type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
         namespace Models {
             type Notification = {
                 status: 'error' | 'success';
                 text: string;
             };
             type User = {
+                createdAt: Date;
                 currentProfilePicute?: string | null;
+                defaultProfilePicture: string | null;
+                hasNewNotification: boolean;
+                id: string;
+                pseudonym: string;
+                role: 'admin' | 'moderator' | 'user';
+                socialMediaUserName: string | null;
                 userName: string;
             };
         }
