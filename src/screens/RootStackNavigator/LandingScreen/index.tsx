@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { View } from 'react-native';
 
@@ -6,16 +5,18 @@ import { CustomButton, Logo, Typography } from '#components';
 
 import { CatchPhraseContainer, Container, Header } from './styles';
 
-const LandingScreen = () => {
-    const navigation = useNavigation<Screen.Home.LandingScreenNavigationProp>();
+type Props = {
+    navigation: Screen.RootStack.LandingScreenNavigationProp;
+};
 
+const LandingScreen = ({ navigation }: Props) => {
     const handleOnPressLogin = React.useCallback(
         () => navigation.navigate('Login'),
-        []
+        [navigation]
     );
     const handleOnPressSignin = React.useCallback(
         () => navigation.navigate('Signin'),
-        []
+        [navigation]
     );
 
     return (

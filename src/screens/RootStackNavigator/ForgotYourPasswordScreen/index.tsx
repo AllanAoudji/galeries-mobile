@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -18,11 +17,15 @@ import { setNotification } from '#store/actions';
 
 import { TextContainer, TextInputsContainer } from './styles';
 
+type Props = {
+    navigation: Screen.RootStack.ForgotYourPasswordNavigationProp;
+};
+
 const initialValues = {
     email: '',
 };
 
-const ForgotYourPasswordScreen = () => {
+const ForgotYourPasswordScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
     const formik = useFormik({
         initialValues,
@@ -76,9 +79,6 @@ const ForgotYourPasswordScreen = () => {
         validateOnChange: false,
         validationSchema: forgotPassworSchema,
     });
-
-    const navigation =
-        useNavigation<Screen.Home.ForgotYourPasswordNavigationProp>();
 
     const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<{

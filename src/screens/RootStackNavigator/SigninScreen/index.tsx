@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -26,7 +25,11 @@ const initialValues = {
     userName: '',
 };
 
-const SigninScreen = () => {
+type Props = {
+    navigation: Screen.RootStack.SigninScreenNavigationProp;
+};
+
+const SigninScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
     const formik = useFormik({
         initialValues,
@@ -92,7 +95,6 @@ const SigninScreen = () => {
         validateOnChange: false,
         validationSchema: signinSchema,
     });
-    const navigation = useNavigation<Screen.Home.SigninScreenNavigationProp>();
     const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<{
         betaKey: string;
@@ -127,10 +129,10 @@ const SigninScreen = () => {
 
     const handleOnPressLogin = React.useCallback(() => {
         if (!loading) navigation.navigate('Login');
-    }, [loading]);
+    }, [loading, navigation]);
     const handleOnPressReturn = React.useCallback(() => {
         if (!loading) navigation.navigate('Landing');
-    }, [loading]);
+    }, [loading, navigation]);
 
     return (
         <FormScreen

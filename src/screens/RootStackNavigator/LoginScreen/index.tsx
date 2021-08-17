@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 import { AxiosError } from 'axios';
 import * as React from 'react';
 import { View } from 'react-native';
@@ -31,7 +30,11 @@ const initialValues = {
     userNameOrEmail: '',
 };
 
-const LoginScreen = () => {
+type Props = {
+    navigation: Screen.RootStack.LoginScreenNavigationProp;
+};
+
+const LoginScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
     const formik = useFormik({
         initialValues,
@@ -132,8 +135,6 @@ const LoginScreen = () => {
         validationSchema: loginSchema,
     });
 
-    const navigation = useNavigation<Screen.Home.LoginScreenNavigationProp>();
-
     const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<{
         password: string;
@@ -154,13 +155,13 @@ const LoginScreen = () => {
 
     const handleOnPressForgotYourPassword = React.useCallback(() => {
         if (!loading) navigation.navigate('ForgotYourPassword');
-    }, [loading]);
+    }, [loading, navigation]);
     const handleOnPressReturn = React.useCallback(() => {
         if (!loading) navigation.navigate('Landing');
-    }, [loading]);
+    }, [loading, navigation]);
     const handleOnPressSignin = React.useCallback(() => {
         if (!loading) navigation.navigate('Signin');
-    }, [loading]);
+    }, [loading, navigation]);
 
     return (
         <FormScreen

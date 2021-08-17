@@ -13,9 +13,9 @@ import LangingScreen from './LandingScreen';
 import LoginScreen from './LoginScreen';
 import SigninScreen from './SigninScreen';
 
-const Stack = createStackNavigator<Screen.Home.HomeStackParamList>();
+const Stack = createStackNavigator<Screen.RootStack.ParamList>();
 
-const HomeStack = () => {
+const RootStackNavigator = () => {
     const userData = useSelector(userDataSelector);
 
     return (
@@ -43,4 +43,4 @@ const HomeStack = () => {
     );
 };
 
-export default HomeStack;
+export default RootStackNavigator;

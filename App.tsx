@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { Notification } from '#components';
 import ThemeProvider from '#contexts/ThemeContext';
 import Loader from '#helpers/Loader';
-import RootStack from '#screens/RootStack';
+import RootStackNavigator from '#screens/RootStackNavigator';
 import store from '#store';
 
 export default function App() {
@@ -17,7 +17,7 @@ export default function App() {
             <Provider store={store}>
                 <Loader>
                     <NavigationContainer>
-                        <RootStack />
+                        <RootStackNavigator />
                         <Notification />
                         <StatusBar style="auto" />
                     </NavigationContainer>

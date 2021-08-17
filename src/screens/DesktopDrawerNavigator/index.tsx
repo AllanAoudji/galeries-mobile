@@ -2,7 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import { DrawerContent, HeaderDrawer } from '#components';
+import { DrawerContent } from '#components';
 import { userSelector } from '#store/selectors';
 
 import MainScreen from './MainScreen';
@@ -10,7 +10,7 @@ import ModerationScreen from './ModerationScreen';
 import SendTicketScreen from './SendTicketScreen';
 import SettingsScreen from './SettingsScreen';
 
-const Drawer = createDrawerNavigator<Screen.Desktop.DesktopDrawerParamsList>();
+const Drawer = createDrawerNavigator<Screen.DesktopDrawer.ParamList>();
 
 const DesktopStack = () => {
     const user = useSelector(userSelector);
@@ -32,7 +32,7 @@ const DesktopStack = () => {
             )}
             initialRouteName="Main"
             screenOptions={{
-                header: (props) => <HeaderDrawer {...props} />,
+                headerShown: false,
             }}
         >
             <Drawer.Screen name="Main" component={MainScreen} />

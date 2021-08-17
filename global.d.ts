@@ -5,32 +5,76 @@ import { Method } from 'axios';
 
 declare global {
     namespace Screen {
-        namespace Desktop {
-            type DesktopDrawerParamsList = {
+        namespace DesktopBottomTab {
+            type ParamList = {
+                Comments: undefined;
+                CreateGalerie: undefined;
+                Galerie: undefined;
+                Galeries: undefined;
+                Home: undefined;
+                Likes: undefined;
+                Notifications: undefined;
+                Profile: undefined;
+            };
+            type CommentsNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Comments'
+            >;
+            type CreateGalerieNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'CreateGalerie'
+            >;
+            type GaleriesNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Galerie'
+            >;
+            type GaleriesNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Galeries'
+            >;
+            type HomeNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Home'
+            >;
+            type LikesNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Likes'
+            >;
+            type NotificationNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Notifications'
+            >;
+            type ProfileNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Profile'
+            >;
+        }
+        namespace DesktopDrawer {
+            type ParamList = {
                 Main: undefined;
                 Moderation: undefined;
                 SendTicket: undefined;
                 Settings: undefined;
             };
             type MainScreenNavigationProp = DrawerNavigationProp<
-                DesktopDrawerParamsList,
+                ParamList,
                 'Main'
             >;
             type ModerationScreenNavigationProp = DrawerNavigationProp<
-                DesktopDrawerParamsList,
+                ParamList,
                 'Moderation'
             >;
             type SendTicketScreenNavigationProp = DrawerNavigationProp<
-                DesktopDrawerParamsList,
+                ParamList,
                 'SendTicket'
             >;
             type SettingsScreenNavigationProp = DrawerNavigationProp<
-                DesktopDrawerParamsList,
+                ParamList,
                 'Settings'
             >;
         }
-        namespace Home {
-            type HomeStackParamList = {
+        namespace RootStack {
+            type ParamList = {
                 Desktop: undefined;
                 ForgotYourPassword: undefined;
                 Landing: undefined;
@@ -38,15 +82,15 @@ declare global {
                 Signin: undefined;
             };
             type DesktopNavigationProp = StackNavigationProp<
-                HomeStackParamList,
+                ParamList,
                 'Desktop'
             >;
             type ForgotYourPasswordNavigationProp = StackNavigationProp<
-                HomeStackParamList,
+                ParamList,
                 'ForgotYourPassword'
             >;
             type LandingScreenNavigationProp = StackNavigationProp<
-                HomeStackParamList,
+                ParamList,
                 'Landing'
             >;
             type LoginScreenNavigationProp = StackNavigationProp<
@@ -54,37 +98,8 @@ declare global {
                 'Login'
             >;
             type SigninScreenNavigationProp = StackNavigationProp<
-                HomeStackParamList,
+                ParamList,
                 'Signin'
-            >;
-        }
-        namespace Main {
-            type MainStackParamList = {
-                Galeries: undefined;
-                Home: undefined;
-                'New Galerie': undefined;
-                Notifications: undefined;
-                Profile: undefined;
-            };
-            type GaleriesNavigationProp = BottomTabNavigationProp<
-                MainStackParamList,
-                'Galeries'
-            >;
-            type HomeNavigationProp = BottomTabNavigationProp<
-                MainStackParamList,
-                'Home'
-            >;
-            type NewGalerieNavigationProp = BottomTabNavigationProp<
-                MainStackParamList,
-                'New Galerie'
-            >;
-            type NotificationNavigationProp = BottomTabNavigationProp<
-                MainStackParamList,
-                'Notifications'
-            >;
-            type ProfileNavigationProp = BottomTabNavigationProp<
-                MainStackParamList,
-                'Profile'
             >;
         }
     }

@@ -1,5 +1,5 @@
-import { useRoute } from '@react-navigation/native';
-import { DrawerHeaderProps } from '@react-navigation/drawer/lib/typescript/src/types';
+import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
+import { DrawerActions } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar } from 'react-native';
 
@@ -8,20 +8,27 @@ import Logo from '#components/Logo';
 
 import { Container, LogoContainer, PictogramContainer } from './styles';
 
-const Header = ({ navigation }: DrawerHeaderProps) => {
-    const route = useRoute();
+interface Props {
+    variant?: 'primary' | 'secondary';
+}
 
-    const hamburgerMenu = React.useMemo(
-        () => route.name === 'Main' || !navigation.canGoBack(),
-        [route, navigation]
-    );
+const HeaderDesktopBottomTab = ({
+    navigation,
+    variant = 'primary',
+}: BottomTabHeaderProps & Props) => {
     const handlePressLogo = React.useCallback(() => {
-        navigation.navigate('Main');
+        navigation.navigate('Home');
     }, [navigation]);
+
     const handlePressPictogram = React.useCallback(() => {
-        if (hamburgerMenu) navigation.openDrawer();
-        else navigation.goBack();
-    }, [hamburgerMenu]);
+        if (variant === 'primary')
+            navigation.dispatch(DrawerActions.openDrawer());
+        else if (navigation.canGoBack()) {
+            navigation.goBack();
+        } else {
+            navigation.navigate('Home');
+        }
+    }, [variant, navigation]);
 
     return (
         <Container>
@@ -31,7 +38,9 @@ const Header = ({ navigation }: DrawerHeaderProps) => {
             >
                 <Pictogram
                     color="primary"
-                    variant={hamburgerMenu ? 'hamburger-menu' : 'arrow-left'}
+                    variant={
+                        variant === 'primary' ? 'hamburger-menu' : 'arrow-left'
+                    }
                 />
             </PictogramContainer>
             <LogoContainer onPress={handlePressLogo}>
@@ -41,4 +50,4 @@ const Header = ({ navigation }: DrawerHeaderProps) => {
     );
 };
 
-export default Header;
+export default HeaderDesktopBottomTab;

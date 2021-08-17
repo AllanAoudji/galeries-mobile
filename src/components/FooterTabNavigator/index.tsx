@@ -52,6 +52,13 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
             currentRouteName === 'Profile' ? 'profile-fill' : 'profile-stroke',
         [currentRouteName]
     );
+    if (
+        currentRouteName === 'Comments' ||
+        currentRouteName === 'CreateGalerie' ||
+        currentRouteName === 'Likes'
+    ) {
+        return null;
+    }
 
     return (
         <Container>

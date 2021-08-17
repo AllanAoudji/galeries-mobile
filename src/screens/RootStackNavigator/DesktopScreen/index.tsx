@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import DesktopStack from '#screens/DesktopStack';
+import DesktopDrawerNavigator from '#screens/DesktopDrawerNavigator';
 
 // TODO:
 // Add stack
 // UpdateGalerie/FullPageFrame/FullPageProfilePicture/Drawer
 // Rename stack
 
-const DesktopScreen = () => <DesktopStack />;
+const DesktopScreen = () => <DesktopDrawerNavigator />;
 
 export default DesktopScreen;
 
