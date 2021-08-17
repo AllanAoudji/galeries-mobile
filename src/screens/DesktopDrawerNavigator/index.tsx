@@ -32,6 +32,7 @@ const DesktopStack = () => {
             )}
             initialRouteName="Main"
             screenOptions={{
+                swipeEnabled: false,
                 headerShown: false,
             }}
         >

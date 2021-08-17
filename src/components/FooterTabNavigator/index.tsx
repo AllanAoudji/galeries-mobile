@@ -1,12 +1,20 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
+import styled from 'styled-components/native';
 
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
+import { FooterModalsContext } from '#contexts/FooterModalsContext';
 
 import { Container, IconContainer, PictogramContainer } from './styles';
 
+const TransparantButton = styled.Pressable`
+    padding: 10px 0;
+`;
+
 const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
+    const { closeOverlay, openModal } = React.useContext(FooterModalsContext);
+
     const handleHomePress = React.useCallback(
         () => navigation.navigate('Home'),
         [navigation]
@@ -60,51 +68,88 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
         return null;
     }
 
+    const modalContent = React.useMemo(
+        () => (
+            <>
+                <TransparantButton>
+                    <Typography fontSize={18}>Create a new galerie</Typography>
+                </TransparantButton>
+                <TransparantButton onPress={closeOverlay}>
+                    <Typography fontSize={18}>
+                        Subscribe to a galerie
+                    </Typography>
+                </TransparantButton>
+            </>
+        ),
+        []
+    );
+
     return (
-        <Container>
-            <IconContainer onPress={handleHomePress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={homeVariant} />
-                </PictogramContainer>
-                <Typography color="primary" fontFamily="light" fontSize={12}>
-                    home
-                </Typography>
-            </IconContainer>
-            <IconContainer onPress={handleGaleriesPress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={galeriesVariant} />
-                </PictogramContainer>
-                <Typography color="primary" fontFamily="light" fontSize={12}>
-                    galeries
-                </Typography>
-            </IconContainer>
-            <IconContainer>
-                <Pictogram
-                    color="primary"
-                    customSize={{
-                        height: 28,
-                        width: 28,
-                    }}
-                    variant="add/subscribe-stroke"
-                />
-            </IconContainer>
-            <IconContainer onPress={handleNotificationsPress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={notificationsvariant} />
-                </PictogramContainer>
-                <Typography color="primary" fontFamily="light" fontSize={12}>
-                    notifications
-                </Typography>
-            </IconContainer>
-            <IconContainer onPress={handleProfilePress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={profileVariant} />
-                </PictogramContainer>
-                <Typography color="primary" fontFamily="light" fontSize={12}>
-                    profile
-                </Typography>
-            </IconContainer>
-        </Container>
+        <>
+            <Container>
+                <IconContainer onPress={handleHomePress}>
+                    <PictogramContainer>
+                        <Pictogram color="primary" variant={homeVariant} />
+                    </PictogramContainer>
+                    <Typography
+                        color="primary"
+                        fontFamily="light"
+                        fontSize={12}
+                    >
+                        home
+                    </Typography>
+                </IconContainer>
+                <IconContainer onPress={handleGaleriesPress}>
+                    <PictogramContainer>
+                        <Pictogram color="primary" variant={galeriesVariant} />
+                    </PictogramContainer>
+                    <Typography
+                        color="primary"
+                        fontFamily="light"
+                        fontSize={12}
+                    >
+                        galeries
+                    </Typography>
+                </IconContainer>
+                <IconContainer onPress={() => openModal(modalContent)()}>
+                    <Pictogram
+                        color="primary"
+                        customSize={{
+                            height: 28,
+                            width: 28,
+                        }}
+                        variant="add/subscribe-stroke"
+                    />
+                </IconContainer>
+                <IconContainer onPress={handleNotificationsPress}>
+                    <PictogramContainer>
+                        <Pictogram
+                            color="primary"
+                            variant={notificationsvariant}
+                        />
+                    </PictogramContainer>
+                    <Typography
+                        color="primary"
+                        fontFamily="light"
+                        fontSize={12}
+                    >
+                        notifications
+                    </Typography>
+                </IconContainer>
+                <IconContainer onPress={handleProfilePress}>
+                    <PictogramContainer>
+                        <Pictogram color="primary" variant={profileVariant} />
+                    </PictogramContainer>
+                    <Typography
+                        color="primary"
+                        fontFamily="light"
+                        fontSize={12}
+                    >
+                        profile
+                    </Typography>
+                </IconContainer>
+            </Container>
+        </>
     );
 };
 
