@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import Animated, {
+import {
     interpolateColor,
     runOnJS,
     useAnimatedGestureHandler,
@@ -9,74 +9,40 @@ import Animated, {
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
-import styled from 'styled-components/native';
 
 import { ANIMATIONS } from '#helpers/constants';
 
-type PropsOverLay = {
-    height: number;
-};
-type PropsContainer = {
-    height: number;
-};
+import {
+    Container,
+    Handle,
+    HandleContainer,
+    InnerContainer,
+    Overlay,
+    PressableOutside,
+} from './styles';
 
-const Bar = styled.View`
-    background-color: ${({ theme }) => theme.colors['secondary-dark']};
-    border-radius: 100px;
-    height: 4px;
-    width: 30px;
-`;
-const BarContainer = styled.View`
-    align-items: center;
-    margin-bottom: ${({ theme }) => theme.spacings.small};
-`;
-const Container = styled(Animated.View)<PropsContainer>`
-    bottom: 0;
-    height: ${({ height }) => `${height}px`};
-    justify-content: flex-end;
-    left: 0;
-    position: absolute;
-    right: 0;
-`;
-const InnerContainer = styled.View`
-    background-color: ${({ theme }) => theme.colors['secondary-light']};
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    padding: ${({ theme }) =>
-        `${theme.spacings.smallest} ${theme.spacings.small} ${theme.spacings.small}`};
-`;
-const Overlay = styled(Animated.View)<PropsOverLay>`
-    background-color: rgba(0, 0, 0, 0.4);
-    bottom: 0;
-    height: ${({ height }) => `${height}px`};
-    position: absolute;
-    left: 0;
-    right: 0;
-    display: none;
-    top: 0;
-`;
-const Outside = styled.Pressable`
-    flex: 1;
-`;
-export const FooterModalsContext = React.createContext<{
-    closeOverlay: (callback?: () => void) => void;
-    openModal: (component: React.ReactNode) => () => void;
-    resetModal: (callback?: () => void) => void;
+export const BottomSheetContext = React.createContext<{
+    closeBottomSheet: (callback?: () => void) => void;
+    fadeOutBottomSheet: (callback?: () => void) => void;
+    openBottomSheet: (component: React.ReactNode) => () => void;
+    resetBottomSheet: () => void;
 }>({
-    closeOverlay: () => {},
-    openModal: () => () => {},
-    resetModal: () => {},
+    closeBottomSheet: () => {},
+    fadeOutBottomSheet: () => {},
+    openBottomSheet: () => () => {},
+    resetBottomSheet: () => {},
 });
 
-export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
+export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     const dimension = useWindowDimensions();
 
+    const containerTop = useSharedValue(dimension.height);
     const opacity = useSharedValue(1);
-    const visibility = useSharedValue(0);
-    const contentVisibility = useSharedValue(dimension.height);
+    const overLayBackgroundColor = useSharedValue(0);
+
     const overLayStyle = useAnimatedStyle(() => {
         const backgroundColor = interpolateColor(
-            visibility.value,
+            overLayBackgroundColor.value,
             [0, 1],
             ['rgba(0,0,0,0)', 'rgba(0,0,0,0.4)']
         );
@@ -87,7 +53,7 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
     });
     const containerStyle = useAnimatedStyle(() => {
         return {
-            top: contentVisibility.value,
+            top: containerTop.value,
         };
     });
 
@@ -101,29 +67,34 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
     const [show, setShow] = React.useState<boolean>(false);
     const [switchContent, setSwitchContent] = React.useState<boolean>(false);
 
+    // Reset show value on mount/unmount
     React.useEffect(() => {
         setShow(false);
         return () => {
             setShow(false);
         };
     }, []);
+
+    // Show overlay when 'show' state is true.
+    // Reset all sharedValue/value when show === false.
     React.useEffect(() => {
-        if (show) visibility.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
-        else {
-            setContent(null);
-            setNewContent(null);
-            visibility.value = 0;
-            contentVisibility.value = dimension.height;
-            opacity.value = 1;
-        }
+        if (show)
+            overLayBackgroundColor.value = withTiming(
+                1,
+                ANIMATIONS.TIMING_CONFIG()
+            );
+        else resetBottomSheet();
     }, [show]);
+
+    // Display sheet content
+    // or start the switch animation between 2 content.
     React.useEffect(() => {
         if (!!newContent && content !== newContent) {
             if (!content) {
                 setContent(newContent);
                 setNewContent(null);
             } else {
-                contentVisibility.value = withTiming(
+                containerTop.value = withTiming(
                     containerHeight || dimension.height,
                     ANIMATIONS.TIMING_CONFIG(),
                     (isFinished) => {
@@ -135,10 +106,11 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
             }
         }
         if (content && !newContent) {
-            contentVisibility.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
+            containerTop.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
         }
     }, [newContent, content]);
 
+    // Display new content after Switch animation.
     React.useEffect(() => {
         if (switchContent) {
             setContent(newContent);
@@ -147,26 +119,15 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
         }
     }, [switchContent]);
 
-    const openModal = React.useCallback(
-        (c) => {
-            setNewContent(c);
-            return () => {
-                if (!show) {
-                    setShow(true);
-                }
-            };
-        },
-        [show]
-    );
-    const closeOverlay = React.useCallback((callback?: () => void) => {
-        visibility.value = withTiming(
+    const closeBottomSheet = React.useCallback((callback?: () => void) => {
+        overLayBackgroundColor.value = withTiming(
             0,
             ANIMATIONS.TIMING_CONFIG(200),
             (isFinished) => {
                 if (isFinished) runOnJS(setShow)(false);
             }
         );
-        contentVisibility.value = withTiming(
+        containerTop.value = withTiming(
             dimension.height,
             ANIMATIONS.TIMING_CONFIG(200),
             (isFinished) => {
@@ -178,8 +139,7 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
             }
         );
     }, []);
-
-    const resetModal = React.useCallback((callback?: () => void) => {
+    const fadeOutBottomSheet = React.useCallback((callback?: () => void) => {
         opacity.value = withTiming(
             0,
             ANIMATIONS.TIMING_CONFIG(200),
@@ -191,10 +151,26 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
             }
         );
     }, []);
+    const openBottomSheet = React.useCallback(
+        (displayContent) => {
+            setNewContent(displayContent);
+            return () => {
+                if (!show) setShow(true);
+            };
+        },
+        [show]
+    );
+    const resetBottomSheet = React.useCallback(() => {
+        setContent(null);
+        setNewContent(null);
+        overLayBackgroundColor.value = 0;
+        containerTop.value = dimension.height;
+        opacity.value = 1;
+    }, []);
 
     const gestureHandler = useAnimatedGestureHandler({
         onStart(_, ctx: { startTop: number }) {
-            ctx.startTop = contentVisibility.value;
+            ctx.startTop = containerTop.value;
         },
         onActive(e, ctx) {
             if (
@@ -202,30 +178,28 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
                 e.translationY + ctx.startTop <=
                     (containerHeight || dimension.height)
             ) {
-                contentVisibility.value = e.translationY + ctx.startTop;
+                containerTop.value = e.translationY + ctx.startTop;
             }
         },
         onEnd() {
             if (
                 !containerHeight ||
-                contentVisibility.value < (containerHeight * 2) / 5
+                containerTop.value < (containerHeight * 2) / 5
             ) {
-                contentVisibility.value = withTiming(
-                    0,
-                    ANIMATIONS.TIMING_CONFIG()
-                );
+                containerTop.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
             } else {
-                runOnJS(closeOverlay)();
+                runOnJS(closeBottomSheet)();
             }
         },
     });
 
     return (
-        <FooterModalsContext.Provider
+        <BottomSheetContext.Provider
             value={{
-                closeOverlay,
-                openModal,
-                resetModal,
+                closeBottomSheet,
+                fadeOutBottomSheet,
+                openBottomSheet,
+                resetBottomSheet,
             }}
         >
             {children}
@@ -236,7 +210,9 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
                             height={dimension.height}
                             style={containerStyle}
                         >
-                            <Outside onPress={() => closeOverlay()} />
+                            <PressableOutside
+                                onPress={() => closeBottomSheet()}
+                            />
                             <InnerContainer
                                 onLayout={(e) => {
                                     setContainerHeight(
@@ -244,15 +220,15 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
                                     );
                                 }}
                             >
-                                <BarContainer>
-                                    <Bar />
-                                </BarContainer>
+                                <HandleContainer>
+                                    <Handle />
+                                </HandleContainer>
                                 {content}
                             </InnerContainer>
                         </Container>
                     </PanGestureHandler>
                 </Overlay>
             )}
-        </FooterModalsContext.Provider>
+        </BottomSheetContext.Provider>
     );
 };

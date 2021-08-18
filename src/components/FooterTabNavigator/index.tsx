@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
-import { FooterModalsContext } from '#contexts/FooterModalsContext';
+import { BottomSheetContext } from '#contexts/BottomSheetContext';
 
 import { Container, IconContainer, PictogramContainer } from './styles';
 
@@ -17,10 +17,11 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
         () => state.routes[state.index].name,
         [state.index]
     );
-    const { resetModal, openModal } = React.useContext(FooterModalsContext);
+    const { fadeOutBottomSheet, openBottomSheet } =
+        React.useContext(BottomSheetContext);
 
     const handleCreateGaleriePress = React.useCallback(() => {
-        resetModal(() => navigation.navigate('CreateGalerie'));
+        fadeOutBottomSheet(() => navigation.navigate('CreateGalerie'));
     }, [navigation]);
     const handleHomePress = React.useCallback(
         () => navigation.navigate('Home'),
@@ -114,7 +115,7 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
                         galeries
                     </Typography>
                 </IconContainer>
-                <IconContainer onPress={() => openModal(modalContent)()}>
+                <IconContainer onPress={() => openBottomSheet(modalContent)()}>
                     <Pictogram
                         color="primary"
                         customSize={{
