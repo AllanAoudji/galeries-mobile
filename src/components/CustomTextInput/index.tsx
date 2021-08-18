@@ -96,7 +96,7 @@ const CustomTextInput = ({
                 onFocus={handleOnFocus}
                 ref={textInputRef}
                 secureTextEntry={secureTextEntry}
-                selectionColor={error ? '#fb6d51' : '#414cb4'}
+                selectionColor={!!error && touched ? '#fb6d51' : '#414cb4'}
                 value={value}
             />
             <ErrorContainer>
