@@ -1,3 +1,16 @@
+import { Easing } from 'react-native-reanimated';
+
+export const ANIMATIONS = {
+    TIMING_CONFIG: (duration = 400) => {
+        'worklet';
+
+        return {
+            duration,
+            easing: Easing.inOut(Easing.ease),
+        };
+    },
+};
+
 export const API = 'https://galeries-server.herokuapp.com/';
 
 export const ASYNC_STORAGE = {
@@ -9,6 +22,7 @@ export const CLOSE_NOTIFICATION_DELAY = 2000;
 
 export const END_POINT = {
     FORGOT_PASSWORD: '/users/password/',
+    GALERIES: '/galeries/',
     GET_ME: '/users/me',
     LOGIN: '/users/login/',
     LOGOUT: '/users/logout',

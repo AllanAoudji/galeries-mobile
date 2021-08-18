@@ -1,35 +1,80 @@
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Method } from 'axios';
 
 declare global {
     namespace Screen {
-        namespace Desktop {
-            type DesktopDrawerParamsList = {
+        namespace DesktopBottomTab {
+            type ParamList = {
+                Comments: undefined;
+                CreateGalerie: undefined;
+                Galerie: undefined;
+                Galeries: undefined;
+                Home: undefined;
+                Likes: undefined;
+                Notifications: undefined;
+                Profile: undefined;
+            };
+            type CommentsNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Comments'
+            >;
+            type CreateGalerieNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'CreateGalerie'
+            >;
+            type GaleriesNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Galerie'
+            >;
+            type GaleriesNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Galeries'
+            >;
+            type HomeNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Home'
+            >;
+            type LikesNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Likes'
+            >;
+            type NotificationNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Notifications'
+            >;
+            type ProfileNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Profile'
+            >;
+        }
+        namespace DesktopDrawer {
+            type ParamList = {
                 Main: undefined;
                 Moderation: undefined;
                 SendTicket: undefined;
                 Settings: undefined;
             };
             type MainScreenNavigationProp = DrawerNavigationProp<
-                DesktopDrawerParamsList,
+                ParamList,
                 'Main'
             >;
             type ModerationScreenNavigationProp = DrawerNavigationProp<
-                DesktopDrawerParamsList,
+                ParamList,
                 'Moderation'
             >;
             type SendTicketScreenNavigationProp = DrawerNavigationProp<
-                DesktopDrawerParamsList,
+                ParamList,
                 'SendTicket'
             >;
             type SettingsScreenNavigationProp = DrawerNavigationProp<
-                DesktopDrawerParamsList,
+                ParamList,
                 'Settings'
             >;
         }
-        namespace Home {
-            type HomeStackParamList = {
+        namespace RootStack {
+            type ParamList = {
                 Desktop: undefined;
                 ForgotYourPassword: undefined;
                 Landing: undefined;
@@ -37,15 +82,15 @@ declare global {
                 Signin: undefined;
             };
             type DesktopNavigationProp = StackNavigationProp<
-                HomeStackParamList,
+                ParamList,
                 'Desktop'
             >;
             type ForgotYourPasswordNavigationProp = StackNavigationProp<
-                HomeStackParamList,
+                ParamList,
                 'ForgotYourPassword'
             >;
             type LandingScreenNavigationProp = StackNavigationProp<
-                HomeStackParamList,
+                ParamList,
                 'Landing'
             >;
             type LoginScreenNavigationProp = StackNavigationProp<
@@ -53,7 +98,7 @@ declare global {
                 'Login'
             >;
             type SigninScreenNavigationProp = StackNavigationProp<
-                HomeStackParamList,
+                ParamList,
                 'Signin'
             >;
         }
@@ -132,12 +177,23 @@ declare global {
             64: string;
         };
         type Pictograms =
+            | 'add/subscribe-fill'
+            | 'add/subscribe-stroke'
             | 'arrow-left'
             | 'arrow-right'
+            | 'galeries-fill'
+            | 'galeries-stroke'
+            | 'hamburger-menu'
+            | 'heart-fill'
+            | 'heart-stroke'
+            | 'home-fill'
+            | 'home-stroke'
             | 'logout-left'
             | 'logout-right'
             | 'moderation-fill'
             | 'moderation-stroke'
+            | 'profile-fill'
+            | 'profile-stroke'
             | 'settings-fill'
             | 'settings-stroke'
             | 'ticket-fill'

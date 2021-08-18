@@ -32,11 +32,7 @@ const successLogout: Middleware =
     (action: Store.Action) => {
         next(action);
         if (action.type === `${LOGOUT} ${API_SUCCESS}`) {
-            AsyncStorage.clear()
-                .then(() => {
-                    dispatch(resetUser());
-                })
-                .catch((err) => console.log(err));
+            AsyncStorage.clear().finally(() => dispatch(resetUser()));
         }
     };
 
