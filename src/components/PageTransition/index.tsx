@@ -1,27 +1,19 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
-import Animated, {
+import {
     useAnimatedStyle,
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
-import styled from 'styled-components/native';
 
 import { ANIMATIONS } from '#helpers/constants';
 
-const Container = styled.View`
-    flex: 1;
-    background-color: ${({ theme }) => theme.colors['secondary-light']};
-`;
-const AnimatedContainer = styled(Animated.View)`
-    flex: 1;
-`;
+import { AnimatedContainer, Container } from './styles';
 
 type RenderProps = {
     handleClose: () => void;
 };
-
 type Props = {
     render: (props: RenderProps) => JSX.Element;
 };
@@ -59,6 +51,7 @@ const PageTransition = ({ render }: Props) => {
             transform: [{ translateY: transform.value }],
         };
     }, []);
+
     return (
         <Container>
             <AnimatedContainer style={style}>
