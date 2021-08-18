@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
-    Easing,
     interpolateColor,
     runOnJS,
     useAnimatedGestureHandler,
@@ -12,16 +11,13 @@ import Animated, {
 } from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
+import { ANIMATIONS } from '#helpers/constants';
+
 type PropsOverLay = {
     height: number;
 };
 type PropsContainer = {
     height: number;
-};
-
-const TIMING_CONFIG: Animated.WithTimingConfig = {
-    duration: 400,
-    easing: Easing.inOut(Easing.ease),
 };
 
 const Bar = styled.View`
@@ -63,16 +59,19 @@ const Outside = styled.Pressable`
     flex: 1;
 `;
 export const FooterModalsContext = React.createContext<{
-    closeOverlay: () => void;
+    closeOverlay: (callback?: () => void) => void;
     openModal: (component: React.ReactNode) => () => void;
+    resetModal: (callback?: () => void) => void;
 }>({
     closeOverlay: () => {},
     openModal: () => () => {},
+    resetModal: () => {},
 });
 
 export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
     const dimension = useWindowDimensions();
 
+    const opacity = useSharedValue(1);
     const visibility = useSharedValue(0);
     const contentVisibility = useSharedValue(dimension.height);
     const overLayStyle = useAnimatedStyle(() => {
@@ -83,6 +82,7 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
         );
         return {
             backgroundColor,
+            opacity: opacity.value,
         };
     });
     const containerStyle = useAnimatedStyle(() => {
@@ -108,12 +108,13 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
         };
     }, []);
     React.useEffect(() => {
-        if (show) visibility.value = withTiming(1, TIMING_CONFIG);
+        if (show) visibility.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
         else {
             setContent(null);
             setNewContent(null);
             visibility.value = 0;
             contentVisibility.value = dimension.height;
+            opacity.value = 1;
         }
     }, [show]);
     React.useEffect(() => {
@@ -124,7 +125,7 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
             } else {
                 contentVisibility.value = withTiming(
                     containerHeight || dimension.height,
-                    TIMING_CONFIG,
+                    ANIMATIONS.TIMING_CONFIG(),
                     (isFinished) => {
                         if (isFinished) {
                             runOnJS(setSwitchContent)(true);
@@ -134,7 +135,7 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
             }
         }
         if (content && !newContent) {
-            contentVisibility.value = withTiming(0, TIMING_CONFIG);
+            contentVisibility.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
         }
     }, [newContent, content]);
 
@@ -157,17 +158,35 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
         },
         [show]
     );
-    const closeOverlay = React.useCallback(() => {
-        visibility.value = withTiming(0, TIMING_CONFIG, (isFinished) => {
-            if (isFinished) runOnJS(setShow)(false);
-        });
+    const closeOverlay = React.useCallback((callback?: () => void) => {
+        visibility.value = withTiming(
+            0,
+            ANIMATIONS.TIMING_CONFIG(200),
+            (isFinished) => {
+                if (isFinished) runOnJS(setShow)(false);
+            }
+        );
         contentVisibility.value = withTiming(
             dimension.height,
-            TIMING_CONFIG,
+            ANIMATIONS.TIMING_CONFIG(200),
             (isFinished) => {
                 if (isFinished) {
                     runOnJS(setContent)(null);
                     runOnJS(setNewContent)(null);
+                    if (callback) runOnJS(callback)();
+                }
+            }
+        );
+    }, []);
+
+    const resetModal = React.useCallback((callback?: () => void) => {
+        opacity.value = withTiming(
+            0,
+            ANIMATIONS.TIMING_CONFIG(200),
+            (isFinish) => {
+                if (isFinish) {
+                    runOnJS(setShow)(false);
+                    if (callback) runOnJS(callback)();
                 }
             }
         );
@@ -191,7 +210,10 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
                 !containerHeight ||
                 contentVisibility.value < (containerHeight * 2) / 5
             ) {
-                contentVisibility.value = withTiming(0, TIMING_CONFIG);
+                contentVisibility.value = withTiming(
+                    0,
+                    ANIMATIONS.TIMING_CONFIG()
+                );
             } else {
                 runOnJS(closeOverlay)();
             }
@@ -203,6 +225,7 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
             value={{
                 closeOverlay,
                 openModal,
+                resetModal,
             }}
         >
             {children}
@@ -213,7 +236,7 @@ export const FooterModalsProvider: React.FC<{}> = ({ children }) => {
                             height={dimension.height}
                             style={containerStyle}
                         >
-                            <Outside onPress={closeOverlay} />
+                            <Outside onPress={() => closeOverlay()} />
                             <InnerContainer
                                 onLayout={(e) => {
                                     setContainerHeight(

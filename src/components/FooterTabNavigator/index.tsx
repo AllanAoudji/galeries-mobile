@@ -13,8 +13,15 @@ const TransparantButton = styled.Pressable`
 `;
 
 const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
-    const { closeOverlay, openModal } = React.useContext(FooterModalsContext);
+    const currentRouteName = React.useMemo(
+        () => state.routes[state.index].name,
+        [state.index]
+    );
+    const { resetModal, openModal } = React.useContext(FooterModalsContext);
 
+    const handleCreateGaleriePress = React.useCallback(() => {
+        resetModal(() => navigation.navigate('CreateGalerie'));
+    }, [navigation]);
     const handleHomePress = React.useCallback(
         () => navigation.navigate('Home'),
         [navigation]
@@ -30,11 +37,6 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
     const handleProfilePress = React.useCallback(
         () => navigation.navigate('Profile'),
         [navigation]
-    );
-
-    const currentRouteName = React.useMemo(
-        () => state.routes[state.index].name,
-        [state.index]
     );
 
     const homeVariant = React.useMemo(
@@ -60,6 +62,23 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
             currentRouteName === 'Profile' ? 'profile-fill' : 'profile-stroke',
         [currentRouteName]
     );
+
+    const modalContent = React.useMemo(
+        () => (
+            <>
+                <TransparantButton onPress={handleCreateGaleriePress}>
+                    <Typography fontSize={18}>Create a new galerie</Typography>
+                </TransparantButton>
+                <TransparantButton>
+                    <Typography fontSize={18}>
+                        Subscribe to a galerie
+                    </Typography>
+                </TransparantButton>
+            </>
+        ),
+        [handleCreateGaleriePress]
+    );
+
     if (
         currentRouteName === 'Comments' ||
         currentRouteName === 'CreateGalerie' ||
@@ -67,22 +86,6 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
     ) {
         return null;
     }
-
-    const modalContent = React.useMemo(
-        () => (
-            <>
-                <TransparantButton>
-                    <Typography fontSize={18}>Create a new galerie</Typography>
-                </TransparantButton>
-                <TransparantButton onPress={closeOverlay}>
-                    <Typography fontSize={18}>
-                        Subscribe to a galerie
-                    </Typography>
-                </TransparantButton>
-            </>
-        ),
-        []
-    );
 
     return (
         <>

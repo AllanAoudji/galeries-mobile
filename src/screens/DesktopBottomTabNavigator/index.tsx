@@ -18,6 +18,7 @@ const DesktopBottomTabNavigator = () => {
         <Tab.Navigator
             tabBar={(props) => <FooterTabNavigator {...props} />}
             initialRouteName="Home"
+            backBehavior="history"
             screenOptions={{
                 header: (props) => <HeaderDesktopBottomTab {...props} />,
             }}
@@ -42,12 +43,7 @@ const DesktopBottomTabNavigator = () => {
                 name="CreateGalerie"
                 component={CreateGalerie}
                 options={{
-                    header: (props) => (
-                        <HeaderDesktopBottomTab
-                            variant="secondary"
-                            {...props}
-                        />
-                    ),
+                    headerShown: false,
                 }}
             />
             <Tab.Screen
