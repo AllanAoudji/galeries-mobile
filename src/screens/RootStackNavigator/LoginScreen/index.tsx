@@ -36,6 +36,7 @@ type Props = {
 
 const LoginScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
+
     const formik = useFormik({
         initialValues,
         onSubmit: async (values) => {

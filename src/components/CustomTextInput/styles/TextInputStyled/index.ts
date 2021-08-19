@@ -20,7 +20,6 @@ const TextInputStyled = styled.TextInput<Props>`
     color: ${({ theme }) => theme.colors.black};
     font-family: 'HelveticaLtStRoman';
     font-size: 14px;
-    height: 30px;
 `;
 
 TextInputStyled.defaultProps = {

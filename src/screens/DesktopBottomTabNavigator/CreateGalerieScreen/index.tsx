@@ -27,6 +27,7 @@ const initialValues = {
 
 const CreateGalerieScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
+
     const formik = useFormik({
         onSubmit: async (values) => {
             setLoading(true);
@@ -149,6 +150,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                                 }
                                 label="description"
                                 loading={loading}
+                                multiline
                                 onBlur={formik.handleBlur('description')}
                                 onChangeText={(e: string) => {
                                     setServerErrors((prevState) => ({
@@ -158,6 +160,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                                     formik.setFieldError('description', '');
                                     formik.setFieldValue('description', e);
                                 }}
+                                optional
                                 touched={formik.touched.description || false}
                                 value={formik.values.description}
                             />
@@ -169,7 +172,10 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                             />
                             <CustomButton
                                 loading={loading}
-                                onPress={handlePressReturn}
+                                onPress={() => {
+                                    handleClose();
+                                    handlePressReturn();
+                                }}
                                 title="cancel"
                                 variant="stroke"
                             />
