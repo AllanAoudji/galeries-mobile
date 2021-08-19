@@ -136,10 +136,9 @@ const LoginScreen = ({ navigation }: Props) => {
     });
 
     const [loading, setLoading] = React.useState<boolean>(false);
-    const [serverErrors, setServerErrors] = React.useState<{
-        password: string;
-        userNameOrEmail: string;
-    }>({
+    const [serverErrors, setServerErrors] = React.useState<
+        typeof initialValues
+    >({
         password: '',
         userNameOrEmail: '',
     });
