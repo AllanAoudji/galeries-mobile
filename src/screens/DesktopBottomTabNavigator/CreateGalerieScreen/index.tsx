@@ -13,8 +13,9 @@ import {
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
 import { createGaleriesSchema } from '#helpers/schemas';
-
 import { GALERIES, normalizeData, setNotification } from '#store/actions';
+
+import { TextInputsContainer } from './styled';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CreateGalerieNavigationProp;
@@ -127,46 +128,53 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                 <FormScreen
                     body={
                         <View>
-                            <CustomTextInput
-                                error={formik.errors.name || serverErrors.name}
-                                label="name"
-                                loading={loading}
-                                onBlur={formik.handleBlur('name')}
-                                onChangeText={(e: string) => {
-                                    setServerErrors((prevState) => ({
-                                        ...prevState,
-                                        name: '',
-                                    }));
-                                    formik.setFieldError('name', '');
-                                    formik.setFieldValue('name', e);
-                                }}
-                                touched={formik.touched.name || false}
-                                value={formik.values.name}
-                            />
-                            <CustomTextInput
-                                error={
-                                    formik.errors.description ||
-                                    serverErrors.description
-                                }
-                                label="description"
-                                loading={loading}
-                                multiline
-                                onBlur={formik.handleBlur('description')}
-                                onChangeText={(e: string) => {
-                                    setServerErrors((prevState) => ({
-                                        ...prevState,
-                                        description: '',
-                                    }));
-                                    formik.setFieldError('description', '');
-                                    formik.setFieldValue('description', e);
-                                }}
-                                optional
-                                touched={formik.touched.description || false}
-                                value={formik.values.description}
-                            />
+                            <TextInputsContainer>
+                                <CustomTextInput
+                                    error={
+                                        formik.errors.name || serverErrors.name
+                                    }
+                                    label="name"
+                                    loading={loading}
+                                    onBlur={formik.handleBlur('name')}
+                                    onChangeText={(e: string) => {
+                                        setServerErrors((prevState) => ({
+                                            ...prevState,
+                                            name: '',
+                                        }));
+                                        formik.setFieldError('name', '');
+                                        formik.setFieldValue('name', e);
+                                    }}
+                                    touched={formik.touched.name || false}
+                                    value={formik.values.name}
+                                />
+                                <CustomTextInput
+                                    error={
+                                        formik.errors.description ||
+                                        serverErrors.description
+                                    }
+                                    label="description"
+                                    loading={loading}
+                                    multiline
+                                    onBlur={formik.handleBlur('description')}
+                                    onChangeText={(e: string) => {
+                                        setServerErrors((prevState) => ({
+                                            ...prevState,
+                                            description: '',
+                                        }));
+                                        formik.setFieldError('description', '');
+                                        formik.setFieldValue('description', e);
+                                    }}
+                                    optional
+                                    touched={
+                                        formik.touched.description || false
+                                    }
+                                    value={formik.values.description}
+                                />
+                            </TextInputsContainer>
                             <CustomButton
                                 disable={disableButton}
                                 loading={loading}
+                                mb="smallest"
                                 onPress={formik.handleSubmit}
                                 title="create galerie"
                             />
