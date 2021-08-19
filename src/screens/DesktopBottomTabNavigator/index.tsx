@@ -4,6 +4,7 @@ import * as React from 'react';
 import { FooterTabNavigator, HeaderDesktopBottomTab } from '#components';
 
 import CommentScreen from './CommentsScreen';
+import Galerie from './GalerieScreen';
 import CreateGalerie from './CreateGalerieScreen';
 import GaleriesScreen from './GaleriesScreen';
 import HomeScreen from './HomeScreen';
@@ -48,7 +49,7 @@ const DesktopBottomTabNavigator = () => {
             />
             <Tab.Screen
                 name="Galerie"
-                component={CreateGalerie}
+                component={Galerie}
                 options={{
                     headerShown: false,
                 }}

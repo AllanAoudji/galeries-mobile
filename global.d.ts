@@ -9,7 +9,7 @@ declare global {
             type ParamList = {
                 Comments: undefined;
                 CreateGalerie: undefined;
-                Galerie: undefined;
+                Galerie: { id: string } | undefined;
                 Galeries: undefined;
                 Home: undefined;
                 Likes: undefined;
@@ -24,7 +24,7 @@ declare global {
                 ParamList,
                 'CreateGalerie'
             >;
-            type GaleriesNavigationProp = BottomTabNavigationProp<
+            type GalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'Galerie'
             >;
@@ -117,16 +117,34 @@ declare global {
             };
             type: string;
         };
-        type Entity = '[NOTIFICATION]' | '[LOGOUT]' | '[USER]';
+        type Entity = '[GALERIES]' | '[NOTIFICATION]' | '[LOGOUT]' | '[USER]';
         type Reducer = {
+            galeries: {
+                allIds: string[];
+                byId: { [key: string]: Models.Galerie };
+                status: Status;
+            };
             notification: Store.Models.Notification | null;
             user: {
                 status: Status;
                 data: Store.Models.User | null;
             };
         };
+        type Role = 'admin' | 'moderator' | 'user';
         type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
         namespace Models {
+            type Galerie = {
+                allowNotification: boolean;
+                createdAt: Date;
+                currentCoverPicture?: string | null;
+                defaultCoverPicture: string;
+                description: string;
+                hasNewFrames: boolean;
+                hiddenName: string;
+                name: string;
+                numOfUsers: number;
+                role: Role;
+            };
             type Notification = {
                 status: 'error' | 'success';
                 text: string;
@@ -138,7 +156,7 @@ declare global {
                 hasNewNotification: boolean;
                 id: string;
                 pseudonym: string;
-                role: 'admin' | 'moderator' | 'user';
+                role: Role;
                 socialMediaUserName: string | null;
                 userName: string;
             };

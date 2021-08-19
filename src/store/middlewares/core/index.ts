@@ -1,3 +1,4 @@
 import apiMiddlewares from './api.middlewares';
+import normalizeMiddlewares from './normalize.middlewares';
 
-export default [...apiMiddlewares];
+export default [...normalizeMiddlewares, ...apiMiddlewares];

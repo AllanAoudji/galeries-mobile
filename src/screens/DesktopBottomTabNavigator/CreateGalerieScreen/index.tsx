@@ -1,16 +1,20 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
 
+import { AxiosError } from 'axios';
 import {
     CustomButton,
     CustomTextInput,
     FormScreen,
     PageTransition,
 } from '#components';
-import { END_POINT } from '#helpers/constants';
+import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
 import { createGaleriesSchema } from '#helpers/schemas';
+
+import { GALERIES, normalizeData, setNotification } from '#store/actions';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CreateGalerieNavigationProp;
@@ -22,6 +26,7 @@ const initialValues = {
 };
 
 const CreateGalerieScreen = ({ navigation }: Props) => {
+    const dispatch = useDispatch();
     const formik = useFormik({
         onSubmit: async (values) => {
             setLoading(true);
@@ -31,10 +36,48 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                 url: END_POINT.GALERIES,
             })
                 .then((res) => {
-                    console.log(res);
+                    dispatch(normalizeData(res.data.data.galerie, GALERIES));
+                    setGalerieId(res.data.data.galerie.id);
                 })
-                .catch((err) => {
-                    console.log(err);
+                .catch((err: AxiosError) => {
+                    if (err.response && err.response.data.errors) {
+                        if (typeof err.response.data.errors === 'object') {
+                            if (
+                                err.response.data.errors.name ||
+                                err.response.data.errors.description
+                            ) {
+                                setServerErrors({
+                                    description:
+                                        err.response.data.errors.description ||
+                                        '',
+                                    name: err.response.data.errors.name || '',
+                                });
+                            }
+                        } else if (
+                            typeof err.response.data.errors === 'string'
+                        ) {
+                            dispatch(
+                                setNotification({
+                                    text: err.response.data.errors,
+                                    status: 'error',
+                                })
+                            );
+                        } else {
+                            dispatch(
+                                setNotification({
+                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                    status: 'error',
+                                })
+                            );
+                        }
+                    } else {
+                        dispatch(
+                            setNotification({
+                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                status: 'error',
+                            })
+                        );
+                    }
                 })
                 .finally(() => {
                     setLoading(false);
@@ -53,6 +96,13 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         description: '',
         name: '',
     });
+    const [galerieId, setGalerieId] = React.useState<string | null>(null);
+
+    React.useEffect(() => {
+        if (galerieId) {
+            navigation.navigate('Galerie', { id: galerieId });
+        }
+    }, [galerieId]);
 
     const disableButton = React.useMemo(() => {
         const clientHasError =
