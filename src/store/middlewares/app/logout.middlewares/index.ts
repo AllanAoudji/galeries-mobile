@@ -19,9 +19,12 @@ const fetchLogout: Middleware =
         if (action.type === LOGOUT_FETCH) {
             dispatch(
                 apiRequest({
-                    entity: '[LOGOUT]',
-                    method: 'GET',
-                    url: END_POINT.LOGOUT,
+                    data: {},
+                    meta: {
+                        entity: LOGOUT,
+                        method: 'GET',
+                        url: END_POINT.LOGOUT,
+                    },
                 })
             );
         }

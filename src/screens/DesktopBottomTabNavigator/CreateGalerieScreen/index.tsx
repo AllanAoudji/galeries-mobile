@@ -13,7 +13,12 @@ import {
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
 import { createGaleriesSchema } from '#helpers/schemas';
-import { GALERIES, normalizeData, setNotification } from '#store/actions';
+import {
+    GALERIES,
+    normalizeData,
+    resetGaleriesFilters,
+    setNotification,
+} from '#store/actions';
 
 import { TextInputsContainer } from './styled';
 
@@ -38,8 +43,29 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                 url: END_POINT.GALERIES,
             })
                 .then((res) => {
-                    dispatch(normalizeData(res.data.data.galerie, GALERIES));
-                    setGalerieId(res.data.data.galerie.id);
+                    if (res.data.data && res.data.data.galerie) {
+                        dispatch(resetGaleriesFilters());
+                        dispatch(
+                            normalizeData({
+                                data: {
+                                    ...res.data.data.galerie,
+                                    frames: [],
+                                    users: [],
+                                },
+                                meta: {
+                                    entity: GALERIES,
+                                },
+                            })
+                        );
+                        setGalerieId(res.data.data.galerie.id);
+                    } else {
+                        dispatch(
+                            setNotification({
+                                status: 'error',
+                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                            })
+                        );
+                    }
                 })
                 .catch((err: AxiosError) => {
                     if (err.response && err.response.data.errors) {

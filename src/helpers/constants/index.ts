@@ -22,6 +22,9 @@ export const CLOSE_NOTIFICATION_DELAY = 2000;
 
 export const END_POINT = {
     FORGOT_PASSWORD: '/users/password/',
+    GALERIE: (id: string) => `/galeries/${id}`,
+    GALERIE_COVER_PICTURE: (id: string) => `/galeries/${id}/coverPicture`,
+    GALERIE_USERS: (id: string) => `/galeries/${id}/users`,
     GALERIES: '/galeries/',
     GET_ME: '/users/me',
     LOGIN: '/users/login/',

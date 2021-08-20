@@ -8,13 +8,8 @@ const normalizeMiddleware: Middleware =
     (action: Store.Action) => {
         next(action);
         const { payload } = action;
-        if (
-            action.type.includes(NORMALIZE) &&
-            payload &&
-            payload.data &&
-            payload.meta &&
-            payload.meta.entity
-        ) {
+
+        if (action.type.includes(NORMALIZE) && !!payload.meta.entity) {
             const allIds: string[] = [];
             const byId: { [key: string]: any } = {};
 
@@ -43,6 +38,7 @@ const normalizeMiddleware: Middleware =
                             byId,
                             status: 'SUCCESS',
                         },
+                        meta: action.payload.meta,
                     },
                     type: `${payload.meta.entity} Set`,
                 });

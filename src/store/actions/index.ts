@@ -1,4 +1,5 @@
 export * from './api.actions';
+export * from './frames.actions';
 export * from './galeries.actions';
 export * from './logout.actions';
 export * from './normalize.actions';

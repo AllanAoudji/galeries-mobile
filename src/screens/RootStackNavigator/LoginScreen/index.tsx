@@ -107,7 +107,7 @@ const LoginScreen = ({ navigation }: Props) => {
                                 );
                             }
                         } else if (
-                            typeof err.response.data.error === 'string'
+                            typeof err.response.data.errors === 'string'
                         ) {
                             if (
                                 err.response.data.errors ===

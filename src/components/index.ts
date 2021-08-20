@@ -8,5 +8,6 @@ export { default as Logo } from './Logo';
 export { default as Notification } from './Notification';
 export { default as PageTransition } from './PageTransition';
 export { default as Pictogram } from './Pictogram';
+export { default as SearchBar } from './SearchBar';
 export { default as SplashScreen } from './SplashScreen';
 export { default as Typography } from './Typography';

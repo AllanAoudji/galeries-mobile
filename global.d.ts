@@ -106,22 +106,40 @@ declare global {
 
     namespace Store {
         type Action = {
-            payload?: {
+            payload: {
                 data: any;
-                meta?: {
-                    entity?: Entity;
-                    method?: Method;
-                    params?: string;
-                    url?: string;
-                };
+                meta: Meta;
             };
             type: string;
         };
-        type Entity = '[GALERIES]' | '[NOTIFICATION]' | '[LOGOUT]' | '[USER]';
+        type Entity =
+            | '[FRAMES]'
+            | '[GALERIES]'
+            | '[NOTIFICATION]'
+            | '[LOGOUT]'
+            | '[USER]';
+        type Meta = {
+            end?: boolean;
+            entity?: Entity;
+            method?: Method;
+            params?: string;
+            query?: { [key: string]: string };
+            url?: string;
+        };
         type Reducer = {
             galeries: {
                 allIds: string[];
                 byId: { [key: string]: Models.Galerie };
+                end: boolean;
+                filters: {
+                    [key: string]: {
+                        allIds: string[];
+                        end: boolean;
+                        previousGalerie?: string;
+                        status: Store.Status;
+                    };
+                };
+                previousGalerie?: string;
                 status: Status;
             };
             notification: Store.Models.Notification | null;
@@ -133,17 +151,20 @@ declare global {
         type Role = 'admin' | 'moderator' | 'user';
         type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
         namespace Models {
+            type Frame = {};
             type Galerie = {
                 allowNotification: boolean;
                 createdAt: Date;
                 currentCoverPicture?: string | null;
                 defaultCoverPicture: string;
                 description: string;
+                frames: string[];
                 hasNewFrames: boolean;
                 hiddenName: string;
                 name: string;
                 numOfUsers: number;
                 role: Role;
+                users: string[];
             };
             type Notification = {
                 status: 'error' | 'success';

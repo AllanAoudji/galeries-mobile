@@ -7,9 +7,9 @@ export default (name?: string) =>
         (filter, galeries) => {
             if (filter) {
                 return galeries.filters[filter]
-                    ? galeries.filters[filter].allIds
-                    : [];
+                    ? galeries.filters[filter].end
+                    : false;
             }
-            return galeries.allIds;
+            return galeries.end;
         }
     );

@@ -1,9 +1,6 @@
 type SetGaleriesParams = {
-    data?: {
-        allIds?: { [key: string]: Store.Models.Galerie };
-        byIds?: string[];
-        status?: Store.Status;
-    };
+    allIds?: string[];
+    byId?: { [key: string]: Store.Models.Galerie };
     status?: Store.Status;
 };
 
@@ -12,7 +9,13 @@ export const GALERIES: Store.Entity = '[GALERIES]';
 export const GALERIES_FETCH = `${GALERIES} Fetch`;
 export const GALERIES_SET = `${GALERIES} Set`;
 
-export const fetchGaleries: () => Store.Action = () => ({
+export const fetchGaleries: (payload?: { meta: Store.Meta }) => Store.Action = (
+    payload
+) => ({
+    payload: {
+        data: {},
+        meta: payload ? payload.meta : {},
+    },
     type: GALERIES_FETCH,
 });
 export const resetGaleries: () => Store.Action = () => ({
@@ -20,20 +23,32 @@ export const resetGaleries: () => Store.Action = () => ({
         data: {
             allIds: [],
             byId: {},
+            filters: {},
             status: 'PENDING',
         },
+        meta: {},
     },
     type: GALERIES_SET,
 });
-export const setGaleries: (params: SetGaleriesParams) => Store.Action = ({
-    data,
-    status,
-}) => ({
+export const resetGaleriesFilters: () => Store.Action = () => ({
     payload: {
         data: {
-            data,
-            status,
+            filters: {},
         },
+        meta: {},
+    },
+    type: GALERIES_SET,
+});
+export const setGaleries: ({
+    data,
+    meta,
+}: {
+    data: SetGaleriesParams;
+    meta?: Store.Meta;
+}) => Store.Action = ({ data, meta }) => ({
+    payload: {
+        data,
+        meta: meta || {},
     },
     type: GALERIES_SET,
 });

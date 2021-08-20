@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { Keyboard, useWindowDimensions } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import {
     interpolateColor,

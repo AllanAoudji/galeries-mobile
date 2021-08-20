@@ -43,9 +43,12 @@ const fetchUser: Middleware =
             );
             dispatch(
                 apiRequest({
-                    entity: USER,
-                    method: 'GET',
-                    url: END_POINT.GET_ME,
+                    data: {},
+                    meta: {
+                        entity: USER,
+                        method: 'GET',
+                        url: END_POINT.GET_ME,
+                    },
                 })
             );
         }

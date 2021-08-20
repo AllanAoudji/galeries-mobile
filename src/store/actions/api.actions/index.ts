@@ -1,16 +1,8 @@
-import { AxiosResponse, Method } from 'axios';
+import { AxiosResponse } from 'axios';
 
 export const API_ERROR = 'API_ERROR';
 export const API_REQUEST = 'API_REQUEST';
 export const API_SUCCESS = 'API_SUCCESS';
-
-type Data = {
-    body?: any;
-    entity: Store.Entity;
-    method: Method;
-    params?: string;
-    url: string;
-};
 
 export const apiError: (error: string, entity: Store.Entity) => Store.Action = (
     error,
@@ -25,34 +17,30 @@ export const apiError: (error: string, entity: Store.Entity) => Store.Action = (
     type: `${entity} ${API_ERROR}`,
 });
 
-export const apiRequest: (data: Data) => Store.Action = ({
-    body,
-    entity,
-    method,
-    params,
-    url,
-}) => ({
+export const apiRequest: ({
+    data,
+    meta,
+}: {
+    data?: any;
+    meta: Store.Meta;
+}) => Store.Action = ({ data, meta }) => ({
     payload: {
-        data: body,
-        meta: {
-            entity,
-            method,
-            params,
-            url,
-        },
+        data: data || {},
+        meta: meta || {},
     },
-    type: `${entity} ${API_REQUEST}`,
+    type: `${meta.entity || '[ENTITY NOT FOUND]'} ${API_REQUEST}`,
 });
 
-export const apiSuccess: (
-    response: AxiosResponse,
-    entity: Store.Entity
-) => Store.Action = (response, entity) => ({
+export const apiSuccess: ({
+    response,
+    meta,
+}: {
+    response: AxiosResponse;
+    meta: Store.Meta;
+}) => Store.Action = ({ response, meta }) => ({
     payload: {
         data: response,
-        meta: {
-            entity,
-        },
+        meta,
     },
-    type: `${entity} ${API_SUCCESS}`,
+    type: `${meta.entity || '[ENTITY NOT FOUND]'} ${API_SUCCESS}`,
 });
