@@ -9,7 +9,7 @@ declare global {
             type ParamList = {
                 Comments: undefined;
                 CreateGalerie: undefined;
-                Galerie: undefined;
+                Galerie: { id: string } | undefined;
                 Galeries: undefined;
                 Home: undefined;
                 Likes: undefined;
@@ -24,7 +24,7 @@ declare global {
                 ParamList,
                 'CreateGalerie'
             >;
-            type GaleriesNavigationProp = BottomTabNavigationProp<
+            type GalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'Galerie'
             >;
@@ -106,27 +106,66 @@ declare global {
 
     namespace Store {
         type Action = {
-            payload?: {
+            payload: {
                 data: any;
-                meta?: {
-                    entity?: Entity;
-                    method?: Method;
-                    params?: string;
-                    url?: string;
-                };
+                meta: Meta;
             };
             type: string;
         };
-        type Entity = '[NOTIFICATION]' | '[LOGOUT]' | '[USER]';
+        type Entity =
+            | '[FRAMES]'
+            | '[GALERIES]'
+            | '[NOTIFICATION]'
+            | '[LOGOUT]'
+            | '[USER]';
+        type Meta = {
+            end?: boolean;
+            entity?: Entity;
+            method?: Method;
+            params?: string;
+            query?: { [key: string]: string };
+            url?: string;
+        };
         type Reducer = {
+            galeries: {
+                allIds: string[];
+                byId: { [key: string]: Models.Galerie };
+                end: boolean;
+                filters: {
+                    [key: string]: {
+                        allIds: string[];
+                        end: boolean;
+                        previousGalerie?: string;
+                        status: Store.Status;
+                    };
+                };
+                previousGalerie?: string;
+                status: Status;
+            };
             notification: Store.Models.Notification | null;
             user: {
                 status: Status;
                 data: Store.Models.User | null;
             };
         };
+        type Role = 'admin' | 'moderator' | 'user';
         type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
         namespace Models {
+            type Frame = {};
+            type Galerie = {
+                allowNotification: boolean;
+                createdAt: Date;
+                currentCoverPicture?: string | null;
+                defaultCoverPicture: string;
+                description: string;
+                frames: string[];
+                hasNewFrames: boolean;
+                hiddenName: string;
+                name: string;
+                numOfUsers: number;
+                role: Role;
+                users: string[];
+            };
             type Notification = {
                 status: 'error' | 'success';
                 text: string;
@@ -138,7 +177,7 @@ declare global {
                 hasNewNotification: boolean;
                 id: string;
                 pseudonym: string;
-                role: 'admin' | 'moderator' | 'user';
+                role: Role;
                 socialMediaUserName: string | null;
                 userName: string;
             };

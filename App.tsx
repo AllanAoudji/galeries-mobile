@@ -29,3 +29,7 @@ export default function App() {
         </ThemeProvider>
     );
 }
+
+// TODO:
+// Extract bottomTab height
+// And create a BottomTabContainer = padding-bottom: bottomTabHeight

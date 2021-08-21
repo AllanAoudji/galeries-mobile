@@ -1,9 +1,14 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
-import { FooterTabNavigator, HeaderDesktopBottomTab } from '#components';
+import {
+    BottomTabScreenView,
+    FooterTabNavigator,
+    HeaderDesktopBottomTab,
+} from '#components';
 
 import CommentScreen from './CommentsScreen';
+import Galerie from './GalerieScreen';
 import CreateGalerie from './CreateGalerieScreen';
 import GaleriesScreen from './GaleriesScreen';
 import HomeScreen from './HomeScreen';
@@ -23,13 +28,36 @@ const DesktopBottomTabNavigator = () => {
                 header: (props) => <HeaderDesktopBottomTab {...props} />,
             }}
         >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Galeries" component={GaleriesScreen} />
-            <Tab.Screen name="Notifications" component={NotificationsScreen} />
-            <Tab.Screen name="Profile" component={ProfileScreen} />
+            <Tab.Screen name="Home">
+                {() => (
+                    <BottomTabScreenView>
+                        <HomeScreen />
+                    </BottomTabScreenView>
+                )}
+            </Tab.Screen>
+            <Tab.Screen name="Galeries">
+                {(props) => (
+                    <BottomTabScreenView>
+                        <GaleriesScreen {...props} />
+                    </BottomTabScreenView>
+                )}
+            </Tab.Screen>
+            <Tab.Screen name="Notifications">
+                {() => (
+                    <BottomTabScreenView>
+                        <NotificationsScreen />
+                    </BottomTabScreenView>
+                )}
+            </Tab.Screen>
+            <Tab.Screen name="Profile">
+                {() => (
+                    <BottomTabScreenView>
+                        <ProfileScreen />
+                    </BottomTabScreenView>
+                )}
+            </Tab.Screen>
             <Tab.Screen
                 name="Comments"
-                component={CommentScreen}
                 options={{
                     header: (props) => (
                         <HeaderDesktopBottomTab
@@ -38,24 +66,35 @@ const DesktopBottomTabNavigator = () => {
                         />
                     ),
                 }}
-            />
+            >
+                {() => (
+                    <BottomTabScreenView>
+                        <CommentScreen />
+                    </BottomTabScreenView>
+                )}
+            </Tab.Screen>
             <Tab.Screen
                 name="CreateGalerie"
-                component={CreateGalerie}
                 options={{
                     headerShown: false,
                 }}
-            />
+            >
+                {(props) => <CreateGalerie {...props} />}
+            </Tab.Screen>
             <Tab.Screen
                 name="Galerie"
-                component={CreateGalerie}
                 options={{
                     headerShown: false,
                 }}
-            />
+            >
+                {(props) => (
+                    <BottomTabScreenView>
+                        <Galerie {...props} />
+                    </BottomTabScreenView>
+                )}
+            </Tab.Screen>
             <Tab.Screen
                 name="Likes"
-                component={LikesScreen}
                 options={{
                     header: (props) => (
                         <HeaderDesktopBottomTab
@@ -64,7 +103,9 @@ const DesktopBottomTabNavigator = () => {
                         />
                     ),
                 }}
-            />
+            >
+                {() => <LikesScreen />}
+            </Tab.Screen>
         </Tab.Navigator>
     );
 };

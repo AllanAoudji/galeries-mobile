@@ -22,8 +22,10 @@ type Props = {
     keyboardType?: KeyboardType;
     label?: string;
     loading?: boolean;
+    multiline?: boolean;
     onBlur: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
     onChangeText: (text: string) => void;
+    optional?: boolean;
     secureTextEntry?: boolean;
     touched: boolean;
     value: string;
@@ -33,10 +35,12 @@ const CustomTextInput = ({
     editable = true,
     error,
     keyboardType = 'default',
+    multiline = false,
     label,
     loading = false,
     onBlur,
     onChangeText,
+    optional = false,
     secureTextEntry,
     touched,
     value,
@@ -81,7 +85,9 @@ const CustomTextInput = ({
                             })()}
                             fontSize={hasFocus || value ? 12 : 14}
                         >
-                            {label.toLowerCase()}
+                            {`${label.toLowerCase()} ${
+                                optional ? ' (optional)' : ''
+                            }`}
                         </Typography>
                     </LabelAnimation>
                 </LabelContainer>
@@ -91,13 +97,16 @@ const CustomTextInput = ({
                 hasError={!!error && touched}
                 keyboardType={keyboardType}
                 loading={loading}
+                multiline={multiline}
+                numberOfLines={multiline ? 10 : 1}
                 onBlur={handleOnBlur}
                 onChangeText={onChangeText}
                 onFocus={handleOnFocus}
                 ref={textInputRef}
                 secureTextEntry={secureTextEntry}
-                selectionColor={error ? '#fb6d51' : '#414cb4'}
+                selectionColor={!!error && touched ? '#fb6d51' : '#414cb4'}
                 value={value}
+                style={{ textAlignVertical: 'top' }}
             />
             <ErrorContainer>
                 <Typography color="danger" fontFamily="bold" fontSize={12}>

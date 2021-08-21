@@ -3,7 +3,12 @@ import { Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
-import { API_REQUEST, apiError, apiSuccess } from '#store/actions';
+import {
+    API_REQUEST,
+    apiError,
+    apiSuccess,
+    setNotification,
+} from '#store/actions';
 
 const apiMiddleware: Middleware =
     ({ dispatch }) =>
@@ -12,20 +17,23 @@ const apiMiddleware: Middleware =
         const { payload } = action;
         if (action.type.includes(API_REQUEST)) {
             if (
-                payload &&
-                payload.meta &&
-                payload.meta.entity &&
-                payload.meta.method &&
-                payload.meta.url
+                !!payload.meta.entity &&
+                !!payload.meta.method &&
+                !!payload.meta.url
             ) {
                 const { entity, method, url } = payload.meta;
                 request({
-                    body: payload.data,
+                    body: payload.data || {},
                     method,
                     url,
                 })
                     .then((res) => {
-                        dispatch(apiSuccess(res.data, entity));
+                        dispatch(
+                            apiSuccess({
+                                response: res.data,
+                                meta: { ...payload.meta },
+                            })
+                        );
                     })
                     .catch((err: AxiosError) => {
                         let error: string;
@@ -40,6 +48,13 @@ const apiMiddleware: Middleware =
                         }
                         dispatch(apiError(error, entity));
                     });
+            } else {
+                dispatch(
+                    setNotification({
+                        status: 'error',
+                        text: 'wrong request',
+                    })
+                );
             }
         }
         return next(action);

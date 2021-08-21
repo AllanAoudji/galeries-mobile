@@ -36,6 +36,7 @@ type Props = {
 
 const LoginScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
+
     const formik = useFormik({
         initialValues,
         onSubmit: async (values) => {
@@ -91,10 +92,11 @@ const LoginScreen = ({ navigation }: Props) => {
                                 err.response.data.errors.userNameOrEmail
                             ) {
                                 setServerErrors({
-                                    password: err.response.data.errors.password,
+                                    password:
+                                        err.response.data.errors.password || '',
                                     userNameOrEmail:
                                         err.response.data.errors
-                                            .userNameOrEmail,
+                                            .userNameOrEmail || '',
                                 });
                             } else {
                                 dispatch(
@@ -105,14 +107,25 @@ const LoginScreen = ({ navigation }: Props) => {
                                 );
                             }
                         } else if (
-                            err.response.data.errors ===
-                            ERROR_MESSAGE.USER_SHOULD_NOT_BE_AUTHENTICATED
+                            typeof err.response.data.errors === 'string'
                         ) {
-                            dispatch(fetchUser());
+                            if (
+                                err.response.data.errors ===
+                                ERROR_MESSAGE.USER_SHOULD_NOT_BE_AUTHENTICATED
+                            ) {
+                                dispatch(fetchUser());
+                            } else {
+                                dispatch(
+                                    setNotification({
+                                        text: err.response.data.errors,
+                                        status: 'error',
+                                    })
+                                );
+                            }
                         } else {
                             dispatch(
                                 setNotification({
-                                    text: err.response.data.errors,
+                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
                                     status: 'error',
                                 })
                             );
@@ -136,10 +149,9 @@ const LoginScreen = ({ navigation }: Props) => {
     });
 
     const [loading, setLoading] = React.useState<boolean>(false);
-    const [serverErrors, setServerErrors] = React.useState<{
-        password: string;
-        userNameOrEmail: string;
-    }>({
+    const [serverErrors, setServerErrors] = React.useState<
+        typeof initialValues
+    >({
         password: '',
         userNameOrEmail: '',
     });
