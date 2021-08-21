@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 
 import { Typography } from '#components';
-import { galeriesSelector, galerieSelector } from '#store/selectors';
+import { galerieSelector } from '#store/selectors';
 
 type Props = {
     route: RouteProp<Screen.DesktopBottomTab.ParamList, 'Galerie'>;
@@ -30,11 +30,11 @@ const GalerieScreen = ({ route, navigation }: Props) => {
         }
     }, [route, navigation]);
 
-    React.useEffect(() => {
-        if (!galerie) {
-            console.log('galerie not found');
-        }
-    }, [galerie]);
+    // React.useEffect(() => {
+    //     if (!galerie) {
+    //         console.log('galerie not found');
+    //     }
+    // }, [galerie]);
 
     if (!galerie) {
         return <></>;

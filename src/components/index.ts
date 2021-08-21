@@ -1,3 +1,4 @@
+export { default as BottomTabScreenView } from './BottomTabScreenView';
 export { default as CustomButton } from './CustomButton';
 export { default as CustomTextInput } from './CustomTextInput';
 export { default as DrawerContent } from './DrawerContent';

@@ -23,9 +23,7 @@ import GalerieModal from './GalerieModal';
 import { SearchBar, Typography } from '#components';
 
 const Container = styled.View`
-    background-color: ${({ theme }) => theme.colors['secondary-light']};
     flex: 1;
-    padding-bottom: 62px;
 `;
 const Header = styled.View`
     padding: ${({ theme }) =>
