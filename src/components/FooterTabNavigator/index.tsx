@@ -112,71 +112,50 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
     }
 
     return (
-        <>
-            <Container>
-                <IconContainer onPress={handleHomePress}>
-                    <PictogramContainer>
-                        <Pictogram color="primary" variant={homeVariant} />
-                    </PictogramContainer>
-                    <Typography
-                        color="primary"
-                        fontFamily="light"
-                        fontSize={12}
-                    >
-                        home
-                    </Typography>
-                </IconContainer>
-                <IconContainer onPress={handleGaleriesPress}>
-                    <PictogramContainer>
-                        <Pictogram color="primary" variant={galeriesVariant} />
-                    </PictogramContainer>
-                    <Typography
-                        color="primary"
-                        fontFamily="light"
-                        fontSize={12}
-                    >
-                        galeries
-                    </Typography>
-                </IconContainer>
-                <IconContainer onPress={handleAddSubscribePress}>
-                    <Pictogram
-                        color="primary"
-                        customSize={{
-                            height: 28,
-                            width: 28,
-                        }}
-                        variant="add/subscribe-stroke"
-                    />
-                </IconContainer>
-                <IconContainer onPress={handleNotificationsPress}>
-                    <PictogramContainer>
-                        <Pictogram
-                            color="primary"
-                            variant={notificationsvariant}
-                        />
-                    </PictogramContainer>
-                    <Typography
-                        color="primary"
-                        fontFamily="light"
-                        fontSize={12}
-                    >
-                        notifications
-                    </Typography>
-                </IconContainer>
-                <IconContainer onPress={handleProfilePress}>
-                    <PictogramContainer>
-                        <Pictogram color="primary" variant={profileVariant} />
-                    </PictogramContainer>
-                    <Typography
-                        color="primary"
-                        fontFamily="light"
-                        fontSize={12}
-                    >
-                        profile
-                    </Typography>
-                </IconContainer>
-            </Container>
-        </>
+        <Container>
+            <IconContainer onPress={handleHomePress}>
+                <PictogramContainer>
+                    <Pictogram color="primary" variant={homeVariant} />
+                </PictogramContainer>
+                <Typography color="primary" fontFamily="light" fontSize={12}>
+                    home
+                </Typography>
+            </IconContainer>
+            <IconContainer onPress={handleGaleriesPress}>
+                <PictogramContainer>
+                    <Pictogram color="primary" variant={galeriesVariant} />
+                </PictogramContainer>
+                <Typography color="primary" fontFamily="light" fontSize={12}>
+                    galeries
+                </Typography>
+            </IconContainer>
+            <IconContainer onPress={handleAddSubscribePress}>
+                <Pictogram
+                    color="primary"
+                    customSize={{
+                        height: 28,
+                        width: 28,
+                    }}
+                    variant="add/subscribe-stroke"
+                />
+            </IconContainer>
+            <IconContainer onPress={handleNotificationsPress}>
+                <PictogramContainer>
+                    <Pictogram color="primary" variant={notificationsvariant} />
+                </PictogramContainer>
+                <Typography color="primary" fontFamily="light" fontSize={12}>
+                    notifications
+                </Typography>
+            </IconContainer>
+            <IconContainer onPress={handleProfilePress}>
+                <PictogramContainer>
+                    <Pictogram color="primary" variant={profileVariant} />
+                </PictogramContainer>
+                <Typography color="primary" fontFamily="light" fontSize={12}>
+                    profile
+                </Typography>
+            </IconContainer>
+        </Container>
     );
 };
 
