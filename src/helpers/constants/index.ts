@@ -60,5 +60,6 @@ export const FIELD_REQUIREMENT = {
 
 export const GLOBAL_STYLE = {
     BOTTOM_TAB_HEIGHT: 50,
+    GALERIE_MODAL_HEIGHT: 279,
     HEADER_TAB_HEIGHT: 124,
 };

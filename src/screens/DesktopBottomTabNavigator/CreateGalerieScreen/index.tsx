@@ -53,8 +53,16 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                             normalizeData({
                                 data: {
                                     ...res.data.data.galerie,
-                                    frames: [],
-                                    users: [],
+                                    frames: {
+                                        allIds: [],
+                                        end: true,
+                                        status: 'SUCCESS',
+                                    },
+                                    users: {
+                                        allIds: [],
+                                        end: true,
+                                        status: 'SUCCESS',
+                                    },
                                 },
                                 meta: {
                                     entity: GALERIES,

@@ -1,9 +1,6 @@
 type SetFramesParams = {
-    data?: {
-        allIds?: string[];
-        byId?: { [key: string]: Store.Models.Frame };
-        status?: Store.Status;
-    };
+    allIds?: string[];
+    byId?: { [key: string]: Store.Models.Frame };
     status?: Store.Status;
 };
 

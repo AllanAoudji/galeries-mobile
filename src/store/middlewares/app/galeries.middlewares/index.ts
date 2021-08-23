@@ -106,8 +106,16 @@ const successGaleries: Middleware =
                                 data: action.payload.data.data.galeries.map(
                                     (galerie: any) => ({
                                         ...galerie,
-                                        frames: [],
-                                        users: [],
+                                        frames: {
+                                            allIds: [],
+                                            end: false,
+                                            status: 'PENDING',
+                                        },
+                                        users: {
+                                            allIds: [],
+                                            end: false,
+                                            status: 'PENDING',
+                                        },
                                     })
                                 ),
                                 meta: {

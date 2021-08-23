@@ -11,6 +11,7 @@ import {
     SearchBar,
     Typography,
 } from '#components';
+import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize } from '#hooks';
 import {
     fetchGaleries,
@@ -48,8 +49,8 @@ const GaleriesScreen = () => {
 
     const getItemLayout = React.useCallback(
         (_, index) => ({
-            length: 249,
-            offset: 249 * index,
+            length: GLOBAL_STYLE.GALERIE_MODAL_HEIGHT,
+            offset: GLOBAL_STYLE.GALERIE_MODAL_HEIGHT * index,
             index,
         }),
         []

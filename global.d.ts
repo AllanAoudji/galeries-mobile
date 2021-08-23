@@ -160,13 +160,23 @@ declare global {
                 currentCoverPicture?: string | null;
                 defaultCoverPicture: string;
                 description: string;
-                frames: string[];
+                frames: {
+                    allIds: string[];
+                    end: boolean;
+                    previousFrame?: string;
+                    status: Store.Status;
+                };
                 hasNewFrames: boolean;
                 hiddenName: string;
                 name: string;
                 numOfUsers: number;
                 role: Role;
-                users: string[];
+                users: {
+                    allIds: string[];
+                    end: boolean;
+                    previousFrame?: string;
+                    status: Store.Status;
+                };
             };
             type Notification = {
                 status: 'error' | 'success';

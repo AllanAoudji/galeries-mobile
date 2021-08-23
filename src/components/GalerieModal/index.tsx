@@ -13,14 +13,17 @@ import Typography from '#components/Typography';
 import { ANIMATIONS, END_POINT } from '#helpers/constants';
 import isValidHexColor from '#helpers/isValidHexColor';
 import request from '#helpers/request';
-import { GALERIES, normalizeData } from '#store/actions';
+import { setFrames, setGaleries } from '#store/actions';
 import { galerieSelector } from '#store/selectors';
 
 import {
     Container,
     DefaultCoverPicture,
     Informations,
+    NumOfUsersContainer,
     PictureContainer,
+    UserContainer,
+    UsersContainer,
 } from './styles';
 
 type Props = {
@@ -73,15 +76,26 @@ const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
             })
                 .then((res) => {
                     if (res.data.data && res.data.data.galerie) {
+                        const { id: galerieId, ...rest } =
+                            res.data.data.galerie;
                         dispatch(
-                            normalizeData({
+                            setGaleries({
                                 data: {
-                                    ...res.data.data.galerie,
-                                    frames: [],
-                                    users: [],
-                                },
-                                meta: {
-                                    entity: GALERIES,
+                                    byId: {
+                                        [galerieId]: {
+                                            ...rest,
+                                            frames: {
+                                                allIds: [],
+                                                end: false,
+                                                status: 'PENDING',
+                                            },
+                                            users: {
+                                                allIds: [],
+                                                end: false,
+                                                status: 'PENDING',
+                                            },
+                                        },
+                                    },
                                 },
                             })
                         );
@@ -92,9 +106,40 @@ const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
                 .catch(() => removeGalerie(id));
         } else {
             opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
+            request({
+                body: {},
+                method: 'GET',
+                url: END_POINT.GALERIE_COVER_PICTURE(id),
+            }).then((res) => {
+                if (res.data && res.data.data.coverPicture) {
+                    const { id: coverPictureId, ...rest } =
+                        res.data.data.coverPicture;
+                    dispatch(
+                        setGaleries({
+                            data: {
+                                byId: {
+                                    [id]: {
+                                        ...galerie,
+                                        currentCoverPicture: coverPictureId,
+                                    },
+                                },
+                            },
+                        })
+                    );
+                    dispatch(
+                        setFrames({
+                            data: {
+                                byId: {
+                                    [coverPictureId]: rest,
+                                },
+                            },
+                        })
+                    );
+                }
+            });
+
             // TODO:
-            // fetch users if galerie.numOfUsers > 1
-            // fetch coverPicture
+            // Fetch user if galerie.numOfUsers > 0
         }
     }, [galerie]);
     React.useEffect(() => {
@@ -125,7 +170,7 @@ const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
                     end={{ x: 0.8, y: 1 }}
                     start={{ x: 0.2, y: 0 }}
                 >
-                    {defaultCoverPicture && (
+                    {!galerie.currentCoverPicture && defaultCoverPicture && (
                         <DefaultCoverPicture
                             colors={defaultCoverPicture.colors}
                             end={{
@@ -144,6 +189,18 @@ const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
                     <Typography fontSize={18} textAlign="right">
                         {galerie.name}
                     </Typography>
+                    <UsersContainer>
+                        <UserContainer />
+                        <UserContainer />
+                        <UserContainer />
+                        <UserContainer />
+                        <UserContainer />
+                        <NumOfUsersContainer>
+                            <Typography fontFamily="light" fontSize={14}>
+                                +3 others
+                            </Typography>
+                        </NumOfUsersContainer>
+                    </UsersContainer>
                 </Informations>
             </Pressable>
         </Container>
