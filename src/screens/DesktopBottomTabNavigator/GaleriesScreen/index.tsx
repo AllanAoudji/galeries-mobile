@@ -7,10 +7,10 @@ import {
     BottomLoader,
     FullScreenLoader,
     GalerieModal,
-    HeaderDesktopBottomTab,
     SearchBar,
     Typography,
 } from '#components';
+import { DesktopBottomTabScreenHeader } from '#components/Screen';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize } from '#hooks';
 import {
@@ -30,6 +30,7 @@ import { Container, Header } from './styles';
 // TODO:
 // need to scroll a little bit when fetch onReachEnd
 // and allIds have new content.
+// animation header
 const GaleriesScreen = () => {
     const { onLayout, size } = useComponentSize();
 
@@ -45,7 +46,7 @@ const GaleriesScreen = () => {
     const [hasFocus, setHasFocus] = React.useState<boolean>(false);
     const [isFirstLoad, setIsFirstLoad] = React.useState<boolean>(true);
     const [name, setName] = React.useState<string>('');
-    const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
+    const [searchFinished, setSearchFinished] = React.useState<boolean>(false);
 
     const getItemLayout = React.useCallback(
         (_, index) => ({
@@ -105,6 +106,8 @@ const GaleriesScreen = () => {
         [galeriesStatus, isFirstLoad]
     );
 
+    const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
+
     useFocusEffect(
         React.useCallback(() => {
             setHasFocus(true);
@@ -147,7 +150,7 @@ const GaleriesScreen = () => {
     return (
         <Container>
             <Header onLayout={onLayout}>
-                <HeaderDesktopBottomTab />
+                <DesktopBottomTabScreenHeader />
                 <Typography fontSize={24}>Galeries</Typography>
                 <SearchBar
                     onChangeText={handleChangeText}
@@ -157,9 +160,7 @@ const GaleriesScreen = () => {
             </Header>
             {(firstFetchFinished || searchFinished) && (
                 <FlatList
-                    contentContainerStyle={{
-                        paddingTop: size ? size.height : 0,
-                    }}
+                    contentContainerStyle={{ paddingTop }}
                     data={galeriesAllIds}
                     getItemLayout={getItemLayout}
                     keyExtractor={keyExtractor}

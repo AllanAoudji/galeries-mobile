@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
-import { FooterTabNavigator, HeaderDesktopBottomTab } from '#components';
+import { FooterTabNavigator } from '#components';
 import { DesktopBottomTabScreenContainer } from '#components/Screen';
 import { useKeyboard } from '#hooks';
 
@@ -71,17 +71,7 @@ const DesktopBottomTabNavigator = () => {
                     </DesktopBottomTabScreenContainer>
                 )}
             </Tab.Screen>
-            <Tab.Screen
-                name="Comments"
-                options={{
-                    header: (props) => (
-                        <HeaderDesktopBottomTab
-                            variant="secondary"
-                            {...props}
-                        />
-                    ),
-                }}
-            >
+            <Tab.Screen name="Comments">
                 {() => (
                     <DesktopBottomTabScreenContainer
                         keyboardShown={keyboardShown}
@@ -112,19 +102,7 @@ const DesktopBottomTabNavigator = () => {
                     </DesktopBottomTabScreenContainer>
                 )}
             </Tab.Screen>
-            <Tab.Screen
-                name="Likes"
-                options={{
-                    header: (props) => (
-                        <HeaderDesktopBottomTab
-                            variant="secondary"
-                            {...props}
-                        />
-                    ),
-                }}
-            >
-                {() => <LikesScreen />}
-            </Tab.Screen>
+            <Tab.Screen name="Likes">{() => <LikesScreen />}</Tab.Screen>
         </Tab.Navigator>
     );
 };

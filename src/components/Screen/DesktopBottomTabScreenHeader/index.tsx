@@ -2,17 +2,21 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar } from 'react-native';
 
-import Pictogram from '#components/Pictogram';
 import Logo from '#components/Logo';
+import Pictogram from '#components/Pictogram';
 
-import { Container, LogoContainer, PictogramContainer } from './styles';
+import {
+    Container,
+    LogoContainer,
+    LogoInnerContainer,
+    PictogramContainer,
+} from './styles';
 
 interface Props {
-    render?: JSX.Element;
     variant?: 'primary' | 'secondary';
 }
 
-const HeaderDesktopBottomTab = ({ variant = 'primary', render }: Props) => {
+const DesktopBottomTabScreenHeader = ({ variant = 'primary' }: Props) => {
     const navigation =
         useNavigation<Screen.DesktopBottomTab.CommentsNavigationProp>();
     const handlePressLogo = React.useCallback(() => {
@@ -42,12 +46,13 @@ const HeaderDesktopBottomTab = ({ variant = 'primary', render }: Props) => {
                     }
                 />
             </PictogramContainer>
-            <LogoContainer onPress={handlePressLogo}>
-                <Logo size="small" variant="logotype-stroke" />
+            <LogoContainer currentHeight={StatusBar.currentHeight}>
+                <LogoInnerContainer onPress={handlePressLogo}>
+                    <Logo size="small" variant="logotype-stroke" />
+                </LogoInnerContainer>
             </LogoContainer>
-            {render || null}
         </Container>
     );
 };
 
-export default HeaderDesktopBottomTab;
+export default DesktopBottomTabScreenHeader;
