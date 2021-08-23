@@ -1,3 +1,4 @@
+export { default as AnimatedTypography } from './AnimatedTypography';
 export { default as BottomLoader } from './BottomLoader';
 export { default as CustomButton } from './CustomButton';
 export { default as CustomTextInput } from './CustomTextInput';
