@@ -69,4 +69,4 @@ const Pictograms = ({
     );
 };
 
-export default Pictograms;
+export default React.memo(Pictograms);

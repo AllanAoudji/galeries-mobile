@@ -31,39 +31,36 @@ const fetchGaleries: Middleware =
             const allowRequest = (() => {
                 if (
                     action.payload.meta.query &&
-                    action.payload.meta.query.name &&
-                    action.payload.meta.query.name !== ''
+                    typeof action.payload.meta.query.name === 'string'
                 ) {
-                    return getState().galeries.filters[
+                    return getState().galeries.allIdsByName[
                         action.payload.meta.query.name
                     ]
-                        ? !getState().galeries.filters[
+                        ? !getState().galeries.allIdsByName[
                               action.payload.meta.query.name
                           ].end
                         : true;
                 }
-                return !getState().galeries.end;
+                return false;
             })();
             if (allowRequest) {
                 let previousGalerie: string;
                 if (
                     action.payload.meta.query &&
-                    action.payload.meta.query.name &&
                     typeof action.payload.meta.query.name === 'string'
                 ) {
-                    previousGalerie = getState().galeries.filters[
+                    previousGalerie = getState().galeries.allIdsByName[
                         action.payload.meta.query.name
                     ]
-                        ? getState().galeries.filters[
+                        ? getState().galeries.allIdsByName[
                               action.payload.meta.query.name
                           ].previousGalerie
                         : '';
                 } else {
-                    previousGalerie = getState().galeries.previousGalerie;
+                    previousGalerie = '';
                 }
                 const query = `?name=${
                     action.payload.meta.query &&
-                    action.payload.meta.query.name &&
                     typeof action.payload.meta.query.name === 'string'
                         ? action.payload.meta.query.name
                         : ''

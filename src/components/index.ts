@@ -1,9 +1,10 @@
-export { default as BottomTabScreenView } from './BottomTabScreenView';
+export { default as BottomLoader } from './BottomLoader';
 export { default as CustomButton } from './CustomButton';
 export { default as CustomTextInput } from './CustomTextInput';
-export { default as DrawerContent } from './DrawerContent';
 export { default as FooterTabNavigator } from './FooterTabNavigator';
 export { default as FormScreen } from './FormScreen';
+export { default as FullScreenLoader } from './FullScreenLoader';
+export { default as GalerieModal } from './GalerieModal';
 export { default as HeaderDesktopBottomTab } from './HeaderDesktopBottomTab';
 export { default as Logo } from './Logo';
 export { default as Notification } from './Notification';

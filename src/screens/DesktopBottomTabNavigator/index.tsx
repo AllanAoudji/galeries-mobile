@@ -1,11 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
-import {
-    BottomTabScreenView,
-    FooterTabNavigator,
-    HeaderDesktopBottomTab,
-} from '#components';
+import { FooterTabNavigator, HeaderDesktopBottomTab } from '#components';
+import { DesktopBottomTabScreenContainer } from '#components/Screen';
+import { useKeyboard } from '#hooks';
 
 import CommentScreen from './CommentsScreen';
 import Galerie from './GalerieScreen';
@@ -19,41 +17,58 @@ import LikesScreen from './LikesScreen';
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 
 const DesktopBottomTabNavigator = () => {
+    const { keyboardShown } = useKeyboard();
+
+    const tabBat = React.useCallback(
+        (props) => (
+            <FooterTabNavigator keyboardShown={keyboardShown} {...props} />
+        ),
+        [keyboardShown]
+    );
+
     return (
         <Tab.Navigator
-            tabBar={(props) => <FooterTabNavigator {...props} />}
+            tabBar={tabBat}
             initialRouteName="Home"
             backBehavior="history"
             screenOptions={{
-                header: (props) => <HeaderDesktopBottomTab {...props} />,
+                headerShown: false,
             }}
         >
             <Tab.Screen name="Home">
                 {() => (
-                    <BottomTabScreenView>
+                    <DesktopBottomTabScreenContainer
+                        keyboardShown={keyboardShown}
+                    >
                         <HomeScreen />
-                    </BottomTabScreenView>
+                    </DesktopBottomTabScreenContainer>
                 )}
             </Tab.Screen>
             <Tab.Screen name="Galeries">
-                {(props) => (
-                    <BottomTabScreenView>
-                        <GaleriesScreen {...props} />
-                    </BottomTabScreenView>
+                {() => (
+                    <DesktopBottomTabScreenContainer
+                        keyboardShown={keyboardShown}
+                    >
+                        <GaleriesScreen />
+                    </DesktopBottomTabScreenContainer>
                 )}
             </Tab.Screen>
             <Tab.Screen name="Notifications">
                 {() => (
-                    <BottomTabScreenView>
+                    <DesktopBottomTabScreenContainer
+                        keyboardShown={keyboardShown}
+                    >
                         <NotificationsScreen />
-                    </BottomTabScreenView>
+                    </DesktopBottomTabScreenContainer>
                 )}
             </Tab.Screen>
             <Tab.Screen name="Profile">
                 {() => (
-                    <BottomTabScreenView>
+                    <DesktopBottomTabScreenContainer
+                        keyboardShown={keyboardShown}
+                    >
                         <ProfileScreen />
-                    </BottomTabScreenView>
+                    </DesktopBottomTabScreenContainer>
                 )}
             </Tab.Screen>
             <Tab.Screen
@@ -68,9 +83,11 @@ const DesktopBottomTabNavigator = () => {
                 }}
             >
                 {() => (
-                    <BottomTabScreenView>
+                    <DesktopBottomTabScreenContainer
+                        keyboardShown={keyboardShown}
+                    >
                         <CommentScreen />
-                    </BottomTabScreenView>
+                    </DesktopBottomTabScreenContainer>
                 )}
             </Tab.Screen>
             <Tab.Screen
@@ -88,9 +105,11 @@ const DesktopBottomTabNavigator = () => {
                 }}
             >
                 {(props) => (
-                    <BottomTabScreenView>
+                    <DesktopBottomTabScreenContainer
+                        keyboardShown={keyboardShown}
+                    >
                         <Galerie {...props} />
-                    </BottomTabScreenView>
+                    </DesktopBottomTabScreenContainer>
                 )}
             </Tab.Screen>
             <Tab.Screen

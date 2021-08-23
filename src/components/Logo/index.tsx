@@ -30,4 +30,4 @@ const Logo = ({ size = 'normal', variant }: Props) => {
     return <LogoVariant size={size} />;
 };
 
-export default Logo;
+export default React.memo(Logo);

@@ -21,25 +21,49 @@ const DrawerContent = ({
 }: DrawerContentComponentProps & Props) => {
     const dispatch = useDispatch();
 
+    const userOrAdmin = React.useMemo(() => {
+        return role === 'user' ? (
+            <NavigationButton
+                customSize={{
+                    height: 33,
+                    width: 30,
+                }}
+                onPress={handlePressSendTicket}
+                pictogram="ticket-stroke"
+                title="Send a ticket"
+            />
+        ) : (
+            <NavigationButton
+                customSize={{
+                    height: 37,
+                    width: 30,
+                }}
+                onPress={handlePressModeration}
+                pictogram="moderation-stroke"
+                title="Moderation"
+            />
+        );
+    }, [role]);
+
     const handlePressMain = React.useCallback(
         () => navigation.navigate('Main'),
-        []
+        [navigation]
     );
     const handlePressLogout = React.useCallback(
         () => dispatch(fetchLogout()),
-        []
+        [navigation]
     );
     const handlePressModeration = React.useCallback(
         () => navigation.navigate('Moderation'),
-        []
+        [navigation]
     );
     const handlePressSendTicket = React.useCallback(
         () => navigation.navigate('SendTicket'),
-        []
+        [navigation]
     );
     const handlePressSettings = React.useCallback(
         () => navigation.navigate('Settings'),
-        []
+        [navigation]
     );
 
     return (
@@ -48,27 +72,7 @@ const DrawerContent = ({
                 <LogoContainer onPress={handlePressMain}>
                     <Logo size="smallest" variant="logotype-text-vertical" />
                 </LogoContainer>
-                {role === 'user' ? (
-                    <NavigationButton
-                        customSize={{
-                            height: 33,
-                            width: 30,
-                        }}
-                        onPress={handlePressSendTicket}
-                        pictogram="ticket-stroke"
-                        title="Send a ticket"
-                    />
-                ) : (
-                    <NavigationButton
-                        customSize={{
-                            height: 37,
-                            width: 30,
-                        }}
-                        onPress={handlePressModeration}
-                        pictogram="moderation-stroke"
-                        title="Moderation"
-                    />
-                )}
+                {userOrAdmin}
                 <NavigationButton
                     customSize={{
                         height: 30,

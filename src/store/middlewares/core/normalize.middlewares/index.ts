@@ -30,19 +30,17 @@ const normalizeMiddleware: Middleware =
                 }
             }
 
-            if (allIds.length && Object.keys(byId).length) {
-                dispatch({
-                    payload: {
-                        data: {
-                            allIds,
-                            byId,
-                            status: 'SUCCESS',
-                        },
-                        meta: action.payload.meta,
+            dispatch({
+                payload: {
+                    data: {
+                        allIds,
+                        byId,
+                        status: 'SUCCESS',
                     },
-                    type: `${payload.meta.entity} Set`,
-                });
-            }
+                    meta: { ...action.payload.meta },
+                },
+                type: `${payload.meta.entity} Set`,
+            });
         }
     };
 

@@ -1,9 +1,16 @@
 import * as React from 'react';
-import { Dimensions, Keyboard, StatusBar } from 'react-native';
+import { Keyboard, StatusBar, useWindowDimensions } from 'react-native';
+import Animated, {
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+} from 'react-native-reanimated';
 import { useTheme } from 'styled-components/native';
 
-import Typography from '#components/Typography';
 import Pictogram from '#components/Pictogram';
+import Typography from '#components/Typography';
+import { ANIMATIONS } from '#helpers/constants';
+import { useKeyboard, useComponentSize } from '#hooks';
 
 import {
     Body,
@@ -12,6 +19,7 @@ import {
     Footer,
     Form,
     Header,
+    KeyboardHeader,
     ReturnButton,
     Separator,
 } from './styles';
@@ -23,36 +31,104 @@ type Props = {
     title: string;
 };
 
-const { height } = Dimensions.get('window');
+const BODY_BORDER_TOP_RIGHT_RADIUS = 45;
+const KEYBOARD_HEADER_HEIGHT = 100;
 
+// TODO:
+// three newProps =
+// renderTop/renderBottom/renderFooter
+// justifyContent === space-between renderTop _____ (rendeerBottom|renderFooter)
 const FormScreen = ({ body, footer, handleOnPressReturn, title }: Props) => {
-    const [keyboardIsVisible, setKeyboardIsVisible] =
-        React.useState<boolean>(false);
-
+    const { onLayout, size: bodySize } = useComponentSize();
+    const { keyboardShown } = useKeyboard();
     const theme = useTheme();
+    const dimension = useWindowDimensions();
 
-    React.useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener(
-            'keyboardDidShow',
-            () => setKeyboardIsVisible(true)
-        );
-        const keyboardDidHideListener = Keyboard.addListener(
-            'keyboardDidHide',
-            () => setKeyboardIsVisible(false)
-        );
+    const [bodyHeight, setBodyHeight] = React.useState<number | null>(null);
 
-        return () => {
-            keyboardDidHideListener.remove();
-            keyboardDidShowListener.remove();
+    const bodyBorderTopRightRadius = useSharedValue(
+        BODY_BORDER_TOP_RIGHT_RADIUS
+    );
+    const bodyOpacity = useSharedValue(0);
+    const bodyTop = useSharedValue(0);
+    const keyboardHeaderHeight = useSharedValue(0);
+    const keyboardHeaderOpacity = useSharedValue(0);
+    const opacity = useSharedValue(1);
+
+    const styleBody = useAnimatedStyle(() => {
+        return {
+            top: bodySize ? bodyTop.value : 'auto',
+            opacity: bodyOpacity.value,
+            borderTopRightRadius: bodyBorderTopRightRadius.value,
+        };
+    }, [bodySize]);
+    const styleHeader = useAnimatedStyle(() => {
+        return {
+            opacity: opacity.value,
         };
     }, []);
+    const styleKeyboardHeader = useAnimatedStyle(() => {
+        return {
+            height: keyboardHeaderHeight.value,
+            opacity: keyboardHeaderOpacity.value,
+        };
+    }, []);
+    const styleReturnButton = useAnimatedStyle(() => {
+        return {
+            opacity: opacity.value,
+        };
+    }, []);
+
+    React.useEffect(() => {
+        if (bodySize && !bodyHeight) {
+            bodyTop.value = dimension.height - bodySize.height;
+            bodyOpacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
+            setBodyHeight(dimension.height - bodySize.height);
+        }
+    }, [bodyHeight, bodySize]);
+    React.useEffect(() => {
+        if (keyboardShown) {
+            bodyBorderTopRightRadius.value = withTiming(
+                0,
+                ANIMATIONS.TIMING_CONFIG()
+            );
+            bodyTop.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
+            keyboardHeaderHeight.value = withTiming(
+                KEYBOARD_HEADER_HEIGHT,
+                ANIMATIONS.TIMING_CONFIG()
+            );
+            keyboardHeaderOpacity.value = withTiming(
+                1,
+                ANIMATIONS.TIMING_CONFIG()
+            );
+            opacity.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
+        } else {
+            bodyBorderTopRightRadius.value = withTiming(
+                BODY_BORDER_TOP_RIGHT_RADIUS,
+                ANIMATIONS.TIMING_CONFIG()
+            );
+            bodyTop.value = withTiming(
+                bodyHeight || 0,
+                ANIMATIONS.TIMING_CONFIG()
+            );
+            keyboardHeaderHeight.value = withTiming(
+                0,
+                ANIMATIONS.TIMING_CONFIG()
+            );
+            keyboardHeaderOpacity.value = withTiming(
+                0,
+                ANIMATIONS.TIMING_CONFIG()
+            );
+            opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
+        }
+    }, [keyboardShown]);
 
     return (
         <Container
             colors={[theme.colors.tertiary, theme.colors.primary]}
-            height={height}
+            height={dimension.height}
         >
-            <Header hide={keyboardIsVisible}>
+            <Header style={styleHeader}>
                 <Typography
                     color="secondary-light"
                     fontFamily="light"
@@ -67,17 +143,30 @@ const FormScreen = ({ body, footer, handleOnPressReturn, title }: Props) => {
                 {handleOnPressReturn && (
                     <ReturnButton
                         currentHeight={StatusBar.currentHeight}
-                        hide={keyboardIsVisible}
                         onPress={handleOnPressReturn}
                     >
-                        <Pictogram
-                            color="secondary-light"
-                            variant="arrow-left"
-                        />
+                        <Animated.View style={styleReturnButton}>
+                            <Pictogram
+                                color="secondary-light"
+                                variant="arrow-left"
+                            />
+                        </Animated.View>
                     </ReturnButton>
                 )}
-                <Body>
-                    <BodyScrollView keyboardShouldPersistTaps="always">
+                <Body onLayout={onLayout} style={styleBody}>
+                    <BodyScrollView
+                        keyboardShouldPersistTaps="handled"
+                        showsVerticalScrollIndicator={false}
+                    >
+                        <KeyboardHeader style={styleKeyboardHeader}>
+                            <Typography
+                                color="primary"
+                                fontFamily="light"
+                                fontSize={18}
+                            >
+                                {title.toUpperCase()}
+                            </Typography>
+                        </KeyboardHeader>
                         {body}
                         <Footer>{footer}</Footer>
                     </BodyScrollView>

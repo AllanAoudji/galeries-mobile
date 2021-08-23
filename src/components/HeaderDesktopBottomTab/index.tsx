@@ -1,5 +1,4 @@
-import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar } from 'react-native';
 
@@ -9,13 +8,13 @@ import Logo from '#components/Logo';
 import { Container, LogoContainer, PictogramContainer } from './styles';
 
 interface Props {
+    render?: JSX.Element;
     variant?: 'primary' | 'secondary';
 }
 
-const HeaderDesktopBottomTab = ({
-    navigation,
-    variant = 'primary',
-}: BottomTabHeaderProps & Props) => {
+const HeaderDesktopBottomTab = ({ variant = 'primary', render }: Props) => {
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.CommentsNavigationProp>();
     const handlePressLogo = React.useCallback(() => {
         navigation.navigate('Home');
     }, [navigation]);
@@ -46,6 +45,7 @@ const HeaderDesktopBottomTab = ({
             <LogoContainer onPress={handlePressLogo}>
                 <Logo size="small" variant="logotype-stroke" />
             </LogoContainer>
+            {render || null}
         </Container>
     );
 };

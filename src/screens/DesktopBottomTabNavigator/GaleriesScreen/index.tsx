@@ -1,162 +1,177 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import {
-    ActivityIndicator,
-    FlatList,
-    View,
-    useWindowDimensions,
-} from 'react-native';
+import { FlatList, Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import styled, { useTheme } from 'styled-components/native';
 
 import {
+    BottomLoader,
+    FullScreenLoader,
+    GalerieModal,
+    HeaderDesktopBottomTab,
+    SearchBar,
+    Typography,
+} from '#components';
+import { useComponentSize } from '#hooks';
+import {
     fetchGaleries,
-    resetGaleriesFilters,
     setGaleries,
+    setGaleriesNameFilter,
 } from '#store/actions';
 import {
+    filtersGaleriesNameSelector,
     galeriesStatusSelector,
     galeriesEndSelector,
     galeriesAllIdsSelector,
 } from '#store/selectors';
 
-import GalerieModal from './GalerieModal';
-import { SearchBar, Typography } from '#components';
+import { Container, Header } from './styles';
 
-const Container = styled.View`
-    flex: 1;
-`;
-const Header = styled.View`
-    padding: ${({ theme }) =>
-        `0 ${theme.spacings.small} ${theme.spacings.small}`};
-`;
+// TODO:
+// need to scroll a little bit when fetch onReachEnd
+// and allIds have new content.
+const GaleriesScreen = () => {
+    const { onLayout, size } = useComponentSize();
 
-type Props = {
-    navigation: Screen.DesktopBottomTab.GaleriesNavigationProp;
-};
-
-const GaleriesScreen = ({ navigation }: Props) => {
-    const dimension = useWindowDimensions();
-    const theme = useTheme();
     const dispatch = useDispatch();
-    const [name, setName] = React.useState<string>('');
+    const filtersGaleriesName = useSelector(filtersGaleriesNameSelector);
+    const galeriesAllIds = useSelector(galeriesAllIdsSelector);
+    const galeriesEnd = useSelector(galeriesEndSelector);
+    const galeriesStatus = useSelector(galeriesStatusSelector);
 
-    const galeriesAllIds = useSelector(galeriesAllIdsSelector(name));
-    const galeriesEnd = useSelector(galeriesEndSelector(name));
-    const galeriesStatus = useSelector(galeriesStatusSelector(name));
-
+    const [fetchFinished, setFetchFinished] = React.useState<boolean>(true);
     const [firstFetchFinished, setFirstFetchFinished] =
         React.useState<boolean>(false);
-    const [fetchFinished, setFetchFinished] = React.useState<boolean>(true);
+    const [hasFocus, setHasFocus] = React.useState<boolean>(false);
+    const [isFirstLoad, setIsFirstLoad] = React.useState<boolean>(true);
+    const [name, setName] = React.useState<string>('');
+    const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
 
-    React.useEffect(() => {
-        dispatch(fetchGaleries());
-    }, []);
-    React.useEffect(() => {
-        if (galeriesStatus === 'SUCCESS' && firstFetchFinished === false) {
-            setTimeout(() => {
-                setFirstFetchFinished(true);
-            }, 500);
-        }
-    }, [galeriesStatus, firstFetchFinished]);
-    React.useEffect(() => {
-        if (galeriesStatus === 'SUCCESS' && fetchFinished === false) {
-            setFetchFinished(true);
-        }
-    }, [galeriesStatus, fetchFinished]);
-
-    const removeGalerie = React.useCallback((id: string) => {
-        galeriesAllIds.filter((galerieId) => galerieId !== id);
-        dispatch(resetGaleriesFilters());
-        dispatch(
-            setGaleries({
-                data: {
-                    allIds: galeriesAllIds,
-                },
-            })
-        );
-    }, []);
-
-    const handlePress = React.useCallback(
-        (id) => {
-            navigation.navigate('Galerie', { id });
+    const getItemLayout = React.useCallback(
+        (_, index) => ({
+            length: 249,
+            offset: 249 * index,
+            index,
+        }),
+        []
+    );
+    const handleChangeText = React.useCallback(
+        (e: string) => {
+            setSearchFinished(false);
+            setName(e);
+            dispatch(setGaleriesNameFilter(e.trim()));
         },
-        [navigation]
+        [searchFinished]
     );
     const handleReachEnd = React.useCallback(() => {
-        if (!galeriesEnd) {
+        if (!galeriesEnd && galeriesStatus !== 'FETCHING') {
             setFetchFinished(false);
             dispatch(fetchGaleries());
         }
-    }, [galeriesEnd]);
-    React.useEffect(() => {
-        if (name !== '' && galeriesStatus === 'PENDING') {
-            setFirstFetchFinished(false);
-            dispatch(fetchGaleries({ meta: { query: { name } } }));
-        }
-    }, [name, galeriesStatus]);
+    }, [galeriesEnd, galeriesStatus]);
+    const keyExtractor = React.useCallback((id) => id, []);
+    const onScrollBeginDrag = React.useCallback(() => Keyboard.dismiss(), []);
+    const onStopTyping = React.useCallback(() => {
+        setSearchFinished(true);
+    }, []);
+    const removeGalerie = React.useCallback(
+        (id: string) => {
+            galeriesAllIds.filter((galerieId) => galerieId !== id);
+            dispatch(
+                setGaleries({
+                    data: {
+                        allIds: galeriesAllIds,
+                    },
+                    meta: {
+                        query: {
+                            name: filtersGaleriesName,
+                        },
+                    },
+                })
+            );
+        },
+        [galeriesAllIds]
+    );
+    const renderItem = React.useCallback(
+        ({ item }) => {
+            return (
+                <GalerieModal
+                    animationOnMount={isFirstLoad}
+                    id={item}
+                    removeGalerie={removeGalerie}
+                />
+            );
+        },
+        [galeriesStatus, isFirstLoad]
+    );
 
-    const onChangeText = (e: string) => {
-        setName(e);
-    };
+    useFocusEffect(
+        React.useCallback(() => {
+            setHasFocus(true);
+            return () => {
+                setHasFocus(false);
+                setName('');
+                dispatch(setGaleriesNameFilter(''));
+            };
+        }, [])
+    );
+
+    // Check if need opacity animation on mount.
+    React.useEffect(() => {
+        if (firstFetchFinished && hasFocus) {
+            if (galeriesStatus === 'PENDING') {
+                setIsFirstLoad(true);
+            } else {
+                setIsFirstLoad(false);
+            }
+        }
+    }, [firstFetchFinished, galeriesStatus, hasFocus]);
+    // Fetch galeries
+    React.useEffect(() => {
+        if (galeriesStatus === 'PENDING' && hasFocus) {
+            setFirstFetchFinished(false);
+            dispatch(fetchGaleries({ name: filtersGaleriesName }));
+        }
+    }, [galeriesStatus, filtersGaleriesName, hasFocus]);
+    // Check if fetch is finished
+    React.useEffect(() => {
+        if (
+            (galeriesStatus === 'SUCCESS' || galeriesStatus === 'ERROR') &&
+            hasFocus
+        ) {
+            setFirstFetchFinished(true);
+            if (!fetchFinished) setFetchFinished(true);
+        }
+    }, [fetchFinished, galeriesStatus, hasFocus]);
 
     return (
         <Container>
-            <Header>
+            <Header onLayout={onLayout}>
+                <HeaderDesktopBottomTab />
                 <Typography fontSize={24}>Galeries</Typography>
-                <SearchBar value={name} onChangeText={onChangeText} />
+                <SearchBar
+                    onChangeText={handleChangeText}
+                    onStopTyping={onStopTyping}
+                    value={name}
+                />
             </Header>
-            {firstFetchFinished ? (
+            {(firstFetchFinished || searchFinished) && (
                 <FlatList
-                    data={galeriesAllIds}
-                    renderItem={({ item }) => {
-                        return (
-                            <GalerieModal
-                                handlePress={() => handlePress(item)}
-                                id={item}
-                                removeGalerie={removeGalerie}
-                            />
-                        );
+                    contentContainerStyle={{
+                        paddingTop: size ? size.height : 0,
                     }}
-                    keyExtractor={(id) => id}
+                    data={galeriesAllIds}
+                    getItemLayout={getItemLayout}
+                    keyExtractor={keyExtractor}
+                    maxToRenderPerBatch={5}
                     onEndReached={handleReachEnd}
                     onEndReachedThreshold={0.1}
+                    onScrollBeginDrag={onScrollBeginDrag}
+                    renderItem={renderItem}
+                    showsVerticalScrollIndicator={false}
                 />
-            ) : (
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ActivityIndicator
-                        size="large"
-                        color={theme.colors.primary}
-                    />
-                </View>
             )}
-            {!fetchFinished && (
-                <View
-                    style={{
-                        position: 'absolute',
-                        bottom: 15,
-                        flex: 1,
-                        alignItems: 'center',
-                        width: dimension.width,
-                    }}
-                >
-                    <View
-                        style={{
-                            width: 45,
-                            height: 45,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: theme.colors.primary,
-                            borderRadius: 1000,
-                        }}
-                    >
-                        <ActivityIndicator
-                            size="small"
-                            color={theme.colors['secondary-light']}
-                        />
-                    </View>
-                </View>
-            )}
+            <FullScreenLoader show={!firstFetchFinished && !searchFinished} />
+            <BottomLoader show={!fetchFinished} />
         </Container>
     );
 };

@@ -1,3 +1,5 @@
+export { default as filtersGaleriesNameSelector } from './filtersGaleriesName.selector';
+
 export { default as galerieSelector } from './galerie.selector';
 export { default as galeriesEndSelector } from './galeriesEnd.selector';
 export { default as galeriesSelector } from './galeries.selector';

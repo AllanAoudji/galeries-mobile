@@ -39,13 +39,13 @@ const CustomButton = ({
     return (
         <Container
             disable={disable || loading}
-            onPress={() => {
-                if (onPress && !disable && !loading) onPress();
-            }}
             mb={mb}
             ml={ml}
             mr={mr}
             mt={mt}
+            onPress={() => {
+                if (onPress && !disable && !loading) onPress();
+            }}
             small={small}
             variant={variant}
         >
@@ -65,7 +65,7 @@ const CustomButton = ({
             <Typography
                 color={variant === 'fill' ? 'secondary-light' : 'primary-dark'}
                 fontFamily="bold"
-                fontSize={small ? 14 : 24}
+                fontSize={small ? 14 : 18}
             >
                 {loading ? (
                     <ActivityIndicator

@@ -57,3 +57,8 @@ export const FIELD_REQUIREMENT = {
     USERNAME_MIN_LENGTH: 3,
     USERNAME_MAX_LENGTH: 30,
 };
+
+export const GLOBAL_STYLE = {
+    BOTTOM_TAB_HEIGHT: 50,
+    HEADER_TAB_HEIGHT: 124,
+};

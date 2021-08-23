@@ -113,6 +113,7 @@ declare global {
             type: string;
         };
         type Entity =
+            | '[FILTERS]'
             | '[FRAMES]'
             | '[GALERIES]'
             | '[NOTIFICATION]'
@@ -127,11 +128,13 @@ declare global {
             url?: string;
         };
         type Reducer = {
+            filters: {
+                galeries: {
+                    name: string;
+                };
+            };
             galeries: {
-                allIds: string[];
-                byId: { [key: string]: Models.Galerie };
-                end: boolean;
-                filters: {
+                allIdsByName: {
                     [key: string]: {
                         allIds: string[];
                         end: boolean;
@@ -139,8 +142,7 @@ declare global {
                         status: Store.Status;
                     };
                 };
-                previousGalerie?: string;
-                status: Status;
+                byId: { [key: string]: Store.Models.Galerie };
             };
             notification: Store.Models.Notification | null;
             user: {

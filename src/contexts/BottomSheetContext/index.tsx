@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Keyboard, useWindowDimensions } from 'react-native';
+import { BackHandler, useWindowDimensions } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import {
     interpolateColor,
@@ -78,12 +78,33 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     // Show overlay when 'show' state is true.
     // Reset all sharedValue/value when show === false.
     React.useEffect(() => {
-        if (show)
+        let BackHandlerListerner: any;
+        if (show) {
             overLayBackgroundColor.value = withTiming(
                 1,
                 ANIMATIONS.TIMING_CONFIG()
             );
-        else resetBottomSheet();
+            BackHandlerListerner = BackHandler.addEventListener(
+                'hardwareBackPress',
+                () => {
+                    if (show) {
+                        setShow(false);
+                        return true;
+                    }
+                    return false;
+                }
+            );
+        } else {
+            resetBottomSheet();
+            if (BackHandlerListerner) {
+                BackHandlerListerner.remove();
+            }
+        }
+        return () => {
+            if (BackHandlerListerner) {
+                BackHandlerListerner.remove();
+            }
+        };
     }, [show]);
 
     // Display sheet content
@@ -122,14 +143,14 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     const closeBottomSheet = React.useCallback((callback?: () => void) => {
         overLayBackgroundColor.value = withTiming(
             0,
-            ANIMATIONS.TIMING_CONFIG(200),
+            ANIMATIONS.TIMING_CONFIG(800),
             (isFinished) => {
                 if (isFinished) runOnJS(setShow)(false);
             }
         );
         containerTop.value = withTiming(
             dimension.height,
-            ANIMATIONS.TIMING_CONFIG(200),
+            ANIMATIONS.TIMING_CONFIG(800),
             (isFinished) => {
                 if (isFinished) {
                     runOnJS(setContent)(null);
@@ -142,7 +163,7 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     const fadeOutBottomSheet = React.useCallback((callback?: () => void) => {
         opacity.value = withTiming(
             0,
-            ANIMATIONS.TIMING_CONFIG(200),
+            ANIMATIONS.TIMING_CONFIG(),
             (isFinish) => {
                 if (isFinish) {
                     runOnJS(setShow)(false);

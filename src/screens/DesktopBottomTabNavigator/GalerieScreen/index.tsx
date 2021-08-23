@@ -30,15 +30,7 @@ const GalerieScreen = ({ route, navigation }: Props) => {
         }
     }, [route, navigation]);
 
-    // React.useEffect(() => {
-    //     if (!galerie) {
-    //         console.log('galerie not found');
-    //     }
-    // }, [galerie]);
-
-    if (!galerie) {
-        return <></>;
-    }
+    if (!galerie) return null;
 
     return (
         <Container>

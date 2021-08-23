@@ -22,6 +22,7 @@ type Props = {
     keyboardType?: KeyboardType;
     label?: string;
     loading?: boolean;
+    maxLength?: number;
     multiline?: boolean;
     onBlur: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
     onChangeText: (text: string) => void;
@@ -31,10 +32,14 @@ type Props = {
     value: string;
 };
 
+// TODO:
+// Add label animation (position && fontSize)
+// Did I need a new component AnimatedTypography?
 const CustomTextInput = ({
     editable = true,
     error,
     keyboardType = 'default',
+    maxLength,
     multiline = false,
     label,
     loading = false,
@@ -48,6 +53,15 @@ const CustomTextInput = ({
     const textInputRef = React.useRef<any>(null);
 
     const [hasFocus, setHasFocus] = React.useState<boolean>(false);
+
+    const typographyColor: keyof Style.Colors = React.useMemo(() => {
+        if (error && touched) return 'danger';
+        if (loading) return 'black';
+        return 'primary-dark';
+    }, [error, touched, loading]);
+    const typographyFontSize: keyof Style.FontSizes = React.useMemo(() => {
+        return hasFocus || value ? 12 : 14;
+    }, [hasFocus, value]);
 
     const handleOnBlur = React.useCallback(
         (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
@@ -74,16 +88,8 @@ const CustomTextInput = ({
                 <LabelContainer>
                     <LabelAnimation hasFocus={hasFocus} hasValue={!!value}>
                         <Typography
-                            color={(() => {
-                                if (error && touched) {
-                                    return 'danger';
-                                }
-                                if (loading) {
-                                    return 'black';
-                                }
-                                return 'primary-dark';
-                            })()}
-                            fontSize={hasFocus || value ? 12 : 14}
+                            color={typographyColor}
+                            fontSize={typographyFontSize}
                         >
                             {`${label.toLowerCase()} ${
                                 optional ? ' (optional)' : ''
@@ -97,8 +103,9 @@ const CustomTextInput = ({
                 hasError={!!error && touched}
                 keyboardType={keyboardType}
                 loading={loading}
+                maxLength={maxLength}
                 multiline={multiline}
-                numberOfLines={multiline ? 10 : 1}
+                numberOfLines={multiline ? 5 : 1}
                 onBlur={handleOnBlur}
                 onChangeText={onChangeText}
                 onFocus={handleOnFocus}
@@ -106,7 +113,7 @@ const CustomTextInput = ({
                 secureTextEntry={secureTextEntry}
                 selectionColor={!!error && touched ? '#fb6d51' : '#414cb4'}
                 value={value}
-                style={{ textAlignVertical: 'top' }}
+                style={{ textAlignVertical: multiline ? 'top' : 'center' }}
             />
             <ErrorContainer>
                 <Typography color="danger" fontFamily="bold" fontSize={12}>

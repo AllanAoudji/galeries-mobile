@@ -13,13 +13,33 @@ const TextInputStyled = styled.TextInput`
 
 type Props = {
     onChangeText: (text: string) => void;
+    onStopTyping: () => void;
     value: string;
 };
 
-const SearchBar = ({ value, onChangeText }: Props) => {
+// TODO:
+// Need a real searchBar...
+const SearchBar = ({ value, onChangeText, onStopTyping }: Props) => {
+    const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+    const handleChangeText = React.useCallback(
+        (e) => {
+            if (timer.current) clearTimeout(timer.current);
+            timer.current = setTimeout(onStopTyping, 1000);
+            onChangeText(e);
+        },
+        [onChangeText]
+    );
+
+    React.useEffect(
+        () => () => {
+            if (timer.current) clearTimeout(timer.current);
+        },
+        []
+    );
+
     return (
         <Container>
-            <TextInputStyled onChangeText={onChangeText} value={value} />
+            <TextInputStyled onChangeText={handleChangeText} value={value} />
         </Container>
     );
 };

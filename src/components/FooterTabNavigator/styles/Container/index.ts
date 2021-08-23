@@ -1,13 +1,15 @@
+import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
-const Container = styled.View`
+import { GLOBAL_STYLE } from '#helpers/constants';
+
+const Container = styled(Animated.View)`
     align-items: stretch;
     background-color: ${({ theme }) => theme.colors['secondary-light']};
     border-top-color: ${({ theme }) => theme.colors.primary};
     border-top-width: 1px;
-    bottom: 0;
     flex-direction: row;
-    height: 62px;
+    height: ${() => `${GLOBAL_STYLE.BOTTOM_TAB_HEIGHT + 1}px`};
     justify-content: center;
     position: absolute;
     width: 100%;

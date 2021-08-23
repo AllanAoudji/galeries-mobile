@@ -18,6 +18,10 @@ type Props = {
     render: (props: RenderProps) => JSX.Element;
 };
 
+// TODO:
+// This component is used right now for createGalerieScreen
+// createGalerieScreen gonna be replace by a modal
+// in the long term PageTransition should be delete
 const PageTransition = ({ render }: Props) => {
     const dimension = useWindowDimensions();
     const opacity = useSharedValue(0);

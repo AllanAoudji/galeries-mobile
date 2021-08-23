@@ -1,9 +1,12 @@
 import styled from 'styled-components/native';
+import Animated from 'react-native-reanimated';
 
-const Body = styled.View`
+const Body = styled(Animated.View)`
     background-color: ${({ theme }) => theme.colors['secondary-light']};
-    border-top-right-radius: ${({ theme }) => theme.spacings.normal};
     padding-top: ${({ theme }) => theme.spacings.small};
+    position: absolute;
+    width: 100%;
+    bottom: 0;
 `;
 
 export default Body;

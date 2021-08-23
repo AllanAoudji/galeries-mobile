@@ -18,7 +18,7 @@ const Container = styled.Pressable<Props>`
     border-radius: ${(props) => (props.small ? '5px' : '50px')};
     border-width: ${(props) => (props.variant === 'stroke' ? '2px' : '0px')};
     flex-direction: row;
-    height: ${(props) => (props.small ? '35px' : '42px')};
+    height: ${(props) => (props.small ? '35px' : '40px')};
     justify-content: center;
     margin-bottom: ${({ mb, theme }) => (mb ? theme.spacings[mb] : 0)};
     margin-left: ${({ ml, theme }) => (ml ? theme.spacings[ml] : 0)};

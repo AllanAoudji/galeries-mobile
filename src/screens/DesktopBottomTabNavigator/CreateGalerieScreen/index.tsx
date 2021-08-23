@@ -10,13 +10,17 @@ import {
     FormScreen,
     PageTransition,
 } from '#components';
-import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
+import {
+    END_POINT,
+    ERROR_MESSAGE,
+    FIELD_REQUIREMENT,
+} from '#helpers/constants';
 import request from '#helpers/request';
 import { createGaleriesSchema } from '#helpers/schemas';
 import {
     GALERIES,
     normalizeData,
-    resetGaleriesFilters,
+    resetGaleries,
     setNotification,
 } from '#store/actions';
 
@@ -31,9 +35,10 @@ const initialValues = {
     name: '',
 };
 
+// TODO:
+// This page is supposed to become a modal
 const CreateGalerieScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
-
     const formik = useFormik({
         onSubmit: async (values) => {
             setLoading(true);
@@ -44,7 +49,6 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
             })
                 .then((res) => {
                     if (res.data.data && res.data.data.galerie) {
-                        dispatch(resetGaleriesFilters());
                         dispatch(
                             normalizeData({
                                 data: {
@@ -57,6 +61,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                                 },
                             })
                         );
+                        dispatch(resetGaleries());
                         setGalerieId(res.data.data.galerie.id);
                     } else {
                         dispatch(
@@ -117,6 +122,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         validationSchema: createGaleriesSchema,
     });
 
+    const [galerieId, setGalerieId] = React.useState<string | null>(null);
     const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<
         typeof initialValues
@@ -124,13 +130,6 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         description: '',
         name: '',
     });
-    const [galerieId, setGalerieId] = React.useState<string | null>(null);
-
-    React.useEffect(() => {
-        if (galerieId) {
-            navigation.navigate('Galerie', { id: galerieId });
-        }
-    }, [galerieId]);
 
     const disableButton = React.useMemo(() => {
         const clientHasError =
@@ -148,6 +147,14 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         }
     }, [loading, navigation]);
 
+    React.useEffect(() => {
+        if (galerieId) {
+            // TODO:
+            // Should trigger animation then navigate
+            navigation.navigate('Galerie', { id: galerieId });
+        }
+    }, [galerieId, navigation]);
+
     return (
         <PageTransition
             render={({ handleClose }) => (
@@ -161,6 +168,9 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                                     }
                                     label="name"
                                     loading={loading}
+                                    maxLength={
+                                        FIELD_REQUIREMENT.GALERIE_NAME_MAX_LENGTH
+                                    }
                                     onBlur={formik.handleBlur('name')}
                                     onChangeText={(e: string) => {
                                         setServerErrors((prevState) => ({
@@ -180,6 +190,9 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                                     }
                                     label="description"
                                     loading={loading}
+                                    maxLength={
+                                        FIELD_REQUIREMENT.GALERIE_DESCRIPTION_MAX_LENGTH
+                                    }
                                     multiline
                                     onBlur={formik.handleBlur('description')}
                                     onChangeText={(e: string) => {
@@ -205,7 +218,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                                 title="create galerie"
                             />
                             <CustomButton
-                                loading={loading}
+                                disable={disableButton || loading}
                                 onPress={() => {
                                     handleClose();
                                     handlePressReturn();
@@ -216,10 +229,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                         </View>
                     }
                     title="create galerie"
-                    handleOnPressReturn={() => {
-                        handleClose();
-                        handlePressReturn();
-                    }}
+                    handleOnPressReturn={handlePressReturn}
                 />
             )}
         />

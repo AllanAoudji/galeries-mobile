@@ -31,5 +31,19 @@ export default function App() {
 }
 
 // TODO:
-// Extract bottomTab height
-// And create a BottomTabContainer = padding-bottom: bottomTabHeight
+// Use HeaderBottomTab on Render components
+// Rename Components relative to bottomTabScreen
+// Check all files
+
+// Remake header (too large)
+// style search bar
+// Remake buttons (too large)
+// Design galeries Card
+
+// Make create galerie a modal
+
+// Show BottomTab Render Component when Header/+SubHeader layout is calculated
+// Hide header on scroll
+
+// Clean form when not focused
+// do not allow to type more than 200 chars galerie's description

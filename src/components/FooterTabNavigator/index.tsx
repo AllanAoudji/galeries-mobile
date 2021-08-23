@@ -2,34 +2,48 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import { Keyboard } from 'react-native';
 import styled from 'styled-components/native';
+import {
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+} from 'react-native-reanimated';
 
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 
 import { Container, IconContainer, PictogramContainer } from './styles';
+import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 
 const TransparantButton = styled.Pressable`
     padding: 10px 0;
 `;
 
-const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
-    const [keyboardIsVisible, setKeyboardIsVisible] =
-        React.useState<boolean>(false);
+type Props = {
+    keyboardShown: boolean;
+};
+
+const FooterTabNavigator = ({
+    state,
+    navigation,
+    keyboardShown,
+}: BottomTabBarProps & Props) => {
+    const bottom = useSharedValue(0);
 
     React.useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener(
-            'keyboardDidShow',
-            () => setKeyboardIsVisible(true)
-        );
-        const keyboardDidHideListener = Keyboard.addListener(
-            'keyboardDidHide',
-            () => setKeyboardIsVisible(false)
-        );
+        if (keyboardShown) {
+            bottom.value = withTiming(
+                -GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+                ANIMATIONS.TIMING_CONFIG()
+            );
+        } else {
+            bottom.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
+        }
+    }, [keyboardShown]);
 
-        return () => {
-            keyboardDidHideListener.remove();
-            keyboardDidShowListener.remove();
+    const style = useAnimatedStyle(() => {
+        return {
+            bottom: bottom.value,
         };
     }, []);
 
@@ -41,27 +55,27 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
         React.useContext(BottomSheetContext);
 
     const handleCreateGaleriePress = React.useCallback(() => {
-        if (keyboardIsVisible) Keyboard.dismiss();
+        if (keyboardShown) Keyboard.dismiss();
         else fadeOutBottomSheet(() => navigation.navigate('CreateGalerie'));
-    }, [navigation, keyboardIsVisible]);
+    }, [navigation, keyboardShown]);
     const handleHomePress = React.useCallback(() => {
-        if (keyboardIsVisible) Keyboard.dismiss();
+        if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Home');
-    }, [navigation, keyboardIsVisible]);
+    }, [navigation, keyboardShown]);
     const handleGaleriesPress = React.useCallback(() => {
-        if (keyboardIsVisible) Keyboard.dismiss();
+        if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Galeries');
-    }, [navigation, keyboardIsVisible]);
+    }, [navigation, keyboardShown]);
     const handleNotificationsPress = React.useCallback(() => {
-        if (keyboardIsVisible) Keyboard.dismiss();
+        if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Notifications');
-    }, [navigation, keyboardIsVisible]);
+    }, [navigation, keyboardShown]);
     const handleProfilePress = React.useCallback(() => {
-        if (keyboardIsVisible) Keyboard.dismiss();
+        if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Profile');
-    }, [navigation, keyboardIsVisible]);
+    }, [navigation, keyboardShown]);
     const handleAddSubscribePress = React.useCallback(() => {
-        if (keyboardIsVisible) Keyboard.dismiss();
+        if (keyboardShown) Keyboard.dismiss();
         else
             openBottomSheet(() => (
                 <>
@@ -77,7 +91,7 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
                     </TransparantButton>
                 </>
             ))();
-    }, [openBottomSheet, handleCreateGaleriePress, keyboardIsVisible]);
+    }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
 
     const homeVariant = React.useMemo(
         () => (currentRouteName === 'Home' ? 'home-fill' : 'home-stroke'),
@@ -112,22 +126,22 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
     }
 
     return (
-        <Container>
+        <Container style={style}>
             <IconContainer onPress={handleHomePress}>
                 <PictogramContainer>
                     <Pictogram color="primary" variant={homeVariant} />
                 </PictogramContainer>
-                <Typography color="primary" fontFamily="light" fontSize={12}>
+                {/* <Typography color="primary" fontFamily="light" fontSize={12}>
                     home
-                </Typography>
+                </Typography> */}
             </IconContainer>
             <IconContainer onPress={handleGaleriesPress}>
                 <PictogramContainer>
                     <Pictogram color="primary" variant={galeriesVariant} />
                 </PictogramContainer>
-                <Typography color="primary" fontFamily="light" fontSize={12}>
+                {/* <Typography color="primary" fontFamily="light" fontSize={12}>
                     galeries
-                </Typography>
+                </Typography> */}
             </IconContainer>
             <IconContainer onPress={handleAddSubscribePress}>
                 <Pictogram
@@ -143,17 +157,17 @@ const FooterTabNavigator = ({ state, navigation }: BottomTabBarProps) => {
                 <PictogramContainer>
                     <Pictogram color="primary" variant={notificationsvariant} />
                 </PictogramContainer>
-                <Typography color="primary" fontFamily="light" fontSize={12}>
+                {/* <Typography color="primary" fontFamily="light" fontSize={12}>
                     notifications
-                </Typography>
+                </Typography> */}
             </IconContainer>
             <IconContainer onPress={handleProfilePress}>
                 <PictogramContainer>
                     <Pictogram color="primary" variant={profileVariant} />
                 </PictogramContainer>
-                <Typography color="primary" fontFamily="light" fontSize={12}>
+                {/* <Typography color="primary" fontFamily="light" fontSize={12}>
                     profile
-                </Typography>
+                </Typography> */}
             </IconContainer>
         </Container>
     );

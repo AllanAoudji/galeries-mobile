@@ -9,21 +9,24 @@ import { notificationSelector } from '#store/selectors';
 
 import { Button, Container, InnerContainer } from './styles';
 
+// TODO:
+// Need animation
 const Notification = () => {
     const dispatch = useDispatch();
     const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
     const notification = useSelector(notificationSelector);
 
     React.useEffect(() => {
+        let timeout: NodeJS.Timeout;
         if (notification) {
-            timer.current = setTimeout(() => {
+            timeout = setTimeout(() => {
                 dispatch(resetNotification());
             }, CLOSE_NOTIFICATION_DELAY);
         }
+        return () => {
+            if (timer.current) clearTimeout(timeout);
+        };
     }, [notification]);
-    React.useEffect(() => () => {
-        if (timer.current) clearTimeout(timer.current);
-    });
 
     const handleOnPress = React.useCallback(() => {
         if (timer.current) clearTimeout(timer.current);
