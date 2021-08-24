@@ -15,6 +15,8 @@ import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { Container, IconContainer, PictogramContainer } from './styles';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 
+import CreateGalerieModal from './CreateGalerieModal';
+
 const TransparantButton = styled.Pressable`
     padding: 10px 0;
 `;
@@ -31,6 +33,9 @@ const FooterTabNavigator = ({
     navigation,
     keyboardShown,
 }: BottomTabBarProps & Props) => {
+    const [openGalerieModal, setOpenGalerieModal] =
+        React.useState<boolean>(false);
+
     const bottom = useSharedValue(0);
 
     React.useEffect(() => {
@@ -59,7 +64,10 @@ const FooterTabNavigator = ({
 
     const handleCreateGaleriePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
-        else fadeOutBottomSheet(() => navigation.navigate('CreateGalerie'));
+        else {
+            fadeOutBottomSheet();
+            setOpenGalerieModal(true);
+        }
     }, [navigation, keyboardShown]);
     const handleHomePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
@@ -120,59 +128,52 @@ const FooterTabNavigator = ({
         [currentRouteName]
     );
 
-    if (
-        currentRouteName === 'Comments' ||
-        currentRouteName === 'CreateGalerie' ||
-        currentRouteName === 'Likes'
-    ) {
+    if (currentRouteName === 'Comments' || currentRouteName === 'Likes') {
         return null;
     }
 
     return (
-        <Container style={style}>
-            <IconContainer onPress={handleHomePress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={homeVariant} />
-                </PictogramContainer>
-                {/* <Typography color="primary" fontFamily="light" fontSize={12}>
-                    home
-                </Typography> */}
-            </IconContainer>
-            <IconContainer onPress={handleGaleriesPress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={galeriesVariant} />
-                </PictogramContainer>
-                {/* <Typography color="primary" fontFamily="light" fontSize={12}>
-                    galeries
-                </Typography> */}
-            </IconContainer>
-            <IconContainer onPress={handleAddSubscribePress}>
-                <Pictogram
-                    color="primary"
-                    customSize={{
-                        height: 28,
-                        width: 28,
-                    }}
-                    variant="add/subscribe-stroke"
-                />
-            </IconContainer>
-            <IconContainer onPress={handleNotificationsPress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={notificationsvariant} />
-                </PictogramContainer>
-                {/* <Typography color="primary" fontFamily="light" fontSize={12}>
-                    notifications
-                </Typography> */}
-            </IconContainer>
-            <IconContainer onPress={handleProfilePress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={profileVariant} />
-                </PictogramContainer>
-                {/* <Typography color="primary" fontFamily="light" fontSize={12}>
-                    profile
-                </Typography> */}
-            </IconContainer>
-        </Container>
+        <>
+            <Container style={style}>
+                <IconContainer onPress={handleHomePress}>
+                    <PictogramContainer>
+                        <Pictogram color="primary" variant={homeVariant} />
+                    </PictogramContainer>
+                </IconContainer>
+                <IconContainer onPress={handleGaleriesPress}>
+                    <PictogramContainer>
+                        <Pictogram color="primary" variant={galeriesVariant} />
+                    </PictogramContainer>
+                </IconContainer>
+                <IconContainer onPress={handleAddSubscribePress}>
+                    <Pictogram
+                        color="primary"
+                        customSize={{
+                            height: 28,
+                            width: 28,
+                        }}
+                        variant="add/subscribe-stroke"
+                    />
+                </IconContainer>
+                <IconContainer onPress={handleNotificationsPress}>
+                    <PictogramContainer>
+                        <Pictogram
+                            color="primary"
+                            variant={notificationsvariant}
+                        />
+                    </PictogramContainer>
+                </IconContainer>
+                <IconContainer onPress={handleProfilePress}>
+                    <PictogramContainer>
+                        <Pictogram color="primary" variant={profileVariant} />
+                    </PictogramContainer>
+                </IconContainer>
+            </Container>
+            <CreateGalerieModal
+                handleClose={() => setOpenGalerieModal(false)}
+                open={openGalerieModal}
+            />
+        </>
     );
 };
 

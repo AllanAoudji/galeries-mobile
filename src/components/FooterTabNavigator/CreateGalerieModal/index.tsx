@@ -1,16 +1,22 @@
+import { AxiosError } from 'axios';
+import { useNavigation } from '@react-navigation/native';
+import { useFormik } from 'formik';
 import * as React from 'react';
 import { View } from 'react-native';
-import { useFormik } from 'formik';
+import {
+    interpolate,
+    runOnJS,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+} from 'react-native-reanimated';
 import { useDispatch } from 'react-redux';
 
-import { AxiosError } from 'axios';
+import FormScreen from '#components/FormScreen';
+import CustomTextInput from '#components/CustomTextInput';
+import CustomButton from '#components/CustomButton';
 import {
-    CustomButton,
-    CustomTextInput,
-    FormScreen,
-    PageTransition,
-} from '#components';
-import {
+    ANIMATIONS,
     END_POINT,
     ERROR_MESSAGE,
     FIELD_REQUIREMENT,
@@ -24,10 +30,11 @@ import {
     setNotification,
 } from '#store/actions';
 
-import { TextInputsContainer } from './styled';
+import { Container, TextInputsContainer } from './styles';
 
 type Props = {
-    navigation: Screen.DesktopBottomTab.CreateGalerieNavigationProp;
+    open: boolean;
+    handleClose: () => void;
 };
 
 const initialValues = {
@@ -35,10 +42,10 @@ const initialValues = {
     name: '',
 };
 
-// TODO:
-// This page is supposed to become a modal
-const CreateGalerieScreen = ({ navigation }: Props) => {
+const CreateGalerieModal = ({ handleClose, open }: Props) => {
     const dispatch = useDispatch();
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.GaleriesNavigationProp>();
     const formik = useFormik({
         onSubmit: async (values) => {
             setLoading(true);
@@ -130,6 +137,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         validationSchema: createGaleriesSchema,
     });
 
+    const [display, setDisplay] = React.useState<boolean>(false);
     const [galerieId, setGalerieId] = React.useState<string | null>(null);
     const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<
@@ -138,6 +146,15 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         description: '',
         name: '',
     });
+
+    const opacity = useSharedValue(0);
+    const style = useAnimatedStyle(() => {
+        const scale = interpolate(opacity.value, [0, 1], [1.1, 1]);
+        return {
+            opacity: opacity.value,
+            transform: [{ scale }],
+        };
+    }, []);
 
     const disableButton = React.useMemo(() => {
         const clientHasError =
@@ -148,100 +165,99 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         return clientHasError || serverHasError;
     }, [formik.submitCount, formik.errors, serverErrors]);
 
-    const handlePressReturn = React.useCallback(() => {
-        if (!loading) {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.navigate('Home');
-        }
-    }, [loading, navigation]);
-
+    React.useEffect(() => {
+        if (open) setDisplay(true);
+        else
+            opacity.value = withTiming(
+                0,
+                ANIMATIONS.TIMING_CONFIG(),
+                (isFinished) => {
+                    if (isFinished) runOnJS(setDisplay)(false);
+                }
+            );
+    }, [open]);
+    React.useEffect(() => {
+        if (display) opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
+    }, [display]);
     React.useEffect(() => {
         if (galerieId) {
-            // TODO:
-            // Should trigger animation then navigate
+            handleClose();
             navigation.navigate('Galerie', { id: galerieId });
         }
     }, [galerieId, navigation]);
 
+    if (!display) return null;
+
     return (
-        <PageTransition
-            render={({ handleClose }) => (
-                <FormScreen
-                    body={
-                        <View>
-                            <TextInputsContainer>
-                                <CustomTextInput
-                                    error={
-                                        formik.errors.name || serverErrors.name
-                                    }
-                                    label="name"
-                                    loading={loading}
-                                    maxLength={
-                                        FIELD_REQUIREMENT.GALERIE_NAME_MAX_LENGTH
-                                    }
-                                    onBlur={formik.handleBlur('name')}
-                                    onChangeText={(e: string) => {
-                                        setServerErrors((prevState) => ({
-                                            ...prevState,
-                                            name: '',
-                                        }));
-                                        formik.setFieldError('name', '');
-                                        formik.setFieldValue('name', e);
-                                    }}
-                                    touched={formik.touched.name || false}
-                                    value={formik.values.name}
-                                />
-                                <CustomTextInput
-                                    error={
-                                        formik.errors.description ||
-                                        serverErrors.description
-                                    }
-                                    label="description"
-                                    loading={loading}
-                                    maxLength={
-                                        FIELD_REQUIREMENT.GALERIE_DESCRIPTION_MAX_LENGTH
-                                    }
-                                    multiline
-                                    onBlur={formik.handleBlur('description')}
-                                    onChangeText={(e: string) => {
-                                        setServerErrors((prevState) => ({
-                                            ...prevState,
-                                            description: '',
-                                        }));
-                                        formik.setFieldError('description', '');
-                                        formik.setFieldValue('description', e);
-                                    }}
-                                    optional
-                                    touched={
-                                        formik.touched.description || false
-                                    }
-                                    value={formik.values.description}
-                                />
-                            </TextInputsContainer>
-                            <CustomButton
-                                disable={disableButton}
+        <Container style={style}>
+            <FormScreen
+                body={
+                    <View>
+                        <TextInputsContainer>
+                            <CustomTextInput
+                                error={formik.errors.name || serverErrors.name}
+                                label="name"
                                 loading={loading}
-                                mb="smallest"
-                                onPress={formik.handleSubmit}
-                                title="create galerie"
-                            />
-                            <CustomButton
-                                disable={disableButton || loading}
-                                onPress={() => {
-                                    handleClose();
-                                    handlePressReturn();
+                                maxLength={
+                                    FIELD_REQUIREMENT.GALERIE_NAME_MAX_LENGTH
+                                }
+                                onBlur={formik.handleBlur('name')}
+                                onChangeText={(e: string) => {
+                                    setServerErrors((prevState) => ({
+                                        ...prevState,
+                                        name: '',
+                                    }));
+                                    formik.setFieldError('name', '');
+                                    formik.setFieldValue('name', e);
                                 }}
-                                title="cancel"
-                                variant="stroke"
+                                touched={formik.touched.name || false}
+                                value={formik.values.name}
                             />
-                        </View>
-                    }
-                    title="create galerie"
-                    handleOnPressReturn={handlePressReturn}
-                />
-            )}
-        />
+                            <CustomTextInput
+                                error={
+                                    formik.errors.description ||
+                                    serverErrors.description
+                                }
+                                label="description"
+                                loading={loading}
+                                maxLength={
+                                    FIELD_REQUIREMENT.GALERIE_DESCRIPTION_MAX_LENGTH
+                                }
+                                multiline
+                                onBlur={formik.handleBlur('description')}
+                                onChangeText={(e: string) => {
+                                    setServerErrors((prevState) => ({
+                                        ...prevState,
+                                        description: '',
+                                    }));
+                                    formik.setFieldError('description', '');
+                                    formik.setFieldValue('description', e);
+                                }}
+                                optional
+                                touched={formik.touched.description || false}
+                                value={formik.values.description}
+                            />
+                        </TextInputsContainer>
+                        <CustomButton
+                            disable={disableButton}
+                            loading={loading}
+                            mb="smallest"
+                            onPress={formik.handleSubmit}
+                            title="create galerie"
+                        />
+                        <CustomButton
+                            disable={loading}
+                            onPress={handleClose}
+                            title="cancel"
+                            variant="stroke"
+                        />
+                    </View>
+                }
+                title="create galerie"
+                handleOnPressReturn={handleClose}
+            />
+        </Container>
     );
 };
 
-export default CreateGalerieScreen;
+export default CreateGalerieModal;

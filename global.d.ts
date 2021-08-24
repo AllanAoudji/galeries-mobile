@@ -8,7 +8,6 @@ declare global {
         namespace DesktopBottomTab {
             type ParamList = {
                 Comments: undefined;
-                CreateGalerie: undefined;
                 Galerie: { id: string } | undefined;
                 Galeries: undefined;
                 Home: undefined;
@@ -19,10 +18,6 @@ declare global {
             type CommentsNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'Comments'
-            >;
-            type CreateGalerieNavigationProp = BottomTabNavigationProp<
-                ParamList,
-                'CreateGalerie'
             >;
             type GalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,

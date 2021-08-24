@@ -7,7 +7,6 @@ import { useKeyboard } from '#hooks';
 
 import CommentScreen from './CommentsScreen';
 import Galerie from './GalerieScreen';
-import CreateGalerie from './CreateGalerieScreen';
 import GaleriesScreen from './GaleriesScreen';
 import HomeScreen from './HomeScreen';
 import NotificationsScreen from './NotificationsScreen';
@@ -79,14 +78,6 @@ const DesktopBottomTabNavigator = () => {
                         <CommentScreen />
                     </DesktopBottomTabScreenContainer>
                 )}
-            </Tab.Screen>
-            <Tab.Screen
-                name="CreateGalerie"
-                options={{
-                    headerShown: false,
-                }}
-            >
-                {(props) => <CreateGalerie {...props} />}
             </Tab.Screen>
             <Tab.Screen
                 name="Galerie"
