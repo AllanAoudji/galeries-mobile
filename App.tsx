@@ -31,14 +31,4 @@ export default function App() {
 }
 
 // TODO:
-// Use HeaderBottomTab on Render components
-// Rename Components relative to bottomTabScreen
-// Check all files
-
-// Make create galerie a modal
-
-// Show BottomTab Render Component when Header/+SubHeader layout is calculated
-// Hide header on scroll
-
 // Clean form when not focused
-// do not allow to type more than 200 chars galerie's description
