@@ -3,7 +3,6 @@ export { default as AnimatedTypography } from './AnimatedTypography';
 export { default as BottomLoader } from './BottomLoader';
 export { default as CustomButton } from './CustomButton';
 export { default as CustomTextInput } from './CustomTextInput';
-export { default as FooterTabNavigator } from './FooterTabNavigator';
 export { default as FormScreen } from './FormScreen';
 export { default as FullScreenLoader } from './FullScreenLoader';
 export { default as GalerieModal } from './GalerieModal';

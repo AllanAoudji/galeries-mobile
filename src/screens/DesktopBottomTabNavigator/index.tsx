@@ -1,8 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
-import { FooterTabNavigator } from '#components';
-import { DesktopBottomTabScreenContainer } from '#components/Screen';
+import {
+    DesktopBottomTabScreenContainer,
+    DesktopBottomTabScreenFooter,
+} from '#components/Screen';
 import { useKeyboard } from '#hooks';
 
 import CommentScreen from './CommentsScreen';
@@ -20,7 +22,10 @@ const DesktopBottomTabNavigator = () => {
 
     const tabBat = React.useCallback(
         (props) => (
-            <FooterTabNavigator keyboardShown={keyboardShown} {...props} />
+            <DesktopBottomTabScreenFooter
+                keyboardShown={keyboardShown}
+                {...props}
+            />
         ),
         [keyboardShown]
     );
