@@ -53,11 +53,11 @@ const BottomLoader = ({
         else {
             bottom.value = withTiming(
                 START_BOTTOM_POSITION,
-                ANIMATIONS.TIMING_CONFIG()
+                ANIMATIONS.TIMING_CONFIG(200)
             );
             opacity.value = withTiming(
                 0,
-                ANIMATIONS.TIMING_CONFIG(),
+                ANIMATIONS.TIMING_CONFIG(200),
                 (isFinished) => {
                     if (isFinished) {
                         runOnJS(setDisplay)(false);
@@ -68,10 +68,10 @@ const BottomLoader = ({
     }, [show]);
     React.useEffect(() => {
         if (display) {
-            opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
+            opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(200));
             bottom.value = withTiming(
                 endBottomPosition || END_BOTTOM_POSITION,
-                ANIMATIONS.TIMING_CONFIG()
+                ANIMATIONS.TIMING_CONFIG(200)
             );
         }
     }, [display]);

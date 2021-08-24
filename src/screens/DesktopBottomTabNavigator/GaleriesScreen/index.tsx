@@ -1,9 +1,17 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { FlatList, Keyboard } from 'react-native';
+import { Keyboard, StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+    interpolate,
+    useAnimatedScrollHandler,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+} from 'react-native-reanimated';
 
 import {
+    AnimatedFlatList,
     BottomLoader,
     FullScreenLoader,
     GalerieModal,
@@ -11,7 +19,8 @@ import {
     Typography,
 } from '#components';
 import { DesktopBottomTabScreenHeader } from '#components/Screen';
-import { GLOBAL_STYLE } from '#helpers/constants';
+import clamp from '#helpers/clamp';
+import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize } from '#hooks';
 import {
     fetchGaleries,
@@ -25,12 +34,8 @@ import {
     galeriesAllIdsSelector,
 } from '#store/selectors';
 
-import { Container, Header } from './styles';
+import { Container, Header, SearchBarContainer } from './styles';
 
-// TODO:
-// need to scroll a little bit when fetch onReachEnd
-// and allIds have new content.
-// animation header
 const GaleriesScreen = () => {
     const { onLayout, size } = useComponentSize();
 
@@ -46,7 +51,36 @@ const GaleriesScreen = () => {
     const [hasFocus, setHasFocus] = React.useState<boolean>(false);
     const [isFirstLoad, setIsFirstLoad] = React.useState<boolean>(true);
     const [name, setName] = React.useState<string>('');
-    const [searchFinished, setSearchFinished] = React.useState<boolean>(false);
+    const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
+
+    const translateY = useSharedValue(0);
+
+    const style = useAnimatedStyle(() => {
+        const transform = interpolate(
+            translateY.value,
+            [0, GLOBAL_STYLE.HEADER_TAB_HEIGHT],
+            [0, -GLOBAL_STYLE.HEADER_TAB_HEIGHT]
+        );
+        return {
+            transform: [{ translateY: transform }],
+        };
+    }, []);
+
+    const scrollHandler = useAnimatedScrollHandler({
+        onBeginDrag: (e, ctx: { position: number }) => {
+            ctx.position = e.contentOffset.y;
+        },
+        onScroll: (e, ctx) => {
+            const diff = e.contentOffset.y - ctx.position;
+            translateY.value = clamp(
+                translateY.value + diff,
+                0,
+                GLOBAL_STYLE.HEADER_TAB_HEIGHT
+            );
+        },
+    });
+
+    const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
 
     const getItemLayout = React.useCallback(
         (_, index) => ({
@@ -56,14 +90,11 @@ const GaleriesScreen = () => {
         }),
         []
     );
-    const handleChangeText = React.useCallback(
-        (e: string) => {
-            setSearchFinished(false);
-            setName(e);
-            dispatch(setGaleriesNameFilter(e.trim()));
-        },
-        [searchFinished]
-    );
+    const handleChangeText = React.useCallback((e: string) => {
+        setSearchFinished(false);
+        setName(e);
+        dispatch(setGaleriesNameFilter(e.trim()));
+    }, []);
     const handleReachEnd = React.useCallback(() => {
         if (!galeriesEnd && galeriesStatus !== 'FETCHING') {
             setFetchFinished(false);
@@ -71,6 +102,9 @@ const GaleriesScreen = () => {
         }
     }, [galeriesEnd, galeriesStatus]);
     const keyExtractor = React.useCallback((id) => id, []);
+    const onFocusSearchBar = React.useCallback(() => {
+        translateY.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(200));
+    }, []);
     const onScrollBeginDrag = React.useCallback(() => Keyboard.dismiss(), []);
     const onStopTyping = React.useCallback(() => {
         setSearchFinished(true);
@@ -106,8 +140,6 @@ const GaleriesScreen = () => {
         [galeriesStatus, isFirstLoad]
     );
 
-    const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
-
     useFocusEffect(
         React.useCallback(() => {
             setHasFocus(true);
@@ -140,42 +172,50 @@ const GaleriesScreen = () => {
     React.useEffect(() => {
         if (
             (galeriesStatus === 'SUCCESS' || galeriesStatus === 'ERROR') &&
-            hasFocus
+            hasFocus &&
+            searchFinished
         ) {
             setFirstFetchFinished(true);
             if (!fetchFinished) setFetchFinished(true);
         }
-    }, [fetchFinished, galeriesStatus, hasFocus]);
+    }, [fetchFinished, galeriesStatus, searchFinished, hasFocus]);
 
     return (
         <Container>
-            <Header onLayout={onLayout}>
+            <Header onLayout={onLayout} style={style}>
                 <DesktopBottomTabScreenHeader />
-                <Typography fontSize={24}>Galeries</Typography>
-                <SearchBar
-                    onChangeText={handleChangeText}
-                    onStopTyping={onStopTyping}
-                    value={name}
-                />
+                <SearchBarContainer currentHeight={StatusBar.currentHeight}>
+                    <Typography fontSize={24}>Galeries</Typography>
+                    <SearchBar
+                        mt="smallest"
+                        onChangeText={handleChangeText}
+                        onFocus={onFocusSearchBar}
+                        onStopTyping={onStopTyping}
+                        value={name}
+                    />
+                </SearchBarContainer>
             </Header>
-            {(firstFetchFinished || searchFinished) && (
-                <FlatList
+            {firstFetchFinished && (
+                <AnimatedFlatList
                     contentContainerStyle={{ paddingTop }}
                     data={galeriesAllIds}
                     getItemLayout={getItemLayout}
                     keyExtractor={keyExtractor}
-                    maxToRenderPerBatch={5}
+                    maxToRenderPerBatch={4}
                     onEndReached={handleReachEnd}
-                    onEndReachedThreshold={0.1}
+                    onEndReachedThreshold={0.2}
+                    onScroll={scrollHandler}
                     onScrollBeginDrag={onScrollBeginDrag}
+                    removeClippedSubviews={true}
                     renderItem={renderItem}
+                    scrollEventThrottle={4}
                     showsVerticalScrollIndicator={false}
                 />
             )}
-            <FullScreenLoader show={!firstFetchFinished && !searchFinished} />
+            <FullScreenLoader show={!firstFetchFinished} />
             <BottomLoader show={!fetchFinished} />
         </Container>
     );
 };
 
-export default GaleriesScreen;
+export default React.memo(GaleriesScreen, () => true);

@@ -17,6 +17,7 @@ import ModerationFill from './ModerationFill';
 import ModerationStroke from './ModerationStroke';
 import ProfileFill from './ProfileFill';
 import ProfileStroke from './ProfileStroke';
+import Search from './Search';
 import SettingsFill from './SettingsFill';
 import SettingsStroke from './SettingsStroke';
 import TicketFill from './TicketFill';
@@ -50,6 +51,7 @@ const variants = {
     'moderation-stroke': ModerationStroke,
     'profile-fill': ProfileFill,
     'profile-stroke': ProfileStroke,
+    search: Search,
     'settings-fill': SettingsFill,
     'settings-stroke': SettingsStroke,
     'ticket-fill': TicketFill,

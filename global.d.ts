@@ -245,6 +245,7 @@ declare global {
             | 'moderation-stroke'
             | 'profile-fill'
             | 'profile-stroke'
+            | 'search'
             | 'settings-fill'
             | 'settings-stroke'
             | 'ticket-fill'

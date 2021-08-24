@@ -35,11 +35,6 @@ export default function App() {
 // Rename Components relative to bottomTabScreen
 // Check all files
 
-// Remake header (too large)
-// style search bar
-// Remake buttons (too large)
-// Design galeries Card
-
 // Make create galerie a modal
 
 // Show BottomTab Render Component when Header/+SubHeader layout is calculated

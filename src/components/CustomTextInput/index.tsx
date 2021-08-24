@@ -48,9 +48,6 @@ const INITIAL_LABEL_CONTAINER_OPACITY = 0.5;
 const INITIAL_LABEL_CONTAINER_TOP = 21;
 const INITIAL_LABEL_FONT_SIZE = 14;
 
-// TODO:
-// Add label animation (position && fontSize)
-// Did I need a new component AnimatedTypography?
 const CustomTextInput = ({
     editable = true,
     error,

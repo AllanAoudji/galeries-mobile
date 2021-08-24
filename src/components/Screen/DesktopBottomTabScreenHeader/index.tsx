@@ -1,6 +1,6 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, ViewProps } from 'react-native';
 
 import Logo from '#components/Logo';
 import Pictogram from '#components/Pictogram';
@@ -16,7 +16,10 @@ interface Props {
     variant?: 'primary' | 'secondary';
 }
 
-const DesktopBottomTabScreenHeader = ({ variant = 'primary' }: Props) => {
+const DesktopBottomTabScreenHeader = ({
+    variant = 'primary',
+    ...rest
+}: ViewProps & Props) => {
     const navigation =
         useNavigation<Screen.DesktopBottomTab.CommentsNavigationProp>();
     const handlePressLogo = React.useCallback(() => {
@@ -34,7 +37,7 @@ const DesktopBottomTabScreenHeader = ({ variant = 'primary' }: Props) => {
     }, [variant, navigation]);
 
     return (
-        <Container>
+        <Container {...rest}>
             <PictogramContainer
                 currentHeight={StatusBar.currentHeight}
                 onPress={handlePressPictogram}
