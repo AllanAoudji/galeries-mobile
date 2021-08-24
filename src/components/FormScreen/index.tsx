@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Keyboard, StatusBar, useWindowDimensions } from 'react-native';
+import {
+    Keyboard,
+    Pressable,
+    StatusBar,
+    useWindowDimensions,
+    View,
+} from 'react-native';
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
@@ -14,7 +20,6 @@ import { useKeyboard, useComponentSize } from '#hooks';
 
 import {
     Body,
-    BodyScrollView,
     Container,
     Footer,
     Form,
@@ -25,20 +30,26 @@ import {
 } from './styles';
 
 type Props = {
-    body: React.ReactNode;
-    footer?: React.ReactNode;
     handleOnPressReturn?: () => void;
     title: string;
+    renderTop: React.ReactNode;
+    renderBottom?: React.ReactNode;
+    renderFooter?: React.ReactNode;
 };
 
 const BODY_BORDER_TOP_RIGHT_RADIUS = 45;
 const KEYBOARD_HEADER_HEIGHT = 100;
 
 // TODO:
-// three newProps =
-// renderTop/renderBottom/renderFooter
-// justifyContent === space-between renderTop _____ (rendeerBottom|renderFooter)
-const FormScreen = ({ body, footer, handleOnPressReturn, title }: Props) => {
+// use styledComponent
+// and interpolation for animations
+const FormScreen = ({
+    handleOnPressReturn,
+    renderBottom,
+    renderFooter,
+    renderTop,
+    title,
+}: Props) => {
     const { onLayout, size: bodySize } = useComponentSize();
     const { keyboardShown } = useKeyboard();
     const theme = useTheme();
@@ -154,22 +165,36 @@ const FormScreen = ({ body, footer, handleOnPressReturn, title }: Props) => {
                     </ReturnButton>
                 )}
                 <Body onLayout={onLayout} style={styleBody}>
-                    <BodyScrollView
-                        keyboardShouldPersistTaps="handled"
-                        showsVerticalScrollIndicator={false}
+                    <KeyboardHeader style={styleKeyboardHeader}>
+                        {handleOnPressReturn && (
+                            <Pressable onPress={handleOnPressReturn}>
+                                <Pictogram
+                                    variant="arrow-left"
+                                    color="primary"
+                                    size="small"
+                                />
+                            </Pressable>
+                        )}
+                        <Typography
+                            color="primary"
+                            fontFamily="light"
+                            fontSize={18}
+                        >
+                            {title.toUpperCase()}
+                        </Typography>
+                    </KeyboardHeader>
+                    <View
+                        style={{
+                            justifyContent: 'space-between',
+                            flex: 1,
+                        }}
                     >
-                        <KeyboardHeader style={styleKeyboardHeader}>
-                            <Typography
-                                color="primary"
-                                fontFamily="light"
-                                fontSize={18}
-                            >
-                                {title.toUpperCase()}
-                            </Typography>
-                        </KeyboardHeader>
-                        {body}
-                        <Footer>{footer}</Footer>
-                    </BodyScrollView>
+                        {renderTop}
+                        <View>
+                            {renderBottom}
+                            <Footer>{renderFooter}</Footer>
+                        </View>
+                    </View>
                 </Body>
             </Form>
         </Container>

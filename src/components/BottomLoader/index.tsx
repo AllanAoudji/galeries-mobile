@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ActivityIndicator, useWindowDimensions } from 'react-native';
 import {
+    interpolate,
     runOnJS,
     useAnimatedStyle,
     useSharedValue,
@@ -32,48 +33,34 @@ const BottomLoader = ({
     const dimension = useWindowDimensions();
 
     const [display, setDisplay] = React.useState<boolean>(false);
-    const bottom = useSharedValue(START_BOTTOM_POSITION);
-    const opacity = useSharedValue(0);
+    const visible = useSharedValue(0);
 
-    const containerStyle = useAnimatedStyle(
-        () => ({
-            bottom: bottom.value,
-        }),
-        []
-    );
-    const loaderContainerStyle = useAnimatedStyle(
-        () => ({
-            opacity: opacity.value,
-        }),
-        []
-    );
+    const containerStyle = useAnimatedStyle(() => {
+        const bottom = interpolate(
+            visible.value,
+            [0, 1],
+            [START_BOTTOM_POSITION, endBottomPosition || END_BOTTOM_POSITION]
+        );
+        return {
+            bottom,
+            opacity: visible.value,
+        };
+    }, []);
 
     React.useEffect(() => {
         if (show) setDisplay(true);
-        else {
-            bottom.value = withTiming(
-                START_BOTTOM_POSITION,
-                ANIMATIONS.TIMING_CONFIG(200)
-            );
-            opacity.value = withTiming(
+        else
+            visible.value = withTiming(
                 0,
                 ANIMATIONS.TIMING_CONFIG(200),
                 (isFinished) => {
-                    if (isFinished) {
-                        runOnJS(setDisplay)(false);
-                    }
+                    if (isFinished) runOnJS(setDisplay)(false);
                 }
             );
-        }
     }, [show]);
     React.useEffect(() => {
-        if (display) {
-            opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(200));
-            bottom.value = withTiming(
-                endBottomPosition || END_BOTTOM_POSITION,
-                ANIMATIONS.TIMING_CONFIG(200)
-            );
-        }
+        if (display)
+            visible.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(200));
     }, [display]);
 
     if (!display) {
@@ -82,10 +69,7 @@ const BottomLoader = ({
 
     return (
         <Container width={dimension.width} style={containerStyle}>
-            <LoaderContainer
-                color={backgroundColor}
-                style={loaderContainerStyle}
-            >
+            <LoaderContainer color={backgroundColor}>
                 <ActivityIndicator color={theme.colors[color]} size="small" />
             </LoaderContainer>
         </Container>

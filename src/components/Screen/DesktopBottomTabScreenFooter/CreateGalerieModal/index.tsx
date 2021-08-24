@@ -191,7 +191,7 @@ const CreateGalerieModal = ({ handleClose, open }: Props) => {
     return (
         <Container style={style}>
             <FormScreen
-                body={
+                renderTop={
                     <View>
                         <TextInputsContainer>
                             <CustomTextInput
@@ -238,6 +238,10 @@ const CreateGalerieModal = ({ handleClose, open }: Props) => {
                                 value={formik.values.description}
                             />
                         </TextInputsContainer>
+                    </View>
+                }
+                renderBottom={
+                    <>
                         <CustomButton
                             disable={disableButton}
                             loading={loading}
@@ -251,7 +255,7 @@ const CreateGalerieModal = ({ handleClose, open }: Props) => {
                             title="cancel"
                             variant="stroke"
                         />
-                    </View>
+                    </>
                 }
                 title="create galerie"
                 handleOnPressReturn={handleClose}

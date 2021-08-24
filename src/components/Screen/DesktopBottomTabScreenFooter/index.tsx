@@ -25,9 +25,6 @@ type Props = {
     keyboardShown: boolean;
 };
 
-// TODO:
-// rename to DesktopBottomTabScreenFooter
-// and move to components/screen
 const FooterTabNavigator = ({
     state,
     navigation,
