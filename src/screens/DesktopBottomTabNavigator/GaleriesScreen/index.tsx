@@ -1,14 +1,8 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { Keyboard, StatusBar } from 'react-native';
+import { Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-    interpolate,
-    useAnimatedScrollHandler,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
-} from 'react-native-reanimated';
+import { withTiming } from 'react-native-reanimated';
 
 import {
     AnimatedFlatList,
@@ -19,9 +13,8 @@ import {
     Typography,
 } from '#components';
 import { DesktopBottomTabScreenHeader } from '#components/Screen';
-import clamp from '#helpers/clamp';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
-import { useComponentSize } from '#hooks';
+import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 import {
     fetchGaleries,
     setGaleries,
@@ -38,6 +31,8 @@ import { Container, Header, SearchBarContainer } from './styles';
 
 const GaleriesScreen = () => {
     const { onLayout, size } = useComponentSize();
+    const { containerStyle, headerStyle, scrollHandler, translateY } =
+        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT);
 
     const dispatch = useDispatch();
     const filtersGaleriesName = useSelector(filtersGaleriesNameSelector);
@@ -52,33 +47,6 @@ const GaleriesScreen = () => {
     const [isFirstLoad, setIsFirstLoad] = React.useState<boolean>(true);
     const [name, setName] = React.useState<string>('');
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
-
-    const translateY = useSharedValue(0);
-
-    const style = useAnimatedStyle(() => {
-        const transform = interpolate(
-            translateY.value,
-            [0, GLOBAL_STYLE.HEADER_TAB_HEIGHT],
-            [0, -GLOBAL_STYLE.HEADER_TAB_HEIGHT]
-        );
-        return {
-            transform: [{ translateY: transform }],
-        };
-    }, []);
-
-    const scrollHandler = useAnimatedScrollHandler({
-        onBeginDrag: (e, ctx: { position: number }) => {
-            ctx.position = e.contentOffset.y;
-        },
-        onScroll: (e, ctx) => {
-            const diff = e.contentOffset.y - ctx.position;
-            translateY.value = clamp(
-                translateY.value + diff,
-                0,
-                GLOBAL_STYLE.HEADER_TAB_HEIGHT
-            );
-        },
-    });
 
     const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
 
@@ -98,7 +66,7 @@ const GaleriesScreen = () => {
     const handleReachEnd = React.useCallback(() => {
         if (!galeriesEnd && galeriesStatus !== 'FETCHING') {
             setFetchFinished(false);
-            dispatch(fetchGaleries());
+            dispatch(fetchGaleries({ name: filtersGaleriesName }));
         }
     }, [galeriesEnd, galeriesStatus]);
     const keyExtractor = React.useCallback((id) => id, []);
@@ -154,11 +122,8 @@ const GaleriesScreen = () => {
     // Check if need opacity animation on mount.
     React.useEffect(() => {
         if (firstFetchFinished && hasFocus) {
-            if (galeriesStatus === 'PENDING') {
-                setIsFirstLoad(true);
-            } else {
-                setIsFirstLoad(false);
-            }
+            if (galeriesStatus === 'PENDING') setIsFirstLoad(true);
+            else setIsFirstLoad(false);
         }
     }, [firstFetchFinished, galeriesStatus, hasFocus]);
     // Fetch galeries
@@ -182,9 +147,9 @@ const GaleriesScreen = () => {
 
     return (
         <Container>
-            <Header onLayout={onLayout} style={style}>
-                <DesktopBottomTabScreenHeader />
-                <SearchBarContainer currentHeight={StatusBar.currentHeight}>
+            <Header onLayout={onLayout} style={containerStyle}>
+                <DesktopBottomTabScreenHeader style={headerStyle} />
+                <SearchBarContainer>
                     <Typography fontSize={24}>Galeries</Typography>
                     <SearchBar
                         mt="smallest"

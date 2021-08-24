@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
+import Animated from 'react-native-reanimated';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
 
-const Container = styled.Pressable`
+const Container = styled(Animated.View)`
     align-items: stretch;
     flex-direction: row;
     background-color: ${({ theme }) => theme.colors['secondary-light']};

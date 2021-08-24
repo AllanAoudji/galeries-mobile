@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { Pressable, useWindowDimensions } from 'react-native';
 import {
+    runOnJS,
     useAnimatedStyle,
     useSharedValue,
     withTiming,
@@ -41,6 +42,8 @@ const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
     const galerie = useSelector(galerieSelector(id));
     const theme = useTheme();
     const dimension = useWindowDimensions();
+    const [animationFinished, setAnimationFinished] =
+        React.useState<boolean>(true);
 
     const [defaultCoverPicture, setDefaultCoverPicture] = React.useState<{
         startX: number;
@@ -65,7 +68,10 @@ const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
     );
 
     React.useEffect(() => {
-        if (animationOnMount) opacity.value = 0;
+        if (animationOnMount) {
+            opacity.value = 0;
+            setAnimationFinished(false);
+        }
     }, []);
     React.useEffect(() => {
         if (!galerie) {
@@ -105,43 +111,53 @@ const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
                 })
                 .catch(() => removeGalerie(id));
         } else {
-            opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
-            request({
-                body: {},
-                method: 'GET',
-                url: END_POINT.GALERIE_COVER_PICTURE(id),
-            }).then((res) => {
-                if (res.data && res.data.data.coverPicture) {
-                    const { id: coverPictureId, ...rest } =
-                        res.data.data.coverPicture;
-                    dispatch(
-                        setGaleries({
-                            data: {
-                                byId: {
-                                    [id]: {
-                                        ...galerie,
-                                        currentCoverPicture: coverPictureId,
+            if (!animationFinished) {
+                opacity.value = withTiming(
+                    1,
+                    ANIMATIONS.TIMING_CONFIG(),
+                    (isFinised) => {
+                        if (isFinised) runOnJS(setAnimationFinished)(true);
+                    }
+                );
+            }
+            if (galerie.currentCoverPicture === undefined) {
+                request({
+                    body: {},
+                    method: 'GET',
+                    url: END_POINT.GALERIE_COVER_PICTURE(id),
+                }).then((res) => {
+                    if (res.data && res.data.data.coverPicture) {
+                        const { id: coverPictureId, ...rest } =
+                            res.data.data.coverPicture;
+                        dispatch(
+                            setGaleries({
+                                data: {
+                                    byId: {
+                                        [id]: {
+                                            ...galerie,
+                                            currentCoverPicture: coverPictureId,
+                                        },
                                     },
                                 },
-                            },
-                        })
-                    );
-                    dispatch(
-                        setFrames({
-                            data: {
-                                byId: {
-                                    [coverPictureId]: rest,
+                            })
+                        );
+                        dispatch(
+                            setFrames({
+                                data: {
+                                    byId: {
+                                        [coverPictureId]: rest,
+                                    },
                                 },
-                            },
-                        })
-                    );
-                }
-            });
+                            })
+                        );
+                    }
+                });
+            }
 
             // TODO:
             // Fetch user if galerie.numOfUsers > 0
         }
-    }, [galerie]);
+    }, [animationFinished, galerie]);
     React.useEffect(() => {
         if (galerie && !defaultCoverPicture) {
             const splitString = galerie.defaultCoverPicture.split(',');
