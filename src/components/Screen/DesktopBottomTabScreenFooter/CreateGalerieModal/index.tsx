@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as React from 'react';
-import { View } from 'react-native';
+import { BackHandler, View } from 'react-native';
 import {
     interpolate,
     runOnJS,
@@ -166,8 +166,20 @@ const CreateGalerieModal = ({ handleClose, open }: Props) => {
     }, [formik.submitCount, formik.errors, serverErrors]);
 
     React.useEffect(() => {
-        if (open) setDisplay(true);
-        else
+        let BackHandlerListerner: any;
+        if (open) {
+            setDisplay(true);
+            BackHandlerListerner = BackHandler.addEventListener(
+                'hardwareBackPress',
+                () => {
+                    if (open) {
+                        handleClose();
+                        return true;
+                    }
+                    return false;
+                }
+            );
+        } else {
             opacity.value = withTiming(
                 0,
                 ANIMATIONS.TIMING_CONFIG(),
@@ -175,6 +187,15 @@ const CreateGalerieModal = ({ handleClose, open }: Props) => {
                     if (isFinished) runOnJS(setDisplay)(false);
                 }
             );
+            if (BackHandlerListerner) {
+                BackHandlerListerner.remove();
+            }
+        }
+        return () => {
+            if (BackHandlerListerner) {
+                BackHandlerListerner.remove();
+            }
+        };
     }, [open]);
     React.useEffect(() => {
         if (display) opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
