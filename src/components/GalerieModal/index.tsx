@@ -1,17 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { Pressable, useWindowDimensions } from 'react-native';
-import {
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
-} from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import Typography from '#components/Typography';
-import { ANIMATIONS, END_POINT } from '#helpers/constants';
+import { END_POINT } from '#helpers/constants';
 import isValidHexColor from '#helpers/isValidHexColor';
 import request from '#helpers/request';
 import { setFrames, setGaleries } from '#store/actions';
@@ -28,22 +22,17 @@ import {
 } from './styles';
 
 type Props = {
-    animationOnMount?: boolean;
     id: string;
     removeGalerie: (id: string) => void;
 };
 
-// TODO:
-// Need to trigger opacity animation only when visible
-const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
+const GalerieModal = ({ id, removeGalerie }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GaleriesNavigationProp>();
     const galerie = useSelector(galerieSelector(id));
     const theme = useTheme();
     const dimension = useWindowDimensions();
-    const [animationFinished, setAnimationFinished] =
-        React.useState<boolean>(true);
 
     const [defaultCoverPicture, setDefaultCoverPicture] = React.useState<{
         startX: number;
@@ -53,26 +42,11 @@ const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
         colors: string[];
     } | null>(null);
 
-    const opacity = useSharedValue(1);
-
-    const style = useAnimatedStyle(
-        () => ({
-            opacity: opacity.value,
-        }),
-        []
-    );
-
     const handlePress = React.useCallback(
         () => navigation.navigate('Galerie', { id }),
         [navigation]
     );
 
-    React.useEffect(() => {
-        if (animationOnMount) {
-            opacity.value = 0;
-            setAnimationFinished(false);
-        }
-    }, []);
     React.useEffect(() => {
         if (!galerie) {
             request({
@@ -110,54 +84,42 @@ const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
                     }
                 })
                 .catch(() => removeGalerie(id));
-        } else {
-            if (!animationFinished) {
-                opacity.value = withTiming(
-                    1,
-                    ANIMATIONS.TIMING_CONFIG(),
-                    (isFinised) => {
-                        if (isFinised) runOnJS(setAnimationFinished)(true);
-                    }
-                );
-            }
-            if (galerie.currentCoverPicture === undefined) {
-                request({
-                    body: {},
-                    method: 'GET',
-                    url: END_POINT.GALERIE_COVER_PICTURE(id),
-                }).then((res) => {
-                    if (res.data && res.data.data.coverPicture) {
-                        const { id: coverPictureId, ...rest } =
-                            res.data.data.coverPicture;
-                        dispatch(
-                            setGaleries({
-                                data: {
-                                    byId: {
-                                        [id]: {
-                                            ...galerie,
-                                            currentCoverPicture: coverPictureId,
-                                        },
+        } else if (galerie.currentCoverPicture === undefined) {
+            request({
+                body: {},
+                method: 'GET',
+                url: END_POINT.GALERIE_COVER_PICTURE(id),
+            }).then((res) => {
+                if (res.data && res.data.data.coverPicture) {
+                    const { id: coverPictureId, ...rest } =
+                        res.data.data.coverPicture;
+                    dispatch(
+                        setGaleries({
+                            data: {
+                                byId: {
+                                    [id]: {
+                                        ...galerie,
+                                        currentCoverPicture: coverPictureId,
                                     },
                                 },
-                            })
-                        );
-                        dispatch(
-                            setFrames({
-                                data: {
-                                    byId: {
-                                        [coverPictureId]: rest,
-                                    },
+                            },
+                        })
+                    );
+                    dispatch(
+                        setFrames({
+                            data: {
+                                byId: {
+                                    [coverPictureId]: rest,
                                 },
-                            })
-                        );
-                    }
-                });
-            }
-
-            // TODO:
-            // Fetch user if galerie.numOfUsers > 0
+                            },
+                        })
+                    );
+                }
+            });
         }
-    }, [animationFinished, galerie]);
+        // TODO:
+        // Fetch user if galerie.numOfUsers > 0
+    }, [galerie]);
     React.useEffect(() => {
         if (galerie && !defaultCoverPicture) {
             const splitString = galerie.defaultCoverPicture.split(',');
@@ -179,7 +141,7 @@ const GalerieModal = ({ animationOnMount, id, removeGalerie }: Props) => {
     if (!galerie) return null;
 
     return (
-        <Container style={style}>
+        <Container>
             <Pressable onPress={handlePress}>
                 <PictureContainer
                     colors={[theme.colors.primary, theme.colors.tertiary]}

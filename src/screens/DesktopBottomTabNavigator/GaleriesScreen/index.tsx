@@ -44,8 +44,6 @@ const GaleriesScreen = () => {
     const [firstFetchFinished, setFirstFetchFinished] =
         React.useState<boolean>(false);
     const [hasFocus, setHasFocus] = React.useState<boolean>(false);
-    const [isFirstLoad, setIsFirstLoad] = React.useState<boolean>(true);
-    const [name, setName] = React.useState<string>('');
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
 
     const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
@@ -60,7 +58,6 @@ const GaleriesScreen = () => {
     );
     const handleChangeText = React.useCallback((e: string) => {
         setSearchFinished(false);
-        setName(e);
         dispatch(setGaleriesNameFilter(e.trim()));
     }, []);
     const handleReachEnd = React.useCallback(() => {
@@ -68,7 +65,7 @@ const GaleriesScreen = () => {
             setFetchFinished(false);
             dispatch(fetchGaleries({ name: filtersGaleriesName }));
         }
-    }, [galeriesEnd, galeriesStatus]);
+    }, [filtersGaleriesName, galeriesEnd, galeriesStatus]);
     const keyExtractor = React.useCallback((id) => id, []);
     const onFocusSearchBar = React.useCallback(() => {
         translateY.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(200));
@@ -97,15 +94,9 @@ const GaleriesScreen = () => {
     );
     const renderItem = React.useCallback(
         ({ item }) => {
-            return (
-                <GalerieModal
-                    animationOnMount={isFirstLoad}
-                    id={item}
-                    removeGalerie={removeGalerie}
-                />
-            );
+            return <GalerieModal id={item} removeGalerie={removeGalerie} />;
         },
-        [galeriesStatus, isFirstLoad]
+        [galeriesStatus]
     );
 
     useFocusEffect(
@@ -113,19 +104,11 @@ const GaleriesScreen = () => {
             setHasFocus(true);
             return () => {
                 setHasFocus(false);
-                setName('');
                 dispatch(setGaleriesNameFilter(''));
             };
         }, [])
     );
 
-    // Check if need opacity animation on mount.
-    React.useEffect(() => {
-        if (firstFetchFinished && hasFocus) {
-            if (galeriesStatus === 'PENDING') setIsFirstLoad(true);
-            else setIsFirstLoad(false);
-        }
-    }, [firstFetchFinished, galeriesStatus, hasFocus]);
     // Fetch galeries
     React.useEffect(() => {
         if (galeriesStatus === 'PENDING' && hasFocus) {
@@ -140,10 +123,16 @@ const GaleriesScreen = () => {
             hasFocus &&
             searchFinished
         ) {
-            setFirstFetchFinished(true);
+            if (!firstFetchFinished) setFirstFetchFinished(true);
             if (!fetchFinished) setFetchFinished(true);
         }
-    }, [fetchFinished, galeriesStatus, searchFinished, hasFocus]);
+    }, [
+        fetchFinished,
+        firstFetchFinished,
+        galeriesStatus,
+        searchFinished,
+        hasFocus,
+    ]);
 
     return (
         <Container>
@@ -156,7 +145,6 @@ const GaleriesScreen = () => {
                         onChangeText={handleChangeText}
                         onFocus={onFocusSearchBar}
                         onStopTyping={onStopTyping}
-                        value={name}
                     />
                 </SearchBarContainer>
             </Header>

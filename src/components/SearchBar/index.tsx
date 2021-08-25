@@ -11,7 +11,6 @@ type Props = {
     onChangeText: (text: string) => void;
     onFocus?: () => void;
     onStopTyping: () => void;
-    value: string;
 };
 
 type PropsContainer = {
@@ -52,7 +51,6 @@ const SearchBar = ({
     onChangeText,
     onFocus,
     onStopTyping,
-    value,
 }: Props) => {
     const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
     const handleChangeText = React.useCallback(
@@ -80,7 +78,6 @@ const SearchBar = ({
                 maxLength={50}
                 onFocus={onFocus}
                 onChangeText={handleChangeText}
-                value={value}
             />
         </Container>
     );

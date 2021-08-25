@@ -37,14 +37,19 @@ const FullScreenLoader = ({
 
     React.useEffect(() => {
         if (show) setDisplay(true);
-        else
+        else {
             opacity.value = withTiming(
                 0,
-                ANIMATIONS.TIMING_CONFIG(200),
+                {
+                    duration: 200,
+                },
                 (isFinished) => {
-                    if (isFinished) runOnJS(setDisplay)(false);
+                    if (isFinished) {
+                        runOnJS(setDisplay)(false);
+                    }
                 }
             );
+        }
     }, [show]);
     React.useEffect(() => {
         if (display)
