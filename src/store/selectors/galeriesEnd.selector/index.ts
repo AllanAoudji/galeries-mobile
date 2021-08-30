@@ -1,10 +1,8 @@
 import { createSelector } from 'reselect';
 
 export default createSelector(
-    (state: Store.Reducer) => state.filters.galeries.name,
-    (state: Store.Reducer) => state.galeries,
-    (filter, galeries) =>
-        galeries.allIdsByName[filter]
-            ? galeries.allIdsByName[filter].end
-            : false
+    (state: Store.Reducer) => state.galeries.allIdsByName,
+    (state: Store.Reducer) => state.UIStates.filters.galeries.name,
+    (allIdsByName, name) =>
+        allIdsByName[name] ? allIdsByName[name].end : false
 );

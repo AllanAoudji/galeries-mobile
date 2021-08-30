@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 const DesktopBottomTabNavigator = () => {
     const { keyboardShown } = useKeyboard();
 
-    const tabBat = React.useCallback(
+    const tabBar = React.useCallback(
         (props) => (
             <DesktopBottomTabScreenFooter
                 keyboardShown={keyboardShown}
@@ -32,7 +32,7 @@ const DesktopBottomTabNavigator = () => {
 
     return (
         <Tab.Navigator
-            tabBar={tabBat}
+            tabBar={tabBar}
             initialRouteName="Home"
             backBehavior="history"
             screenOptions={{
@@ -90,11 +90,11 @@ const DesktopBottomTabNavigator = () => {
                     headerShown: false,
                 }}
             >
-                {(props) => (
+                {() => (
                     <DesktopBottomTabScreenContainer
                         keyboardShown={keyboardShown}
                     >
-                        <Galerie {...props} />
+                        <Galerie />
                     </DesktopBottomTabScreenContainer>
                 )}
             </Tab.Screen>

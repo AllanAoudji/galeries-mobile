@@ -1,18 +1,23 @@
-import { FILTERS_SET } from '#store/actions';
+import { UI_STATES_SET } from '#store/actions';
 
 const initialState: {
-    galeries: {
-        name: string;
+    currentGalerieId?: string;
+    filters: {
+        galeries: {
+            name: string;
+        };
     };
 } = {
-    galeries: {
-        name: '',
+    filters: {
+        galeries: {
+            name: '',
+        },
     },
 };
 
 export default (state = initialState, action: Store.Action) => {
     switch (action.type) {
-        case FILTERS_SET:
+        case UI_STATES_SET:
             return {
                 ...state,
                 ...action.payload.data,

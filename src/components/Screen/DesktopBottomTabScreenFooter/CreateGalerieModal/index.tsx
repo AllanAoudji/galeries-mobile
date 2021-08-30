@@ -2,21 +2,14 @@ import { AxiosError } from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as React from 'react';
-import { BackHandler, View } from 'react-native';
-import {
-    interpolate,
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
-} from 'react-native-reanimated';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import FormScreen from '#components/FormScreen';
+import FullScreenModal from '#components/FullScreenModal';
 import CustomTextInput from '#components/CustomTextInput';
 import CustomButton from '#components/CustomButton';
 import {
-    ANIMATIONS,
     END_POINT,
     ERROR_MESSAGE,
     FIELD_REQUIREMENT,
@@ -27,10 +20,11 @@ import {
     GALERIES,
     normalizeData,
     resetGaleries,
+    setCurrentGalerieId,
     setNotification,
 } from '#store/actions';
 
-import { Container, TextInputsContainer } from './styles';
+import { TextInputsContainer } from './styles';
 
 type Props = {
     open: boolean;
@@ -137,7 +131,6 @@ const CreateGalerieModal = ({ handleClose, open }: Props) => {
         validationSchema: createGaleriesSchema,
     });
 
-    const [display, setDisplay] = React.useState<boolean>(false);
     const [galerieId, setGalerieId] = React.useState<string | null>(null);
     const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<
@@ -146,15 +139,6 @@ const CreateGalerieModal = ({ handleClose, open }: Props) => {
         description: '',
         name: '',
     });
-
-    const opacity = useSharedValue(0);
-    const style = useAnimatedStyle(() => {
-        const scale = interpolate(opacity.value, [0, 1], [1.1, 1]);
-        return {
-            opacity: opacity.value,
-            transform: [{ scale }],
-        };
-    }, []);
 
     const disableButton = React.useMemo(() => {
         const clientHasError =
@@ -166,51 +150,15 @@ const CreateGalerieModal = ({ handleClose, open }: Props) => {
     }, [formik.submitCount, formik.errors, serverErrors]);
 
     React.useEffect(() => {
-        let BackHandlerListerner: any;
-        if (open) {
-            setDisplay(true);
-            BackHandlerListerner = BackHandler.addEventListener(
-                'hardwareBackPress',
-                () => {
-                    if (open) {
-                        handleClose();
-                        return true;
-                    }
-                    return false;
-                }
-            );
-        } else {
-            opacity.value = withTiming(
-                0,
-                ANIMATIONS.TIMING_CONFIG(),
-                (isFinished) => {
-                    if (isFinished) runOnJS(setDisplay)(false);
-                }
-            );
-            if (BackHandlerListerner) {
-                BackHandlerListerner.remove();
-            }
-        }
-        return () => {
-            if (BackHandlerListerner) {
-                BackHandlerListerner.remove();
-            }
-        };
-    }, [open]);
-    React.useEffect(() => {
-        if (display) opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
-    }, [display]);
-    React.useEffect(() => {
         if (galerieId) {
             handleClose();
-            navigation.navigate('Galerie', { id: galerieId });
+            dispatch(setCurrentGalerieId(galerieId));
+            navigation.navigate('Galerie');
         }
     }, [galerieId, navigation]);
 
-    if (!display) return null;
-
     return (
-        <Container style={style}>
+        <FullScreenModal open={open} handleClose={handleClose}>
             <FormScreen
                 renderTop={
                     <View>
@@ -281,7 +229,7 @@ const CreateGalerieModal = ({ handleClose, open }: Props) => {
                 title="create galerie"
                 handleOnPressReturn={handleClose}
             />
-        </Container>
+        </FullScreenModal>
     );
 };
 

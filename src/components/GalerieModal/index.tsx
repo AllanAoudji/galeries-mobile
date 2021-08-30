@@ -1,15 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { Pressable, useWindowDimensions } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import Typography from '#components/Typography';
+import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
 import { END_POINT } from '#helpers/constants';
-import isValidHexColor from '#helpers/isValidHexColor';
 import request from '#helpers/request';
-import { setFrames, setGaleries } from '#store/actions';
-import { galerieSelector } from '#store/selectors';
+import { setCurrentGalerieId, setFrames, setGaleries } from '#store/actions';
 
 import {
     Container,
@@ -22,15 +21,16 @@ import {
 } from './styles';
 
 type Props = {
-    id: string;
-    removeGalerie: (id: string) => void;
+    galerie: Store.Models.Galerie & { id: string };
 };
 
-const GalerieModal = ({ id, removeGalerie }: Props) => {
+// TODO:
+// issue here with galerie selection
+
+const GalerieModal = ({ galerie }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GaleriesNavigationProp>();
-    const galerie = useSelector(galerieSelector(id));
     const theme = useTheme();
     const dimension = useWindowDimensions();
 
@@ -42,55 +42,21 @@ const GalerieModal = ({ id, removeGalerie }: Props) => {
         colors: string[];
     } | null>(null);
 
-    const handlePress = React.useCallback(
-        () => navigation.navigate('Galerie', { id }),
-        [navigation]
-    );
+    const handlePress = React.useCallback(() => {
+        dispatch(setCurrentGalerieId(galerie.id));
+        navigation.navigate('Galerie');
+    }, [navigation]);
 
+    // Fetch coverPicture and users.
     React.useEffect(() => {
-        if (!galerie) {
+        if (galerie.currentCoverPicture === undefined) {
             request({
                 body: {},
                 method: 'GET',
-                url: END_POINT.GALERIE(id),
-            })
-                .then((res) => {
-                    if (res.data.data && res.data.data.galerie) {
-                        const { id: galerieId, ...rest } =
-                            res.data.data.galerie;
-                        dispatch(
-                            setGaleries({
-                                data: {
-                                    byId: {
-                                        [galerieId]: {
-                                            ...rest,
-                                            frames: {
-                                                allIds: [],
-                                                end: false,
-                                                status: 'PENDING',
-                                            },
-                                            users: {
-                                                allIds: [],
-                                                end: false,
-                                                status: 'PENDING',
-                                            },
-                                        },
-                                    },
-                                },
-                            })
-                        );
-                    } else {
-                        removeGalerie(id);
-                    }
-                })
-                .catch(() => removeGalerie(id));
-        } else if (galerie.currentCoverPicture === undefined) {
-            request({
-                body: {},
-                method: 'GET',
-                url: END_POINT.GALERIE_COVER_PICTURE(id),
+                url: END_POINT.GALERIE_COVER_PICTURE(galerie.id),
             }).then((res) => {
                 if (res.data && res.data.data.coverPicture) {
+                    const { id, ...galerieWithoutId } = galerie;
                     const { id: coverPictureId, ...rest } =
                         res.data.data.coverPicture;
                     dispatch(
@@ -98,7 +64,7 @@ const GalerieModal = ({ id, removeGalerie }: Props) => {
                             data: {
                                 byId: {
                                     [id]: {
-                                        ...galerie,
+                                        ...galerieWithoutId,
                                         currentCoverPicture: coverPictureId,
                                     },
                                 },
@@ -120,25 +86,15 @@ const GalerieModal = ({ id, removeGalerie }: Props) => {
         // TODO:
         // Fetch user if galerie.numOfUsers > 0
     }, [galerie]);
+
+    // Get defaultCoverPicture.
     React.useEffect(() => {
-        if (galerie && !defaultCoverPicture) {
-            const splitString = galerie.defaultCoverPicture.split(',');
-            if (splitString.length >= 6) {
-                const colors = splitString
-                    .slice(4)
-                    .filter((color) => isValidHexColor(color));
-                setDefaultCoverPicture({
-                    startX: +splitString[0],
-                    startY: +splitString[1],
-                    endX: +splitString[2],
-                    endY: +splitString[3],
-                    colors,
-                });
-            }
+        if (galerie && galerie.defaultCoverPicture && !defaultCoverPicture) {
+            setDefaultCoverPicture(
+                normalizeDefaultCoverPicture(galerie.defaultCoverPicture)
+            );
         }
     }, [defaultCoverPicture, galerie]);
-
-    if (!galerie) return null;
 
     return (
         <Container>

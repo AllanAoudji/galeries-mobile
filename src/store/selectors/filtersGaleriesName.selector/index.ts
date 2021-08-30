@@ -1,1 +1,1 @@
-export default (state: Store.Reducer) => state.filters.galeries.name;
+export default (state: Store.Reducer) => state.UIStates.filters.galeries.name;

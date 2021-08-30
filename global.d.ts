@@ -1,3 +1,4 @@
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -8,7 +9,7 @@ declare global {
         namespace DesktopBottomTab {
             type ParamList = {
                 Comments: undefined;
-                Galerie: { id: string } | undefined;
+                Galerie: undefined;
                 Galeries: undefined;
                 Home: undefined;
                 Likes: undefined;
@@ -68,6 +69,30 @@ declare global {
                 'Settings'
             >;
         }
+        namespace GalerieMaterialBottomTab {
+            type ParamList = {
+                Frames: undefined;
+                Invitations: undefined;
+                Options: undefined;
+                Users: undefined;
+            };
+            type FramesNavigation = MaterialTopTabNavigationProp<
+                ParamList,
+                'Frames'
+            >;
+            type InvitationsNavigation = MaterialTopTabNavigationProp<
+                ParamList,
+                'Invitations'
+            >;
+            type OptionsNavigation = MaterialTopTabNavigationProp<
+                ParamList,
+                'Options'
+            >;
+            type UsersNavigation = MaterialTopTabNavigationProp<
+                ParamList,
+                'Users'
+            >;
+        }
         namespace RootStack {
             type ParamList = {
                 Desktop: undefined;
@@ -108,11 +133,11 @@ declare global {
             type: string;
         };
         type Entity =
-            | '[FILTERS]'
             | '[FRAMES]'
             | '[GALERIES]'
             | '[NOTIFICATION]'
             | '[LOGOUT]'
+            | '[UI STATES]'
             | '[USER]';
         type Meta = {
             end?: boolean;
@@ -123,10 +148,20 @@ declare global {
             url?: string;
         };
         type Reducer = {
-            filters: {
-                galeries: {
-                    name: string;
+            UIStates: {
+                currentGalerieId?: string;
+                filters: {
+                    galeries: {
+                        name: string;
+                    };
                 };
+            };
+            frames: {
+                allIds: string[];
+                byId: { [key: string]: Store.Models.Frame };
+                end: boolean;
+                previousFrame?: string;
+                status: Store.Status;
             };
             galeries: {
                 allIdsByName: {
@@ -148,7 +183,9 @@ declare global {
         type Role = 'admin' | 'moderator' | 'user';
         type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
         namespace Models {
-            type Frame = {};
+            type Frame = {
+                createdAt: string;
+            };
             type Galerie = {
                 allowNotification: boolean;
                 createdAt: Date;
@@ -227,6 +264,7 @@ declare global {
             | 'add/subscribe-stroke'
             | 'arrow-left'
             | 'arrow-right'
+            | 'edit-fill'
             | 'galeries-fill'
             | 'galeries-stroke'
             | 'hamburger-menu'
@@ -238,6 +276,7 @@ declare global {
             | 'logout-right'
             | 'moderation-fill'
             | 'moderation-stroke'
+            | 'plus'
             | 'profile-fill'
             | 'profile-stroke'
             | 'search'

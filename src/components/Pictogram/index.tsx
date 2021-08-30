@@ -4,6 +4,7 @@ import AddSubscribeFill from './AddSubscribeFill';
 import AddSubscribeStroke from './AddSubscribeStroke';
 import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
+import EditFill from './EditFill';
 import GaleriesFill from './GaleriesFill';
 import GaleriesStroke from './GaleriesStroke';
 import HamburgerMenu from './HamburgerMenu';
@@ -15,6 +16,7 @@ import LogoutLeft from './LogoutLeft';
 import LogoutRight from './LogoutRight';
 import ModerationFill from './ModerationFill';
 import ModerationStroke from './ModerationStroke';
+import Plus from './Plus';
 import ProfileFill from './ProfileFill';
 import ProfileStroke from './ProfileStroke';
 import Search from './Search';
@@ -38,6 +40,7 @@ const variants = {
     'add/subscribe-stroke': AddSubscribeStroke,
     'arrow-left': ArrowLeft,
     'arrow-right': ArrowRight,
+    'edit-fill': EditFill,
     'galeries-fill': GaleriesFill,
     'galeries-stroke': GaleriesStroke,
     'hamburger-menu': HamburgerMenu,
@@ -49,6 +52,7 @@ const variants = {
     'logout-right': LogoutRight,
     'moderation-fill': ModerationFill,
     'moderation-stroke': ModerationStroke,
+    plus: Plus,
     'profile-fill': ProfileFill,
     'profile-stroke': ProfileStroke,
     search: Search,

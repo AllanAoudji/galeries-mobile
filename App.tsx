@@ -6,8 +6,9 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 
 import { Notification } from '#components';
-import ThemeProvider from '#contexts/ThemeContext';
 import { BottomSheetProvider } from '#contexts/BottomSheetContext';
+import { ModalProvider } from '#contexts/ModalContext';
+import ThemeProvider from '#contexts/ThemeContext';
 import Loader from '#helpers/Loader';
 import RootStackNavigator from '#screens/RootStackNavigator';
 import store from '#store';
@@ -17,13 +18,15 @@ export default function App() {
         <ThemeProvider>
             <Provider store={store}>
                 <Loader>
-                    <BottomSheetProvider>
-                        <NavigationContainer>
-                            <RootStackNavigator />
-                            <Notification />
-                            <StatusBar style="auto" />
-                        </NavigationContainer>
-                    </BottomSheetProvider>
+                    <NavigationContainer>
+                        <BottomSheetProvider>
+                            <ModalProvider>
+                                <RootStackNavigator />
+                                <Notification />
+                                <StatusBar style="auto" />
+                            </ModalProvider>
+                        </BottomSheetProvider>
+                    </NavigationContainer>
                 </Loader>
             </Provider>
         </ThemeProvider>
@@ -32,3 +35,10 @@ export default function App() {
 
 // TODO:
 // Clean form when not focused
+// Should have a ui.reducer
+// with galerieIdSelected
+// when click on a galerieModal )>
+// dispatch(setGalerieIdSelected(id))
+// and a selector
+// return byId(state.ui.galerieIdSelector)
+// so no need route.params.id

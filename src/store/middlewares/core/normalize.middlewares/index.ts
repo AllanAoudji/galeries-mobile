@@ -9,7 +9,7 @@ const normalizeMiddleware: Middleware =
         next(action);
         const { payload } = action;
 
-        if (action.type.includes(NORMALIZE) && !!payload.meta.entity) {
+        if (action.type.includes(NORMALIZE) && payload.meta.entity) {
             const allIds: string[] = [];
             const byId: { [key: string]: any } = {};
 

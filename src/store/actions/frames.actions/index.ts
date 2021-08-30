@@ -9,12 +9,16 @@ export const FRAMES: Store.Entity = '[FRAMES]';
 export const FRAMES_FETCH = `${FRAMES} Fetch`;
 export const FRAMES_SET = `${FRAMES} Set`;
 
-export const fetchFrames: (payload?: { meta: Store.Meta }) => Store.Action = (
-    payload
+export const fetchFrames: (meta?: { galerieId: string }) => Store.Action = (
+    meta
 ) => ({
     payload: {
         data: {},
-        meta: payload ? payload.meta : {},
+        meta: {
+            query: {
+                galerieId: meta ? meta.galerieId : '',
+            },
+        },
     },
     type: FRAMES_FETCH,
 });

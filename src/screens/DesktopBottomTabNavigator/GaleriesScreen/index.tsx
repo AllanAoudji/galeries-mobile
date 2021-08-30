@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import * as React from 'react';
 import { Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,36 +15,33 @@ import {
 import { DesktopBottomTabScreenHeader } from '#components/Screen';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
-import {
-    fetchGaleries,
-    setGaleries,
-    setGaleriesNameFilter,
-} from '#store/actions';
+import { fetchGaleries, setGaleriesNameFilter } from '#store/actions';
 import {
     filtersGaleriesNameSelector,
     galeriesStatusSelector,
     galeriesEndSelector,
-    galeriesAllIdsSelector,
+    galeriesSelector,
 } from '#store/selectors';
 
 import { Container, Header, SearchBarContainer } from './styles';
 
 const GaleriesScreen = () => {
+    const focus = useIsFocused();
     const { onLayout, size } = useComponentSize();
     const { containerStyle, headerStyle, scrollHandler, translateY } =
         useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT);
 
     const dispatch = useDispatch();
     const filtersGaleriesName = useSelector(filtersGaleriesNameSelector);
-    const galeriesAllIds = useSelector(galeriesAllIdsSelector);
+    const galeries = useSelector(galeriesSelector);
     const galeriesEnd = useSelector(galeriesEndSelector);
     const galeriesStatus = useSelector(galeriesStatusSelector);
 
     const [fetchFinished, setFetchFinished] = React.useState<boolean>(true);
     const [firstFetchFinished, setFirstFetchFinished] =
         React.useState<boolean>(false);
-    const [hasFocus, setHasFocus] = React.useState<boolean>(false);
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
+    const [searchValue, setSearchValue] = React.useState<string>('');
 
     const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
 
@@ -66,7 +63,7 @@ const GaleriesScreen = () => {
             dispatch(fetchGaleries({ name: filtersGaleriesName }));
         }
     }, [filtersGaleriesName, galeriesEnd, galeriesStatus]);
-    const keyExtractor = React.useCallback((id) => id, []);
+    const keyExtractor = React.useCallback((galerie) => galerie.id, []);
     const onFocusSearchBar = React.useCallback(() => {
         translateY.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(200));
     }, []);
@@ -74,53 +71,22 @@ const GaleriesScreen = () => {
     const onStopTyping = React.useCallback(() => {
         setSearchFinished(true);
     }, []);
-    const removeGalerie = React.useCallback(
-        (id: string) => {
-            galeriesAllIds.filter((galerieId) => galerieId !== id);
-            dispatch(
-                setGaleries({
-                    data: {
-                        allIds: galeriesAllIds,
-                    },
-                    meta: {
-                        query: {
-                            name: filtersGaleriesName,
-                        },
-                    },
-                })
-            );
-        },
-        [galeriesAllIds]
-    );
-    const renderItem = React.useCallback(
-        ({ item }) => {
-            return <GalerieModal id={item} removeGalerie={removeGalerie} />;
-        },
-        [galeriesStatus]
-    );
-
-    useFocusEffect(
-        React.useCallback(() => {
-            setHasFocus(true);
-            return () => {
-                setHasFocus(false);
-                dispatch(setGaleriesNameFilter(''));
-            };
-        }, [])
-    );
+    const renderItem = React.useCallback(({ item }) => {
+        return <GalerieModal galerie={item} />;
+    }, []);
 
     // Fetch galeries
     React.useEffect(() => {
-        if (galeriesStatus === 'PENDING' && hasFocus) {
+        if (galeriesStatus === 'PENDING' && focus) {
             setFirstFetchFinished(false);
             dispatch(fetchGaleries({ name: filtersGaleriesName }));
         }
-    }, [galeriesStatus, filtersGaleriesName, hasFocus]);
+    }, [galeriesStatus, filtersGaleriesName, focus]);
     // Check if fetch is finished
     React.useEffect(() => {
         if (
             (galeriesStatus === 'SUCCESS' || galeriesStatus === 'ERROR') &&
-            hasFocus &&
+            focus &&
             searchFinished
         ) {
             if (!firstFetchFinished) setFirstFetchFinished(true);
@@ -129,9 +95,9 @@ const GaleriesScreen = () => {
     }, [
         fetchFinished,
         firstFetchFinished,
+        focus,
         galeriesStatus,
         searchFinished,
-        hasFocus,
     ]);
 
     return (
@@ -145,15 +111,18 @@ const GaleriesScreen = () => {
                         onChangeText={handleChangeText}
                         onFocus={onFocusSearchBar}
                         onStopTyping={onStopTyping}
+                        setValue={setSearchValue}
+                        value={searchValue}
                     />
                 </SearchBarContainer>
             </Header>
             {firstFetchFinished && (
                 <AnimatedFlatList
                     contentContainerStyle={{ paddingTop }}
-                    data={galeriesAllIds}
+                    data={galeries}
                     getItemLayout={getItemLayout}
                     keyExtractor={keyExtractor}
+                    keyboardShouldPersistTaps="handled"
                     maxToRenderPerBatch={4}
                     onEndReached={handleReachEnd}
                     onEndReachedThreshold={0.2}
