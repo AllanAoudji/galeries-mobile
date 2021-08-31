@@ -1,3 +1,4 @@
+import { Camera } from 'expo-camera';
 import * as React from 'react';
 
 import {
@@ -21,7 +22,8 @@ type Props = {
 };
 
 const AddPicturesScreen = ({ navigation }: Props) => {
-    const { openBottomSheet } = React.useContext(BottomSheetContext);
+    const { fadeOutBottomSheet, openBottomSheet } =
+        React.useContext(BottomSheetContext);
 
     const handleClose = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
@@ -33,10 +35,20 @@ const AddPicturesScreen = ({ navigation }: Props) => {
             });
         }
     }, [navigation]);
+    const handleNavigateCamera = React.useCallback(() => {
+        (async () => {
+            const { status } = await Camera.requestCameraPermissionsAsync();
+            if (status === 'granted') {
+                fadeOutBottomSheet();
+                navigation.navigate('Camera');
+            }
+        })();
+    }, []);
     const handlePress = React.useCallback(() => {
         openBottomSheet(() => (
             <>
                 <BottomSheetButton
+                    onPress={handleNavigateCamera}
                     pictogram="camera-fill"
                     title="take a picture"
                 />
