@@ -12,6 +12,7 @@ const Container = styled(Animated.View)<Props>`
     left: 0;
     position: absolute;
     right: 0;
+    z-index: 1;
 `;
 
 export default Container;

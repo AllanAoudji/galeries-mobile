@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 
 import { Notification } from '#components';
 import { BottomSheetProvider } from '#contexts/BottomSheetContext';
-import { ModalProvider } from '#contexts/ModalContext';
 import ThemeProvider from '#contexts/ThemeContext';
 import Loader from '#helpers/Loader';
 import RootStackNavigator from '#screens/RootStackNavigator';
@@ -20,11 +19,9 @@ export default function App() {
                 <Loader>
                     <NavigationContainer>
                         <BottomSheetProvider>
-                            <ModalProvider>
-                                <RootStackNavigator />
-                                <Notification />
-                                <StatusBar style="auto" />
-                            </ModalProvider>
+                            <RootStackNavigator />
+                            <Notification />
+                            <StatusBar style="auto" />
                         </BottomSheetProvider>
                     </NavigationContainer>
                 </Loader>

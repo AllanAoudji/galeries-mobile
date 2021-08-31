@@ -17,18 +17,13 @@ type Props = {
 };
 
 const Container = styled(Animated.View)`
+    background-color: ${({ theme }) => theme.colors['secondary-light']};
+    bottom: 0;
+    flex: 1;
     left: 0;
     position: absolute;
-    background-color: red;
     right: 0;
-    top: 0;
-    z-index: 1000;
-    border-width: 5px;
-    border-color: green;
     width: 100%;
-    height: 900px;
-    z-index: 2;
-    flex: 1;
 `;
 
 const FullScreenModal: React.FC<Props> = ({ open, handleClose, children }) => {
@@ -81,7 +76,7 @@ const FullScreenModal: React.FC<Props> = ({ open, handleClose, children }) => {
 
     if (!display) return null;
 
-    return <Container style={[{ elevation: 2 }, style]}>{children}</Container>;
+    return <Container style={style}>{children}</Container>;
 };
 
 export default FullScreenModal;

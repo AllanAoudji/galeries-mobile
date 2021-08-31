@@ -1,11 +1,30 @@
-import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Method } from 'axios';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 declare global {
     namespace Screen {
+        namespace CreateFrameStack {
+            type ParamList = {
+                AddDescription: undefined;
+                AddPictures: undefined;
+                Camera: undefined;
+            };
+            type AddDescriptionNavigationProp = StackNavigationProp<
+                ParamList,
+                'AddDescription'
+            >;
+            type AddPicturesNavigationProp = StackNavigationProp<
+                ParamList,
+                'AddPictures'
+            >;
+            type CameraNavigationProp = StackNavigationProp<
+                ParamList,
+                'Camera'
+            >;
+        }
         namespace DesktopBottomTab {
             type ParamList = {
                 Comments: undefined;
@@ -47,7 +66,7 @@ declare global {
         }
         namespace DesktopDrawer {
             type ParamList = {
-                Main: undefined;
+                Main: NavigatorScreenParams<DesktopBottomTab.ParamList>;
                 Moderation: undefined;
                 SendTicket: undefined;
                 Settings: undefined;
@@ -69,33 +88,28 @@ declare global {
                 'Settings'
             >;
         }
-        namespace GalerieMaterialBottomTab {
+        namespace DesktopStack {
             type ParamList = {
-                Frames: undefined;
-                Invitations: undefined;
-                Options: undefined;
-                Users: undefined;
+                CreateFrame: undefined;
+                CreateGalerie: undefined;
+                Desktop: NavigatorScreenParams<DesktopDrawer.ParamList>;
             };
-            type FramesNavigation = MaterialTopTabNavigationProp<
+            type CreateFrameNavigationProp = StackNavigationProp<
                 ParamList,
-                'Frames'
+                'CreateFrame'
             >;
-            type InvitationsNavigation = MaterialTopTabNavigationProp<
+            type CreateGalerieNavigationProp = StackNavigationProp<
                 ParamList,
-                'Invitations'
+                'CreateGalerie'
             >;
-            type OptionsNavigation = MaterialTopTabNavigationProp<
+            type DesktopNavigationProp = StackNavigationProp<
                 ParamList,
-                'Options'
-            >;
-            type UsersNavigation = MaterialTopTabNavigationProp<
-                ParamList,
-                'Users'
+                'Desktop'
             >;
         }
         namespace RootStack {
             type ParamList = {
-                Desktop: undefined;
+                Desktop: NavigatorScreenParams<DesktopStack.ParamList>;
                 ForgotYourPassword: undefined;
                 Landing: undefined;
                 Login: undefined;
@@ -264,7 +278,11 @@ declare global {
             | 'add/subscribe-stroke'
             | 'arrow-left'
             | 'arrow-right'
+            | 'camera-fill'
+            | 'camera-stroke'
+            | 'download'
             | 'edit-fill'
+            | 'edit-stroke'
             | 'galeries-fill'
             | 'galeries-stroke'
             | 'hamburger-menu'
@@ -283,7 +301,8 @@ declare global {
             | 'settings-fill'
             | 'settings-stroke'
             | 'ticket-fill'
-            | 'ticket-stroke';
+            | 'ticket-stroke'
+            | 'upload';
         type Spacings = {
             huge: string;
             small: string;

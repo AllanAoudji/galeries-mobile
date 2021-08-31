@@ -13,13 +13,12 @@ import {
     SceneRendererProps,
     TabView,
 } from 'react-native-tab-view';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Pictogram } from '#components';
 import { GalerieTabbarScreenHeader } from '#components/Screen';
 import clamp from '#helpers/clamp';
 import { useComponentSize } from '#hooks';
-import { resetCurrentGalerieId } from '#store/actions';
 import { currentGalerieSelector } from '#store/selectors';
 
 import FramesScreen from './FramesScreen';
@@ -50,7 +49,6 @@ const routes = [
 ];
 
 const GalerieTabViewNavigator = () => {
-    const dispatch = useDispatch();
     const galerie = useSelector(currentGalerieSelector);
 
     const navigation =
@@ -63,6 +61,15 @@ const GalerieTabViewNavigator = () => {
         index: 0,
         routes,
     });
+
+    const handleNavigateToCreateGalerieScreen = React.useCallback(() => {
+        // @ts-ignore
+        navigation
+            .getParent()
+            .getParent()
+            .getParent()
+            .navigate('CreateGalerie');
+    }, [navigation]);
 
     const maxScroll = React.useMemo(
         () =>
@@ -112,6 +119,9 @@ const GalerieTabViewNavigator = () => {
                                 sizeContainer ? sizeContainer.height : 0
                             }
                             scrollHandler={scrollHandler}
+                            handleNavigateToCreateGalerieScreen={
+                                handleNavigateToCreateGalerieScreen
+                            }
                         />
                     );
                 case 'invitations':
@@ -145,7 +155,12 @@ const GalerieTabViewNavigator = () => {
                     return null;
             }
         },
-        [galerie, scrollHandler, sizeContainer]
+        [
+            galerie,
+            scrollHandler,
+            sizeContainer,
+            handleNavigateToCreateGalerieScreen,
+        ]
     );
     const renderTabBar = React.useCallback(
         (
@@ -169,7 +184,6 @@ const GalerieTabViewNavigator = () => {
     useFocusEffect(
         React.useCallback(() => {
             return () => {
-                dispatch(resetCurrentGalerieId());
                 scrollY.value = 0;
             };
         }, [])

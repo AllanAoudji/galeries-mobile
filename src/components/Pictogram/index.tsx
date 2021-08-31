@@ -4,7 +4,11 @@ import AddSubscribeFill from './AddSubscribeFill';
 import AddSubscribeStroke from './AddSubscribeStroke';
 import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
+import CameraFill from './CameraFill';
+import CameraStroke from './CameraStroke';
+import Download from './Download';
 import EditFill from './EditFill';
+import EditStroke from './EditStroke';
 import GaleriesFill from './GaleriesFill';
 import GaleriesStroke from './GaleriesStroke';
 import HamburgerMenu from './HamburgerMenu';
@@ -24,6 +28,7 @@ import SettingsFill from './SettingsFill';
 import SettingsStroke from './SettingsStroke';
 import TicketFill from './TicketFill';
 import TicketStroke from './TicketStroke';
+import Upload from './Upload';
 
 type Props = {
     color?: keyof Style.Colors;
@@ -40,7 +45,11 @@ const variants = {
     'add/subscribe-stroke': AddSubscribeStroke,
     'arrow-left': ArrowLeft,
     'arrow-right': ArrowRight,
+    'camera-fill': CameraFill,
+    'camera-stroke': CameraStroke,
+    download: Download,
     'edit-fill': EditFill,
+    'edit-stroke': EditStroke,
     'galeries-fill': GaleriesFill,
     'galeries-stroke': GaleriesStroke,
     'hamburger-menu': HamburgerMenu,
@@ -60,6 +69,7 @@ const variants = {
     'settings-stroke': SettingsStroke,
     'ticket-fill': TicketFill,
     'ticket-stroke': TicketStroke,
+    upload: Upload,
 };
 
 const Pictograms = ({

@@ -1,37 +1,30 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import { Keyboard } from 'react-native';
-import styled from 'styled-components/native';
 import {
     useAnimatedStyle,
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
 
+import BottomSheetButton from '#components/BottomSheetButton';
 import Pictogram from '#components/Pictogram';
-import Typography from '#components/Typography';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 
 import { Container, IconContainer, PictogramContainer } from './styles';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
-
-import CreateGalerieModal from './CreateGalerieModal';
-
-const TransparantButton = styled.Pressable`
-    padding: 10px 0;
-`;
 
 type Props = {
     keyboardShown: boolean;
 };
 
 const FooterTabNavigator = ({
-    state,
-    navigation,
     keyboardShown,
+    navigation,
+    state,
 }: BottomTabBarProps & Props) => {
-    const [openGalerieModal, setOpenGalerieModal] =
-        React.useState<boolean>(false);
+    const { fadeOutBottomSheet, openBottomSheet } =
+        React.useContext(BottomSheetContext);
 
     const bottom = useSharedValue(0);
 
@@ -56,14 +49,15 @@ const FooterTabNavigator = ({
         () => state.routes[state.index].name,
         [state.index]
     );
-    const { fadeOutBottomSheet, openBottomSheet } =
-        React.useContext(BottomSheetContext);
 
     const handleCreateGaleriePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else {
             fadeOutBottomSheet();
-            setOpenGalerieModal(true);
+            if (navigation.getParent() !== undefined) {
+                // @ts-ignore
+                navigation.getParent().navigate('CreateGalerie');
+            }
         }
     }, [navigation, keyboardShown]);
     const handleHomePress = React.useCallback(() => {
@@ -87,16 +81,11 @@ const FooterTabNavigator = ({
         else
             openBottomSheet(() => (
                 <>
-                    <TransparantButton onPress={handleCreateGaleriePress}>
-                        <Typography fontSize={18}>
-                            Create a new galerie
-                        </Typography>
-                    </TransparantButton>
-                    <TransparantButton>
-                        <Typography fontSize={18}>
-                            Subscribe to a galerie
-                        </Typography>
-                    </TransparantButton>
+                    <BottomSheetButton
+                        onPress={handleCreateGaleriePress}
+                        title="create a new galerie"
+                    />
+                    <BottomSheetButton title="Subscribe to a galerie" />
                 </>
             ))();
     }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
@@ -166,10 +155,6 @@ const FooterTabNavigator = ({
                     </PictogramContainer>
                 </IconContainer>
             </Container>
-            <CreateGalerieModal
-                handleClose={() => setOpenGalerieModal(false)}
-                open={openGalerieModal}
-            />
         </>
     );
 };

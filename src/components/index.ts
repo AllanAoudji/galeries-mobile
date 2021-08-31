@@ -2,6 +2,7 @@ export { default as AddButton } from './AddButton';
 export { default as AnimatedFlatList } from './AnimatedFlatList';
 export { default as AnimatedTypography } from './AnimatedTypography';
 export { default as BottomLoader } from './BottomLoader';
+export { default as BottomSheetButton } from './BottomSheetButton';
 export { default as CustomButton } from './CustomButton';
 export { default as CustomTextInput } from './CustomTextInput';
 export { default as FormScreen } from './FormScreen';
