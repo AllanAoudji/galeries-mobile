@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
 
-const TextInputsContainer = styled.View`
+const Container = styled.View`
     margin-bottom: ${({ theme }) => theme.spacings.normal};
 `;
 
-export default TextInputsContainer;
+// eslint-disable-next-line import/prefer-default-export
+export { Container };

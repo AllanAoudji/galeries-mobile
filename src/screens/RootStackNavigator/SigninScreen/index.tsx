@@ -9,12 +9,13 @@ import {
     CustomButton,
     CustomTextInput,
     FormScreen,
+    TextInputsContainer,
     Typography,
 } from '#components';
 import { signinSchema } from '#helpers/schemas';
 import { setNotification } from '#store/actions';
 
-import { CustomLink, TextContainer, TextInputsContainer } from './styles';
+import { CustomLink, TextContainer } from './styles';
 
 const initialValues = {
     betaKey: '',

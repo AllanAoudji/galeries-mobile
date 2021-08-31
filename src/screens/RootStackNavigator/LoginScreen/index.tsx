@@ -9,6 +9,7 @@ import {
     CustomButton,
     CustomTextInput,
     FormScreen,
+    TextInputsContainer,
     Typography,
 } from '#components';
 import { ASYNC_STORAGE, END_POINT, ERROR_MESSAGE } from '#helpers/constants';
@@ -21,7 +22,6 @@ import {
     ForgotYourPasswordLink,
     ForgotYourPasswordLinkContainer,
     TextContainer,
-    TextInputsContainer,
 } from './styles';
 
 const initialValues = {

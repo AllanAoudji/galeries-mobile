@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from 'styled-components/native';
 
 import {
     BottomSheetButton,
@@ -10,39 +9,30 @@ import {
 } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 
+import {
+    AddPicture,
+    BodyContainer,
+    PictureContainer,
+    TextContainer,
+} from './styles';
+
 type Props = {
     navigation: Screen.CreateFrameStack.AddPicturesNavigationProp;
 };
 
-const PICTURE_SIZE = 100;
-
-const AddPicture = styled.Pressable`
-    align-items: center;
-    border-color: ${({ theme }) => theme.colors.primary};
-    border-radius: 15px;
-    border-style: dashed;
-    border-width: 2px;
-    height: ${() => `${PICTURE_SIZE}px`};
-    justify-content: center;
-    margin-bottom: 10px;
-    width: ${() => `${PICTURE_SIZE}px`};
-`;
-const BodyContainer = styled.View`
-    padding-bottom: ${({ theme }) => theme.spacings.normal};
-`;
-const PictureContainer = styled.View`
-    flex-direction: row;
-    flex-wrap: wrap;
-    height: ${() => `${PICTURE_SIZE * 2 + 10}px`};
-    justify-content: space-between;
-`;
-const TextContainer = styled.View`
-    padding-bottom: ${({ theme }) => theme.spacings.normal};
-`;
-
 const AddPicturesScreen = ({ navigation }: Props) => {
     const { openBottomSheet } = React.useContext(BottomSheetContext);
 
+    const handleClose = React.useCallback(() => {
+        if (navigation.canGoBack()) navigation.goBack();
+        else {
+            // @ts-ignore
+            navigation.getParent().navigate('Desktop', {
+                screen: 'Main',
+                params: { screen: 'Home' },
+            });
+        }
+    }, [navigation]);
     const handlePress = React.useCallback(() => {
         openBottomSheet(() => (
             <>
@@ -57,19 +47,10 @@ const AddPicturesScreen = ({ navigation }: Props) => {
             </>
         ))();
     }, []);
-    const handleClose = React.useCallback(() => {
-        if (navigation.canGoBack()) navigation.goBack();
-        else {
-            // @ts-ignore
-            navigation.getParent().navigate('Desktop', {
-                screen: 'Main',
-                params: { screen: 'Home' },
-            });
-        }
-    }, [navigation]);
 
     return (
         <FormScreen
+            handleOnPressReturn={handleClose}
             renderBottom={
                 <>
                     <CustomButton mb="smallest" title="next" />
@@ -95,7 +76,6 @@ const AddPicturesScreen = ({ navigation }: Props) => {
                     </PictureContainer>
                 </BodyContainer>
             }
-            handleOnPressReturn={handleClose}
             title="post a new frame"
         />
     );

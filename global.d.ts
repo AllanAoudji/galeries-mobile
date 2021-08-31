@@ -92,7 +92,7 @@ declare global {
             type ParamList = {
                 CreateFrame: undefined;
                 CreateGalerie: undefined;
-                Desktop: NavigatorScreenParams<DesktopDrawer.ParamList>;
+                Navigation: NavigatorScreenParams<DesktopDrawer.ParamList>;
             };
             type CreateFrameNavigationProp = StackNavigationProp<
                 ParamList,

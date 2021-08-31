@@ -40,13 +40,9 @@ const FullScreenLoader = ({
         else {
             opacity.value = withTiming(
                 0,
-                {
-                    duration: 200,
-                },
+                ANIMATIONS.TIMING_CONFIG(100),
                 (isFinished) => {
-                    if (isFinished) {
-                        runOnJS(setDisplay)(false);
-                    }
+                    if (isFinished) runOnJS(setDisplay)(false);
                 }
             );
         }

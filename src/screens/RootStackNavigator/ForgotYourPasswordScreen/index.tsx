@@ -7,6 +7,7 @@ import {
     CustomButton,
     CustomTextInput,
     FormScreen,
+    TextInputsContainer,
     Typography,
 } from '#components';
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
@@ -14,7 +15,7 @@ import request from '#helpers/request';
 import { forgotPassworSchema } from '#helpers/schemas';
 import { setNotification } from '#store/actions';
 
-import { TextContainer, TextInputsContainer } from './styles';
+import { TextContainer } from './styles';
 
 type Props = {
     navigation: Screen.RootStack.ForgotYourPasswordNavigationProp;

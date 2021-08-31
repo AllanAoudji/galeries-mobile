@@ -3,9 +3,13 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components/native';
 
-import { CustomButton, CustomTextInput, FormScreen } from '#components';
+import {
+    CustomButton,
+    CustomTextInput,
+    FormScreen,
+    TextInputsContainer,
+} from '#components';
 import {
     END_POINT,
     ERROR_MESSAGE,
@@ -24,10 +28,6 @@ import {
 type Props = {
     navigation: Screen.DesktopStack.CreateGalerieNavigationProp;
 };
-
-const TextInputsContainer = styled.View`
-    margin-bottom: ${({ theme }) => theme.spacings.normal};
-`;
 
 const initialValues = {
     description: '',

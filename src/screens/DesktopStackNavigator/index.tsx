@@ -6,14 +6,14 @@ import * as React from 'react';
 
 import CreateFrameScreen from './CreateFrameScreen';
 import CreateGalerieScreen from './CreateGalerieScreen';
-import DesktopScreen from './DesktopScreen';
+import NavigationScreen from './NavigationScreen';
 
 const Stack = createStackNavigator<Screen.DesktopStack.ParamList>();
 
 const DesktopStackNavigator = () => {
     return (
         <Stack.Navigator
-            initialRouteName="Desktop"
+            initialRouteName="Navigation"
             screenOptions={{
                 cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
                 headerShown: false,
@@ -24,7 +24,7 @@ const DesktopStackNavigator = () => {
                 name="CreateGalerie"
                 component={CreateGalerieScreen}
             />
-            <Stack.Screen name="Desktop" component={DesktopScreen} />
+            <Stack.Screen name="Navigation" component={NavigationScreen} />
         </Stack.Navigator>
     );
 };

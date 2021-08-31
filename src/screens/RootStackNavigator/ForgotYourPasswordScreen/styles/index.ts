@@ -1,2 +1,2 @@
+// eslint-disable-next-line import/prefer-default-export
 export { default as TextContainer } from './TextContainer';
-export { default as TextInputsContainer } from './TextInputsContainer';

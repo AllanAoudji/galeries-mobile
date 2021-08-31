@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { StatusBar, View } from 'react-native';
+import { StatusBar } from 'react-native';
 import {
     interpolate,
     useAnimatedScrollHandler,
@@ -25,7 +25,12 @@ import FramesScreen from './FramesScreen';
 import InvitationsScreen from './InvitationsScreen';
 import OptionsScreen from './OptionsScreen';
 import UsersScreen from './UsersScreen';
-import { Container, PictogramContainer } from './styles';
+import {
+    AbsoluteCoverPicture,
+    AbsoluteTopContainer,
+    Container,
+    PictogramContainer,
+} from './styles';
 
 const BACK_BUTTON_HEIGHT = 55;
 
@@ -64,11 +69,7 @@ const GalerieTabViewNavigator = () => {
 
     const handleNavigateToCreateGalerieScreen = React.useCallback(() => {
         // @ts-ignore
-        navigation
-            .getParent()
-            .getParent()
-            .getParent()
-            .navigate('CreateGalerie');
+        navigation.getParent().getParent().getParent().navigate('CreateFrame');
     }, [navigation]);
 
     const maxScroll = React.useMemo(
@@ -192,38 +193,19 @@ const GalerieTabViewNavigator = () => {
     return (
         <>
             <Container>
-                <View
-                    style={{
-                        height:
-                            BACK_BUTTON_HEIGHT + (StatusBar.currentHeight || 0),
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        justifyContent: 'flex-start',
-                        flexDirection: 'row',
-                        position: 'absolute',
-                        zIndex: 2,
-                        alignItems: 'flex-end',
-                    }}
+                <AbsoluteTopContainer
+                    height={BACK_BUTTON_HEIGHT + (StatusBar.currentHeight || 0)}
                 >
                     {/* TODO: should be an animated view */}
                     {/* Should contain coverpicture and change his opacity */}
-                    <View
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            right: 0,
-                            left: 0,
-                            bottom: 0,
-                        }}
-                    />
+                    <AbsoluteCoverPicture />
                     <PictogramContainer onPress={onPressBack}>
                         <Pictogram
                             variant="arrow-left"
                             color="secondary-light"
                         />
                     </PictogramContainer>
-                </View>
+                </AbsoluteTopContainer>
                 <TabView
                     navigationState={navigationState}
                     onIndexChange={onIndexChange}
