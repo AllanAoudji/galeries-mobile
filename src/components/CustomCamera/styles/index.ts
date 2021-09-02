@@ -1,0 +1,87 @@
+import { Camera } from 'expo-camera';
+import styled from 'styled-components/native';
+
+type CameraStyledProps = {
+    margins: number;
+};
+type ImageStyledProps = {
+    margins: number;
+};
+
+const TAKE_PICTURE_BUTTON_BORDER_SIZE = 5;
+const TAKE_PICTURE_BUTTON_SIZE = 82;
+const INNER_TAKE_PICTURE_BUTTON_SIZE =
+    TAKE_PICTURE_BUTTON_SIZE - (2 * TAKE_PICTURE_BUTTON_BORDER_SIZE + 8);
+
+const BackButtonContainer = styled.Pressable`
+    left: 0;
+    padding: ${({ theme }) => theme.spacings.small};
+    position: absolute;
+    top: 0;
+`;
+const BottomContainer = styled.View`
+    bottom: 0;
+    flex-direction: row;
+    height: 125px;
+    left: 0;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+`;
+const CameraStyled = styled(Camera)<CameraStyledProps>`
+    flex: 1;
+    margin: ${({ margins }) => `${margins}px 0`};
+`;
+const Container = styled.View`
+    background-color: #000;
+    flex: 1;
+`;
+const ImageStyled = styled.Image<ImageStyledProps>`
+    bottom: 0;
+    left: 0;
+    margin: ${({ margins }) => `${margins}px 0`};
+    position: absolute;
+    right: 0;
+    top: 0;
+`;
+const InnerTakePictureButton = styled.View`
+    background-color: ${({ theme }) => theme.colors['secondary-light']};
+    border-radius: ${() => `${INNER_TAKE_PICTURE_BUTTON_SIZE / 2}px`};
+    height: ${() => `${INNER_TAKE_PICTURE_BUTTON_SIZE}px`};
+    width: ${() => `${INNER_TAKE_PICTURE_BUTTON_SIZE}px`};
+    opacity: 0.75;
+`;
+const TakePictureButton = styled.Pressable`
+    align-items: center;
+    border-color: ${({ theme }) => theme.colors['secondary-light']};
+    border-radius: ${() => `${TAKE_PICTURE_BUTTON_SIZE / 2}px`};
+    border-width: ${() => `${TAKE_PICTURE_BUTTON_BORDER_SIZE}px`};
+    height: ${() => `${TAKE_PICTURE_BUTTON_SIZE}px`};
+    justify-content: center;
+    width: ${() => `${TAKE_PICTURE_BUTTON_SIZE}px`};
+`;
+const SwitchFlashModeButtonContainer = styled.Pressable`
+    right: 0;
+    padding: ${({ theme }) => theme.spacings.small};
+    position: absolute;
+    top: 0;
+`;
+const SwitchTypeButtonContainer = styled.Pressable`
+    bottom: 0;
+    padding: ${({ theme }) => theme.spacings.small};
+    position: absolute;
+    right: 0;
+`;
+
+// eslint-disable-next-line import/prefer-default-export
+export {
+    BackButtonContainer,
+    BottomContainer,
+    CameraStyled,
+    Container,
+    ImageStyled,
+    InnerTakePictureButton,
+    TakePictureButton,
+    SwitchFlashModeButtonContainer,
+    SwitchTypeButtonContainer,
+};

@@ -26,6 +26,7 @@ import ProfileStroke from './ProfileStroke';
 import Search from './Search';
 import SettingsFill from './SettingsFill';
 import SettingsStroke from './SettingsStroke';
+import Switch from './Switch';
 import TicketFill from './TicketFill';
 import TicketStroke from './TicketStroke';
 import Upload from './Upload';
@@ -67,6 +68,7 @@ const variants = {
     search: Search,
     'settings-fill': SettingsFill,
     'settings-stroke': SettingsStroke,
+    switch: Switch,
     'ticket-fill': TicketFill,
     'ticket-stroke': TicketStroke,
     upload: Upload,

@@ -22,7 +22,7 @@ const defaultWidth = {
     small: 15,
 };
 
-const Download = ({ color = 'black', customSize, size = 'normal' }: Props) => {
+const Switch = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     const theme = useTheme();
     const height = React.useMemo(() => {
         if (customSize) return customSize.height;
@@ -47,4 +47,4 @@ const Download = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default Download;
+export default Switch;

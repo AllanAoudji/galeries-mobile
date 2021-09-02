@@ -300,6 +300,7 @@ declare global {
             | 'search'
             | 'settings-fill'
             | 'settings-stroke'
+            | 'switch'
             | 'ticket-fill'
             | 'ticket-stroke'
             | 'upload';
