@@ -9,7 +9,10 @@ import {
     Typography,
 } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
+import { CreateFrameContext } from '#contexts/CreateFrameContext';
 
+import List from './List';
+import Tile from './Tile';
 import {
     AddPicture,
     BodyContainer,
@@ -17,13 +20,19 @@ import {
     TextContainer,
 } from './styles';
 
-type Props = {
+type AddPicturesScreenProps = {
     navigation: Screen.CreateFrameStack.AddPicturesNavigationProp;
 };
 
-const AddPicturesScreen = ({ navigation }: Props) => {
+const AddPicturesScreen = ({ navigation }: AddPicturesScreenProps) => {
+    const { picturesUri } = React.useContext(CreateFrameContext);
     const { fadeOutBottomSheet, openBottomSheet } =
         React.useContext(BottomSheetContext);
+
+    const disableNextButton = React.useMemo(
+        () => picturesUri.length === 0,
+        [picturesUri]
+    );
 
     const handleClose = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
@@ -44,28 +53,39 @@ const AddPicturesScreen = ({ navigation }: Props) => {
             }
         })();
     }, []);
-    const handlePress = React.useCallback(() => {
-        openBottomSheet(() => (
-            <>
-                <BottomSheetButton
-                    onPress={handleNavigateCamera}
-                    pictogram="camera-fill"
-                    title="take a picture"
-                />
-                <BottomSheetButton
-                    pictogram="upload"
-                    title="upload a picture"
-                />
-            </>
-        ))();
-    }, []);
+    const handlePressNext = React.useCallback(() => {
+        if (picturesUri.length > 0) {
+            navigation.navigate('AddDescription');
+        }
+    }, [picturesUri]);
+    const handlePressOpenSheet = React.useCallback(() => {
+        if (picturesUri.length < 6)
+            openBottomSheet(() => (
+                <>
+                    <BottomSheetButton
+                        onPress={handleNavigateCamera}
+                        pictogram="camera-fill"
+                        title="take a picture"
+                    />
+                    <BottomSheetButton
+                        pictogram="upload"
+                        title="upload a picture"
+                    />
+                </>
+            ))();
+    }, [picturesUri]);
 
     return (
         <FormScreen
             handleOnPressReturn={handleClose}
             renderBottom={
                 <>
-                    <CustomButton mb="smallest" title="next" />
+                    <CustomButton
+                        disable={disableNextButton}
+                        mb="smallest"
+                        onPress={handlePressNext}
+                        title="next"
+                    />
                     <CustomButton
                         onPress={handleClose}
                         title="cancel"
@@ -81,8 +101,19 @@ const AddPicturesScreen = ({ navigation }: Props) => {
                             drag'n'drop them to change the order
                         </Typography>
                     </TextContainer>
+                    {/* <List>
+                        {picturesUri.map((pictureUri) => (
+                            <Tile
+                                id={pictureUri}
+                                onLongPress={() => {}}
+                                uri={pictureUri}
+                                key={pictureUri}
+                            />
+                        ))}
+                    </List> */}
+                    {/* TODO: Need to be include in list if picturesURI.length < 6 */}
                     <PictureContainer>
-                        <AddPicture onPress={handlePress}>
+                        <AddPicture onPress={handlePressOpenSheet}>
                             <Pictogram color="primary" variant="plus" />
                         </AddPicture>
                     </PictureContainer>

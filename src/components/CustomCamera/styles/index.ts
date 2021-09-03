@@ -9,10 +9,14 @@ type ImageStyledProps = {
 };
 
 const TAKE_PICTURE_BUTTON_BORDER_SIZE = 5;
-const TAKE_PICTURE_BUTTON_SIZE = 82;
+const ACTION_CONTAINER_SIZE = 82;
 const INNER_TAKE_PICTURE_BUTTON_SIZE =
-    TAKE_PICTURE_BUTTON_SIZE - (2 * TAKE_PICTURE_BUTTON_BORDER_SIZE + 8);
+    ACTION_CONTAINER_SIZE - (2 * TAKE_PICTURE_BUTTON_BORDER_SIZE + 8);
 
+const ActionsContainer = styled.View`
+    height: ${() => `${ACTION_CONTAINER_SIZE}px`};
+    width: ${() => `${ACTION_CONTAINER_SIZE}px`};
+`;
 const BackButtonContainer = styled.Pressable`
     left: 0;
     padding: ${({ theme }) => theme.spacings.small};
@@ -51,14 +55,16 @@ const InnerTakePictureButton = styled.View`
     width: ${() => `${INNER_TAKE_PICTURE_BUTTON_SIZE}px`};
     opacity: 0.75;
 `;
-const TakePictureButton = styled.Pressable`
+const SavePicturesButton = styled.Pressable`
     align-items: center;
-    border-color: ${({ theme }) => theme.colors['secondary-light']};
-    border-radius: ${() => `${TAKE_PICTURE_BUTTON_SIZE / 2}px`};
-    border-width: ${() => `${TAKE_PICTURE_BUTTON_BORDER_SIZE}px`};
-    height: ${() => `${TAKE_PICTURE_BUTTON_SIZE}px`};
+    background-color: ${({ theme }) => theme.colors['secondary-light']};
+    border-radius: ${() => `${ACTION_CONTAINER_SIZE / 2}px`};
+    bottom: 0;
     justify-content: center;
-    width: ${() => `${TAKE_PICTURE_BUTTON_SIZE}px`};
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
 `;
 const SwitchFlashModeButtonContainer = styled.Pressable`
     right: 0;
@@ -72,16 +78,30 @@ const SwitchTypeButtonContainer = styled.Pressable`
     position: absolute;
     right: 0;
 `;
+const TakePictureButton = styled.Pressable`
+    align-items: center;
+    border-color: ${({ theme }) => theme.colors['secondary-light']};
+    border-radius: ${() => `${ACTION_CONTAINER_SIZE / 2}px`};
+    border-width: ${() => `${TAKE_PICTURE_BUTTON_BORDER_SIZE}px`};
+    bottom: 0;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+`;
 
 // eslint-disable-next-line import/prefer-default-export
 export {
+    ActionsContainer,
     BackButtonContainer,
     BottomContainer,
     CameraStyled,
     Container,
     ImageStyled,
     InnerTakePictureButton,
-    TakePictureButton,
+    SavePicturesButton,
     SwitchFlashModeButtonContainer,
     SwitchTypeButtonContainer,
+    TakePictureButton,
 };

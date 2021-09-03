@@ -9,6 +9,8 @@ import CameraStroke from './CameraStroke';
 import Download from './Download';
 import EditFill from './EditFill';
 import EditStroke from './EditStroke';
+import FlashOff from './FlashOff';
+import FlashOn from './FlashOn';
 import GaleriesFill from './GaleriesFill';
 import GaleriesStroke from './GaleriesStroke';
 import HamburgerMenu from './HamburgerMenu';
@@ -30,6 +32,7 @@ import Switch from './Switch';
 import TicketFill from './TicketFill';
 import TicketStroke from './TicketStroke';
 import Upload from './Upload';
+import Valid from './Valid';
 
 type Props = {
     color?: keyof Style.Colors;
@@ -51,6 +54,8 @@ const variants = {
     download: Download,
     'edit-fill': EditFill,
     'edit-stroke': EditStroke,
+    'flash-off': FlashOff,
+    'flash-on': FlashOn,
     'galeries-fill': GaleriesFill,
     'galeries-stroke': GaleriesStroke,
     'hamburger-menu': HamburgerMenu,
@@ -72,6 +77,7 @@ const variants = {
     'ticket-fill': TicketFill,
     'ticket-stroke': TicketStroke,
     upload: Upload,
+    valid: Valid,
 };
 
 const Pictograms = ({

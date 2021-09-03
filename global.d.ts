@@ -283,6 +283,8 @@ declare global {
             | 'download'
             | 'edit-fill'
             | 'edit-stroke'
+            | 'flash-off'
+            | 'flash-on'
             | 'galeries-fill'
             | 'galeries-stroke'
             | 'hamburger-menu'
@@ -303,7 +305,8 @@ declare global {
             | 'switch'
             | 'ticket-fill'
             | 'ticket-stroke'
-            | 'upload';
+            | 'upload'
+            | 'valid';
         type Spacings = {
             huge: string;
             small: string;
