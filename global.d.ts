@@ -5,12 +5,19 @@ import { Method } from 'axios';
 import { NavigatorScreenParams } from '@react-navigation/native';
 
 declare global {
+    namespace DragAndDrop {
+        type Order = number;
+        interface Positions {
+            [id: string]: Order;
+        }
+    }
     namespace Screen {
         namespace CreateFrameStack {
             type ParamList = {
                 AddDescription: undefined;
                 AddPictures: undefined;
                 Camera: undefined;
+                CreateFrameGallery: undefined;
             };
             type AddDescriptionNavigationProp = StackNavigationProp<
                 ParamList,
@@ -23,6 +30,10 @@ declare global {
             type CameraNavigationProp = StackNavigationProp<
                 ParamList,
                 'Camera'
+            >;
+            type CreateFrameGalleryNavigationProp = StackNavigationProp<
+                ParamList,
+                'CreateFrameGallery'
             >;
         }
         namespace DesktopBottomTab {

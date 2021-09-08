@@ -7,12 +7,11 @@ import { withTiming } from 'react-native-reanimated';
 import {
     AnimatedFlatList,
     BottomLoader,
-    FullScreenLoader,
+    DefaultHeader,
     GalerieModal,
     SearchBar,
     Typography,
 } from '#components';
-import { DesktopBottomTabScreenHeader } from '#components/Screen';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 import { fetchGaleries, setGaleriesNameFilter } from '#store/actions';
@@ -103,7 +102,7 @@ const GaleriesScreen = () => {
     return (
         <Container>
             <Header onLayout={onLayout} style={containerStyle}>
-                <DesktopBottomTabScreenHeader style={headerStyle} />
+                <DefaultHeader style={headerStyle} />
                 <SearchBarContainer>
                     <Typography fontSize={24}>Galeries</Typography>
                     <SearchBar
@@ -134,7 +133,6 @@ const GaleriesScreen = () => {
                     showsVerticalScrollIndicator={false}
                 />
             )}
-            <FullScreenLoader show={!firstFetchFinished} />
             <BottomLoader show={!fetchFinished} />
         </Container>
     );

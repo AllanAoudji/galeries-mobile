@@ -13,28 +13,29 @@ import {
 } from './styles';
 
 interface Props {
+    onPress?: () => void;
     variant?: 'primary' | 'secondary';
 }
 
-const DesktopBottomTabScreenHeader = ({
+const DefaultHeader = ({
+    onPress,
     variant = 'primary',
     ...rest
-}: ViewProps & Props) => {
-    const navigation =
-        useNavigation<Screen.DesktopBottomTab.CommentsNavigationProp>();
-    const handlePressLogo = React.useCallback(() => {
-        navigation.navigate('Home');
-    }, [navigation]);
+}: Props & ViewProps) => {
+    const navigation = useNavigation();
 
+    const isArrow = React.useMemo(
+        () => variant === 'secondary' && navigation.canGoBack(),
+        [navigation, variant]
+    );
+
+    const handlePressLogo = React.useCallback(() => {
+        if (onPress) onPress();
+    }, [onPress]);
     const handlePressPictogram = React.useCallback(() => {
-        if (variant === 'primary')
-            navigation.dispatch(DrawerActions.openDrawer());
-        else if (navigation.canGoBack()) {
-            navigation.goBack();
-        } else {
-            navigation.navigate('Home');
-        }
-    }, [variant, navigation]);
+        if (isArrow) navigation.goBack();
+        else navigation.dispatch(DrawerActions.openDrawer());
+    }, [isArrow, navigation]);
 
     return (
         <Container {...rest}>
@@ -44,9 +45,7 @@ const DesktopBottomTabScreenHeader = ({
             >
                 <Pictogram
                     color="primary"
-                    variant={
-                        variant === 'primary' ? 'hamburger-menu' : 'arrow-left'
-                    }
+                    variant={isArrow ? 'arrow-left' : 'hamburger-menu'}
                 />
             </PictogramContainer>
             <LogoContainer currentHeight={StatusBar.currentHeight}>
@@ -58,4 +57,4 @@ const DesktopBottomTabScreenHeader = ({
     );
 };
 
-export default DesktopBottomTabScreenHeader;
+export default DefaultHeader;

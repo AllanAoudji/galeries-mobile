@@ -10,14 +10,14 @@ type Props = {
 const CameraScreen = ({ navigation }: Props) => {
     const { addPictures } = React.useContext(CreateFrameContext);
 
-    const handlePressBack = React.useCallback(() => {
-        navigation.navigate('AddPictures');
-    }, [navigation]);
+    const handlePressBack = React.useCallback(
+        () => navigation.navigate('AddPictures'),
+        [navigation]
+    );
 
     const handleSavePictureUri = React.useCallback(
-        (uri: string) => {
-            addPictures(uri, () => navigation.navigate('AddPictures'));
-        },
+        (uri: string) =>
+            addPictures(uri, () => navigation.navigate('AddPictures')),
         [addPictures, navigation]
     );
 

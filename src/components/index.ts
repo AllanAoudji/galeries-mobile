@@ -6,6 +6,8 @@ export { default as BottomSheetButton } from './BottomSheetButton';
 export { default as CustomButton } from './CustomButton';
 export { default as CustomCamera } from './CustomCamera';
 export { default as CustomTextInput } from './CustomTextInput';
+export { default as DefaultHeader } from './DefaultHeader';
+export { default as DeleteModal } from './DeleteModal';
 export { default as FormScreen } from './FormScreen';
 export { default as FullScreenLoader } from './FullScreenLoader';
 export { default as GalerieModal } from './GalerieModal';

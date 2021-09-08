@@ -1,4 +1,13 @@
+import { Dimensions } from 'react-native';
 import { Easing } from 'react-native-reanimated';
+
+import convertPixelToNum from '#helpers/convertPixelToNum';
+import theme from '#helpers/theme';
+
+const { width } = Dimensions.get('window');
+
+const SIZE = (width - convertPixelToNum(theme.spacings.normal) * 2) / 3;
+const COL = 3;
 
 export const ANIMATIONS = {
     TIMING_CONFIG: (duration = 400) => {
@@ -19,6 +28,27 @@ export const ASYNC_STORAGE = {
 };
 
 export const CLOSE_NOTIFICATION_DELAY = 2000;
+
+export const DRAG_AND_DROP_UTILS = {
+    COL,
+    SIZE,
+    getOrder(x: number, y: number) {
+        'worklet';
+
+        const col = Math.round(x / SIZE);
+        const row = Math.round(y / SIZE);
+
+        return row * COL + col;
+    },
+    getPosition(order: number) {
+        'worklet';
+
+        return {
+            x: (order % COL) * SIZE,
+            y: Math.floor(order / COL) * SIZE,
+        };
+    },
+};
 
 export const END_POINT = {
     FORGOT_PASSWORD: '/users/password/',

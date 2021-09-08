@@ -14,12 +14,11 @@ import {
     Container,
     ImageStyled,
     InnerTakePictureButton,
-    TakePictureButton,
     SavePicturesButton,
     SwitchFlashModeButtonContainer,
     SwitchTypeButtonContainer,
+    TakePictureButton,
 } from './styles';
-import Typography from '#components/Typography';
 
 type Props = {
     onPressBack?: () => void;
@@ -29,14 +28,14 @@ type Props = {
 const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
     const dimension = useWindowDimensions();
 
-    const [margins, setMargins] = React.useState<number>(0);
-    const [type, setType] = React.useState<CameraType>(
-        Camera.Constants.Type.back
-    );
     const [flashMode, setFlashMode] = React.useState<FlashMode>(
         Camera.Constants.FlashMode.off
     );
+    const [margins, setMargins] = React.useState<number>(0);
     const [snapShot, setSnapshot] = React.useState<string | null>(null);
+    const [type, setType] = React.useState<CameraType>(
+        Camera.Constants.Type.back
+    );
 
     const cameraRef = React.useRef<Camera | null>(null);
 
@@ -67,10 +66,8 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
             );
     }, [snapShot]);
     const handleSavePictureUri = React.useCallback(() => {
-        if (snapShot) {
-            onSavePictureUri(snapShot);
-        }
-    }, [snapShot, onSavePictureUri]);
+        if (snapShot) onSavePictureUri(snapShot);
+    }, [onSavePictureUri, snapShot]);
     const handleTakePicture = React.useCallback(async () => {
         if (cameraRef.current && !snapShot) {
             const { uri } = await cameraRef.current.takePictureAsync();
@@ -89,7 +86,7 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
     React.useEffect(() => {
         if (Platform.OS === 'android')
             setMargins((dimension.height - (4 / 3) * dimension.width) / 2);
-    }, [Platform, dimension]);
+    }, [dimension, Platform]);
     React.useEffect(() => {
         let BackHandlerListerner: any;
         if (snapShot) {
@@ -100,9 +97,7 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                     return true;
                 }
             );
-        } else if (BackHandlerListerner) {
-            BackHandlerListerner.remove();
-        }
+        } else if (BackHandlerListerner) BackHandlerListerner.remove();
         return () => {
             if (BackHandlerListerner) {
                 BackHandlerListerner.remove();
@@ -110,16 +105,12 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
         };
     }, [snapShot]);
 
-    // TODO: if press back or press BackButton when photUri !== null
-    // Pop modal 'are you sure to quit?'
-
     return (
         <Container>
             <CameraStyled
-                autoFocus={false}
+                flashMode={flashMode}
                 margins={margins}
                 ref={cameraRef}
-                flashMode={flashMode}
                 type={type}
             />
             {!!snapShot && (
@@ -144,7 +135,6 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                             variant="flash-off"
                         />
                     )}
-                    <Typography color="secondary-light">{}</Typography>
                 </SwitchFlashModeButtonContainer>
             )}
             <BottomContainer>

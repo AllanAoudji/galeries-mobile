@@ -8,8 +8,8 @@ type ImageStyledProps = {
     margins: number;
 };
 
-const TAKE_PICTURE_BUTTON_BORDER_SIZE = 5;
 const ACTION_CONTAINER_SIZE = 82;
+const TAKE_PICTURE_BUTTON_BORDER_SIZE = 5;
 const INNER_TAKE_PICTURE_BUTTON_SIZE =
     ACTION_CONTAINER_SIZE - (2 * TAKE_PICTURE_BUTTON_BORDER_SIZE + 8);
 
@@ -27,8 +27,8 @@ const BottomContainer = styled.View`
     bottom: 0;
     flex-direction: row;
     height: 125px;
-    left: 0;
     justify-content: center;
+    left: 0;
     position: absolute;
     right: 0;
 `;
@@ -52,8 +52,8 @@ const InnerTakePictureButton = styled.View`
     background-color: ${({ theme }) => theme.colors['secondary-light']};
     border-radius: ${() => `${INNER_TAKE_PICTURE_BUTTON_SIZE / 2}px`};
     height: ${() => `${INNER_TAKE_PICTURE_BUTTON_SIZE}px`};
-    width: ${() => `${INNER_TAKE_PICTURE_BUTTON_SIZE}px`};
     opacity: 0.75;
+    width: ${() => `${INNER_TAKE_PICTURE_BUTTON_SIZE}px`};
 `;
 const SavePicturesButton = styled.Pressable`
     align-items: center;
@@ -61,15 +61,15 @@ const SavePicturesButton = styled.Pressable`
     border-radius: ${() => `${ACTION_CONTAINER_SIZE / 2}px`};
     bottom: 0;
     justify-content: center;
-    position: absolute;
     left: 0;
+    position: absolute;
     right: 0;
     top: 0;
 `;
 const SwitchFlashModeButtonContainer = styled.Pressable`
-    right: 0;
     padding: ${({ theme }) => theme.spacings.small};
     position: absolute;
+    right: 0;
     top: 0;
 `;
 const SwitchTypeButtonContainer = styled.Pressable`
