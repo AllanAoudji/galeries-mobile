@@ -4,7 +4,7 @@ export const NOTIFICATION_SET = `${NOTIFICATION} Set`;
 
 export const resetNotification: () => Store.Action = () => ({
     payload: {
-        data: {},
+        data: null,
         meta: {},
     },
     type: NOTIFICATION_SET,

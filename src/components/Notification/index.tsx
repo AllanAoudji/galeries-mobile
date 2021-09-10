@@ -42,7 +42,7 @@ const Notification = () => {
                 width: '100%',
             }}
         >
-            {notification && (
+            {notification && !!notification.text && (
                 <InnerContainer
                     status={notification.status}
                     onPress={handleOnPress}
