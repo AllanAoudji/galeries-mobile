@@ -1,20 +1,24 @@
-import { USER_SET } from '#store/actions';
+import { ME_SET } from '#store/actions';
 
 const initialState: {
     status: Store.Status;
-    data: Store.Models.User | null;
+    id: string | null;
 } = {
     status: 'PENDING',
-    data: null,
+    id: null,
 };
 
 export default (state = initialState, action: Store.Action) => {
     switch (action.type) {
-        case USER_SET:
+        case ME_SET: {
+            const id = action.payload.data.id || state.id;
+            const status = action.payload.data.status || state.status;
             return {
                 ...state,
-                ...(action.payload ? action.payload.data : undefined),
+                id,
+                status,
             };
+        }
         default:
             return state;
     }

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
-import styled from 'styled-components/native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AddButton, AnimatedFlatList } from '#components';
+import { AddButton, AnimatedFlatList, FrameModal } from '#components';
 import { GalerieTabbarScreenContainer } from '#components/Screen';
 import { fetchFrames } from '#store/actions';
 import {
@@ -18,13 +17,6 @@ type Props = {
     scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 };
 
-const MockFrame = styled.View`
-    margin-top: ${({ theme }) => theme.spacings.small};
-    background-color: ${({ theme }) => theme.colors.tertiary};
-    height: 400px;
-    width: 100%;
-`;
-
 const FramesScreen = ({
     galerie,
     handleNavigateToCreateGalerieScreen,
@@ -34,6 +26,8 @@ const FramesScreen = ({
     const dispatch = useDispatch();
     const frames = useSelector(currentGalerieFramesSelector);
     const status = useSelector(currentGalerieFramesStatusSelector);
+
+    console.log(frames);
 
     const [isFirstFetch, setIsFirstFetch] = React.useState<boolean>(true);
 
@@ -55,12 +49,14 @@ const FramesScreen = ({
                             data={frames}
                             keyExtractor={(data) => data.id}
                             onScroll={scrollHandler}
-                            renderItem={() => <MockFrame />}
+                            renderItem={({ item }) => (
+                                <FrameModal frame={item} />
+                            )}
                             scrollEventThrottle={4}
                             showsVerticalScrollIndicator={false}
                         />
                         <AddButton
-                            bottom="normal"
+                            bottom="smallest"
                             right="normal"
                             onPress={handleNavigateToCreateGalerieScreen}
                         />

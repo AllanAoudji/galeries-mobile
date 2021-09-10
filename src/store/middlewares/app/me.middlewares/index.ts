@@ -5,19 +5,21 @@ import { ERROR_MESSAGE, END_POINT } from '#helpers/constants';
 import {
     API_ERROR,
     API_SUCCESS,
-    USER,
-    USER_FETCH,
+    ME,
+    ME_FETCH,
     apiRequest,
     setNotification,
-    setUser,
+    setMe,
+    setUsers,
 } from '#store/actions';
+import normalizeData from '#helpers/normalizeData';
 
 const errorUser: Middleware =
     ({ dispatch }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === `${USER} ${API_ERROR}`) {
+        if (action.type === `${ME} ${API_ERROR}`) {
             AsyncStorage.clear().finally(() => {
                 dispatch(
                     setNotification({
@@ -25,7 +27,7 @@ const errorUser: Middleware =
                         text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
                     })
                 );
-                dispatch(setUser({ data: null, status: 'ERROR' }));
+                dispatch(setMe({ id: null, status: 'ERROR' }));
             });
         }
     };
@@ -35,17 +37,13 @@ const fetchUser: Middleware =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === USER_FETCH) {
-            dispatch(
-                setUser({
-                    status: 'FETCHING',
-                })
-            );
+        if (action.type === ME_FETCH) {
+            dispatch(setMe({ status: 'FETCHING' }));
             dispatch(
                 apiRequest({
                     data: {},
                     meta: {
-                        entity: USER,
+                        entity: ME,
                         method: 'GET',
                         url: END_POINT.GET_ME,
                     },
@@ -59,15 +57,23 @@ const successUser: Middleware =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === `${USER} ${API_SUCCESS}`) {
+        if (action.type === `${ME} ${API_SUCCESS}`) {
             if (action.payload) {
-                if (action.payload.data.action === 'GET') {
+                if (
+                    action.payload.data.action === 'GET' &&
+                    typeof action.payload.data.data.user === 'object' &&
+                    typeof action.payload.data.data.user.id === 'string'
+                ) {
+                    const { byId } = normalizeData(
+                        action.payload.data.data.user
+                    );
                     dispatch(
-                        setUser({
-                            data: action.payload.data.data.user,
+                        setMe({
+                            id: action.payload.data.data.user.id,
                             status: 'SUCCESS',
                         })
                     );
+                    dispatch(setUsers({ byId }));
                 }
             }
         }

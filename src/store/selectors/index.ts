@@ -12,6 +12,6 @@ export { default as storeSelector } from './store.selector';
 
 export { default as notificationSelector } from './notification.selector';
 
-export { default as userSelector } from './user.selector';
-export { default as userDataSelector } from './userData.selector';
-export { default as userStateSelector } from './userState.selector';
+export { default as meDataSelector } from './meData.selector';
+export { default as meSelector } from './me.selector';
+export { default as meStateSelector } from './meState.selector';

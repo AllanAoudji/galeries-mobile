@@ -15,7 +15,7 @@ import {
 import { ASYNC_STORAGE, END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
 import { loginSchema } from '#helpers/schemas';
-import { fetchUser, setNotification } from '#store/actions';
+import { fetchMe, setNotification } from '#store/actions';
 
 import {
     CustomLink,
@@ -72,7 +72,7 @@ const LoginScreen = ({ navigation }: Props) => {
                                 ASYNC_STORAGE.AUTH_TOKEN_TOKEN,
                                 res.data.data.token
                             );
-                            dispatch(fetchUser());
+                            dispatch(fetchMe());
                         } catch (err) {
                             dispatch(
                                 setNotification({
@@ -112,7 +112,7 @@ const LoginScreen = ({ navigation }: Props) => {
                                 err.response.data.errors ===
                                 ERROR_MESSAGE.USER_SHOULD_NOT_BE_AUTHENTICATED
                             ) {
-                                dispatch(fetchUser());
+                                dispatch(fetchMe());
                             } else {
                                 dispatch(
                                     setNotification({

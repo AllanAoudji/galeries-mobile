@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { SplashScreen } from '#components';
 import { END_POINT } from '#helpers/constants';
 import request from '#helpers/request';
-import { setUser } from '#store/actions';
+import { setMe, setUsers } from '#store/actions';
 
 const Loader: React.FC<{}> = ({ children }) => {
     const dispatch = useDispatch();
@@ -24,10 +24,24 @@ const Loader: React.FC<{}> = ({ children }) => {
             url: END_POINT.GET_ME,
         })
             .then((res) => {
-                dispatch(
-                    setUser({ data: res.data.data.user, status: 'SUCCESS' })
-                );
-                setUserLoaded(true);
+                if (
+                    res.data.data &&
+                    res.data.data.user &&
+                    typeof res.data.data.user === 'object'
+                ) {
+                    const { id } = res.data.data.user;
+                    if (typeof id === 'string') {
+                        dispatch(
+                            setUsers({ byId: { [id]: res.data.data.user } })
+                        );
+                        dispatch(setMe({ id, status: 'SUCCESS' }));
+                        setUserLoaded(true);
+                    } else {
+                        AsyncStorage.clear().finally(() => setUserLoaded(true));
+                    }
+                } else {
+                    AsyncStorage.clear().finally(() => setUserLoaded(true));
+                }
             })
             .catch(() => {
                 AsyncStorage.clear().finally(() => setUserLoaded(true));

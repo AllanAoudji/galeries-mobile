@@ -5,13 +5,34 @@ import {
     API_SUCCESS,
     FRAMES,
     FRAMES_FETCH,
-    normalizeData,
     setFrames,
+    setGaleriePictures,
     setGaleries,
     setNotification,
 } from '#store/actions';
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
+import normalizeData from '#helpers/normalizeData';
 import uniqueArray from '#helpers/uniqueArray';
+import normalizeFrame from '#helpers/normalizeFrame';
+
+const extractGalerie: (
+    action: Store.Action,
+    getState: () => Store.Reducer
+) => {
+    galerie: Store.Models.Galerie | undefined;
+    galerieId: string | null;
+} = (action, getState) => {
+    const galerieId =
+        action.payload.meta.query &&
+        typeof action.payload.meta.query.galerieId === 'string'
+            ? action.payload.meta.query.galerieId
+            : null;
+    const galerie = galerieId ? getState().galeries.byId[galerieId] : undefined;
+    return {
+        galerie,
+        galerieId,
+    };
+};
 
 const fetchFrames: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -19,15 +40,7 @@ const fetchFrames: Middleware<{}, Store.Reducer> =
     (action: Store.Action) => {
         next(action);
         if (action.type === `${FRAMES_FETCH}`) {
-            const galerieId =
-                action.payload.meta.query &&
-                typeof action.payload.meta.query.galerieId === 'string' &&
-                action.payload.meta.query.galerieId !== ''
-                    ? action.payload.meta.query.galerieId
-                    : null;
-            const galerie = galerieId
-                ? getState().galeries.byId[galerieId]
-                : undefined;
+            const { galerie, galerieId } = extractGalerie(action, getState);
             let allowRequest: boolean;
             let previousFrame = '';
             if (galerieId) {
@@ -61,7 +74,7 @@ const fetchFrames: Middleware<{}, Store.Reducer> =
                     dispatch(
                         setFrames({
                             data: {
-                                status: 'PENDING',
+                                status: 'FETCHING',
                             },
                         })
                     );
@@ -90,113 +103,110 @@ const successFrames: Middleware<{}, Store.Reducer> =
     (action: Store.Action) => {
         next(action);
         if (action.type === `${FRAMES} ${API_SUCCESS}`) {
-            if (
-                action.payload.data.data &&
-                action.payload.data.data.frames &&
-                Array.isArray(action.payload.data.data.frames)
-            ) {
-                switch (action.payload.meta.method) {
-                    case 'GET':
-                        {
-                            const galerieId =
-                                action.payload.meta.query &&
-                                typeof action.payload.meta.query.galerieId ===
-                                    'string'
-                                    ? action.payload.meta.query.galerieId
-                                    : null;
-                            const galerie = galerieId
-                                ? getState().galeries.byId[galerieId]
-                                : undefined;
-                            if (galerieId && galerie) {
-                                const newAllIds: string[] = [];
-                                const byId: {
-                                    [key: string]: Store.Models.Frame;
-                                } = {};
-                                action.payload.data.data.frames.forEach(
-                                    (
-                                        frame: Store.Models.Frame & {
-                                            id: string;
-                                        }
-                                    ) => {
-                                        const { id, ...rest } = frame;
-                                        newAllIds.push(id);
-                                        byId[id] = rest;
-                                    }
+            switch (action.payload.meta.method) {
+                case 'GET':
+                    if (action.payload.data.data) {
+                        let normalize;
+                        if (
+                            action.payload.data.data.frames &&
+                            Array.isArray(action.payload.data.data.frames)
+                        ) {
+                            const { galeriePicturesById, normalizedFrames } =
+                                normalizeFrame(action.payload.data.data.frames);
+                            normalize = normalizeData(normalizedFrames);
+                            dispatch(
+                                setGaleriePictures({
+                                    byId: galeriePicturesById,
+                                })
+                            );
+                        } else if (
+                            action.payload.data.data.frame &&
+                            typeof action.payload.data.data.frame === 'object'
+                        ) {
+                            const { galeriePicturesById, normalizedFrames } =
+                                normalizeFrame(action.payload.data.data.frame);
+                            normalize = normalizeData(normalizedFrames);
+                            dispatch(
+                                setGaleriePictures({
+                                    byId: galeriePicturesById,
+                                })
+                            );
+                        } else {
+                            dispatch(
+                                setNotification({
+                                    status: 'error',
+                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                })
+                            );
+                            break;
+                        }
+                        const { galerie, galerieId } = extractGalerie(
+                            action,
+                            getState
+                        );
+                        if (galerie && galerieId) {
+                            const framesById = {
+                                ...getState().frames.byId,
+                                ...normalize.byId,
+                            };
+                            const allIds = uniqueArray([
+                                ...galerie.frames.allIds,
+                                ...normalize.allIds,
+                            ]).sort((a, b) => {
+                                if (!framesById[a] || !framesById[b]) return 0;
+                                return (
+                                    new Date(
+                                        framesById[b].createdAt
+                                    ).getTime() -
+                                    new Date(framesById[a].createdAt).getTime()
                                 );
-                                const framesById = {
-                                    ...getState().frames.byId,
-                                    ...byId,
-                                };
-                                const allIds = uniqueArray([
-                                    ...galerie.frames.allIds,
-                                    ...newAllIds,
-                                ]).sort((a, b) => {
-                                    if (!framesById[a] || !framesById[b])
-                                        return 0;
-                                    return (
-                                        new Date(
-                                            framesById[a].createdAt
-                                        ).getTime() -
-                                        new Date(
-                                            framesById[b].createdAt
-                                        ).getTime()
-                                    );
-                                });
-                                const previousFrame = allIds[allIds.length - 1];
-                                dispatch(
-                                    setGaleries({
-                                        data: {
-                                            byId: {
-                                                [galerieId]: {
-                                                    ...galerie,
-                                                    frames: {
-                                                        allIds,
-                                                        end: allIds.length < 20,
-                                                        status: 'SUCCESS',
-                                                        previousFrame,
-                                                    },
+                            });
+                            const previousFrame = allIds[allIds.length - 1];
+                            dispatch(
+                                setGaleries({
+                                    data: {
+                                        byId: {
+                                            [galerieId]: {
+                                                ...galerie,
+                                                frames: {
+                                                    allIds,
+                                                    end: allIds.length < 20,
+                                                    status: 'SUCCESS',
+                                                    previousFrame,
                                                 },
                                             },
                                         },
-                                    })
-                                );
-                                dispatch(
-                                    setFrames({
-                                        data: {
-                                            byId,
-                                        },
-                                    })
-                                );
-                            } else {
-                                dispatch(
-                                    normalizeData({
-                                        data: action.payload.data.data.frames,
-                                        meta: {
-                                            ...action.payload.meta,
-                                            end:
-                                                action.payload.data.data.frames
-                                                    .length < 20,
-                                        },
-                                    })
-                                );
-                            }
+                                    },
+                                })
+                            );
+                            dispatch(
+                                setFrames({
+                                    data: { byId: normalize.byId },
+                                })
+                            );
+                        } else {
+                            dispatch(
+                                setFrames({
+                                    data: {
+                                        ...normalize,
+                                        status: 'SUCCESS',
+                                    },
+                                    meta: {
+                                        ...action.payload.meta,
+                                        end: normalize.allIds.length < 20,
+                                    },
+                                })
+                            );
                         }
-                        break;
-                    default:
-                        dispatch(
-                            setNotification({
-                                status: 'error',
-                                text: 'Method not found',
-                            })
-                        );
-                }
-            } else {
-                dispatch(
-                    setNotification({
-                        status: 'error',
-                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                    })
-                );
+                    }
+                    break;
+                default:
+                    dispatch(
+                        setNotification({
+                            status: 'error',
+                            text: 'Method not found',
+                        })
+                    );
             }
         }
     };

@@ -1,22 +1,130 @@
+import { useFormik } from 'formik';
 import * as React from 'react';
-import { View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { CustomButton, FormScreen } from '#components';
+import { AxiosError } from 'axios';
+import { CustomButton, FormScreen, TextInputsContainer } from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
+import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
+import request from '#helpers/request';
+import { frameDescriptionSchema } from '#helpers/schemas';
+import { setNotification } from '#store/actions';
+import { currentGalerieSelector } from '#store/selectors';
 
 type Props = {
     navigation: Screen.CreateFrameStack.AddDescriptionNavigationProp;
 };
 
-const AddDescriptionScreen = ({ navigation }: Props) => {
-    const { postFrame } = React.useContext(CreateFrameContext);
+const initialValues = {
+    description: '',
+};
 
-    const handlePostFrame = React.useCallback(() => {
-        postFrame('');
-    }, [postFrame]);
+const AddDescriptionScreen = ({ navigation }: Props) => {
+    const currentGalerie = useSelector(currentGalerieSelector);
+    const dispatch = useDispatch();
+    const { picturesUri } = React.useContext(CreateFrameContext);
+    const formik = useFormik({
+        onSubmit: ({ description }) => {
+            // Check if loading
+            if (currentGalerie && !loading && picturesUri.length) {
+                setLoading(true);
+                const formData = new FormData();
+                picturesUri.forEach((pictureUri) => {
+                    formData.append('image', {
+                        // @ts-ignore
+                        uri: pictureUri,
+                        // TODO: Should transform pictureUri to 'image/...' and check if all files are images.
+                        type: 'image/jpg',
+                        name: pictureUri,
+                    });
+                });
+                if (description !== '') {
+                    formData.append('description', description);
+                }
+                request({
+                    body: formData,
+                    method: 'POST',
+                    url: END_POINT.GALERIE_FRAMES(currentGalerie.id),
+                    contentType: 'multipart/form-data',
+                })
+                    .then((res) => {
+                        console.log(res.data);
+                        // TODO:
+                        // should dispatch images
+                        // create frame
+                        // and set frame to current galerie
+                        // then navigate
+                    })
+                    .catch((err: AxiosError) => {
+                        if (err.response && err.response.data.errors) {
+                            if (typeof err.response.data.errors === 'object') {
+                                if (err.response.data.errors.description) {
+                                    setServerErrors({
+                                        description:
+                                            err.response.data.errors
+                                                .description,
+                                    });
+                                } else {
+                                    dispatch(
+                                        setNotification({
+                                            text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                            status: 'error',
+                                        })
+                                    );
+                                }
+                            } else if (
+                                typeof err.response.data.console.errors ===
+                                'string'
+                            ) {
+                                dispatch(
+                                    setNotification({
+                                        text: err.response.data.errors,
+                                        status: 'error',
+                                    })
+                                );
+                            } else {
+                                dispatch(
+                                    setNotification({
+                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                        status: 'error',
+                                    })
+                                );
+                            }
+                        } else {
+                            dispatch(
+                                setNotification({
+                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                    status: 'error',
+                                })
+                            );
+                        }
+                    })
+                    .finally(() => setLoading(false));
+            }
+        },
+        initialValues,
+        validateOnBlur: true,
+        validateOnChange: false,
+        validationSchema: frameDescriptionSchema,
+    });
+
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const [serverErrors, setServerErrors] = React.useState<
+        typeof initialValues
+    >({
+        description: '',
+    });
+
     const handleReturn = React.useCallback(() => {
-        navigation.navigate('AddPictures');
+        if (!loading) navigation.navigate('AddPictures');
     }, [navigation]);
+
+    const disableButton = React.useMemo(() => {
+        const clientHasError =
+            formik.submitCount > 0 && !!formik.errors.description;
+        const serverHasError = !!serverErrors.description;
+        return clientHasError || serverHasError;
+    }, [formik.submitCount, formik.errors, serverErrors]);
 
     return (
         <FormScreen
@@ -24,18 +132,21 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
             renderBottom={
                 <>
                     <CustomButton
+                        disable={disableButton}
+                        loading={loading}
                         mb="smallest"
-                        onPress={handlePostFrame}
+                        onPress={formik.handleSubmit}
                         title="post frame"
                     />
                     <CustomButton
+                        disable={loading}
                         onPress={handleReturn}
                         title="return"
                         variant="stroke"
                     />
                 </>
             }
-            renderTop={<View></View>}
+            renderTop={<TextInputsContainer></TextInputsContainer>}
             title="add a description (optinal)"
         />
     );

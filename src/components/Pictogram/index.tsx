@@ -6,6 +6,8 @@ import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
 import CameraFill from './CameraFill';
 import CameraStroke from './CameraStroke';
+import CommentFill from './CommentsFill';
+import CommentsStroke from './CommentsStroke';
 import Download from './Download';
 import EditFill from './EditFill';
 import EditStroke from './EditStroke';
@@ -22,6 +24,8 @@ import LogoutLeft from './LogoutLeft';
 import LogoutRight from './LogoutRight';
 import ModerationFill from './ModerationFill';
 import ModerationStroke from './ModerationStroke';
+import OptionHorizontal from './OptionHorizontal';
+import OptionVertical from './OptionVertical';
 import Plus from './Plus';
 import ProfileFill from './ProfileFill';
 import ProfileStroke from './ProfileStroke';
@@ -51,6 +55,8 @@ const variants = {
     'arrow-right': ArrowRight,
     'camera-fill': CameraFill,
     'camera-stroke': CameraStroke,
+    'comments-fill': CommentFill,
+    'comments-stroke': CommentsStroke,
     download: Download,
     'edit-fill': EditFill,
     'edit-stroke': EditStroke,
@@ -67,6 +73,8 @@ const variants = {
     'logout-right': LogoutRight,
     'moderation-fill': ModerationFill,
     'moderation-stroke': ModerationStroke,
+    'option-horizontal': OptionHorizontal,
+    'option-vertical': OptionVertical,
     plus: Plus,
     'profile-fill': ProfileFill,
     'profile-stroke': ProfileStroke,

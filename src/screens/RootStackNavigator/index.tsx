@@ -5,7 +5,7 @@ import {
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import { userDataSelector } from '#store/selectors';
+import { meDataSelector } from '#store/selectors';
 
 import DesktopScreen from './DesktopScreen';
 import ForgotYourPasswordScreen from './ForgotYourPasswordScreen';
@@ -16,7 +16,7 @@ import SigninScreen from './SigninScreen';
 const Stack = createStackNavigator<Screen.RootStack.ParamList>();
 
 const RootStackNavigator = () => {
-    const userData = useSelector(userDataSelector);
+    const userData = useSelector(meDataSelector);
 
     return (
         <Stack.Navigator

@@ -160,10 +160,12 @@ declare global {
         type Entity =
             | '[FRAMES]'
             | '[GALERIES]'
+            | '[GALERIE PICTURES]'
             | '[NOTIFICATION]'
             | '[LOGOUT]'
+            | '[ME]'
             | '[UI STATES]'
-            | '[USER]';
+            | '[USERS]';
         type Meta = {
             end?: boolean;
             entity?: Entity;
@@ -199,17 +201,33 @@ declare global {
                 };
                 byId: { [key: string]: Store.Models.Galerie };
             };
-            notification: Store.Models.Notification | null;
-            user: {
+            galeriePictures: {
+                byId: { [key: string]: Store.Models.GaleriePicture };
+            };
+            me: {
                 status: Status;
-                data: Store.Models.User | null;
+                id: string | null;
+            };
+            notification: Store.Models.Notification | null;
+            users: {
+                byId: { [key: string]: Store.Models.User };
             };
         };
         type Role = 'admin' | 'moderator' | 'user';
         type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
         namespace Models {
             type Frame = {
+                autoIncrementId: string;
                 createdAt: string;
+                description: string;
+                galerieId: string;
+                galeriePicturesId: string[];
+                id: string;
+                liked: boolean;
+                numOfComments: string;
+                numOfLikes: string;
+                updatedAt: string;
+                userId: string;
             };
             type Galerie = {
                 allowNotification: boolean;
@@ -225,6 +243,7 @@ declare global {
                 };
                 hasNewFrames: boolean;
                 hiddenName: string;
+                id: string;
                 name: string;
                 numOfUsers: number;
                 role: Role;
@@ -235,6 +254,24 @@ declare global {
                     status: Store.Status;
                 };
             };
+            type GaleriePicture = {
+                createdAt: string;
+                cropedImage: Image;
+                current: boolean;
+                frameId: string;
+                id: string;
+                index: string;
+                originalImage: string;
+                pendingHexes: string;
+                updatedAt: string;
+            };
+            type Image = {
+                format: string;
+                height: number;
+                signedUrl: string;
+                size: number;
+                width: number;
+            };
             type Notification = {
                 status: 'error' | 'success';
                 text: string;
@@ -243,8 +280,9 @@ declare global {
                 createdAt: Date;
                 currentProfilePicute?: string | null;
                 defaultProfilePicture: string | null;
-                hasNewNotification: boolean;
+                hasNewNotification?: boolean;
                 id: string;
+                isBlackListed: boolean;
                 pseudonym: string;
                 role: Role;
                 socialMediaUserName: string | null;
@@ -291,6 +329,8 @@ declare global {
             | 'arrow-right'
             | 'camera-fill'
             | 'camera-stroke'
+            | 'comments-fill'
+            | 'comments-stroke'
             | 'download'
             | 'edit-fill'
             | 'edit-stroke'
@@ -307,6 +347,8 @@ declare global {
             | 'logout-right'
             | 'moderation-fill'
             | 'moderation-stroke'
+            | 'option-horizontal'
+            | 'option-vertical'
             | 'plus'
             | 'profile-fill'
             | 'profile-stroke'

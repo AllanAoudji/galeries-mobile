@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios';
 import { useFormik } from 'formik';
 import * as React from 'react';
-import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import {
@@ -16,12 +15,12 @@ import {
     FIELD_REQUIREMENT,
 } from '#helpers/constants';
 import request from '#helpers/request';
+import normalizeData from '#helpers/normalizeData';
 import { createGaleriesSchema } from '#helpers/schemas';
 import {
-    GALERIES,
-    normalizeData,
     resetGaleries,
     setCurrentGalerieId,
+    setGaleries,
     setNotification,
 } from '#store/actions';
 
@@ -45,25 +44,29 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                 url: END_POINT.GALERIES,
             })
                 .then((res) => {
-                    if (res.data.data && res.data.data.galerie) {
+                    if (
+                        res.data.data &&
+                        res.data.data.galerie &&
+                        typeof res.data.data.galerie === 'object'
+                    ) {
+                        const normalizedGalerie = {
+                            ...res.data.data.galerie,
+                            frames: {
+                                allIds: [],
+                                end: true,
+                                status: 'SUCCESS',
+                            },
+                            users: {
+                                allIds: [],
+                                end: true,
+                                status: 'SUCCESS',
+                            },
+                        };
+                        const normalizedData = normalizeData(normalizedGalerie);
                         dispatch(
-                            normalizeData({
-                                data: {
-                                    ...res.data.data.galerie,
-                                    frames: {
-                                        allIds: [],
-                                        end: true,
-                                        status: 'SUCCESS',
-                                    },
-                                    users: {
-                                        allIds: [],
-                                        end: true,
-                                        status: 'SUCCESS',
-                                    },
-                                },
-                                meta: {
-                                    entity: GALERIES,
-                                },
+                            setGaleries({
+                                data: normalizedData,
+                                meta: {},
                             })
                         );
                         dispatch(resetGaleries());
@@ -90,6 +93,13 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                                         '',
                                     name: err.response.data.errors.name || '',
                                 });
+                            } else {
+                                dispatch(
+                                    setNotification({
+                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                        status: 'error',
+                                    })
+                                );
                             }
                         } else if (
                             typeof err.response.data.errors === 'string'
@@ -148,7 +158,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     const handlePressBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else
-            navigation.navigate('Desktop', {
+            navigation.navigate('Navigation', {
                 screen: 'Main',
                 params: { screen: 'Home' },
             });
@@ -157,7 +167,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     React.useEffect(() => {
         if (galerieId) {
             dispatch(setCurrentGalerieId(galerieId));
-            navigation.navigate('Desktop', {
+            navigation.navigate('Navigation', {
                 screen: 'Main',
                 params: { screen: 'Galerie' },
             });
@@ -168,53 +178,49 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         <FormScreen
             handleOnPressReturn={handlePressBack}
             renderTop={
-                <View>
-                    <TextInputsContainer>
-                        <CustomTextInput
-                            error={formik.errors.name || serverErrors.name}
-                            label="name"
-                            loading={loading}
-                            maxLength={
-                                FIELD_REQUIREMENT.GALERIE_NAME_MAX_LENGTH
-                            }
-                            onBlur={formik.handleBlur('name')}
-                            onChangeText={(e: string) => {
-                                setServerErrors((prevState) => ({
-                                    ...prevState,
-                                    name: '',
-                                }));
-                                formik.setFieldError('name', '');
-                                formik.setFieldValue('name', e);
-                            }}
-                            touched={formik.touched.name || false}
-                            value={formik.values.name}
-                        />
-                        <CustomTextInput
-                            error={
-                                formik.errors.description ||
-                                serverErrors.description
-                            }
-                            label="description"
-                            loading={loading}
-                            maxLength={
-                                FIELD_REQUIREMENT.GALERIE_DESCRIPTION_MAX_LENGTH
-                            }
-                            multiline
-                            onBlur={formik.handleBlur('description')}
-                            onChangeText={(e: string) => {
-                                setServerErrors((prevState) => ({
-                                    ...prevState,
-                                    description: '',
-                                }));
-                                formik.setFieldError('description', '');
-                                formik.setFieldValue('description', e);
-                            }}
-                            optional
-                            touched={formik.touched.description || false}
-                            value={formik.values.description}
-                        />
-                    </TextInputsContainer>
-                </View>
+                <TextInputsContainer>
+                    <CustomTextInput
+                        error={formik.errors.name || serverErrors.name}
+                        label="name"
+                        loading={loading}
+                        maxLength={FIELD_REQUIREMENT.GALERIE_NAME_MAX_LENGTH}
+                        onBlur={formik.handleBlur('name')}
+                        onChangeText={(e: string) => {
+                            setServerErrors((prevState) => ({
+                                ...prevState,
+                                name: '',
+                            }));
+                            formik.setFieldError('name', '');
+                            formik.setFieldValue('name', e);
+                        }}
+                        touched={formik.touched.name || false}
+                        value={formik.values.name}
+                    />
+                    <CustomTextInput
+                        error={
+                            formik.errors.description ||
+                            serverErrors.description
+                        }
+                        label="description"
+                        loading={loading}
+                        maxLength={
+                            FIELD_REQUIREMENT.GALERIE_DESCRIPTION_MAX_LENGTH
+                        }
+                        multiline
+                        onBlur={formik.handleBlur('description')}
+                        onChangeText={(e: string) => {
+                            setServerErrors((prevState) => ({
+                                ...prevState,
+                                description: '',
+                            }));
+                            formik.setFieldError('description', '');
+                            formik.setFieldValue('description', e);
+                        }}
+                        optional
+                        touched={formik.touched.description || false}
+                        value={formik.values.description}
+                    />
+                </TextInputsContainer>
             }
             renderBottom={
                 <>

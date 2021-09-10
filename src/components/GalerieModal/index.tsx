@@ -71,6 +71,7 @@ const GalerieModal = ({ galerie }: Props) => {
                             },
                         })
                     );
+                    // TODO: setGaleriePictures
                     dispatch(
                         setFrames({
                             data: {

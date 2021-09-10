@@ -1,5 +1,8 @@
 import { Middleware } from 'redux';
 
+import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
+import normalizeData from '#helpers/normalizeData';
+import normalizeGalerie from '#helpers/normalizeGalerie';
 import {
     API_ERROR,
     GALERIES,
@@ -7,10 +10,8 @@ import {
     apiRequest,
     setGaleries,
     API_SUCCESS,
-    normalizeData,
     setNotification,
 } from '#store/actions';
-import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 
 const errorGaleries: Middleware =
     ({ dispatch }) =>
@@ -94,54 +95,55 @@ const successGaleries: Middleware =
     (action: Store.Action) => {
         next(action);
         if (action.type === `${GALERIES} ${API_SUCCESS}`) {
-            if (
-                action.payload.data.data &&
-                action.payload.data.data.galeries &&
-                Array.isArray(action.payload.data.data.galeries)
-            ) {
-                switch (action.payload.meta.method) {
-                    case 'GET':
-                        dispatch(
-                            normalizeData({
-                                data: action.payload.data.data.galeries.map(
-                                    (galerie: any) => ({
-                                        ...galerie,
-                                        frames: {
-                                            allIds: [],
-                                            end: false,
-                                            status: 'PENDING',
-                                        },
-                                        users: {
-                                            allIds: [],
-                                            end: false,
-                                            status: 'PENDING',
-                                        },
-                                    })
-                                ),
-                                meta: {
-                                    ...action.payload.meta,
-                                    end:
-                                        action.payload.data.data.galeries
-                                            .length < 20,
+            switch (action.payload.meta.method) {
+                case 'GET':
+                    if (action.payload.data.data) {
+                        let normalize;
+                        if (
+                            action.payload.data.data.galeries &&
+                            Array.isArray(action.payload.data.data.galeries)
+                        ) {
+                            const normalizedGaleries =
+                                action.payload.data.data.galeries.map(
+                                    (galerie: any) => normalizeGalerie(galerie)
+                                );
+                            normalize = normalizeData(normalizedGaleries);
+                        } else if (
+                            action.payload.data.data.galerie &&
+                            typeof action.payload.data.data.galerie === 'object'
+                        ) {
+                            const normalizedGalerie = normalizeGalerie(
+                                action.payload.data.data.galerie
+                            );
+                            normalize = normalizeData(normalizedGalerie);
+                        } else {
+                            dispatch(
+                                setNotification({
+                                    status: 'error',
+                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
+                                })
+                            );
+                            break;
+                        }
+                        dispatch({
+                            payload: {
+                                data: {
+                                    ...normalize,
+                                    status: 'SUCCESS',
                                 },
-                            })
-                        );
-                        break;
-                    default:
-                        dispatch(
-                            setNotification({
-                                status: 'error',
-                                text: 'Method not found',
-                            })
-                        );
-                }
-            } else {
-                dispatch(
-                    setNotification({
-                        status: 'error',
-                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                    })
-                );
+                                meta: { ...action.payload.meta },
+                            },
+                            type: `${GALERIES} Set`,
+                        });
+                    }
+                    break;
+                default:
+                    dispatch(
+                        setNotification({
+                            status: 'error',
+                            text: 'Method not found',
+                        })
+                    );
             }
         }
     };
