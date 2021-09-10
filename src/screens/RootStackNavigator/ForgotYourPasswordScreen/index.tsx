@@ -1,6 +1,5 @@
 import { AxiosError } from 'axios';
 import * as React from 'react';
-import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
@@ -8,6 +7,7 @@ import {
     CustomButton,
     CustomTextInput,
     FormScreen,
+    TextInputsContainer,
     Typography,
 } from '#components';
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
@@ -15,7 +15,7 @@ import request from '#helpers/request';
 import { forgotPassworSchema } from '#helpers/schemas';
 import { setNotification } from '#store/actions';
 
-import { TextContainer, TextInputsContainer } from './styles';
+import { TextContainer } from './styles';
 
 type Props = {
     navigation: Screen.RootStack.ForgotYourPasswordNavigationProp;
@@ -99,32 +99,9 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
 
     return (
         <FormScreen
-            body={
-                <View>
-                    <TextInputsContainer>
-                        <TextContainer>
-                            <Typography color="primary-dark" fontSize={18}>
-                                Register your email to reset your password
-                            </Typography>
-                        </TextContainer>
-                        <CustomTextInput
-                            error={formik.errors.email || serverErrors.email}
-                            keyboardType="email-address"
-                            label="email"
-                            loading={loading}
-                            onBlur={formik.handleBlur('email')}
-                            onChangeText={(e: string) => {
-                                setServerErrors((prevState) => ({
-                                    ...prevState,
-                                    email: '',
-                                }));
-                                formik.setFieldError('email', '');
-                                formik.setFieldValue('email', e);
-                            }}
-                            touched={formik.touched.email || false}
-                            value={formik.values.email}
-                        />
-                    </TextInputsContainer>
+            handleOnPressReturn={handleOnPressReturn}
+            renderBottom={
+                <>
                     <CustomButton
                         disable={disableButton}
                         loading={loading}
@@ -137,9 +114,34 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
                         title="cancel"
                         variant="stroke"
                     />
-                </View>
+                </>
             }
-            handleOnPressReturn={handleOnPressReturn}
+            renderTop={
+                <TextInputsContainer>
+                    <TextContainer>
+                        <Typography color="primary-dark" fontSize={18}>
+                            Register your email to reset your password
+                        </Typography>
+                    </TextContainer>
+                    <CustomTextInput
+                        error={formik.errors.email || serverErrors.email}
+                        keyboardType="email-address"
+                        label="email"
+                        loading={loading}
+                        onBlur={formik.handleBlur('email')}
+                        onChangeText={(e: string) => {
+                            setServerErrors((prevState) => ({
+                                ...prevState,
+                                email: '',
+                            }));
+                            formik.setFieldError('email', '');
+                            formik.setFieldValue('email', e);
+                        }}
+                        touched={formik.touched.email || false}
+                        value={formik.values.email}
+                    />
+                </TextInputsContainer>
+            }
             title="forgot your password"
         />
     );

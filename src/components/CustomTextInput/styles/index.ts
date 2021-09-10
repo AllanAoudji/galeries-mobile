@@ -1,4 +1,3 @@
-export { default as Container } from './Container';
 export { default as ErrorContainer } from './ErrorContainer';
 export { default as LabelAnimation } from './LabelAnimation';
 export { default as LabelContainer } from './LabelContainer';

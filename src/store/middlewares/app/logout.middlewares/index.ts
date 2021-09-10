@@ -7,8 +7,8 @@ import {
     LOGOUT_FETCH,
     LOGOUT,
     apiRequest,
-    resetUser,
     resetGaleries,
+    resetMe,
 } from '#store/actions';
 
 const fetchLogout: Middleware =
@@ -37,7 +37,7 @@ const successLogout: Middleware =
         next(action);
         if (action.type === `${LOGOUT} ${API_SUCCESS}`) {
             AsyncStorage.clear().finally(() => {
-                dispatch(resetUser());
+                dispatch(resetMe());
                 dispatch(resetGaleries());
             });
         }

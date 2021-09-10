@@ -1,30 +1,40 @@
 import * as React from 'react';
-import styled from 'styled-components/native';
 
-const Container = styled.View`
-    height: 38px;
-    border-color: ${({ theme }) => theme.colors.black};
-    border-width: 2px;
-    border-radius: 5px;
-`;
-const TextInputStyled = styled.TextInput`
-    height: 100%;
-`;
+import Pictogram from '#components/Pictogram';
+
+import { Container, PictogramContainer, TextInputStyled } from './styles';
 
 type Props = {
+    mb?: keyof Style.Spacings;
+    ml?: keyof Style.Spacings;
+    mr?: keyof Style.Spacings;
+    mt?: keyof Style.Spacings;
     onChangeText: (text: string) => void;
+    onFocus?: () => void;
     onStopTyping: () => void;
+    setValue: React.Dispatch<React.SetStateAction<string>>;
     value: string;
 };
 
-// TODO:
-// Need a real searchBar...
-const SearchBar = ({ value, onChangeText, onStopTyping }: Props) => {
+const DELAY = 1000;
+
+const SearchBar = ({
+    mb,
+    ml,
+    mr,
+    mt,
+    onChangeText,
+    onFocus,
+    onStopTyping,
+    setValue,
+    value,
+}: Props) => {
     const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
     const handleChangeText = React.useCallback(
         (e) => {
             if (timer.current) clearTimeout(timer.current);
-            timer.current = setTimeout(onStopTyping, 1000);
+            timer.current = setTimeout(onStopTyping, DELAY);
+            setValue(e);
             onChangeText(e);
         },
         [onChangeText]
@@ -38,8 +48,16 @@ const SearchBar = ({ value, onChangeText, onStopTyping }: Props) => {
     );
 
     return (
-        <Container>
-            <TextInputStyled onChangeText={handleChangeText} value={value} />
+        <Container mb={mb} ml={ml} mr={mr} mt={mt}>
+            <PictogramContainer>
+                <Pictogram size="small" variant="search" />
+            </PictogramContainer>
+            <TextInputStyled
+                maxLength={50}
+                onFocus={onFocus}
+                onChangeText={handleChangeText}
+                value={value}
+            />
         </Container>
     );
 };

@@ -1,6 +1,5 @@
 import { AxiosError } from 'axios';
 import * as React from 'react';
-import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
@@ -10,12 +9,13 @@ import {
     CustomButton,
     CustomTextInput,
     FormScreen,
+    TextInputsContainer,
     Typography,
 } from '#components';
 import { signinSchema } from '#helpers/schemas';
 import { setNotification } from '#store/actions';
 
-import { CustomLink, TextContainer, TextInputsContainer } from './styles';
+import { CustomLink, TextContainer } from './styles';
 
 const initialValues = {
     betaKey: '',
@@ -136,86 +136,16 @@ const SigninScreen = ({ navigation }: Props) => {
 
     return (
         <FormScreen
-            body={
-                <View>
-                    <TextInputsContainer>
-                        <CustomTextInput
-                            error={
-                                formik.errors.userName || serverErrors.userName
-                            }
-                            label="user name"
-                            onBlur={formik.handleBlur('userName')}
-                            onChangeText={(e: string) => {
-                                formik.setFieldError('userName', '');
-                                formik.setFieldValue('userName', e);
-                            }}
-                            touched={formik.touched.userName || false}
-                            value={formik.values.userName}
-                        />
-                        <CustomTextInput
-                            error={formik.errors.email || serverErrors.email}
-                            keyboardType="email-address"
-                            label="email"
-                            onBlur={formik.handleBlur('email')}
-                            onChangeText={(e: string) => {
-                                formik.setFieldError('email', '');
-                                formik.setFieldValue('email', e);
-                            }}
-                            touched={formik.touched.email || false}
-                            value={formik.values.email}
-                        />
-                        <CustomTextInput
-                            error={
-                                formik.errors.password || serverErrors.password
-                            }
-                            label="password"
-                            onBlur={formik.handleBlur('password')}
-                            onChangeText={(e: string) => {
-                                formik.setFieldError('password', '');
-                                formik.setFieldValue('password', e);
-                            }}
-                            touched={formik.touched.password || false}
-                            secureTextEntry
-                            value={formik.values.password}
-                        />
-                        <CustomTextInput
-                            error={
-                                formik.errors.confirmPassword ||
-                                serverErrors.confirmPassword
-                            }
-                            label="confirm password"
-                            onBlur={formik.handleBlur('confirmPassword')}
-                            onChangeText={(e: string) => {
-                                formik.setFieldError('confirmPassword', '');
-                                formik.setFieldValue('confirmPassword', e);
-                            }}
-                            touched={formik.touched.confirmPassword || false}
-                            secureTextEntry
-                            value={formik.values.confirmPassword}
-                        />
-                        <CustomTextInput
-                            error={
-                                formik.errors.betaKey || serverErrors.betaKey
-                            }
-                            label="beta key"
-                            onBlur={formik.handleBlur('betaKey')}
-                            onChangeText={(e: string) => {
-                                formik.setFieldError('betaKey', '');
-                                formik.setFieldValue('betaKey', e);
-                            }}
-                            touched={formik.touched.betaKey || false}
-                            value={formik.values.betaKey}
-                        />
-                    </TextInputsContainer>
-                    <CustomButton
-                        disable={disableButton}
-                        loading={loading}
-                        onPress={formik.handleSubmit}
-                        title="signin"
-                    />
-                </View>
+            handleOnPressReturn={handleOnPressReturn}
+            renderBottom={
+                <CustomButton
+                    disable={disableButton}
+                    loading={loading}
+                    onPress={formik.handleSubmit}
+                    title="signin"
+                />
             }
-            footer={
+            renderFooter={
                 <CustomLink onPress={handleOnPressLogin}>
                     <TextContainer>
                         <Typography
@@ -231,7 +161,71 @@ const SigninScreen = ({ navigation }: Props) => {
                     </TextContainer>
                 </CustomLink>
             }
-            handleOnPressReturn={handleOnPressReturn}
+            renderTop={
+                <TextInputsContainer>
+                    <CustomTextInput
+                        error={formik.errors.userName || serverErrors.userName}
+                        label="user name"
+                        onBlur={formik.handleBlur('userName')}
+                        onChangeText={(e: string) => {
+                            formik.setFieldError('userName', '');
+                            formik.setFieldValue('userName', e);
+                        }}
+                        touched={formik.touched.userName || false}
+                        value={formik.values.userName}
+                    />
+                    <CustomTextInput
+                        error={formik.errors.email || serverErrors.email}
+                        keyboardType="email-address"
+                        label="email"
+                        onBlur={formik.handleBlur('email')}
+                        onChangeText={(e: string) => {
+                            formik.setFieldError('email', '');
+                            formik.setFieldValue('email', e);
+                        }}
+                        touched={formik.touched.email || false}
+                        value={formik.values.email}
+                    />
+                    <CustomTextInput
+                        error={formik.errors.password || serverErrors.password}
+                        label="password"
+                        onBlur={formik.handleBlur('password')}
+                        onChangeText={(e: string) => {
+                            formik.setFieldError('password', '');
+                            formik.setFieldValue('password', e);
+                        }}
+                        touched={formik.touched.password || false}
+                        secureTextEntry
+                        value={formik.values.password}
+                    />
+                    <CustomTextInput
+                        error={
+                            formik.errors.confirmPassword ||
+                            serverErrors.confirmPassword
+                        }
+                        label="confirm password"
+                        onBlur={formik.handleBlur('confirmPassword')}
+                        onChangeText={(e: string) => {
+                            formik.setFieldError('confirmPassword', '');
+                            formik.setFieldValue('confirmPassword', e);
+                        }}
+                        touched={formik.touched.confirmPassword || false}
+                        secureTextEntry
+                        value={formik.values.confirmPassword}
+                    />
+                    <CustomTextInput
+                        error={formik.errors.betaKey || serverErrors.betaKey}
+                        label="beta key"
+                        onBlur={formik.handleBlur('betaKey')}
+                        onChangeText={(e: string) => {
+                            formik.setFieldError('betaKey', '');
+                            formik.setFieldValue('betaKey', e);
+                        }}
+                        touched={formik.touched.betaKey || false}
+                        value={formik.values.betaKey}
+                    />
+                </TextInputsContainer>
+            }
             title="signin"
         />
     );

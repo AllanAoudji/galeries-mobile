@@ -1,4 +1,13 @@
+import { Dimensions } from 'react-native';
 import { Easing } from 'react-native-reanimated';
+
+import convertPixelToNum from '#helpers/convertPixelToNum';
+import theme from '#helpers/theme';
+
+const { width } = Dimensions.get('window');
+
+const SIZE = (width - convertPixelToNum(theme.spacings.normal) * 2) / 3;
+const COL = 3;
 
 export const ANIMATIONS = {
     TIMING_CONFIG: (duration = 400) => {
@@ -20,16 +29,39 @@ export const ASYNC_STORAGE = {
 
 export const CLOSE_NOTIFICATION_DELAY = 2000;
 
+export const DRAG_AND_DROP_UTILS = {
+    COL,
+    SIZE,
+    getOrder(x: number, y: number) {
+        'worklet';
+
+        const col = Math.round(x / SIZE);
+        const row = Math.round(y / SIZE);
+
+        return row * COL + col;
+    },
+    getPosition(order: number) {
+        'worklet';
+
+        return {
+            x: (order % COL) * SIZE,
+            y: Math.floor(order / COL) * SIZE,
+        };
+    },
+};
+
 export const END_POINT = {
     FORGOT_PASSWORD: '/users/password/',
-    GALERIE: (id: string) => `/galeries/${id}`,
-    GALERIE_COVER_PICTURE: (id: string) => `/galeries/${id}/coverPicture`,
-    GALERIE_USERS: (id: string) => `/galeries/${id}/users`,
+    FRAMES: `/frames/`,
+    GALERIE: (id: string) => `/galeries/${id}/`,
+    GALERIE_COVER_PICTURE: (id: string) => `/galeries/${id}/coverPicture/`,
+    GALERIE_FRAMES: (id: string) => `/galeries/${id}/frames/`,
+    GALERIE_USERS: (id: string) => `/galeries/${id}/users/`,
     GALERIES: '/galeries/',
-    GET_ME: '/users/me',
+    GET_ME: '/users/me/',
     LOGIN: '/users/login/',
-    LOGOUT: '/users/logout',
-    REFRESH_TOKEN: '/users/refreshToken',
+    LOGOUT: '/users/logout/',
+    REFRESH_TOKEN: '/users/refreshToken/',
     SIGNIN: '/users/signin/beta/',
 };
 
@@ -49,6 +81,7 @@ export const ERROR_MESSAGE = {
 };
 
 export const FIELD_REQUIREMENT = {
+    FRAME_DESCRIPTION_MAX_LENGTH: 200,
     GALERIE_DESCRIPTION_MAX_LENGTH: 200,
     GALERIE_NAME_MAX_LENGTH: 30,
     GALERIE_NAME_MIN_LENGTH: 3,
@@ -60,6 +93,7 @@ export const FIELD_REQUIREMENT = {
 
 export const GLOBAL_STYLE = {
     BOTTOM_TAB_HEIGHT: 50,
-    GALERIE_MODAL_HEIGHT: 279,
-    HEADER_TAB_HEIGHT: 124,
+    GALERIE_MODAL_HEIGHT: 239,
+    GALERIE_TAB_BAR_COVER_PICTURE: 200,
+    HEADER_TAB_HEIGHT: 95,
 };

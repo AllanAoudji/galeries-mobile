@@ -4,6 +4,7 @@ type Props = {
     editable?: boolean;
     hasError: boolean;
     loading?: boolean;
+    multiline?: boolean;
 };
 
 const TextInputStyled = styled.TextInput<Props>`
@@ -20,12 +21,14 @@ const TextInputStyled = styled.TextInput<Props>`
     color: ${({ theme }) => theme.colors.black};
     font-family: 'HelveticaLtStRoman';
     font-size: 14px;
+    padding-top: ${({ multiline }) => (multiline ? '7px' : 0)};
 `;
 
 TextInputStyled.defaultProps = {
     editable: true,
     hasError: false,
     loading: false,
+    multiline: false,
 };
 
 export default TextInputStyled;

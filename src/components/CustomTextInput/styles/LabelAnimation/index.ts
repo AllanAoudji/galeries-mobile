@@ -1,14 +1,8 @@
 import styled from 'styled-components/native';
+import Animated from 'react-native-reanimated';
 
-type Props = {
-    hasFocus: boolean;
-    hasValue: boolean;
-};
-
-const LabelAnimation = styled.View<Props>`
-    opacity: ${(props) => (props.hasFocus ? 1 : 0.5)};
+const LabelAnimation = styled(Animated.View)`
     position: absolute;
-    top: ${(props) => (props.hasFocus || props.hasValue ? 0 : '21px')};
 `;
 
 export default LabelAnimation;

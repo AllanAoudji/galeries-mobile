@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
 import {
     useAnimatedStyle,
     useSharedValue,
@@ -18,8 +17,6 @@ const DesktopBottomTabScreenContainer: React.FC<Props> = ({
     children,
     keyboardShown,
 }) => {
-    const dimension = useWindowDimensions();
-
     const paddingBottom = useSharedValue(GLOBAL_STYLE.BOTTOM_TAB_HEIGHT);
 
     const style = useAnimatedStyle(
@@ -39,11 +36,7 @@ const DesktopBottomTabScreenContainer: React.FC<Props> = ({
             );
     }, [keyboardShown]);
 
-    return (
-        <Container height={dimension.height} style={style}>
-            {children}
-        </Container>
-    );
+    return <Container style={style}>{children}</Container>;
 };
 
 export default DesktopBottomTabScreenContainer;

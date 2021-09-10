@@ -25,8 +25,8 @@ export default (state = initialState, action: Store.Action) => {
                 ...(action.payload.data.allIds || []),
             ]).sort(
                 (a, b) =>
-                    new Date(byId[a].createdAt).getTime() -
-                    new Date(byId[b].createdAt).getTime()
+                    new Date(byId[b].createdAt).getTime() -
+                    new Date(byId[a].createdAt).getTime()
             );
             const end = action.payload.meta.end || state.end;
             const status = action.payload.data.status || state.status;

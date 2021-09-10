@@ -25,8 +25,8 @@ const FullScreenLoader = ({
 }: Props) => {
     const theme = useTheme();
 
-    const opacity = useSharedValue(0);
     const [display, setDisplay] = React.useState<boolean>(false);
+    const opacity = useSharedValue(0);
 
     const style = useAnimatedStyle(
         () => ({
@@ -37,19 +37,19 @@ const FullScreenLoader = ({
 
     React.useEffect(() => {
         if (show) setDisplay(true);
-        else
+        else {
             opacity.value = withTiming(
                 0,
-                ANIMATIONS.TIMING_CONFIG(),
+                ANIMATIONS.TIMING_CONFIG(100),
                 (isFinished) => {
                     if (isFinished) runOnJS(setDisplay)(false);
                 }
             );
+        }
     }, [show]);
     React.useEffect(() => {
-        if (display) {
-            opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
-        }
+        if (display)
+            opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(200));
     }, [display]);
 
     if (!display) {
@@ -69,4 +69,4 @@ const FullScreenLoader = ({
     );
 };
 
-export default FullScreenLoader;
+export default React.memo(FullScreenLoader);

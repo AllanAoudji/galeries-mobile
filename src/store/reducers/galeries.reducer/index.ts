@@ -41,8 +41,17 @@ export default (state = initialState, action: Store.Action) => {
                         ...byName.allIds,
                         ...(action.payload.data.allIds || []),
                     ]).sort((a, b) => {
-                        if (byId[a].hiddenName < byId[b].hiddenName) return -1;
-                        if (byId[a].hiddenName > byId[b].hiddenName) return 1;
+                        if (!byId[a] || !byId[b]) return 0;
+                        if (
+                            byId[a].hiddenName.toLowerCase() <
+                            byId[b].hiddenName.toLowerCase()
+                        )
+                            return -1;
+                        if (
+                            byId[a].hiddenName.toLowerCase() >
+                            byId[b].hiddenName.toLowerCase()
+                        )
+                            return 1;
                         return 0;
                     }),
                     end: action.payload.meta.end || byName.end,
@@ -56,7 +65,7 @@ export default (state = initialState, action: Store.Action) => {
                                   ]
                               ].hiddenName
                             : byName.previousGalerie,
-                    status: action.payload.data.status || 'PENDING',
+                    status: action.payload.data.status || byName.status,
                 },
             };
             return {

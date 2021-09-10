@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import { DrawerContent } from '#components/Screen';
-import { userSelector } from '#store/selectors';
+import { meDataSelector } from '#store/selectors';
 
 import MainScreen from './MainScreen';
 import ModerationScreen from './ModerationScreen';
@@ -13,25 +13,20 @@ import SettingsScreen from './SettingsScreen';
 const Drawer = createDrawerNavigator<Screen.DesktopDrawer.ParamList>();
 
 const DesktopStack = () => {
-    const user = useSelector(userSelector);
+    const me = useSelector(meDataSelector);
 
     const drawerContent = React.useCallback(
-        (props) => (
-            <DrawerContent
-                role={user.data ? user.data.role : 'user'}
-                {...props}
-            />
-        ),
+        (props) => <DrawerContent role={me ? me.role : 'user'} {...props} />,
         []
     );
 
     const displayScreen = React.useMemo(() => {
-        return !!user.data && user.data.role === 'user' ? (
+        return !!me && me.role === 'user' ? (
             <Drawer.Screen name="SendTicket" component={SendTicketScreen} />
         ) : (
             <Drawer.Screen name="Moderation" component={ModerationScreen} />
         );
-    }, [user.data]);
+    }, [me]);
 
     return (
         <Drawer.Navigator
