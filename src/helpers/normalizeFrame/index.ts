@@ -32,7 +32,8 @@ export default (frames: any) => {
         });
         const normalizedFrame = {
             ...rest,
-            galeriePictures: galeriePicturesAllIds,
+            galeriePicturesId: galeriePicturesAllIds,
+            galeriePictures: undefined,
         };
         normalizedFrames.push(normalizedFrame);
         galeriePicturesById = {

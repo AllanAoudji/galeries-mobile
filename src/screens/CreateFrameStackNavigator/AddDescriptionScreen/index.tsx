@@ -8,8 +8,15 @@ import { CreateFrameContext } from '#contexts/CreateFrameContext';
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
 import { frameDescriptionSchema } from '#helpers/schemas';
-import { setNotification } from '#store/actions';
+import {
+    setFrames,
+    setGaleriePictures,
+    setGaleries,
+    setNotification,
+} from '#store/actions';
 import { currentGalerieSelector } from '#store/selectors';
+import normalizeFrame from '#helpers/normalizeFrame';
+import normalizeData from '#helpers/normalizeData';
 
 type Props = {
     navigation: Screen.CreateFrameStack.AddDescriptionNavigationProp;
@@ -48,12 +55,48 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
                     contentType: 'multipart/form-data',
                 })
                     .then((res) => {
-                        console.log(res.data);
-                        // TODO:
-                        // should dispatch images
-                        // create frame
-                        // and set frame to current galerie
-                        // then navigate
+                        if (
+                            res.data.data &&
+                            res.data.data.frame &&
+                            typeof res.data.data.frame === 'object'
+                        ) {
+                            const { galeriePicturesById, normalizedFrames } =
+                                normalizeFrame(res.data.data.frame);
+                            dispatch(
+                                setGaleriePictures({
+                                    byId: galeriePicturesById,
+                                })
+                            );
+                            const { allIds, byId } =
+                                normalizeData(normalizedFrames);
+                            dispatch(setFrames({ data: { allIds, byId } }));
+                            dispatch(
+                                setGaleries({
+                                    data: {
+                                        byId: {
+                                            [currentGalerie.id]: {
+                                                ...currentGalerie,
+                                                frames: {
+                                                    ...currentGalerie.frames,
+                                                    allIds: [
+                                                        ...allIds,
+                                                        ...currentGalerie.frames
+                                                            .allIds,
+                                                    ],
+                                                },
+                                            },
+                                        },
+                                    },
+                                })
+                            );
+                            if (navigation.getParent() !== undefined) {
+                                // @ts-ignore
+                                navigation.getParent().navigate('Navigation', {
+                                    screen: 'Main',
+                                    params: { screen: 'Galerie' },
+                                });
+                            }
+                        }
                     })
                     .catch((err: AxiosError) => {
                         if (err.response && err.response.data.errors) {

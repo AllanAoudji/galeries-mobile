@@ -64,7 +64,7 @@ const AddPicturesScreen = ({ navigation }: Props) => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             if (status === 'granted') {
                 fadeOutBottomSheet();
-                navigation.navigate('Camera');
+                navigation.navigate('CreateFrameCamera');
             }
         })();
     }, []);

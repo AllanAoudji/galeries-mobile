@@ -101,7 +101,7 @@ declare global {
         }
         namespace DesktopStack {
             type ParamList = {
-                CreateFrame: undefined;
+                CreateFrame: NavigatorScreenParams<CreateFrameStack.ParamList>;
                 CreateGalerie: undefined;
                 Navigation: NavigatorScreenParams<DesktopDrawer.ParamList>;
             };

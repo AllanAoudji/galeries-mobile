@@ -27,8 +27,6 @@ const FramesScreen = ({
     const frames = useSelector(currentGalerieFramesSelector);
     const status = useSelector(currentGalerieFramesStatusSelector);
 
-    console.log(frames);
-
     const [isFirstFetch, setIsFirstFetch] = React.useState<boolean>(true);
 
     React.useEffect(() => {
