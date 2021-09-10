@@ -3,9 +3,18 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AxiosError } from 'axios';
-import { CustomButton, FormScreen, TextInputsContainer } from '#components';
+import {
+    CustomButton,
+    CustomTextInput,
+    FormScreen,
+    TextInputsContainer,
+} from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
-import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
+import {
+    END_POINT,
+    ERROR_MESSAGE,
+    FIELD_REQUIREMENT,
+} from '#helpers/constants';
 import request from '#helpers/request';
 import { frameDescriptionSchema } from '#helpers/schemas';
 import {
@@ -189,7 +198,34 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
                     />
                 </>
             }
-            renderTop={<TextInputsContainer></TextInputsContainer>}
+            renderTop={
+                <TextInputsContainer>
+                    <CustomTextInput
+                        error={
+                            formik.errors.description ||
+                            serverErrors.description
+                        }
+                        label="description"
+                        loading={loading}
+                        maxLength={
+                            FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH
+                        }
+                        multiline
+                        onBlur={formik.handleBlur('description')}
+                        onChangeText={(e: string) => {
+                            setServerErrors((prevState) => ({
+                                ...prevState,
+                                description: '',
+                            }));
+                            formik.setFieldError('description', '');
+                            formik.setFieldValue('description', e);
+                        }}
+                        optional
+                        touched={formik.touched.description || false}
+                        value={formik.values.description}
+                    />
+                </TextInputsContainer>
+            }
             title="add a description (optinal)"
         />
     );
