@@ -8,7 +8,7 @@ import { CreateFrameProvider } from '#contexts/CreateFrameContext';
 
 import AddDescriptionScreen from './AddDescriptionScreen';
 import AddPicturesScreen from './AddPicturesScreen';
-import CameraScreen from './CameraScreen';
+import CreateFrameCameraScreen from './CreateFrameCameraScreen';
 import CreateFrameGalleryScreen from './CreateFrameGalleryScreen';
 
 const Stack = createStackNavigator<Screen.CreateFrameStack.ParamList>();
@@ -32,7 +32,10 @@ const CreateGalerieStackNavigator = () => {
                     component={AddPicturesScreen}
                     name="AddPictures"
                 />
-                <Stack.Screen component={CameraScreen} name="Camera" />
+                <Stack.Screen
+                    component={CreateFrameCameraScreen}
+                    name="CreateFrameCamera"
+                />
                 <Stack.Screen
                     component={CreateFrameGalleryScreen}
                     name="CreateFrameGallery"

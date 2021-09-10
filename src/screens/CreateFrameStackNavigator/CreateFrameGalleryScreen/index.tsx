@@ -22,7 +22,7 @@ import {
 import Item from './Item';
 
 type Props = {
-    navigation: Screen.CreateFrameStack.CameraNavigationProp;
+    navigation: Screen.CreateFrameStack.CreateFrameCameraNavigationProp;
 };
 
 const CreateFrameGalleryScreen = ({ navigation }: Props) => {

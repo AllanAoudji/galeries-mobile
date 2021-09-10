@@ -16,7 +16,7 @@ declare global {
             type ParamList = {
                 AddDescription: undefined;
                 AddPictures: undefined;
-                Camera: undefined;
+                CreateFrameCamera: undefined;
                 CreateFrameGallery: undefined;
             };
             type AddDescriptionNavigationProp = StackNavigationProp<
@@ -27,7 +27,7 @@ declare global {
                 ParamList,
                 'AddPictures'
             >;
-            type CameraNavigationProp = StackNavigationProp<
+            type CreateFrameCameraNavigationProp = StackNavigationProp<
                 ParamList,
                 'Camera'
             >;

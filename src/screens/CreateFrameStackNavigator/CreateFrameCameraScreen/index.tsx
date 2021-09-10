@@ -4,10 +4,10 @@ import { CustomCamera } from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
 
 type Props = {
-    navigation: Screen.CreateFrameStack.CameraNavigationProp;
+    navigation: Screen.CreateFrameStack.CreateFrameCameraNavigationProp;
 };
 
-const CameraScreen = ({ navigation }: Props) => {
+const CreateFrameCameraScreen = ({ navigation }: Props) => {
     const { addPictures } = React.useContext(CreateFrameContext);
 
     const handlePressBack = React.useCallback(
@@ -29,4 +29,4 @@ const CameraScreen = ({ navigation }: Props) => {
     );
 };
 
-export default CameraScreen;
+export default CreateFrameCameraScreen;
