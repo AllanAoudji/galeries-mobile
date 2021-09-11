@@ -2,9 +2,15 @@ import { Camera } from 'expo-camera';
 import { CameraType, FlashMode } from 'expo-camera/build/Camera.types';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as React from 'react';
-import { BackHandler, Platform, useWindowDimensions } from 'react-native';
+import {
+    BackHandler,
+    Platform,
+    StatusBar,
+    useWindowDimensions,
+} from 'react-native';
 
 import Pictogram from '#components/Pictogram';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 import {
     ActionsContainer,
@@ -117,8 +123,15 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                 <ImageStyled margins={margins} source={{ uri: snapShot }} />
             )}
             {!!onPressBack && (
-                <BackButtonContainer onPress={handlePressBack}>
-                    <Pictogram color="secondary-light" variant="arrow-left" />
+                <BackButtonContainer currentHeight={StatusBar.currentHeight}>
+                    <Pictogram
+                        color="secondary-light"
+                        height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
+                        onPress={handlePressBack}
+                        pl="small"
+                        pr="small"
+                        variant="arrow-left"
+                    />
                 </BackButtonContainer>
             )}
             {/* TODO: Need animation */}

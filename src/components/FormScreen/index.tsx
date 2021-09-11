@@ -6,7 +6,7 @@ import {
     useWindowDimensions,
     View,
 } from 'react-native';
-import Animated, {
+import {
     useAnimatedStyle,
     useSharedValue,
     withTiming,
@@ -15,7 +15,7 @@ import { useTheme } from 'styled-components/native';
 
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
-import { ANIMATIONS } from '#helpers/constants';
+import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 import { useKeyboard, useComponentSize } from '#hooks';
 
 import {
@@ -154,14 +154,16 @@ const FormScreen = ({
                 {handleOnPressReturn && (
                     <ReturnButton
                         currentHeight={StatusBar.currentHeight}
-                        onPress={handleOnPressReturn}
+                        style={styleReturnButton}
                     >
-                        <Animated.View style={styleReturnButton}>
-                            <Pictogram
-                                color="secondary-light"
-                                variant="arrow-left"
-                            />
-                        </Animated.View>
+                        <Pictogram
+                            color="secondary-light"
+                            height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
+                            pl="small"
+                            pr="small"
+                            onPress={handleOnPressReturn}
+                            variant="arrow-left"
+                        />
                     </ReturnButton>
                 )}
                 <Body onLayout={onLayout} style={styleBody}>

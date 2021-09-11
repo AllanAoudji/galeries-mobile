@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 type AbsoluteTopContainerProps = {
-    height: number;
+    currentHeight: number | undefined;
 };
 
 const AbsoluteCoverPicture = styled.View`
@@ -12,11 +12,10 @@ const AbsoluteCoverPicture = styled.View`
     top: 0;
 `;
 const AbsoluteTopContainer = styled.View<AbsoluteTopContainerProps>`
-    align-items: flex-end;
     flex-direction: row;
-    height: ${({ height }) => `${height}px`};
     justify-content: flex-start;
     left: 0;
+    padding-top: ${({ currentHeight }) => `${currentHeight || 0}px`};
     position: absolute;
     right: 0;
     top: 0;
@@ -25,15 +24,5 @@ const AbsoluteTopContainer = styled.View<AbsoluteTopContainerProps>`
 const Container = styled.View`
     flex: 1;
 `;
-const PictogramContainer = styled.Pressable`
-    justify-content: center;
-    padding: ${({ theme }) =>
-        `${theme.spacings.smallest} ${theme.spacings.small}`};
-`;
 
-export {
-    AbsoluteCoverPicture,
-    AbsoluteTopContainer,
-    Container,
-    PictogramContainer,
-};
+export { AbsoluteCoverPicture, AbsoluteTopContainer, Container };

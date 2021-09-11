@@ -1,16 +1,13 @@
+import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
-
-import convertPixelToNum from '#helpers/convertPixelToNum';
 
 type Props = {
     currentHeight?: number;
 };
 
-const ReturnButton = styled.Pressable<Props>`
+const ReturnButton = styled(Animated.View)<Props>`
     left: 0;
-    padding: ${({ theme }) => theme.spacings.small};
-    padding-top: ${({ currentHeight, theme }) =>
-        `${convertPixelToNum(theme.spacings.small) + (currentHeight || 0)}px`};
+    padding-top: ${({ currentHeight }) => `${currentHeight || 0}px`};
     position: absolute;
     top: 0;
 `;
