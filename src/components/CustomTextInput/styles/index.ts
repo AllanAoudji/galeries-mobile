@@ -21,12 +21,8 @@ const LabelContainer = styled.View`
 `;
 const TextInputStyled = styled.TextInput<TextInputProps>`
     border-bottom-color: ${({ editable, hasError, loading, theme }) => {
-        if (hasError) {
-            return theme.colors.danger;
-        }
-        if (!editable || loading) {
-            return theme.colors.black;
-        }
+        if (hasError) return theme.colors.danger;
+        if (!editable || loading) return theme.colors.black;
         return theme.colors['primary-dark'];
     }};
     border-bottom-width: 2px;

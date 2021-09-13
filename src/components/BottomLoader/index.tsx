@@ -32,7 +32,7 @@ const BottomLoader = ({
     const dimension = useWindowDimensions();
     const theme = useTheme();
 
-    const [display, setDisplay] = React.useState<boolean>(false);
+    const [display, setDisplay] = React.useState<boolean>(show);
 
     const visible = useSharedValue(show ? 1 : 0);
 

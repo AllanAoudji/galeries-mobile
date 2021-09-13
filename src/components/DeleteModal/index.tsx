@@ -30,7 +30,7 @@ type Props = {
 const DeleteModal = ({ handleClose, onPressDelete, open, title }: Props) => {
     const dimension = useWindowDimensions();
 
-    const [display, setDisplay] = React.useState<boolean>(false);
+    const [display, setDisplay] = React.useState<boolean>(open);
 
     const visible = useSharedValue(open ? 1 : 0);
 

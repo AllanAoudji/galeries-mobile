@@ -8,6 +8,7 @@ import {
     AnimatedFlatList,
     BottomLoader,
     DefaultHeader,
+    FullScreenLoader,
     GalerieModal,
     SearchBar,
 } from '#components';
@@ -35,7 +36,6 @@ const GaleriesScreen = () => {
     const galeriesEnd = useSelector(galeriesEndSelector);
     const galeriesStatus = useSelector(galeriesStatusSelector);
 
-    const [fetchFinished, setFetchFinished] = React.useState<boolean>(true);
     const [firstFetchFinished, setFirstFetchFinished] =
         React.useState<boolean>(false);
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
@@ -57,7 +57,6 @@ const GaleriesScreen = () => {
     }, []);
     const handleReachEnd = React.useCallback(() => {
         if (!galeriesEnd && galeriesStatus !== 'FETCHING') {
-            setFetchFinished(false);
             dispatch(fetchGaleries({ name: filtersGaleriesName }));
         }
     }, [filtersGaleriesName, galeriesEnd, galeriesStatus]);
@@ -85,18 +84,11 @@ const GaleriesScreen = () => {
         if (
             (galeriesStatus === 'SUCCESS' || galeriesStatus === 'ERROR') &&
             focus &&
-            searchFinished
-        ) {
-            if (!firstFetchFinished) setFirstFetchFinished(true);
-            if (!fetchFinished) setFetchFinished(true);
-        }
-    }, [
-        fetchFinished,
-        firstFetchFinished,
-        focus,
-        galeriesStatus,
-        searchFinished,
-    ]);
+            searchFinished &&
+            !firstFetchFinished
+        )
+            setFirstFetchFinished(true);
+    }, [firstFetchFinished, focus, galeriesStatus, searchFinished]);
 
     return (
         <Container>
@@ -131,7 +123,14 @@ const GaleriesScreen = () => {
                     showsVerticalScrollIndicator={false}
                 />
             )}
-            <BottomLoader show={!fetchFinished} />
+            <FullScreenLoader show={!firstFetchFinished} />
+            <BottomLoader
+                show={
+                    firstFetchFinished &&
+                    galeriesStatus === 'FETCHING' &&
+                    !galeriesEnd
+                }
+            />
         </Container>
     );
 };

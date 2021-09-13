@@ -2,13 +2,21 @@ import * as React from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AddButton, AnimatedFlatList, FrameModal } from '#components';
+import {
+    AddButton,
+    AnimatedFlatList,
+    FrameModal,
+    FullScreenLoader,
+    Typography,
+} from '#components';
 import { GalerieTabbarScreenContainer } from '#components/Screen';
 import { fetchFrames } from '#store/actions';
 import {
     currentGalerieFramesSelector,
     currentGalerieFramesStatusSelector,
 } from '#store/selectors';
+
+import { TextContainer } from './styles';
 
 type Props = {
     galerie?: Store.Models.Galerie & { id: string };
@@ -42,17 +50,31 @@ const FramesScreen = ({
             <GalerieTabbarScreenContainer>
                 {!isFirstFetch && status !== 'PENDING' && (
                     <>
-                        <AnimatedFlatList
-                            contentContainerStyle={{ paddingTop }}
-                            data={frames}
-                            keyExtractor={(data) => data.id}
-                            onScroll={scrollHandler}
-                            renderItem={({ item }) => (
-                                <FrameModal frame={item} />
-                            )}
-                            scrollEventThrottle={4}
-                            showsVerticalScrollIndicator={false}
-                        />
+                        {frames && frames.length > 0 ? (
+                            <AnimatedFlatList
+                                contentContainerStyle={{ paddingTop }}
+                                data={frames}
+                                keyExtractor={(data) => data.id}
+                                onScroll={scrollHandler}
+                                renderItem={({ item }) => (
+                                    <FrameModal frame={item} />
+                                )}
+                                scrollEventThrottle={4}
+                                showsVerticalScrollIndicator={false}
+                            />
+                        ) : (
+                            <TextContainer paddingTop={paddingTop}>
+                                <Typography
+                                    color="primary"
+                                    fontSize={14}
+                                    fontFamily="light"
+                                    textAlign="center"
+                                >
+                                    This galerie doesn't have frame yet. Click
+                                    on the + button to post a new one
+                                </Typography>
+                            </TextContainer>
+                        )}
                         <AddButton
                             bottom="smallest"
                             right="normal"
@@ -60,6 +82,7 @@ const FramesScreen = ({
                         />
                     </>
                 )}
+                <FullScreenLoader show={isFirstFetch} />
             </GalerieTabbarScreenContainer>
         </>
     );

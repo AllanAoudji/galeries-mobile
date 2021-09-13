@@ -8,7 +8,11 @@ import Typography from '#components/Typography';
 import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
 import { END_POINT } from '#helpers/constants';
 import request from '#helpers/request';
-import { setCurrentGalerieId, setFrames, setGaleries } from '#store/actions';
+import {
+    setCurrentGalerieId,
+    setGaleriePictures,
+    setGaleries,
+} from '#store/actions';
 
 import {
     Container,
@@ -55,30 +59,29 @@ const GalerieModal = ({ galerie }: Props) => {
                 method: 'GET',
                 url: END_POINT.GALERIE_COVER_PICTURE(galerie.id),
             }).then((res) => {
-                if (res.data && res.data.data.coverPicture) {
-                    const { id, ...galerieWithoutId } = galerie;
-                    const { id: coverPictureId, ...rest } =
-                        res.data.data.coverPicture;
+                if (
+                    res.data &&
+                    res.data.data &&
+                    res.data.data.coverPicture &&
+                    typeof res.data.data.coverPicture === 'string'
+                ) {
+                    const { id } = res.data.data.coverPicture;
                     dispatch(
                         setGaleries({
                             data: {
                                 byId: {
-                                    [id]: {
-                                        ...galerieWithoutId,
-                                        currentCoverPicture: coverPictureId,
+                                    [galerie.id]: {
+                                        ...galerie,
+                                        currentCoverPicture:
+                                            res.data.data.coverPicture,
                                     },
                                 },
                             },
                         })
                     );
-                    // TODO: setGaleriePictures
                     dispatch(
-                        setFrames({
-                            data: {
-                                byId: {
-                                    [coverPictureId]: rest,
-                                },
-                            },
+                        setGaleriePictures({
+                            byId: { [id]: res.data.data.coverPicture },
                         })
                     );
                 }

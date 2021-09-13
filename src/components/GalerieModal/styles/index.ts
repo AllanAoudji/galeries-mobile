@@ -1,7 +1,56 @@
-export { default as Container } from './Container';
-export { default as DefaultCoverPicture } from './DefaultCoverPicture';
-export { default as Informations } from './Informations';
-export { default as NumOfUsersContainer } from './NumOfUsersContainer';
-export { default as PictureContainer } from './PictureContainer';
-export { default as UserContainer } from './UserContainer';
-export { default as UsersContainer } from './UsersContainer';
+import { LinearGradient } from 'expo-linear-gradient';
+import Animated from 'react-native-reanimated';
+import styled from 'styled-components/native';
+
+import { GLOBAL_STYLE } from '#helpers/constants';
+
+type DefaultCoverPictureProps = {
+    size: number;
+};
+
+const USER_CONTAINER_SIZE = 34;
+
+const Container = styled(Animated.View)`
+    height: ${() => `${GLOBAL_STYLE.GALERIE_MODAL_HEIGHT}px`};
+`;
+const DefaultCoverPicture = styled(LinearGradient)<DefaultCoverPictureProps>`
+    height: ${({ size }) => `${size}px`};
+    width: ${({ size }) => `${size}px`};
+`;
+const Informations = styled.View`
+    height: 74px;
+    padding: ${({ theme }) =>
+        `${theme.spacings.smallest} ${theme.spacings.small} 0`};
+`;
+const NumOfUsersContainer = styled.View`
+    margin-left: 8px;
+`;
+const PictureContainer = styled(LinearGradient)`
+    height: 140px;
+    justify-content: center;
+    overflow: hidden;
+`;
+const UserContainer = styled.View`
+    background-color: ${({ theme }) => theme.colors.primary};
+    border-color: ${({ theme }) => theme.colors['secondary-light']};
+    border-radius: ${() => `${USER_CONTAINER_SIZE / 2}px`};
+    border-width: 2px;
+    height: ${() => `${USER_CONTAINER_SIZE}px`};
+    margin-left: -15px;
+    overflow: hidden;
+    width: ${() => `${USER_CONTAINER_SIZE}px`};
+`;
+const UsersContainer = styled.View`
+    flex-direction: row;
+    align-items: center;
+`;
+
+export {
+    Container,
+    DefaultCoverPicture,
+    Informations,
+    NumOfUsersContainer,
+    PictureContainer,
+    UserContainer,
+    UsersContainer,
+};
