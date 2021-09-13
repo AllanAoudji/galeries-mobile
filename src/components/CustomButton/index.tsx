@@ -5,7 +5,7 @@ import { useTheme } from 'styled-components/native';
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
 
-import { Container, PictogramContainer } from './styles';
+import { Container } from './styles';
 
 type Props = {
     disable?: boolean;
@@ -36,45 +36,63 @@ const CustomButton = ({
 }: Props) => {
     const theme = useTheme();
 
+    const activityIndicatorColor = React.useMemo(
+        () =>
+            variant === 'fill'
+                ? theme.colors['secondary-light']
+                : theme.colors['primary-dark'],
+        [variant]
+    );
+    const disableButton = React.useMemo(
+        () => disable || loading || !onPress,
+        [disable, loading, onPress]
+    );
+    const pictogramColor = React.useMemo(
+        () => (variant === 'fill' ? 'secondary-light' : 'primary-dark'),
+        [variant]
+    );
+    const pictogramMR = React.useMemo(
+        () => (small ? 'smallest' : 'small'),
+        [small]
+    );
+    const pictogramSize = React.useMemo(
+        () => (small ? 'small' : 'normal'),
+        [small]
+    );
+    const typographyColor = React.useMemo(
+        () => (variant === 'fill' ? 'secondary-light' : 'primary-dark'),
+        [variant]
+    );
+    const typographyFontSize = React.useMemo(() => (small ? 14 : 18), [small]);
+
+    const handlePress = React.useCallback(() => {
+        if (!disable && !loading && onPress) onPress();
+    }, [disable, loading, onPress]);
+
     return (
         <Container
-            disable={disable || loading}
+            disable={disableButton}
             mb={mb}
             ml={ml}
             mr={mr}
             mt={mt}
-            onPress={() => {
-                if (onPress && !disable && !loading) onPress();
-            }}
+            onPress={handlePress}
             small={small}
             variant={variant}
         >
             {pictogram && (
-                <PictogramContainer small={small}>
-                    <Pictogram
-                        color={
-                            variant === 'fill'
-                                ? 'secondary-light'
-                                : 'primary-dark'
-                        }
-                        variant={pictogram}
-                        size={small ? 'small' : 'normal'}
-                    />
-                </PictogramContainer>
+                <Pictogram
+                    color={pictogramColor}
+                    mr={pictogramMR}
+                    size={pictogramSize}
+                    variant={pictogram}
+                />
             )}
-            <Typography
-                color={variant === 'fill' ? 'secondary-light' : 'primary-dark'}
-                fontFamily="bold"
-                fontSize={small ? 14 : 18}
-            >
+            <Typography color={typographyColor} fontSize={typographyFontSize}>
                 {loading ? (
                     <ActivityIndicator
+                        color={activityIndicatorColor}
                         size="small"
-                        color={
-                            variant === 'fill'
-                                ? theme.colors['secondary-light']
-                                : theme.colors['primary-dark']
-                        }
                     />
                 ) : (
                     title.toLowerCase()

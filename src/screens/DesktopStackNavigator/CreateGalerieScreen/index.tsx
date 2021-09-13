@@ -3,19 +3,14 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 
-import {
-    CustomButton,
-    CustomTextInput,
-    FormScreen,
-    TextInputsContainer,
-} from '#components';
+import { CustomButton, CustomTextInput, FormContainer } from '#components';
 import {
     END_POINT,
     ERROR_MESSAGE,
     FIELD_REQUIREMENT,
 } from '#helpers/constants';
-import request from '#helpers/request';
 import normalizeData from '#helpers/normalizeData';
+import request from '#helpers/request';
 import { createGaleriesSchema } from '#helpers/schemas';
 import {
     resetGaleries,
@@ -23,6 +18,8 @@ import {
     setGaleries,
     setNotification,
 } from '#store/actions';
+
+import { ButtonsContainer, Container } from './styles';
 
 type Props = {
     navigation: Screen.DesktopStack.CreateGalerieNavigationProp;
@@ -146,6 +143,10 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         name: '',
     });
 
+    const descriptionError = React.useMemo(
+        () => formik.errors.description || serverErrors.description,
+        [formik.errors.description, serverErrors.description]
+    );
     const disableButton = React.useMemo(() => {
         const clientHasError =
             formik.submitCount > 0 &&
@@ -154,7 +155,27 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
             !!serverErrors.description || !!serverErrors.name;
         return clientHasError || serverHasError;
     }, [formik.submitCount, formik.errors, serverErrors]);
+    const nameError = React.useMemo(
+        () => formik.errors.name || serverErrors.name,
+        [formik.errors.name, serverErrors.name]
+    );
 
+    const handleChangeDescriptionText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            description: '',
+        }));
+        formik.setFieldError('description', '');
+        formik.setFieldValue('description', e);
+    }, []);
+    const handleChangeNameText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            name: '',
+        }));
+        formik.setFieldError('name', '');
+        formik.setFieldValue('name', e);
+    }, []);
     const handlePressBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else
@@ -175,72 +196,47 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     }, [galerieId, navigation]);
 
     return (
-        <FormScreen
-            handleOnPressReturn={handlePressBack}
-            renderTop={
-                <TextInputsContainer>
-                    <CustomTextInput
-                        error={formik.errors.name || serverErrors.name}
-                        label="name"
-                        loading={loading}
-                        maxLength={FIELD_REQUIREMENT.GALERIE_NAME_MAX_LENGTH}
-                        onBlur={formik.handleBlur('name')}
-                        onChangeText={(e: string) => {
-                            setServerErrors((prevState) => ({
-                                ...prevState,
-                                name: '',
-                            }));
-                            formik.setFieldError('name', '');
-                            formik.setFieldValue('name', e);
-                        }}
-                        touched={formik.touched.name || false}
-                        value={formik.values.name}
-                    />
-                    <CustomTextInput
-                        error={
-                            formik.errors.description ||
-                            serverErrors.description
-                        }
-                        label="description"
-                        loading={loading}
-                        maxLength={
-                            FIELD_REQUIREMENT.GALERIE_DESCRIPTION_MAX_LENGTH
-                        }
-                        multiline
-                        onBlur={formik.handleBlur('description')}
-                        onChangeText={(e: string) => {
-                            setServerErrors((prevState) => ({
-                                ...prevState,
-                                description: '',
-                            }));
-                            formik.setFieldError('description', '');
-                            formik.setFieldValue('description', e);
-                        }}
-                        optional
-                        touched={formik.touched.description || false}
-                        value={formik.values.description}
-                    />
-                </TextInputsContainer>
-            }
-            renderBottom={
-                <>
-                    <CustomButton
-                        disable={disableButton}
-                        loading={loading}
-                        mb="smallest"
-                        onPress={formik.handleSubmit}
-                        title="create galerie"
-                    />
-                    <CustomButton
-                        disable={loading}
-                        onPress={handlePressBack}
-                        title="cancel"
-                        variant="stroke"
-                    />
-                </>
-            }
-            title="create galerie"
-        />
+        <FormContainer>
+            <Container>
+                <CustomTextInput
+                    error={nameError}
+                    label="name"
+                    loading={loading}
+                    maxLength={FIELD_REQUIREMENT.GALERIE_NAME_MAX_LENGTH}
+                    onBlur={formik.handleBlur('name')}
+                    onChangeText={handleChangeNameText}
+                    touched={formik.touched.name || false}
+                    value={formik.values.name}
+                />
+                <CustomTextInput
+                    error={descriptionError}
+                    label="description"
+                    loading={loading}
+                    maxLength={FIELD_REQUIREMENT.GALERIE_DESCRIPTION_MAX_LENGTH}
+                    multiline
+                    onBlur={formik.handleBlur('description')}
+                    onChangeText={handleChangeDescriptionText}
+                    optional
+                    touched={formik.touched.description || false}
+                    value={formik.values.description}
+                />
+            </Container>
+            <ButtonsContainer>
+                <CustomButton
+                    disable={disableButton}
+                    loading={loading}
+                    mb="smallest"
+                    onPress={formik.handleSubmit}
+                    title="create galerie"
+                />
+                <CustomButton
+                    disable={loading}
+                    onPress={handlePressBack}
+                    title="cancel"
+                    variant="stroke"
+                />
+            </ButtonsContainer>
+        </FormContainer>
     );
 };
 

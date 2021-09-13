@@ -33,7 +33,8 @@ const BottomLoader = ({
     const theme = useTheme();
 
     const [display, setDisplay] = React.useState<boolean>(false);
-    const visible = useSharedValue(0);
+
+    const visible = useSharedValue(show ? 1 : 0);
 
     const containerStyle = useAnimatedStyle(() => {
         const bottom = interpolate(
@@ -63,12 +64,10 @@ const BottomLoader = ({
             visible.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(200));
     }, [display]);
 
-    if (!display) {
-        return null;
-    }
+    if (!display) return null;
 
     return (
-        <Container width={dimension.width} style={containerStyle}>
+        <Container style={containerStyle} width={dimension.width}>
             <LoaderContainer color={backgroundColor}>
                 <ActivityIndicator color={theme.colors[color]} size="small" />
             </LoaderContainer>

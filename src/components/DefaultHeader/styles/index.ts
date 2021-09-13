@@ -2,29 +2,17 @@ import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 type ContainerProps = {
-    currentHeight: number | undefined;
-};
-type LogoContainerProps = {
-    currentHeight: number | undefined;
+    paddingTop: number | undefined;
 };
 
 const Container = styled(Animated.View)<ContainerProps>`
+    align-items: center;
     background-color: ${({ theme }) => theme.colors['secondary-light']};
     flex-direction: row;
-    padding-top: ${({ currentHeight }) => `${currentHeight || 0}px`};
-`;
-const LogoContainer = styled.View<LogoContainerProps>`
-    align-items: center;
-    bottom: 0;
-    justify-content: center;
-    left: 0;
-    padding-top: ${({ currentHeight }) => `${currentHeight || 0}px`};
-    position: absolute;
-    right: 0;
-    top: 0;
-`;
-const LogoInnerContainer = styled.Pressable`
-    padding: ${({ theme }) => `0 ${theme.spacings.small}`};
+    justify-content: space-between;
+    padding: ${({ paddingTop, theme }) =>
+        `${paddingTop || 0}px ${theme.spacings.small} 0 0`};
 `;
 
-export { Container, LogoContainer, LogoInnerContainer };
+// eslint-disable-next-line import/prefer-default-export
+export { Container };

@@ -6,6 +6,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import { meDataSelector } from '#store/selectors';
+import { DefaultHeader } from '#components';
 
 import DesktopScreen from './DesktopScreen';
 import ForgotYourPasswordScreen from './ForgotYourPasswordScreen';
@@ -23,20 +24,63 @@ const RootStackNavigator = () => {
             initialRouteName="Landing"
             screenOptions={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                headerShown: false,
             }}
         >
             {userData ? (
-                <Stack.Screen name="Desktop" component={DesktopScreen} />
+                <Stack.Screen
+                    component={DesktopScreen}
+                    name="Desktop"
+                    options={{ headerShown: false }}
+                />
             ) : (
                 <>
                     <Stack.Screen
-                        name="ForgotYourPassword"
                         component={ForgotYourPasswordScreen}
+                        name="ForgotYourPassword"
+                        options={{
+                            header: () => (
+                                <DefaultHeader
+                                    title="forgot your password?"
+                                    variant="secondary"
+                                />
+                            ),
+                        }}
                     />
-                    <Stack.Screen name="Landing" component={LangingScreen} />
-                    <Stack.Screen name="Login" component={LoginScreen} />
-                    <Stack.Screen name="Signin" component={SigninScreen} />
+                    <Stack.Screen
+                        component={LangingScreen}
+                        name="Landing"
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        component={LoginScreen}
+                        name="Login"
+                        options={{
+                            header: ({ navigation }) => (
+                                <DefaultHeader
+                                    onPressBack={() =>
+                                        navigation.navigate('Landing')
+                                    }
+                                    title="log-in"
+                                    variant="secondary"
+                                />
+                            ),
+                        }}
+                    />
+                    <Stack.Screen
+                        component={SigninScreen}
+                        name="Signin"
+                        options={{
+                            header: ({ navigation }) => (
+                                <DefaultHeader
+                                    onPressBack={() =>
+                                        navigation.navigate('Landing')
+                                    }
+                                    title="sign-in"
+                                    variant="secondary"
+                                />
+                            ),
+                        }}
+                    />
                 </>
             )}
         </Stack.Navigator>

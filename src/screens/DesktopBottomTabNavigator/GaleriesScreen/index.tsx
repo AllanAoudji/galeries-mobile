@@ -10,7 +10,6 @@ import {
     DefaultHeader,
     GalerieModal,
     SearchBar,
-    Typography,
 } from '#components';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
@@ -102,9 +101,8 @@ const GaleriesScreen = () => {
     return (
         <Container>
             <Header onLayout={onLayout} style={containerStyle}>
-                <DefaultHeader style={headerStyle} />
+                <DefaultHeader style={headerStyle} title="galeries" />
                 <SearchBarContainer>
-                    <Typography fontSize={24}>Galeries</Typography>
                     <SearchBar
                         mt="smallest"
                         onChangeText={handleChangeText}

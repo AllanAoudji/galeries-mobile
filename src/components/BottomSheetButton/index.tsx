@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import Typography from '#components/Typography';
 import Pictogram from '#components/Pictogram';
+import Typography from '#components/Typography';
 
 import { Container, PictogramContainer } from './styles';
 

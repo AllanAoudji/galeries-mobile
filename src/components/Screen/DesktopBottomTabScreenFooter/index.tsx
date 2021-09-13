@@ -119,43 +119,38 @@ const FooterTabNavigator = ({
     }
 
     return (
-        <>
-            <Container style={style}>
-                <IconContainer onPress={handleHomePress}>
-                    <PictogramContainer>
-                        <Pictogram color="primary" variant={homeVariant} />
-                    </PictogramContainer>
-                </IconContainer>
-                <IconContainer onPress={handleGaleriesPress}>
-                    <PictogramContainer>
-                        <Pictogram color="primary" variant={galeriesVariant} />
-                    </PictogramContainer>
-                </IconContainer>
-                <IconContainer onPress={handleAddSubscribePress}>
-                    <Pictogram
-                        color="primary"
-                        customSize={{
-                            height: 28,
-                            width: 28,
-                        }}
-                        variant="add/subscribe-stroke"
-                    />
-                </IconContainer>
-                <IconContainer onPress={handleNotificationsPress}>
-                    <PictogramContainer>
-                        <Pictogram
-                            color="primary"
-                            variant={notificationsvariant}
-                        />
-                    </PictogramContainer>
-                </IconContainer>
-                <IconContainer onPress={handleProfilePress}>
-                    <PictogramContainer>
-                        <Pictogram color="primary" variant={profileVariant} />
-                    </PictogramContainer>
-                </IconContainer>
-            </Container>
-        </>
+        <Container style={style}>
+            <IconContainer onPress={handleHomePress}>
+                <PictogramContainer>
+                    <Pictogram color="primary" variant={homeVariant} />
+                </PictogramContainer>
+            </IconContainer>
+            <IconContainer onPress={handleGaleriesPress}>
+                <PictogramContainer>
+                    <Pictogram color="primary" variant={galeriesVariant} />
+                </PictogramContainer>
+            </IconContainer>
+            <IconContainer onPress={handleAddSubscribePress}>
+                <Pictogram
+                    color="primary"
+                    customSize={{
+                        height: 28,
+                        width: 28,
+                    }}
+                    variant="add/subscribe-stroke"
+                />
+            </IconContainer>
+            <IconContainer onPress={handleNotificationsPress}>
+                <PictogramContainer>
+                    <Pictogram color="primary" variant={notificationsvariant} />
+                </PictogramContainer>
+            </IconContainer>
+            <IconContainer onPress={handleProfilePress}>
+                <PictogramContainer>
+                    <Pictogram color="primary" variant={profileVariant} />
+                </PictogramContainer>
+            </IconContainer>
+        </Container>
     );
 };
 

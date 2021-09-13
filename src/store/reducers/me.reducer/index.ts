@@ -11,7 +11,10 @@ const initialState: {
 export default (state = initialState, action: Store.Action) => {
     switch (action.type) {
         case ME_SET: {
-            const id = action.payload.data.id || state.id;
+            const id =
+                action.payload.data.id !== undefined
+                    ? action.payload.data.id
+                    : state.id;
             const status = action.payload.data.status || state.status;
             return {
                 ...state,

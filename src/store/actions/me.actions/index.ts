@@ -19,7 +19,7 @@ export const fetchMe: () => Store.Action = () => ({
 export const resetMe: () => Store.Action = () => ({
     payload: {
         data: {
-            data: null,
+            id: null,
             status: 'PENDING',
         },
         meta: {},

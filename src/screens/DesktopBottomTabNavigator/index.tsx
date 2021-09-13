@@ -32,12 +32,10 @@ const DesktopBottomTabNavigator = () => {
 
     return (
         <Tab.Navigator
-            tabBar={tabBar}
-            initialRouteName="Home"
             backBehavior="history"
-            screenOptions={{
-                headerShown: false,
-            }}
+            initialRouteName="Home"
+            screenOptions={{ headerShown: false }}
+            tabBar={tabBar}
         >
             <Tab.Screen name="Home">
                 {() => (

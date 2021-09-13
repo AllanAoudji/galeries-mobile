@@ -2,19 +2,22 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar, ViewProps } from 'react-native';
 
-import Logo from '#components/Logo';
 import Pictogram from '#components/Pictogram';
+import Typography from '#components/Typography';
 import { GLOBAL_STYLE } from '#helpers/constants';
 
-import { Container, LogoContainer, LogoInnerContainer } from './styles';
+import { Container } from './styles';
 
-interface Props {
+type Props = {
     onPress?: () => void;
+    onPressBack?: () => void;
+    title?: string;
     variant?: 'primary' | 'secondary';
-}
+};
 
 const DefaultHeader = ({
-    onPress,
+    onPressBack,
+    title,
     variant = 'primary',
     ...rest
 }: Props & ViewProps) => {
@@ -28,17 +31,15 @@ const DefaultHeader = ({
         () => (isArrow ? 'arrow-left' : 'hamburger-menu'),
         [isArrow]
     );
-
-    const handlePressLogo = React.useCallback(() => {
-        if (onPress) onPress();
-    }, [onPress]);
     const handlePressPictogram = React.useCallback(() => {
-        if (isArrow) navigation.goBack();
-        else navigation.dispatch(DrawerActions.openDrawer());
+        if (isArrow) {
+            if (onPressBack) onPressBack();
+            else navigation.goBack();
+        } else navigation.dispatch(DrawerActions.openDrawer());
     }, [isArrow, navigation]);
 
     return (
-        <Container currentHeight={StatusBar.currentHeight} {...rest}>
+        <Container paddingTop={StatusBar.currentHeight} {...rest}>
             <Pictogram
                 color="primary"
                 height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
@@ -47,11 +48,11 @@ const DefaultHeader = ({
                 pr="small"
                 variant={topLeftPictogramVariant}
             />
-            <LogoContainer currentHeight={StatusBar.currentHeight}>
-                <LogoInnerContainer onPress={handlePressLogo}>
-                    <Logo size="small" variant="logotype-stroke" />
-                </LogoInnerContainer>
-            </LogoContainer>
+            {!!title && (
+                <Typography color="primary" fontFamily="light" fontSize={24}>
+                    {title.toLowerCase()}
+                </Typography>
+            )}
         </Container>
     );
 };
