@@ -12,5 +12,13 @@ const Container = styled(Animated.View)`
     width: 100%;
     z-index: 1;
 `;
+const IconContainer = styled.Pressable`
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+`;
+const PictogramContainer = styled.View`
+    padding-bottom: 3px;
+`;
 
-export default Container;
+export { Container, IconContainer, PictogramContainer };

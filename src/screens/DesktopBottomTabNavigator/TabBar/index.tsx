@@ -1,4 +1,5 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as React from 'react';
 import { Keyboard } from 'react-native';
 import {
@@ -6,6 +7,7 @@ import {
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
+import { useTheme } from 'styled-components/native';
 
 import BottomSheetButton from '#components/BottomSheetButton';
 import Pictogram from '#components/Pictogram';
@@ -13,16 +15,11 @@ import { BottomSheetContext } from '#contexts/BottomSheetContext';
 
 import { Container, IconContainer, PictogramContainer } from './styles';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
+import { useKeyboard } from '#hooks';
 
-type Props = {
-    keyboardShown: boolean;
-};
-
-const FooterTabNavigator = ({
-    keyboardShown,
-    navigation,
-    state,
-}: BottomTabBarProps & Props) => {
+const TabBar = ({ navigation, state }: BottomTabBarProps) => {
+    const { keyboardShown } = useKeyboard();
+    const theme = useTheme();
     const { fadeOutBottomSheet, openBottomSheet } =
         React.useContext(BottomSheetContext);
 
@@ -120,38 +117,47 @@ const FooterTabNavigator = ({
 
     return (
         <Container style={style}>
-            <IconContainer onPress={handleHomePress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={homeVariant} />
-                </PictogramContainer>
-            </IconContainer>
-            <IconContainer onPress={handleGaleriesPress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={galeriesVariant} />
-                </PictogramContainer>
-            </IconContainer>
-            <IconContainer onPress={handleAddSubscribePress}>
-                <Pictogram
-                    color="primary"
-                    customSize={{
-                        height: 28,
-                        width: 28,
-                    }}
-                    variant="add/subscribe-stroke"
-                />
-            </IconContainer>
-            <IconContainer onPress={handleNotificationsPress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={notificationsvariant} />
-                </PictogramContainer>
-            </IconContainer>
-            <IconContainer onPress={handleProfilePress}>
-                <PictogramContainer>
-                    <Pictogram color="primary" variant={profileVariant} />
-                </PictogramContainer>
-            </IconContainer>
+            <LinearGradient
+                colors={['transparent', theme.colors['secondary-light']]}
+                locations={[0, 0.8]}
+                style={{ width: '100%', flexDirection: 'row' }}
+            >
+                <IconContainer onPress={handleHomePress}>
+                    <PictogramContainer>
+                        <Pictogram color="primary" variant={homeVariant} />
+                    </PictogramContainer>
+                </IconContainer>
+                <IconContainer onPress={handleGaleriesPress}>
+                    <PictogramContainer>
+                        <Pictogram color="primary" variant={galeriesVariant} />
+                    </PictogramContainer>
+                </IconContainer>
+                <IconContainer onPress={handleAddSubscribePress}>
+                    <Pictogram
+                        color="primary"
+                        customSize={{
+                            height: 28,
+                            width: 28,
+                        }}
+                        variant="add/subscribe-stroke"
+                    />
+                </IconContainer>
+                <IconContainer onPress={handleNotificationsPress}>
+                    <PictogramContainer>
+                        <Pictogram
+                            color="primary"
+                            variant={notificationsvariant}
+                        />
+                    </PictogramContainer>
+                </IconContainer>
+                <IconContainer onPress={handleProfilePress}>
+                    <PictogramContainer>
+                        <Pictogram color="primary" variant={profileVariant} />
+                    </PictogramContainer>
+                </IconContainer>
+            </LinearGradient>
         </Container>
     );
 };
 
-export default FooterTabNavigator;
+export default TabBar;

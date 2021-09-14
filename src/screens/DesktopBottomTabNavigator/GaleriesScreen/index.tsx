@@ -107,7 +107,10 @@ const GaleriesScreen = () => {
             </Header>
             {firstFetchFinished && (
                 <AnimatedFlatList
-                    contentContainerStyle={{ paddingTop }}
+                    contentContainerStyle={{
+                        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+                        paddingTop,
+                    }}
                     data={galeries}
                     getItemLayout={getItemLayout}
                     keyExtractor={keyExtractor}
