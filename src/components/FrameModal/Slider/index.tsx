@@ -6,41 +6,25 @@ import {
     View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import styled from 'styled-components/native';
 
 import Image from './Image';
 
-type DotNavigationProps = {
-    current: boolean;
-};
-type SliderProps = {
+import { Dot, DotsContainer } from './styles';
+
+type Props = {
     galeriePictures: Store.Models.GaleriePicture[];
 };
 
-const Dot = styled.View<DotNavigationProps>`
-    background-color: ${({ theme, current }) =>
-        current ? theme.colors.primary : theme.colors['secondary-dark']};
-    border-radius: 3px;
-    height: 6px;
-    margin: 0 3px;
-    transform: ${({ current }) => (current ? 'scale(1.1)' : 'scale(1)')};
-    width: 6px;
-`;
-const DotsContainer = styled.View`
-    flex-direction: row;
-    justify-content: center;
-    padding-top: 8px;
-`;
-
-const Slider = ({ galeriePictures }: SliderProps) => {
+const Slider = ({ galeriePictures }: Props) => {
     const dimension = useWindowDimensions();
 
     const [currentIndex, setCurrentIndex] = React.useState<number>(0);
 
-    const handleMomentumScrollEnd = React.useCallback(
+    const handleScroll = React.useCallback(
         ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-            const position = nativeEvent.contentOffset.x;
-            const index = Math.round(position / dimension.width);
+            const index = Math.round(
+                nativeEvent.contentOffset.x / dimension.width
+            );
             if (index !== currentIndex) setCurrentIndex(index);
         },
         [currentIndex]
@@ -49,12 +33,12 @@ const Slider = ({ galeriePictures }: SliderProps) => {
     return (
         <View>
             <ScrollView
-                horizontal
-                disableIntervalMomentum={true}
-                snapToInterval={dimension.width}
                 decelerationRate="fast"
-                onScroll={handleMomentumScrollEnd}
+                disableIntervalMomentum={true}
+                horizontal
+                onScroll={handleScroll}
                 overScrollMode="never"
+                snapToInterval={dimension.width}
             >
                 {galeriePictures.map((galeriePicture) => (
                     <Image
@@ -63,16 +47,15 @@ const Slider = ({ galeriePictures }: SliderProps) => {
                     />
                 ))}
             </ScrollView>
-            {galeriePictures.length > 1 && (
-                <DotsContainer>
-                    {galeriePictures.map((galeriePicture, index) => (
+            <DotsContainer>
+                {galeriePictures.length > 1 &&
+                    galeriePictures.map((galeriePicture, index) => (
                         <Dot
                             current={currentIndex === index}
                             key={galeriePicture.id}
                         />
                     ))}
-                </DotsContainer>
-            )}
+            </DotsContainer>
         </View>
     );
 };

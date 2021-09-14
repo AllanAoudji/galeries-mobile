@@ -1,8 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
-import { useKeyboard } from '#hooks';
-
 import CommentScreen from './CommentsScreen';
 import GalerieScreen from './GalerieScreen';
 import GaleriesScreen from './GaleriesScreen';

@@ -17,6 +17,7 @@ import {
 } from '#store/selectors';
 
 import { TextContainer } from './styles';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
     galerie?: Store.Models.Galerie & { id: string };
@@ -52,7 +53,11 @@ const FramesScreen = ({
                     <>
                         {frames && frames.length > 0 ? (
                             <AnimatedFlatList
-                                contentContainerStyle={{ paddingTop }}
+                                contentContainerStyle={{
+                                    paddingBottom:
+                                        GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+                                    paddingTop,
+                                }}
                                 data={frames}
                                 keyExtractor={(data) => data.id}
                                 onScroll={scrollHandler}
@@ -76,7 +81,7 @@ const FramesScreen = ({
                             </TextContainer>
                         )}
                         <AddButton
-                            bottom="smallest"
+                            bottom="largest"
                             right="normal"
                             onPress={handleNavigateToCreateGalerieScreen}
                         />

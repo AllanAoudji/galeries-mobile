@@ -6,8 +6,8 @@ type AbsoluteTopContainerProps = {
 
 const AbsoluteCoverPicture = styled.View`
     bottom: 0;
-    position: absolute;
     left: 0;
+    position: absolute;
     right: 0;
     top: 0;
 `;
