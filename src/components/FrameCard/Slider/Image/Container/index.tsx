@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { useWindowDimensions } from 'react-native';
 
 import { LinearGradiantContainer, ViewContainer } from './styles';

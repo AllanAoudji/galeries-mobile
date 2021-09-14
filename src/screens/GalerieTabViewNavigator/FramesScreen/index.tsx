@@ -10,6 +10,7 @@ import {
     Typography,
 } from '#components';
 import { GalerieTabbarScreenContainer } from '#components/Screen';
+import { GLOBAL_STYLE } from '#helpers/constants';
 import { fetchFrames } from '#store/actions';
 import {
     currentGalerieFramesSelector,
@@ -17,7 +18,6 @@ import {
 } from '#store/selectors';
 
 import { TextContainer } from './styles';
-import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
     galerie?: Store.Models.Galerie & { id: string };
