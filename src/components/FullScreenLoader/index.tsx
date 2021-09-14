@@ -25,8 +25,8 @@ const FullScreenLoader = ({
 }: Props) => {
     const theme = useTheme();
 
-    const [display, setDisplay] = React.useState<boolean>(false);
-    const opacity = useSharedValue(0);
+    const [display, setDisplay] = React.useState<boolean>(show);
+    const opacity = useSharedValue(show ? 1 : 0);
 
     const style = useAnimatedStyle(
         () => ({
@@ -52,18 +52,14 @@ const FullScreenLoader = ({
             opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(200));
     }, [display]);
 
-    if (!display) {
-        return null;
-    }
+    if (!display) return null;
 
     return (
         <Container color={backgroundColor} style={style}>
             <ActivityIndicator
                 color={theme.colors[color]}
                 size="large"
-                style={{
-                    transform: [{ scale: 1.2 }],
-                }}
+                style={{ transform: [{ scale: 1.2 }] }}
             />
         </Container>
     );

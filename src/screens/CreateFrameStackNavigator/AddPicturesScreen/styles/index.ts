@@ -1,10 +1,50 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import styled from 'styled-components/native';
 
-const BodyContainer = styled.View`
-    padding-bottom: ${({ theme }) => theme.spacings.normal};
+type ReturnButtonProps = {
+    currentHeight?: number;
+};
+
+const Body = styled.View`
+    background-color: ${({ theme }) => theme.colors['secondary-light']};
+    border-top-left-radius: 50px;
+    height: auto;
+    padding: ${({ theme }) =>
+        `${theme.spacings.normal} ${theme.spacings.normal} ${theme.spacings.largest}`};
+    width: 100%;
+`;
+const Container = styled(LinearGradient)`
+    flex: 1;
+    justify-content: space-between;
+`;
+const Header = styled.View`
+    align-items: flex-end;
+    flex: 1;
+    justify-content: center;
+    margin: ${({ theme }) => ` 0 ${theme.spacings.large}`};
+`;
+const ReturnButtonContainer = styled.View<ReturnButtonProps>`
+    left: 0;
+    padding-top: ${({ currentHeight }) => `${currentHeight || 0}px`};
+    position: absolute;
+    top: 0;
+`;
+const Separator = styled.View`
+    border-radius: 100px;
+    background-color: #fffff4;
+    height: 2px;
+    margin-top: 10px;
+    width: ${({ theme }) => theme.spacings.normal};
 `;
 const TextContainer = styled.View`
-    padding-bottom: ${({ theme }) => theme.spacings.normal};
+    padding-bottom: ${({ theme }) => theme.spacings.small};
 `;
 
-export { BodyContainer, TextContainer };
+export {
+    Body,
+    Container,
+    Header,
+    ReturnButtonContainer,
+    Separator,
+    TextContainer,
+};

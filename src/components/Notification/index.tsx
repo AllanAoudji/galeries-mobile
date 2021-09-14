@@ -34,18 +34,11 @@ const Notification = () => {
     }, []);
 
     return (
-        <Container
-            style={{
-                bottom: 0,
-                position: 'absolute',
-                zIndex: 1,
-                width: '100%',
-            }}
-        >
+        <Container>
             {notification && !!notification.text && (
                 <InnerContainer
-                    status={notification.status}
                     onPress={handleOnPress}
+                    status={notification.status}
                 >
                     <Typography color="secondary-light" fontSize={18}>
                         {normalizeError(notification.text)}

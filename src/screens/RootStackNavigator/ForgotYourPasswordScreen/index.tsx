@@ -1,13 +1,13 @@
 import { AxiosError } from 'axios';
+import { useFormik } from 'formik';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
 
 import {
     CustomButton,
     CustomTextInput,
-    FormScreen,
-    TextInputsContainer,
+    FormContainer,
+    Logo,
     Typography,
 } from '#components';
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
@@ -21,9 +21,7 @@ type Props = {
     navigation: Screen.RootStack.ForgotYourPasswordNavigationProp;
 };
 
-const initialValues = {
-    email: '',
-};
+const initialValues = { email: '' };
 
 const ForgotYourPasswordScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
@@ -92,58 +90,59 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
         const serverHasError = !!serverErrors.email;
         return clientHasError || serverHasError;
     }, [formik.submitCount, formik.errors, serverErrors]);
+    const emailError = React.useMemo(
+        () => formik.errors.email || serverErrors.email,
+        [formik.errors.email, serverErrors.email]
+    );
 
-    const handleOnPressReturn = React.useCallback(() => {
+    const handleChangeEmailText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            email: '',
+        }));
+        formik.setFieldError('email', '');
+        formik.setFieldValue('email', e);
+    }, []);
+    const handlePressReturn = React.useCallback(() => {
         if (!loading) navigation.navigate('Login');
     }, []);
 
     return (
-        <FormScreen
-            handleOnPressReturn={handleOnPressReturn}
-            renderBottom={
-                <>
-                    <CustomButton
-                        disable={disableButton}
-                        loading={loading}
-                        mb="smallest"
-                        onPress={formik.handleSubmit}
-                        title="reset your password"
-                    />
-                    <CustomButton
-                        onPress={handleOnPressReturn}
-                        title="cancel"
-                        variant="stroke"
-                    />
-                </>
-            }
-            renderTop={
-                <TextInputsContainer>
-                    <TextContainer>
-                        <Typography color="primary-dark" fontSize={18}>
-                            Register your email to reset your password
-                        </Typography>
-                    </TextContainer>
-                    <CustomTextInput
-                        error={formik.errors.email || serverErrors.email}
-                        keyboardType="email-address"
-                        label="email"
-                        loading={loading}
-                        onBlur={formik.handleBlur('email')}
-                        onChangeText={(e: string) => {
-                            setServerErrors((prevState) => ({
-                                ...prevState,
-                                email: '',
-                            }));
-                            formik.setFieldError('email', '');
-                            formik.setFieldValue('email', e);
-                        }}
-                        touched={formik.touched.email || false}
-                        value={formik.values.email}
-                    />
-                </TextInputsContainer>
-            }
-            title="forgot your password"
-        />
+        <FormContainer justifyContent="center">
+            <Logo size="smallest" variant="text" />
+            <TextContainer>
+                <Typography
+                    color="primary-dark"
+                    fontFamily="light"
+                    fontSize={18}
+                >
+                    Register your email to reset your password.
+                </Typography>
+            </TextContainer>
+            <CustomTextInput
+                error={emailError}
+                keyboardType="email-address"
+                label="email"
+                loading={loading}
+                onBlur={formik.handleBlur('email')}
+                onChangeText={handleChangeEmailText}
+                touched={formik.touched.email || false}
+                value={formik.values.email}
+            />
+            <CustomButton
+                disable={disableButton}
+                loading={loading}
+                mb="smallest"
+                mt="smallest"
+                onPress={formik.handleSubmit}
+                title="reset your password"
+            />
+            <CustomButton
+                onPress={handlePressReturn}
+                title="cancel"
+                variant="stroke"
+            />
+        </FormContainer>
     );
 };
 

@@ -1,9 +1,18 @@
+import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 type OverlayProps = {
     height: number;
 };
 
+const Background = styled.Pressable`
+    background-color: rgba(0, 0, 0, 0.4);
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+`;
 const ButtonContainer = styled.View`
     width: 50%;
 `;
@@ -13,15 +22,14 @@ const ButtonsContainer = styled.View`
 `;
 const Modal = styled.View`
     background-color: ${({ theme }) => theme.colors['secondary-light']};
-    border-radius: 15px;
+    border-radius: 8px;
     justify-content: space-between;
-    min-height: 188px;
+    min-height: 178px;
     padding: ${({ theme }) => theme.spacings.small};
     width: 340px;
 `;
-const Overlay = styled.Pressable<OverlayProps>`
+const Overlay = styled(Animated.View)<OverlayProps>`
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.4);
     bottom: 0;
     height: ${({ height }) => `${height}px`};
     justify-content: center;
@@ -31,4 +39,4 @@ const Overlay = styled.Pressable<OverlayProps>`
     top: 0;
 `;
 
-export { ButtonContainer, ButtonsContainer, Modal, Overlay };
+export { Background, ButtonContainer, ButtonsContainer, Modal, Overlay };

@@ -1,15 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AxiosError } from 'axios';
+import { useFormik } from 'formik';
+import moment from 'moment';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
 
-import moment from 'moment';
 import {
     CustomButton,
     CustomTextInput,
-    FormScreen,
-    TextInputsContainer,
+    FormContainer,
+    Logo,
     Typography,
 } from '#components';
 import { ASYNC_STORAGE, END_POINT, ERROR_MESSAGE } from '#helpers/constants';
@@ -17,12 +17,9 @@ import request from '#helpers/request';
 import { loginSchema } from '#helpers/schemas';
 import { fetchMe, setNotification } from '#store/actions';
 
-import {
-    CustomLink,
-    ForgotYourPasswordLink,
-    ForgotYourPasswordLinkContainer,
-    TextContainer,
-} from './styles';
+import FooterNavigation from '../FooterNavigation';
+
+import { ForgotYourPasswordContainer } from './styles';
 
 const initialValues = {
     password: '',
@@ -50,7 +47,8 @@ const LoginScreen = ({ navigation }: Props) => {
                         !res.data.data &&
                         !res.data.data.expiresIn &&
                         typeof res.data.data.expiresIn !== 'number' &&
-                        !res.data.data.token
+                        !res.data.data.token &&
+                        typeof res.data.data.token !== 'string'
                     ) {
                         dispatch(
                             setNotification({
@@ -163,95 +161,79 @@ const LoginScreen = ({ navigation }: Props) => {
             !!serverErrors.password || !!serverErrors.userNameOrEmail;
         return clientHasError || serverHasError;
     }, [formik.submitCount, formik.errors, serverErrors]);
+    const passwordError = React.useMemo(
+        () => formik.errors.password || serverErrors.password,
+        [formik.errors.password, serverErrors.password]
+    );
+    const userNameOrEmailError = React.useMemo(
+        () => formik.errors.userNameOrEmail || serverErrors.userNameOrEmail,
+        [formik.errors.userNameOrEmail, serverErrors.userNameOrEmail]
+    );
 
-    const handleOnPressForgotYourPassword = React.useCallback(() => {
+    const handleChangePasswordText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            password: '',
+        }));
+        formik.setFieldError('password', '');
+        formik.setFieldValue('password', e);
+    }, []);
+    const handleChangeUserNameOrEmailText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            userNameOrEmail: '',
+        }));
+        formik.setFieldError('userNameOrEmail', '');
+        formik.setFieldValue('userNameOrEmail', e);
+    }, []);
+    const handlePressForgotYourPassword = React.useCallback(() => {
         if (!loading) navigation.navigate('ForgotYourPassword');
     }, [loading, navigation]);
-    const handleOnPressReturn = React.useCallback(() => {
-        if (!loading) navigation.navigate('Landing');
-    }, [loading, navigation]);
-    const handleOnPressSignin = React.useCallback(() => {
+    const handlePressSignin = React.useCallback(() => {
         if (!loading) navigation.navigate('Signin');
     }, [loading, navigation]);
 
     return (
-        <FormScreen
-            handleOnPressReturn={handleOnPressReturn}
-            renderBottom={
-                <CustomButton
-                    disable={disableButton}
-                    loading={loading}
-                    onPress={formik.handleSubmit}
-                    title="login"
-                />
-            }
-            renderFooter={
-                <CustomLink onPress={handleOnPressSignin}>
-                    <TextContainer>
-                        <Typography
-                            color="primary-dark"
-                            fontFamily="light"
-                            fontSize={12}
-                        >
-                            You don't have an account yet?
-                        </Typography>
-                        <Typography color="primary-dark" fontSize={12}>
-                            Click here.
-                        </Typography>
-                    </TextContainer>
-                </CustomLink>
-            }
-            renderTop={
-                <TextInputsContainer>
-                    <CustomTextInput
-                        error={
-                            formik.errors.userNameOrEmail ||
-                            serverErrors.userNameOrEmail
-                        }
-                        label="email or user name"
-                        loading={loading}
-                        onBlur={formik.handleBlur('userNameOrEmail')}
-                        onChangeText={(e: string) => {
-                            setServerErrors((prevState) => ({
-                                ...prevState,
-                                userNameOrEmail: '',
-                            }));
-                            formik.setFieldError('userNameOrEmail', '');
-                            formik.setFieldValue('userNameOrEmail', e);
-                        }}
-                        touched={formik.touched.userNameOrEmail || false}
-                        value={formik.values.userNameOrEmail}
-                    />
-                    <CustomTextInput
-                        error={formik.errors.password || serverErrors.password}
-                        label="password"
-                        loading={loading}
-                        onBlur={formik.handleBlur('password')}
-                        onChangeText={(e: string) => {
-                            setServerErrors((prevState) => ({
-                                ...prevState,
-                                password: '',
-                            }));
-                            formik.setFieldError('password', '');
-                            formik.setFieldValue('password', e);
-                        }}
-                        secureTextEntry
-                        touched={formik.touched.password || false}
-                        value={formik.values.password}
-                    />
-                    <ForgotYourPasswordLinkContainer>
-                        <ForgotYourPasswordLink
-                            onPress={handleOnPressForgotYourPassword}
-                        >
-                            <Typography color="primary-dark" fontFamily="bold">
-                                Forgot your password?
-                            </Typography>
-                        </ForgotYourPasswordLink>
-                    </ForgotYourPasswordLinkContainer>
-                </TextInputsContainer>
-            }
-            title="login"
-        />
+        <FormContainer justifyContent="center">
+            <Logo mb="small" size="smallest" variant="text" />
+            <CustomTextInput
+                error={userNameOrEmailError}
+                label="email or user name"
+                loading={loading}
+                onBlur={formik.handleBlur('userNameOrEmail')}
+                onChangeText={handleChangeUserNameOrEmailText}
+                touched={formik.touched.userNameOrEmail || false}
+                value={formik.values.userNameOrEmail}
+            />
+            <CustomTextInput
+                error={passwordError}
+                label="password"
+                loading={loading}
+                onBlur={formik.handleBlur('password')}
+                onChangeText={handleChangePasswordText}
+                secureTextEntry
+                touched={formik.touched.password || false}
+                value={formik.values.password}
+            />
+            <CustomButton
+                disable={disableButton}
+                loading={loading}
+                mt="smallest"
+                onPress={formik.handleSubmit}
+                title="log-in"
+            />
+            <ForgotYourPasswordContainer
+                onPress={handlePressForgotYourPassword}
+            >
+                <Typography color="primary-dark">
+                    Forgot your password?
+                </Typography>
+            </ForgotYourPasswordContainer>
+            <FooterNavigation
+                onPress={handlePressSignin}
+                title="You don't have an account yet?"
+            />
+        </FormContainer>
     );
 };
 

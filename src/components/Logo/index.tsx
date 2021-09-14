@@ -6,7 +6,18 @@ import LogotypeTextHorizontal from './LogotypeTextHorizontal';
 import LogotypeTextVertical from './LogotypeTextVertical';
 import Text from './Text';
 
+import { Container, ContainerPressable } from './styles';
+
 type Props = {
+    mb?: keyof Style.Spacings;
+    ml?: keyof Style.Spacings;
+    mr?: keyof Style.Spacings;
+    mt?: keyof Style.Spacings;
+    onPress?: () => void;
+    pb?: keyof Style.Spacings;
+    pl?: keyof Style.Spacings;
+    pr?: keyof Style.Spacings;
+    pt?: keyof Style.Spacings;
     size?: Style.Variant.Logo;
     variant:
         | 'logotype-fill'
@@ -24,10 +35,52 @@ const variants = {
     text: Text,
 };
 
-const Logo = ({ size = 'normal', variant }: Props) => {
+const Logo = ({
+    mb,
+    ml,
+    mr,
+    mt,
+    onPress,
+    pb,
+    pl,
+    pr,
+    pt,
+    size = 'normal',
+    variant,
+}: Props) => {
     const LogoVariant = React.useMemo(() => variants[variant], [variant]);
 
-    return <LogoVariant size={size} />;
+    if (onPress)
+        return (
+            <ContainerPressable
+                mb={mb}
+                ml={ml}
+                mr={mr}
+                mt={mt}
+                pb={pb}
+                pl={pl}
+                pr={pr}
+                pt={pt}
+                onPress={onPress}
+            >
+                <LogoVariant size={size} />
+            </ContainerPressable>
+        );
+
+    return (
+        <Container
+            mb={mb}
+            ml={ml}
+            mr={mr}
+            mt={mt}
+            pb={pb}
+            pl={pl}
+            pr={pr}
+            pt={pt}
+        >
+            <LogoVariant size={size} />
+        </Container>
+    );
 };
 
 export default React.memo(Logo);

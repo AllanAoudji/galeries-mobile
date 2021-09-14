@@ -2,23 +2,22 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar, ViewProps } from 'react-native';
 
-import Logo from '#components/Logo';
 import Pictogram from '#components/Pictogram';
+import Typography from '#components/Typography';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
-import {
-    Container,
-    LogoContainer,
-    LogoInnerContainer,
-    PictogramContainer,
-} from './styles';
+import { Container } from './styles';
 
-interface Props {
+type Props = {
     onPress?: () => void;
+    onPressBack?: () => void;
+    title?: string;
     variant?: 'primary' | 'secondary';
-}
+};
 
 const DefaultHeader = ({
-    onPress,
+    onPressBack,
+    title,
     variant = 'primary',
     ...rest
 }: Props & ViewProps) => {
@@ -28,31 +27,32 @@ const DefaultHeader = ({
         () => variant === 'secondary' && navigation.canGoBack(),
         [navigation, variant]
     );
-
-    const handlePressLogo = React.useCallback(() => {
-        if (onPress) onPress();
-    }, [onPress]);
+    const topLeftPictogramVariant = React.useMemo(
+        () => (isArrow ? 'arrow-left' : 'hamburger-menu'),
+        [isArrow]
+    );
     const handlePressPictogram = React.useCallback(() => {
-        if (isArrow) navigation.goBack();
-        else navigation.dispatch(DrawerActions.openDrawer());
+        if (isArrow) {
+            if (onPressBack) onPressBack();
+            else navigation.goBack();
+        } else navigation.dispatch(DrawerActions.openDrawer());
     }, [isArrow, navigation]);
 
     return (
-        <Container {...rest}>
-            <PictogramContainer
-                currentHeight={StatusBar.currentHeight}
+        <Container paddingTop={StatusBar.currentHeight} {...rest}>
+            <Pictogram
+                color="primary"
+                height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
                 onPress={handlePressPictogram}
-            >
-                <Pictogram
-                    color="primary"
-                    variant={isArrow ? 'arrow-left' : 'hamburger-menu'}
-                />
-            </PictogramContainer>
-            <LogoContainer currentHeight={StatusBar.currentHeight}>
-                <LogoInnerContainer onPress={handlePressLogo}>
-                    <Logo size="small" variant="logotype-stroke" />
-                </LogoInnerContainer>
-            </LogoContainer>
+                pl="small"
+                pr="small"
+                variant={topLeftPictogramVariant}
+            />
+            {!!title && (
+                <Typography color="primary" fontFamily="light" fontSize={24}>
+                    {title.toLowerCase()}
+                </Typography>
+            )}
         </Container>
     );
 };

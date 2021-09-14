@@ -8,9 +8,9 @@ import {
     AnimatedFlatList,
     BottomLoader,
     DefaultHeader,
+    FullScreenLoader,
     GalerieModal,
     SearchBar,
-    Typography,
 } from '#components';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
@@ -36,7 +36,6 @@ const GaleriesScreen = () => {
     const galeriesEnd = useSelector(galeriesEndSelector);
     const galeriesStatus = useSelector(galeriesStatusSelector);
 
-    const [fetchFinished, setFetchFinished] = React.useState<boolean>(true);
     const [firstFetchFinished, setFirstFetchFinished] =
         React.useState<boolean>(false);
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
@@ -58,7 +57,6 @@ const GaleriesScreen = () => {
     }, []);
     const handleReachEnd = React.useCallback(() => {
         if (!galeriesEnd && galeriesStatus !== 'FETCHING') {
-            setFetchFinished(false);
             dispatch(fetchGaleries({ name: filtersGaleriesName }));
         }
     }, [filtersGaleriesName, galeriesEnd, galeriesStatus]);
@@ -86,25 +84,17 @@ const GaleriesScreen = () => {
         if (
             (galeriesStatus === 'SUCCESS' || galeriesStatus === 'ERROR') &&
             focus &&
-            searchFinished
-        ) {
-            if (!firstFetchFinished) setFirstFetchFinished(true);
-            if (!fetchFinished) setFetchFinished(true);
-        }
-    }, [
-        fetchFinished,
-        firstFetchFinished,
-        focus,
-        galeriesStatus,
-        searchFinished,
-    ]);
+            searchFinished &&
+            !firstFetchFinished
+        )
+            setFirstFetchFinished(true);
+    }, [firstFetchFinished, focus, galeriesStatus, searchFinished]);
 
     return (
         <Container>
             <Header onLayout={onLayout} style={containerStyle}>
-                <DefaultHeader style={headerStyle} />
+                <DefaultHeader style={headerStyle} title="galeries" />
                 <SearchBarContainer>
-                    <Typography fontSize={24}>Galeries</Typography>
                     <SearchBar
                         mt="smallest"
                         onChangeText={handleChangeText}
@@ -117,7 +107,10 @@ const GaleriesScreen = () => {
             </Header>
             {firstFetchFinished && (
                 <AnimatedFlatList
-                    contentContainerStyle={{ paddingTop }}
+                    contentContainerStyle={{
+                        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+                        paddingTop,
+                    }}
                     data={galeries}
                     getItemLayout={getItemLayout}
                     keyExtractor={keyExtractor}
@@ -133,7 +126,14 @@ const GaleriesScreen = () => {
                     showsVerticalScrollIndicator={false}
                 />
             )}
-            <BottomLoader show={!fetchFinished} />
+            <FullScreenLoader show={!firstFetchFinished} />
+            <BottomLoader
+                show={
+                    firstFetchFinished &&
+                    galeriesStatus === 'FETCHING' &&
+                    !galeriesEnd
+                }
+            />
         </Container>
     );
 };

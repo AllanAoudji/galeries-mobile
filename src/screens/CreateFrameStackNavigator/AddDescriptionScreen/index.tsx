@@ -3,12 +3,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AxiosError } from 'axios';
-import {
-    CustomButton,
-    CustomTextInput,
-    FormScreen,
-    TextInputsContainer,
-} from '#components';
+import { CustomButton, CustomTextInput, FormContainer } from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
 import {
     END_POINT,
@@ -27,6 +22,8 @@ import { currentGalerieSelector } from '#store/selectors';
 import normalizeFrame from '#helpers/normalizeFrame';
 import normalizeData from '#helpers/normalizeData';
 
+import { ButtonsContainer, Container } from './styles';
+
 type Props = {
     navigation: Screen.CreateFrameStack.AddDescriptionNavigationProp;
 };
@@ -39,6 +36,7 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
     const currentGalerie = useSelector(currentGalerieSelector);
     const dispatch = useDispatch();
     const { picturesUri } = React.useContext(CreateFrameContext);
+
     const formik = useFormik({
         onSubmit: ({ description }) => {
             // Check if loading
@@ -167,6 +165,11 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
         description: '',
     });
 
+    const descriptionError = React.useMemo(
+        () => formik.errors.description || serverErrors.description,
+        [formik.errors.description, serverErrors.description]
+    );
+
     const handleReturn = React.useCallback(() => {
         if (!loading) navigation.navigate('AddPictures');
     }, [navigation]);
@@ -179,55 +182,44 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
     }, [formik.submitCount, formik.errors, serverErrors]);
 
     return (
-        <FormScreen
-            handleOnPressReturn={handleReturn}
-            renderBottom={
-                <>
-                    <CustomButton
-                        disable={disableButton}
-                        loading={loading}
-                        mb="smallest"
-                        onPress={formik.handleSubmit}
-                        title="post frame"
-                    />
-                    <CustomButton
-                        disable={loading}
-                        onPress={handleReturn}
-                        title="return"
-                        variant="stroke"
-                    />
-                </>
-            }
-            renderTop={
-                <TextInputsContainer>
-                    <CustomTextInput
-                        error={
-                            formik.errors.description ||
-                            serverErrors.description
-                        }
-                        label="description"
-                        loading={loading}
-                        maxLength={
-                            FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH
-                        }
-                        multiline
-                        onBlur={formik.handleBlur('description')}
-                        onChangeText={(e: string) => {
-                            setServerErrors((prevState) => ({
-                                ...prevState,
-                                description: '',
-                            }));
-                            formik.setFieldError('description', '');
-                            formik.setFieldValue('description', e);
-                        }}
-                        optional
-                        touched={formik.touched.description || false}
-                        value={formik.values.description}
-                    />
-                </TextInputsContainer>
-            }
-            title="add a description (optinal)"
-        />
+        <FormContainer>
+            <Container>
+                <CustomTextInput
+                    error={descriptionError}
+                    label="description"
+                    loading={loading}
+                    maxLength={FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH}
+                    multiline
+                    onBlur={formik.handleBlur('description')}
+                    onChangeText={(e: string) => {
+                        setServerErrors((prevState) => ({
+                            ...prevState,
+                            description: '',
+                        }));
+                        formik.setFieldError('description', '');
+                        formik.setFieldValue('description', e);
+                    }}
+                    optional
+                    touched={formik.touched.description || false}
+                    value={formik.values.description}
+                />
+            </Container>
+            <ButtonsContainer>
+                <CustomButton
+                    disable={disableButton}
+                    loading={loading}
+                    mb="smallest"
+                    onPress={formik.handleSubmit}
+                    title="post frame"
+                />
+                <CustomButton
+                    disable={loading}
+                    onPress={handleReturn}
+                    title="return"
+                    variant="stroke"
+                />
+            </ButtonsContainer>
+        </FormContainer>
     );
 };
 

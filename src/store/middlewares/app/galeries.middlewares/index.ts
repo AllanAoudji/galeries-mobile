@@ -131,7 +131,10 @@ const successGaleries: Middleware =
                                     ...normalize,
                                     status: 'SUCCESS',
                                 },
-                                meta: { ...action.payload.meta },
+                                meta: {
+                                    ...action.payload.meta,
+                                    end: normalize.allIds.length < 20,
+                                },
                             },
                             type: `${GALERIES} Set`,
                         });

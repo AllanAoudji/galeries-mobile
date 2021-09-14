@@ -1,6 +1,9 @@
 import { Camera } from 'expo-camera';
 import styled from 'styled-components/native';
 
+type BackButtonContainerProps = {
+    currentHeight?: number;
+};
 type CameraStyledProps = {
     margins: number;
 };
@@ -17,10 +20,11 @@ const ActionsContainer = styled.View`
     height: ${() => `${ACTION_CONTAINER_SIZE}px`};
     width: ${() => `${ACTION_CONTAINER_SIZE}px`};
 `;
-const BackButtonContainer = styled.Pressable`
+const BackButtonContainer = styled.Pressable<BackButtonContainerProps>`
     left: 0;
-    padding: ${({ theme }) => theme.spacings.small};
     position: absolute;
+    padding-top: ${({ currentHeight }) =>
+        currentHeight ? `${currentHeight}px` : 0};
     top: 0;
 `;
 const BottomContainer = styled.View`

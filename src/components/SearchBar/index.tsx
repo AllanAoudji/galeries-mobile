@@ -30,6 +30,7 @@ const SearchBar = ({
     value,
 }: Props) => {
     const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
     const handleChangeText = React.useCallback(
         (e) => {
             if (timer.current) clearTimeout(timer.current);

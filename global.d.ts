@@ -314,6 +314,7 @@ declare global {
             roman: string;
         };
         type FontSizes = {
+            11: string;
             12: string;
             14: string;
             18: string;
@@ -322,6 +323,7 @@ declare global {
             48: string;
             64: string;
         };
+        type JustifyContent = 'center' | 'flex-end' | 'flex-start';
         type Pictograms =
             | 'add/subscribe-fill'
             | 'add/subscribe-stroke'

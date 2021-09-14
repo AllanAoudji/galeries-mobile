@@ -38,14 +38,27 @@ import TicketStroke from './TicketStroke';
 import Upload from './Upload';
 import Valid from './Valid';
 
+import { Container, ContainerPressable } from './styles';
+
 type Props = {
     color?: keyof Style.Colors;
     customSize?: {
         height: number;
         width: number;
     };
+    height?: number;
+    mb?: keyof Style.Spacings;
+    ml?: keyof Style.Spacings;
+    mr?: keyof Style.Spacings;
+    mt?: keyof Style.Spacings;
+    onPress?: () => void;
+    pb?: keyof Style.Spacings;
+    pl?: keyof Style.Spacings;
+    pr?: keyof Style.Spacings;
+    pt?: keyof Style.Spacings;
     size?: Style.Variant.Pictogram;
     variant: Style.Pictograms;
+    width?: number;
 };
 
 const variants = {
@@ -89,15 +102,66 @@ const variants = {
 };
 
 const Pictograms = ({
+    height,
     color = 'black',
     customSize,
+    mb,
+    ml,
+    mr,
+    mt,
+    onPress,
+    pb,
+    pl,
+    pr,
+    pt,
     size = 'normal',
     variant,
+    width,
 }: Props) => {
     const PictogramVariant = React.useMemo(() => variants[variant], [variant]);
 
+    if (onPress)
+        return (
+            <ContainerPressable
+                height={height}
+                mb={mb}
+                ml={ml}
+                mr={mr}
+                mt={mt}
+                pb={pb}
+                pl={pl}
+                pr={pr}
+                pt={pt}
+                onPress={onPress}
+                width={width}
+            >
+                <PictogramVariant
+                    color={color}
+                    size={size}
+                    customSize={customSize}
+                />
+            </ContainerPressable>
+        );
+
     return (
-        <PictogramVariant color={color} size={size} customSize={customSize} />
+        <Container
+            height={height}
+            mb={mb}
+            ml={ml}
+            mr={mr}
+            mt={mt}
+            pb={pb}
+            pl={pl}
+            pr={pr}
+            pt={pt}
+            width={width}
+        >
+            <PictogramVariant
+                color={color}
+                size={size}
+                customSize={customSize}
+            />
+        </Container>
     );
 };
 

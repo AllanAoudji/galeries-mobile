@@ -26,6 +26,7 @@ const theme: DefaultTheme = {
             roman: 'HelveticaLtStRoman',
         },
         sizes: {
+            11: '11px',
             12: '12px',
             14: '14px',
             18: '18px',

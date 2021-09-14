@@ -1,27 +1,39 @@
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import * as React from 'react';
+import { StatusBar } from 'react-native';
+import { useTheme } from 'styled-components/native';
 
 import {
     BottomSheetButton,
     CustomButton,
     DeleteModal,
-    FormScreen,
+    Pictogram,
     Typography,
 } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 import List from './List';
 import Tile from './Tile';
 
-import { BodyContainer, TextContainer } from './styles';
+import {
+    Body,
+    Container,
+    Header,
+    ReturnButtonContainer,
+    Separator,
+    TextContainer,
+} from './styles';
 
 type Props = {
     navigation: Screen.CreateFrameStack.AddPicturesNavigationProp;
 };
 
 const AddPicturesScreen = ({ navigation }: Props) => {
+    const theme = useTheme();
+
     const { fadeOutBottomSheet, openBottomSheet } =
         React.useContext(BottomSheetContext);
     const { picturesUri, removePictures } =
@@ -114,46 +126,58 @@ const AddPicturesScreen = ({ navigation }: Props) => {
     }, [handleCloseWithPictures, picturesUri, setOpenBackModal]);
 
     return (
-        <>
-            <FormScreen
-                handleOnPressReturn={handleReturn}
-                renderBottom={
-                    <>
-                        <CustomButton
-                            disable={disableNextButton}
-                            mb="smallest"
-                            onPress={handleNavigateDescription}
-                            title="next"
+        <Container colors={[theme.colors.tertiary, theme.colors.primary]}>
+            <ReturnButtonContainer currentHeight={StatusBar.currentHeight}>
+                <Pictogram
+                    color="secondary-light"
+                    height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
+                    pl="small"
+                    pr="small"
+                    onPress={handleReturn}
+                    variant="arrow-left"
+                />
+            </ReturnButtonContainer>
+            <Header>
+                <Typography
+                    color="secondary-light"
+                    fontFamily="light"
+                    fontSize={36}
+                    textAlign="right"
+                >
+                    CREATE A FRAME
+                </Typography>
+                <Separator />
+            </Header>
+            <Body>
+                <TextContainer>
+                    <Typography>
+                        You can long press on an image to delete it and
+                        drag'n'drop them to change the order
+                    </Typography>
+                </TextContainer>
+                <List handlePressOpenSheet={handleOpenSheet}>
+                    {picturesUri.map((pictureUri) => (
+                        <Tile
+                            id={pictureUri}
+                            onLongPress={handleOpenDeleteModal}
+                            uri={pictureUri}
+                            key={pictureUri}
                         />
-                        <CustomButton
-                            onPress={handleReturn}
-                            title="cancel"
-                            variant="stroke"
-                        />
-                    </>
-                }
-                renderTop={
-                    <BodyContainer>
-                        <TextContainer>
-                            <Typography>
-                                You can long press on an image to delete it and
-                                drag'n'drop them to change the order
-                            </Typography>
-                        </TextContainer>
-                        <List handlePressOpenSheet={handleOpenSheet}>
-                            {picturesUri.map((pictureUri) => (
-                                <Tile
-                                    id={pictureUri}
-                                    onLongPress={handleOpenDeleteModal}
-                                    uri={pictureUri}
-                                    key={pictureUri}
-                                />
-                            ))}
-                        </List>
-                    </BodyContainer>
-                }
-                title="post a new frame"
-            />
+                    ))}
+                </List>
+                <CustomButton
+                    disable={disableNextButton}
+                    mt="small"
+                    mb="smallest"
+                    onPress={handleNavigateDescription}
+                    title="next"
+                />
+                <CustomButton
+                    onPress={handleReturn}
+                    title="cancel"
+                    variant="stroke"
+                />
+            </Body>
             <DeleteModal
                 handleClose={handleCloseDeleteModal}
                 onPressDelete={handleDeletePicture}
@@ -166,7 +190,7 @@ const AddPicturesScreen = ({ navigation }: Props) => {
                 open={openBackModal}
                 title="Are you sure to delete this image?"
             />
-        </>
+        </Container>
     );
 };
 

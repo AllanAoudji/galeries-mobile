@@ -16,12 +16,13 @@ import {
 import { useSelector } from 'react-redux';
 
 import { Pictogram } from '#components';
-import { GalerieTabbarScreenHeader } from '#components/Screen';
 import clamp from '#helpers/clamp';
+import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize } from '#hooks';
 import { currentGalerieSelector } from '#store/selectors';
 
 import FramesScreen from './FramesScreen';
+import Header from './Header';
 import InvitationsScreen from './InvitationsScreen';
 import OptionsScreen from './OptionsScreen';
 import UsersScreen from './UsersScreen';
@@ -29,10 +30,7 @@ import {
     AbsoluteCoverPicture,
     AbsoluteTopContainer,
     Container,
-    PictogramContainer,
 } from './styles';
-
-const BACK_BUTTON_HEIGHT = 55;
 
 const routes = [
     {
@@ -76,7 +74,7 @@ const GalerieTabViewNavigator = () => {
         () =>
             (sizeInfo ? sizeInfo.height : 0) -
             (StatusBar.currentHeight || 0) -
-            BACK_BUTTON_HEIGHT,
+            GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT,
         [sizeInfo]
     );
 
@@ -169,7 +167,7 @@ const GalerieTabViewNavigator = () => {
                 navigationState: NavigationState<Route>;
             }
         ) => (
-            <GalerieTabbarScreenHeader
+            <Header
                 containerStyle={style}
                 description={galerie ? galerie.description : undefined}
                 informationStyle={informationStyle}
@@ -191,29 +189,27 @@ const GalerieTabViewNavigator = () => {
     );
 
     return (
-        <>
-            <Container>
-                <AbsoluteTopContainer
-                    height={BACK_BUTTON_HEIGHT + (StatusBar.currentHeight || 0)}
-                >
-                    {/* TODO: should be an animated view */}
-                    {/* Should contain coverpicture and change his opacity */}
-                    <AbsoluteCoverPicture />
-                    <PictogramContainer onPress={onPressBack}>
-                        <Pictogram
-                            variant="arrow-left"
-                            color="secondary-light"
-                        />
-                    </PictogramContainer>
-                </AbsoluteTopContainer>
-                <TabView
-                    navigationState={navigationState}
-                    onIndexChange={onIndexChange}
-                    renderScene={renderScene}
-                    renderTabBar={renderTabBar}
+        <Container>
+            <AbsoluteTopContainer currentHeight={StatusBar.currentHeight}>
+                {/* TODO: should be an animated view */}
+                {/* Should contain coverpicture and change his opacity */}
+                <AbsoluteCoverPicture />
+                <Pictogram
+                    color="secondary-light"
+                    height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
+                    onPress={onPressBack}
+                    pl="small"
+                    pr="small"
+                    variant="arrow-left"
                 />
-            </Container>
-        </>
+            </AbsoluteTopContainer>
+            <TabView
+                navigationState={navigationState}
+                onIndexChange={onIndexChange}
+                renderScene={renderScene}
+                renderTabBar={renderTabBar}
+            />
+        </Container>
     );
 };
 

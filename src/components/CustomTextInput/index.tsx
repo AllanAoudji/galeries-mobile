@@ -6,6 +6,7 @@ import {
     TextInputFocusEventData,
 } from 'react-native';
 import Animated, {
+    interpolate,
     useAnimatedStyle,
     useSharedValue,
     withTiming,
@@ -33,6 +34,7 @@ type Props = {
     multiline?: boolean;
     onBlur: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
     onChangeText: (text: string) => void;
+    onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
     optional?: boolean;
     secureTextEntry?: boolean;
     touched: boolean;
@@ -41,12 +43,12 @@ type Props = {
 
 const ANIMATION_TIMING = 100;
 
-const AFTER_ANIMATION_LABEL_FONT_SIZE = 12;
+const AFTER_ANIMATION_LABEL_FONT_SIZE = 10;
 
 const INITIAL_CONTAINER_OPACITY = 0.5;
 const INITIAL_LABEL_CONTAINER_OPACITY = 0.5;
 const INITIAL_LABEL_CONTAINER_TOP = 21;
-const INITIAL_LABEL_FONT_SIZE = 14;
+const INITIAL_LABEL_FONT_SIZE = 12;
 
 const CustomTextInput = ({
     editable = true,
@@ -56,6 +58,7 @@ const CustomTextInput = ({
     multiline = false,
     label,
     loading = false,
+    onFocus,
     onBlur,
     onChangeText,
     optional = false,
@@ -67,12 +70,8 @@ const CustomTextInput = ({
 
     const [hasFocus, setHasFocus] = React.useState<boolean>(false);
 
+    const animatedFocus = useSharedValue(0);
     const containerOpacity = useSharedValue(INITIAL_CONTAINER_OPACITY);
-    const labelContainerOpacity = useSharedValue(
-        INITIAL_LABEL_CONTAINER_OPACITY
-    );
-    const labelContainerTop = useSharedValue(INITIAL_LABEL_CONTAINER_TOP);
-    const labelFontSize = useSharedValue(INITIAL_LABEL_FONT_SIZE);
 
     const containerStyle = useAnimatedStyle(
         () => ({
@@ -80,19 +79,27 @@ const CustomTextInput = ({
         }),
         []
     );
-    const labelContainerStyle = useAnimatedStyle(
-        () => ({
-            opacity: labelContainerOpacity.value,
-            top: labelContainerTop.value,
-        }),
-        []
-    );
-    const labelStyle = useAnimatedStyle(
-        () => ({
-            fontSize: labelFontSize.value,
-        }),
-        []
-    );
+    const labelContainerStyle = useAnimatedStyle(() => {
+        const opacity = interpolate(
+            animatedFocus.value,
+            [0, 1],
+            [INITIAL_LABEL_CONTAINER_OPACITY, 1]
+        );
+        const top = interpolate(
+            animatedFocus.value,
+            [0, 1],
+            [INITIAL_LABEL_CONTAINER_TOP, 0]
+        );
+        return { opacity, top };
+    }, []);
+    const labelStyle = useAnimatedStyle(() => {
+        const fontSize = interpolate(
+            animatedFocus.value,
+            [0, 1],
+            [INITIAL_LABEL_FONT_SIZE, AFTER_ANIMATION_LABEL_FONT_SIZE]
+        );
+        return { fontSize };
+    }, []);
 
     const typographyColor: keyof Style.Colors = React.useMemo(() => {
         if (error && touched) return 'danger';
@@ -107,11 +114,12 @@ const CustomTextInput = ({
         },
         []
     );
-    const handleOnFocus = React.useCallback(() => setHasFocus(true), []);
+    const handleOnFocus = React.useCallback((e) => {
+        setHasFocus(true);
+        if (onFocus) onFocus(e);
+    }, []);
     const handleOnPress = React.useCallback(() => {
-        if (textInputRef.current) {
-            textInputRef.current.focus();
-        }
+        if (textInputRef.current) textInputRef.current.focus();
     }, []);
 
     // Container animation.
@@ -129,33 +137,16 @@ const CustomTextInput = ({
     }, [editable, hasFocus, loading]);
     // Label/LabelContainer animation
     React.useLayoutEffect(() => {
-        if (hasFocus || value) {
-            labelFontSize.value = withTiming(
-                AFTER_ANIMATION_LABEL_FONT_SIZE,
-                ANIMATIONS.TIMING_CONFIG(ANIMATION_TIMING)
-            );
-            labelContainerOpacity.value = withTiming(
+        if (hasFocus || value)
+            animatedFocus.value = withTiming(
                 1,
                 ANIMATIONS.TIMING_CONFIG(ANIMATION_TIMING)
             );
-            labelContainerTop.value = withTiming(
+        else
+            animatedFocus.value = withTiming(
                 0,
                 ANIMATIONS.TIMING_CONFIG(ANIMATION_TIMING)
             );
-        } else {
-            labelFontSize.value = withTiming(
-                INITIAL_LABEL_FONT_SIZE,
-                ANIMATIONS.TIMING_CONFIG(ANIMATION_TIMING)
-            );
-            labelContainerOpacity.value = withTiming(
-                INITIAL_LABEL_CONTAINER_OPACITY,
-                ANIMATIONS.TIMING_CONFIG(ANIMATION_TIMING)
-            );
-            labelContainerTop.value = withTiming(
-                INITIAL_LABEL_CONTAINER_TOP,
-                ANIMATIONS.TIMING_CONFIG(ANIMATION_TIMING)
-            );
-        }
     }, [hasFocus, value]);
 
     return (
@@ -190,10 +181,12 @@ const CustomTextInput = ({
                     secureTextEntry={secureTextEntry}
                     selectionColor={!!error && touched ? '#fb6d51' : '#414cb4'}
                     value={value}
-                    style={{ textAlignVertical: multiline ? 'top' : 'center' }}
+                    style={{
+                        textAlignVertical: multiline ? 'top' : 'center',
+                    }}
                 />
                 <ErrorContainer>
-                    <Typography color="danger" fontFamily="bold" fontSize={12}>
+                    <Typography color="danger" fontFamily="bold" fontSize={11}>
                         {error && touched ? normalizeError(error) : null}
                     </Typography>
                 </ErrorContainer>

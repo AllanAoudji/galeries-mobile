@@ -8,14 +8,13 @@ import request from '#helpers/request';
 import {
     CustomButton,
     CustomTextInput,
-    FormScreen,
-    TextInputsContainer,
-    Typography,
+    FormContainer,
+    Logo,
 } from '#components';
 import { signinSchema } from '#helpers/schemas';
 import { setNotification } from '#store/actions';
 
-import { CustomLink, TextContainer } from './styles';
+import FooterNavigation from '../FooterNavigation';
 
 const initialValues = {
     betaKey: '',
@@ -110,6 +109,14 @@ const SigninScreen = ({ navigation }: Props) => {
         userName: '',
     });
 
+    const betaKeyError = React.useMemo(
+        () => formik.errors.betaKey || serverErrors.betaKey,
+        [formik.errors.betaKey, serverErrors.betaKey]
+    );
+    const confirmPasswordError = React.useMemo(
+        () => formik.errors.confirmPassword || serverErrors.confirmPassword,
+        [formik.errors.confirmPassword, serverErrors.confirmPassword]
+    );
     const disableButton = React.useMemo(() => {
         const clientHasError =
             formik.submitCount > 0 &&
@@ -126,108 +133,121 @@ const SigninScreen = ({ navigation }: Props) => {
             !!serverErrors.userName;
         return clientHasError || serverHasError;
     }, [formik.submitCount, formik.errors, serverErrors]);
+    const emailError = React.useMemo(
+        () => formik.errors.email || serverErrors.email,
+        [formik.errors.email, serverErrors.email]
+    );
+    const passwordError = React.useMemo(
+        () => formik.errors.password || serverErrors.password,
+        [formik.errors.password, serverErrors.password]
+    );
+    const userNameError = React.useMemo(
+        () => formik.errors.userName || serverErrors.userName,
+        [formik.errors.userName, serverErrors.userName]
+    );
 
-    const handleOnPressLogin = React.useCallback(() => {
+    const handleChangeBetaKeyText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            betaKey: '',
+        }));
+        formik.setFieldError('betaKey', '');
+        formik.setFieldValue('betaKey', e);
+    }, []);
+    const handleChangeConfirmPasswordText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            confirmPassword: '',
+        }));
+        formik.setFieldError('confirmPassword', '');
+        formik.setFieldValue('confirmPassword', e);
+    }, []);
+    const handleChangeEmailText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            email: '',
+        }));
+        formik.setFieldError('email', '');
+        formik.setFieldValue('email', e);
+    }, []);
+    const handleChangePasswordText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            password: '',
+        }));
+        formik.setFieldError('password', '');
+        formik.setFieldValue('password', e);
+    }, []);
+    const handeChangeUserNameText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            userName: '',
+        }));
+        formik.setFieldError('userName', '');
+        formik.setFieldValue('userName', e);
+    }, []);
+    const handlePressLogin = React.useCallback(() => {
         if (!loading) navigation.navigate('Login');
-    }, [loading, navigation]);
-    const handleOnPressReturn = React.useCallback(() => {
-        if (!loading) navigation.navigate('Landing');
     }, [loading, navigation]);
 
     return (
-        <FormScreen
-            handleOnPressReturn={handleOnPressReturn}
-            renderBottom={
-                <CustomButton
-                    disable={disableButton}
-                    loading={loading}
-                    onPress={formik.handleSubmit}
-                    title="signin"
-                />
-            }
-            renderFooter={
-                <CustomLink onPress={handleOnPressLogin}>
-                    <TextContainer>
-                        <Typography
-                            color="primary-dark"
-                            fontFamily="light"
-                            fontSize={12}
-                        >
-                            You already have an account?
-                        </Typography>
-                        <Typography color="primary-dark" fontSize={12}>
-                            Click here.
-                        </Typography>
-                    </TextContainer>
-                </CustomLink>
-            }
-            renderTop={
-                <TextInputsContainer>
-                    <CustomTextInput
-                        error={formik.errors.userName || serverErrors.userName}
-                        label="user name"
-                        onBlur={formik.handleBlur('userName')}
-                        onChangeText={(e: string) => {
-                            formik.setFieldError('userName', '');
-                            formik.setFieldValue('userName', e);
-                        }}
-                        touched={formik.touched.userName || false}
-                        value={formik.values.userName}
-                    />
-                    <CustomTextInput
-                        error={formik.errors.email || serverErrors.email}
-                        keyboardType="email-address"
-                        label="email"
-                        onBlur={formik.handleBlur('email')}
-                        onChangeText={(e: string) => {
-                            formik.setFieldError('email', '');
-                            formik.setFieldValue('email', e);
-                        }}
-                        touched={formik.touched.email || false}
-                        value={formik.values.email}
-                    />
-                    <CustomTextInput
-                        error={formik.errors.password || serverErrors.password}
-                        label="password"
-                        onBlur={formik.handleBlur('password')}
-                        onChangeText={(e: string) => {
-                            formik.setFieldError('password', '');
-                            formik.setFieldValue('password', e);
-                        }}
-                        touched={formik.touched.password || false}
-                        secureTextEntry
-                        value={formik.values.password}
-                    />
-                    <CustomTextInput
-                        error={
-                            formik.errors.confirmPassword ||
-                            serverErrors.confirmPassword
-                        }
-                        label="confirm password"
-                        onBlur={formik.handleBlur('confirmPassword')}
-                        onChangeText={(e: string) => {
-                            formik.setFieldError('confirmPassword', '');
-                            formik.setFieldValue('confirmPassword', e);
-                        }}
-                        touched={formik.touched.confirmPassword || false}
-                        secureTextEntry
-                        value={formik.values.confirmPassword}
-                    />
-                    <CustomTextInput
-                        error={formik.errors.betaKey || serverErrors.betaKey}
-                        label="beta key"
-                        onBlur={formik.handleBlur('betaKey')}
-                        onChangeText={(e: string) => {
-                            formik.setFieldError('betaKey', '');
-                            formik.setFieldValue('betaKey', e);
-                        }}
-                        touched={formik.touched.betaKey || false}
-                        value={formik.values.betaKey}
-                    />
-                </TextInputsContainer>
-            }
-            title="signin"
-        />
+        <FormContainer justifyContent="center">
+            <Logo mb="small" size="smallest" variant="text" />
+            <CustomTextInput
+                error={userNameError}
+                label="user name"
+                onBlur={formik.handleBlur('userName')}
+                onChangeText={handeChangeUserNameText}
+                touched={formik.touched.userName || false}
+                value={formik.values.userName}
+            />
+            <CustomTextInput
+                error={emailError}
+                keyboardType="email-address"
+                label="email"
+                onBlur={formik.handleBlur('email')}
+                onChangeText={handleChangeEmailText}
+                touched={formik.touched.email || false}
+                value={formik.values.email}
+            />
+            <CustomTextInput
+                error={passwordError}
+                label="password"
+                onBlur={formik.handleBlur('password')}
+                onChangeText={handleChangePasswordText}
+                touched={formik.touched.password || false}
+                secureTextEntry
+                value={formik.values.password}
+            />
+            <CustomTextInput
+                error={confirmPasswordError}
+                label="confirm password"
+                onBlur={formik.handleBlur('confirmPassword')}
+                onChangeText={handleChangeConfirmPasswordText}
+                touched={formik.touched.confirmPassword || false}
+                secureTextEntry
+                value={formik.values.confirmPassword}
+            />
+            <CustomTextInput
+                error={betaKeyError}
+                label="beta key"
+                onBlur={formik.handleBlur('betaKey')}
+                onChangeText={handleChangeBetaKeyText}
+                touched={formik.touched.betaKey || false}
+                value={formik.values.betaKey}
+            />
+            <CustomButton
+                disable={disableButton}
+                loading={loading}
+                mt="smallest"
+                onPress={formik.handleSubmit}
+                title="sign-in"
+            />
+            <FooterNavigation
+                onPress={handlePressLogin}
+                title="You already have an account?"
+            />
+        </FormContainer>
     );
 };
 
