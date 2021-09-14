@@ -14,6 +14,7 @@ import {
 type Props = {
     createdAt: string;
     description: string;
+    handlePressLike: () => void;
     liked: boolean;
     numOfComments: string;
     numOfLikes: string;
@@ -22,6 +23,7 @@ type Props = {
 const Footer = ({
     createdAt,
     description,
+    handlePressLike,
     liked,
     numOfComments,
     numOfLikes,
@@ -58,6 +60,7 @@ const Footer = ({
                     <Pictogram
                         color="danger"
                         ml="smallest"
+                        onPress={handlePressLike}
                         variant={liked ? 'heart-fill' : 'heart-stroke'}
                     />
                 </ButtonContainer>

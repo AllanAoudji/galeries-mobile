@@ -59,6 +59,7 @@ export const END_POINT = {
     GALERIE_USERS: (id: string) => `/galeries/${id}/users/`,
     GALERIES: '/galeries/',
     GET_ME: '/users/me/',
+    LIKES: (id: string) => `/frames/${id}/likes/`,
     LOGIN: '/users/login/',
     LOGOUT: '/users/logout/',
     REFRESH_TOKEN: '/users/refreshToken/',
