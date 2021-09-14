@@ -7,6 +7,6 @@ export default createSelector(
         if (!currentGalerieId) return undefined;
         return byId[currentGalerieId]
             ? byId[currentGalerieId].frames.status
-            : 'PENDING';
+            : undefined;
     }
 );

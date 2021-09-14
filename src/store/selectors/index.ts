@@ -1,3 +1,7 @@
+export { default as currentFrameSelector } from './currentFrame.selector';
+export { default as currentFrameLikesSelector } from './currentFrameLikes.selector';
+export { default as currentFrameLikesStatusSelector } from './currentFrameLikesStatus.selector';
+
 export { default as filtersGaleriesNameSelector } from './filtersGaleriesName.selector';
 
 export { default as currentGalerieSelector } from './currentGalerie.selector';

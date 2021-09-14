@@ -114,13 +114,13 @@ const GalerieTabViewNavigator = () => {
                     return (
                         <FramesScreen
                             galerie={galerie}
+                            handleNavigateToCreateGalerieScreen={
+                                handleNavigateToCreateGalerieScreen
+                            }
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }
                             scrollHandler={scrollHandler}
-                            handleNavigateToCreateGalerieScreen={
-                                handleNavigateToCreateGalerieScreen
-                            }
                         />
                     );
                 case 'invitations':

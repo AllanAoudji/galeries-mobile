@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +12,7 @@ import {
 } from '#components';
 import { GalerieTabbarScreenContainer } from '#components/Screen';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { fetchFrames } from '#store/actions';
+import { fetchFrames, setCurrentFrameId } from '#store/actions';
 import {
     currentGalerieFramesSelector,
     currentGalerieFramesStatusSelector,
@@ -35,8 +36,18 @@ const FramesScreen = ({
     const dispatch = useDispatch();
     const frames = useSelector(currentGalerieFramesSelector);
     const status = useSelector(currentGalerieFramesStatusSelector);
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
 
     const [isFirstFetch, setIsFirstFetch] = React.useState<boolean>(true);
+
+    const onPressLikes = React.useCallback(
+        (id: string) => {
+            dispatch(setCurrentFrameId(id));
+            navigation.navigate('Likes');
+        },
+        [navigation]
+    );
 
     React.useEffect(() => {
         if (galerie && status === 'PENDING') {
@@ -62,7 +73,10 @@ const FramesScreen = ({
                                 keyExtractor={(data) => data.id}
                                 onScroll={scrollHandler}
                                 renderItem={({ item }) => (
-                                    <FrameCard frame={item} />
+                                    <FrameCard
+                                        frame={item}
+                                        onPressLikes={onPressLikes}
+                                    />
                                 )}
                                 scrollEventThrottle={4}
                                 showsVerticalScrollIndicator={false}

@@ -19,9 +19,10 @@ type Frame = Store.Models.Frame & {
 };
 type Props = {
     frame: Frame;
+    onPressLikes: (id: string) => void;
 };
 
-const FrameCard = ({ frame }: Props) => {
+const FrameCard = ({ frame, onPressLikes }: Props) => {
     const dispatch = useDispatch();
 
     const handlePressLike = React.useCallback(() => {
@@ -49,6 +50,7 @@ const FrameCard = ({ frame }: Props) => {
                                             frame.galeriePicturesId,
                                         id: frame.id,
                                         liked: res.data.data.liked,
+                                        likes: frame.likes,
                                         numOfComments: frame.numOfComments,
                                         numOfLikes: res.data.data.numOfLikes,
                                         updatedAt: frame.updatedAt,
@@ -99,6 +101,10 @@ const FrameCard = ({ frame }: Props) => {
             });
     }, [frame]);
 
+    const handlePressLikes = React.useCallback(() => {
+        if (+frame.numOfLikes > 0) onPressLikes(frame.id);
+    }, [frame, onPressLikes]);
+
     return (
         <Container>
             <Header user={frame.user} />
@@ -107,6 +113,7 @@ const FrameCard = ({ frame }: Props) => {
                 createdAt={frame.createdAt}
                 description={frame.description}
                 handlePressLike={handlePressLike}
+                handlePressLikes={handlePressLikes}
                 liked={frame.liked}
                 numOfComments={frame.numOfComments}
                 numOfLikes={frame.numOfLikes}
