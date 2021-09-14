@@ -15,7 +15,7 @@ type Props = {
     frame: Frame;
 };
 
-const FrameModal = ({ frame }: Props) => {
+const FrameCard = ({ frame }: Props) => {
     return (
         <Container>
             <Header user={frame.user} />
@@ -31,4 +31,4 @@ const FrameModal = ({ frame }: Props) => {
     );
 };
 
-export default FrameModal;
+export default FrameCard;

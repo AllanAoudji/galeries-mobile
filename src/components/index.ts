@@ -9,7 +9,7 @@ export { default as CustomTextInput } from './CustomTextInput';
 export { default as DefaultHeader } from './DefaultHeader';
 export { default as DeleteModal } from './DeleteModal';
 export { default as FormContainer } from './FormContainer';
-export { default as FrameModal } from './FrameModal';
+export { default as FrameCard } from './FrameCard';
 export { default as FullScreenLoader } from './FullScreenLoader';
 export { default as GalerieModal } from './GalerieModal';
 export { default as Logo } from './Logo';

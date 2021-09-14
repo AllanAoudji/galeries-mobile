@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     AddButton,
     AnimatedFlatList,
-    FrameModal,
+    FrameCard,
     FullScreenLoader,
     Typography,
 } from '#components';
@@ -62,7 +62,7 @@ const FramesScreen = ({
                                 keyExtractor={(data) => data.id}
                                 onScroll={scrollHandler}
                                 renderItem={({ item }) => (
-                                    <FrameModal frame={item} />
+                                    <FrameCard frame={item} />
                                 )}
                                 scrollEventThrottle={4}
                                 showsVerticalScrollIndicator={false}
