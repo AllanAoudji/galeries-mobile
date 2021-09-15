@@ -41,6 +41,13 @@ const FramesScreen = ({
 
     const [isFirstFetch, setIsFirstFetch] = React.useState<boolean>(true);
 
+    const onPressComments = React.useCallback(
+        (id: string) => {
+            dispatch(setCurrentFrameId(id));
+            navigation.navigate('Comments');
+        },
+        [navigation]
+    );
     const onPressLikes = React.useCallback(
         (id: string) => {
             dispatch(setCurrentFrameId(id));
@@ -75,6 +82,7 @@ const FramesScreen = ({
                                 renderItem={({ item }) => (
                                     <FrameCard
                                         frame={item}
+                                        onPressComments={onPressComments}
                                         onPressLikes={onPressLikes}
                                     />
                                 )}

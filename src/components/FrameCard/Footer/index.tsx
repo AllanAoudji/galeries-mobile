@@ -7,14 +7,16 @@ import Typography from '#components/Typography';
 
 import {
     ActionNavigationContainer,
-    ButtonContainer,
+    CommentsButtonContainer,
     Container,
     DescriptionContainer,
+    LikesButtonContainer,
 } from './styles';
 
 type Props = {
     createdAt: string;
     description: string;
+    handlePressComments: () => void;
     handlePressLike: () => void;
     handlePressLikes: () => void;
     liked: boolean;
@@ -25,6 +27,7 @@ type Props = {
 const Footer = ({
     createdAt,
     description,
+    handlePressComments,
     handlePressLike,
     handlePressLikes,
     liked,
@@ -45,30 +48,35 @@ const Footer = ({
 
     const handlePressDescription = React.useCallback(() => {
         if (descriptionIsCroped) setDescriptionIsCroped(false);
+        else handlePressComments();
     }, [descriptionIsCroped]);
 
     return (
         <Container>
             <ActionNavigationContainer>
-                <ButtonContainer>
+                <CommentsButtonContainer onPress={handlePressComments}>
                     <Pictogram
                         color="primary"
+                        ml="smallest"
                         mr="smallest"
+                        mb="smallest"
                         variant="comments-stroke"
                     />
                     <Typography>{numOfComments} comments</Typography>
-                </ButtonContainer>
-                <ButtonContainer>
+                </CommentsButtonContainer>
+                <LikesButtonContainer>
                     <Pressable onPress={handlePressLikes}>
                         <Typography>{numOfLikes} likes</Typography>
                     </Pressable>
                     <Pictogram
                         color="danger"
                         ml="smallest"
+                        pr="smallest"
+                        pb="smallest"
                         onPress={handlePressLike}
                         variant={liked ? 'heart-fill' : 'heart-stroke'}
                     />
-                </ButtonContainer>
+                </LikesButtonContainer>
             </ActionNavigationContainer>
             <DescriptionContainer onPress={handlePressDescription}>
                 {!!description &&
