@@ -123,8 +123,7 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
                                     );
                                 }
                             } else if (
-                                typeof err.response.data.console.errors ===
-                                'string'
+                                typeof err.response.data.errors === 'string'
                             ) {
                                 dispatch(
                                     setNotification({

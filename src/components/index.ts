@@ -8,6 +8,7 @@ export { default as CustomCamera } from './CustomCamera';
 export { default as CustomTextInput } from './CustomTextInput';
 export { default as DefaultHeader } from './DefaultHeader';
 export { default as DeleteModal } from './DeleteModal';
+export { default as EmptyMessage } from './EmptyMessage';
 export { default as FormContainer } from './FormContainer';
 export { default as FrameCard } from './FrameCard';
 export { default as FullScreenLoader } from './FullScreenLoader';

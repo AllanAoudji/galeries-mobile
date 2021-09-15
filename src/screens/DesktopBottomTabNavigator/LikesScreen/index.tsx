@@ -48,6 +48,7 @@ const LikesScreen = () => {
 
     React.useEffect(() => {
         if (currentFrame && currentFrameLikesStatus === 'PENDING') {
+            setFirstFetchFinished(false);
             dispatch(fetchLikes({ frameId: currentFrame.id }));
         }
     }, [currentFrame, currentFrameLikesStatus]);

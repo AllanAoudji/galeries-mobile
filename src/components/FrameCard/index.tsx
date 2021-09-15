@@ -45,6 +45,7 @@ const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
                                     [frame.id]: {
                                         autoIncrementId: frame.autoIncrementId,
                                         createdAt: frame.createdAt,
+                                        comments: frame.comments,
                                         description: frame.description,
                                         galerieId: frame.galerieId,
                                         galeriePicturesId:
