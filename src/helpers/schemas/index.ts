@@ -1,3 +1,4 @@
+export { default as createCommentSchema } from './createCommentSchema';
 export { default as createGaleriesSchema } from './createGaleriesSchema';
 export { default as forgotPassworSchema } from './forgotPassworSchema';
 export { default as frameDescriptionSchema } from './frameDescriptionSchema';
