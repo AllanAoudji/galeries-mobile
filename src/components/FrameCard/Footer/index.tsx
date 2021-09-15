@@ -1,6 +1,7 @@
 import moment from 'moment';
 import * as React from 'react';
 
+import { Pressable } from 'react-native';
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
 
@@ -14,6 +15,8 @@ import {
 type Props = {
     createdAt: string;
     description: string;
+    handlePressLike: () => void;
+    handlePressLikes: () => void;
     liked: boolean;
     numOfComments: string;
     numOfLikes: string;
@@ -22,6 +25,8 @@ type Props = {
 const Footer = ({
     createdAt,
     description,
+    handlePressLike,
+    handlePressLikes,
     liked,
     numOfComments,
     numOfLikes,
@@ -54,10 +59,13 @@ const Footer = ({
                     <Typography>{numOfComments} comments</Typography>
                 </ButtonContainer>
                 <ButtonContainer>
-                    <Typography>{numOfLikes} likes</Typography>
+                    <Pressable onPress={handlePressLikes}>
+                        <Typography>{numOfLikes} likes</Typography>
+                    </Pressable>
                     <Pictogram
                         color="danger"
                         ml="smallest"
+                        onPress={handlePressLike}
                         variant={liked ? 'heart-fill' : 'heart-stroke'}
                     />
                 </ButtonContainer>

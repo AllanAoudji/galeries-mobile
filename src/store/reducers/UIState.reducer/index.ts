@@ -1,6 +1,7 @@
 import { UI_STATES_SET } from '#store/actions';
 
 const initialState: {
+    currentFrameId?: string;
     currentGalerieId?: string;
     filters: {
         galeries: {

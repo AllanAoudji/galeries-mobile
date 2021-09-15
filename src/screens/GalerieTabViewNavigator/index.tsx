@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar } from 'react-native';
 import {
@@ -13,7 +13,7 @@ import {
     SceneRendererProps,
     TabView,
 } from 'react-native-tab-view';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Pictogram } from '#components';
 import clamp from '#helpers/clamp';
@@ -31,6 +31,7 @@ import {
     AbsoluteTopContainer,
     Container,
 } from './styles';
+import { resetCurrentGalerieId } from '#store/actions';
 
 const routes = [
     {
@@ -52,10 +53,12 @@ const routes = [
 ];
 
 const GalerieTabViewNavigator = () => {
-    const galerie = useSelector(currentGalerieSelector);
-
+    const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
+
+    const galerie = useSelector(currentGalerieSelector);
+
     const { onLayout: onLayoutContainer, size: sizeContainer } =
         useComponentSize();
     const { onLayout: onLayoutInfo, size: sizeInfo } = useComponentSize();
@@ -64,11 +67,7 @@ const GalerieTabViewNavigator = () => {
         index: 0,
         routes,
     });
-
-    const handleNavigateToCreateGalerieScreen = React.useCallback(() => {
-        // @ts-ignore
-        navigation.getParent().getParent().getParent().navigate('CreateFrame');
-    }, [navigation]);
+    const [reset, setReset] = React.useState<boolean>(false);
 
     const maxScroll = React.useMemo(
         () =>
@@ -84,6 +83,10 @@ const GalerieTabViewNavigator = () => {
             scrollY.value = clamp(e.contentOffset.y, 0, maxScroll);
         },
     });
+    const informationStyle = useAnimatedStyle(() => {
+        const opacity = interpolate(scrollY.value, [0, maxScroll / 2], [1, 0]);
+        return { opacity };
+    }, [maxScroll]);
     const style = useAnimatedStyle(() => {
         const translateY = interpolate(
             scrollY.value,
@@ -92,21 +95,23 @@ const GalerieTabViewNavigator = () => {
         );
         return { transform: [{ translateY }] };
     }, [maxScroll]);
-    const informationStyle = useAnimatedStyle(() => {
-        const opacity = interpolate(scrollY.value, [0, maxScroll / 2], [1, 0]);
-        return { opacity };
-    }, [maxScroll]);
+
+    const handleNavigateToCreateGalerieScreen = React.useCallback(() => {
+        // @ts-ignore
+        navigation.getParent().getParent().getParent().navigate('CreateFrame');
+    }, [navigation]);
+    const onPressBack = React.useCallback(() => {
+        setReset(true);
+        dispatch(resetCurrentGalerieId());
+        if (navigation.canGoBack()) navigation.goBack();
+        else navigation.navigate('Home');
+    }, [navigation]);
     const onIndexChange = React.useCallback((index: number) => {
         setNavigationState({
             index,
             routes,
         });
     }, []);
-    const onPressBack = React.useCallback(() => {
-        if (navigation.canGoBack()) navigation.goBack();
-        else navigation.navigate('Home');
-    }, [navigation]);
-
     const renderScene = React.useCallback(
         ({ route }: { route: Route }) => {
             switch (route.key) {
@@ -114,13 +119,13 @@ const GalerieTabViewNavigator = () => {
                     return (
                         <FramesScreen
                             galerie={galerie}
+                            handleNavigateToCreateGalerieScreen={
+                                handleNavigateToCreateGalerieScreen
+                            }
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }
                             scrollHandler={scrollHandler}
-                            handleNavigateToCreateGalerieScreen={
-                                handleNavigateToCreateGalerieScreen
-                            }
                         />
                     );
                 case 'invitations':
@@ -180,13 +185,16 @@ const GalerieTabViewNavigator = () => {
         [galerie, onLayoutContainer, onLayoutInfo]
     );
 
-    useFocusEffect(
-        React.useCallback(() => {
-            return () => {
+    // Cleaner
+    React.useEffect(() => {
+        setReset(false);
+        return () => {
+            if (reset) {
                 scrollY.value = 0;
-            };
-        }, [])
-    );
+                setNavigationState({ index: 0, routes });
+            }
+        };
+    }, [reset]);
 
     return (
         <Container>

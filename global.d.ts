@@ -161,6 +161,7 @@ declare global {
             | '[FRAMES]'
             | '[GALERIES]'
             | '[GALERIE PICTURES]'
+            | '[LIKES]'
             | '[NOTIFICATION]'
             | '[LOGOUT]'
             | '[ME]'
@@ -177,6 +178,7 @@ declare global {
         type Reducer = {
             UIStates: {
                 currentGalerieId?: string;
+                currentFrameId?: string;
                 filters: {
                     galeries: {
                         name: string;
@@ -204,6 +206,9 @@ declare global {
             galeriePictures: {
                 byId: { [key: string]: Store.Models.GaleriePicture };
             };
+            likes: {
+                byId: { [key: string]: Store.Models.Like };
+            };
             me: {
                 status: Status;
                 id: string | null;
@@ -223,6 +228,12 @@ declare global {
                 galerieId: string;
                 galeriePicturesId: string[];
                 id: string;
+                likes: {
+                    allIds: string[];
+                    end: boolean;
+                    previousLike?: string;
+                    status: Store.Status;
+                };
                 liked: boolean;
                 numOfComments: string;
                 numOfLikes: string;
@@ -264,6 +275,14 @@ declare global {
                 originalImage: string;
                 pendingHexes: string;
                 updatedAt: string;
+            };
+            type Like = {
+                autoIncrementId: string;
+                createdAt: string;
+                frameId: string;
+                id: string;
+                updatedAt: string;
+                userId: string;
             };
             type Image = {
                 format: string;

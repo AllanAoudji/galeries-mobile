@@ -26,7 +26,7 @@ export const resetFrames: () => Store.Action = () => ({
     payload: {
         data: {
             allIds: [],
-            byIds: {},
+            byId: {},
             status: 'PENDING',
         },
         meta: {},

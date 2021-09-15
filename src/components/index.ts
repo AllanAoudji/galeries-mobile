@@ -18,3 +18,4 @@ export { default as Pictogram } from './Pictogram';
 export { default as SearchBar } from './SearchBar';
 export { default as SplashScreen } from './SplashScreen';
 export { default as Typography } from './Typography';
+export { default as UserCard } from './UserCard';

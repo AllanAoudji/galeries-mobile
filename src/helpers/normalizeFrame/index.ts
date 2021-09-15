@@ -16,6 +16,11 @@ export default (frames: any) => {
                 ...rest,
                 galeriePicturesId: galeriePicturesAllIds,
                 galeriePictures: undefined,
+                likes: {
+                    allIds: [],
+                    end: false,
+                    status: 'PENDING',
+                },
             };
             normalizedFrames.push(normalizedFrame);
             galeriePicturesById = {
@@ -34,6 +39,11 @@ export default (frames: any) => {
             ...rest,
             galeriePicturesId: galeriePicturesAllIds,
             galeriePictures: undefined,
+            likes: {
+                allIds: [],
+                end: false,
+                status: 'PENDING',
+            },
         };
         normalizedFrames.push(normalizedFrame);
         galeriePicturesById = {

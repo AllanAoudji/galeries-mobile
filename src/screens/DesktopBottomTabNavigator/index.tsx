@@ -27,11 +27,7 @@ const DesktopBottomTabNavigator = () => {
             <Tab.Screen component={NotificationsScreen} name="Notifications" />
             <Tab.Screen component={ProfileScreen} name="Profile" />
             <Tab.Screen component={CommentScreen} name="Comments" />
-            <Tab.Screen
-                component={GalerieScreen}
-                name="Galerie"
-                options={{ headerShown: false }}
-            />
+            <Tab.Screen component={GalerieScreen} name="Galerie" />
             <Tab.Screen component={LikesScreen} name="Likes" />
         </Tab.Navigator>
     );
