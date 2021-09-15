@@ -1,28 +1,26 @@
 import { Middleware } from 'redux';
 
+import {
+    API_SUCCESS,
+    COMMENTS,
+    COMMENTS_FETCH,
+    apiRequest,
+    setFrames,
+    setNotification,
+    setComments,
+} from '#store/actions';
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import normalizeData from '#helpers/normalizeData';
 import uniqueArray from '#helpers/uniqueArray';
-import {
-    API_SUCCESS,
-    LIKES,
-    LIKES_FETCH,
-    apiRequest,
-    setFrames,
-    setLikes,
-    setNotification,
-} from '#store/actions';
 
-// TODO: errorLikes
-
-const fetchLikes: Middleware<{}, Store.Reducer> =
+const fetchComments: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === `${LIKES_FETCH}`) {
+        if (action.type === `${COMMENTS_FETCH}`) {
             let allowRequest: boolean = false;
-            let previousLike;
+            let previousComment;
             const frameId =
                 action.payload.meta.query &&
                 typeof action.payload.meta.query.frameId === 'string'
@@ -30,19 +28,19 @@ const fetchLikes: Middleware<{}, Store.Reducer> =
                     : null;
             const frame = frameId ? getState().frames.byId[frameId] : undefined;
             if (frame) {
-                allowRequest = frame.likes.end;
-                previousLike = frame.likes.previousLike;
+                allowRequest = frame.comments.end;
+                previousComment = frame.comments.previousComment;
             }
             if (!allowRequest && frameId && frame) {
-                const query = `?previousLike=${previousLike}`;
+                const query = `?previousComment=${previousComment}`;
                 dispatch(
                     setFrames({
                         data: {
                             byId: {
                                 [frameId]: {
                                     ...frame,
-                                    likes: {
-                                        ...frame.likes,
+                                    comments: {
+                                        ...frame.comments,
                                         status: 'FETCHING',
                                     },
                                 },
@@ -55,9 +53,9 @@ const fetchLikes: Middleware<{}, Store.Reducer> =
                         data: {},
                         meta: {
                             ...action.payload.meta,
-                            entity: LIKES,
+                            entity: COMMENTS,
                             method: 'GET',
-                            url: `${END_POINT.LIKES(frameId)}${query}`,
+                            url: `${END_POINT.COMMENTS(frameId)}${query}`,
                         },
                     })
                 );
@@ -65,28 +63,28 @@ const fetchLikes: Middleware<{}, Store.Reducer> =
         }
     };
 
-const successLikes: Middleware<{}, Store.Reducer> =
+const successComments: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === `${LIKES} ${API_SUCCESS}`) {
+        if (action.type === `${COMMENTS} ${API_SUCCESS}`) {
             switch (action.payload.meta.method) {
                 case 'GET': {
                     let normalize;
                     if (
-                        action.payload.data.data.likes &&
-                        Array.isArray(action.payload.data.data.likes)
+                        action.payload.data.data.comments &&
+                        Array.isArray(action.payload.data.data.comments)
                     ) {
                         normalize = normalizeData(
-                            action.payload.data.data.likes
+                            action.payload.data.data.comments
                         );
                     } else if (
-                        action.payload.data.data.like &&
-                        typeof action.payload.data.data.like === 'object'
+                        action.payload.data.data.comment &&
+                        typeof action.payload.data.data.comment === 'object'
                     ) {
                         normalize = normalizeData(
-                            action.payload.data.data.like
+                            action.payload.data.data.comment
                         );
                     } else {
                         dispatch(
@@ -106,32 +104,32 @@ const successLikes: Middleware<{}, Store.Reducer> =
                         ? getState().frames.byId[frameId]
                         : undefined;
                     if (frameId && frame) {
-                        const likesById = {
-                            ...getState().likes.byId,
+                        const commentsById = {
+                            ...getState().comments.byId,
                             ...normalize.byId,
                         };
                         const allIds = uniqueArray([
-                            ...frame.likes.allIds,
+                            ...frame.comments.allIds,
                             ...normalize.allIds,
                         ]).sort((a, b) => {
-                            if (!likesById[a] || !likesById[b]) return 0;
+                            if (!commentsById[a] || !commentsById[b]) return 0;
                             return (
-                                new Date(likesById[b].createdAt).getTime() -
-                                new Date(likesById[a].createdAt).getTime()
+                                new Date(commentsById[b].createdAt).getTime() -
+                                new Date(commentsById[a].createdAt).getTime()
                             );
                         });
-                        const previousLike = allIds[allIds.length - 1];
+                        const previousComment = allIds[allIds.length - 1];
                         dispatch(
                             setFrames({
                                 data: {
                                     byId: {
                                         [frameId]: {
                                             ...frame,
-                                            likes: {
+                                            comments: {
                                                 allIds,
                                                 end: allIds.length < 20,
                                                 status: 'SUCCESS',
-                                                previousLike,
+                                                previousComment,
                                             },
                                         },
                                     },
@@ -139,7 +137,7 @@ const successLikes: Middleware<{}, Store.Reducer> =
                             })
                         );
                         dispatch(
-                            setLikes({
+                            setComments({
                                 data: { byId: normalize.byId },
                             })
                         );
@@ -157,4 +155,4 @@ const successLikes: Middleware<{}, Store.Reducer> =
         }
     };
 
-export default [fetchLikes, successLikes];
+export default [fetchComments, successComments];

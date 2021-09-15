@@ -51,6 +51,7 @@ export const DRAG_AND_DROP_UTILS = {
 };
 
 export const END_POINT = {
+    COMMENTS: (id: string) => `/frames/${id}/comments/`,
     FORGOT_PASSWORD: '/users/password/',
     FRAMES: `/frames/`,
     GALERIE: (id: string) => `/galeries/${id}/`,
