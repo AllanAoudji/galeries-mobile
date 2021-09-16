@@ -26,6 +26,10 @@ type Props = {
 const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
     const dispatch = useDispatch();
 
+    const handlePressComments = React.useCallback(
+        () => onPressComments(frame.id),
+        [frame]
+    );
     const handlePressLike = React.useCallback(() => {
         request({
             body: {},
@@ -102,11 +106,6 @@ const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
                 }
             });
     }, [frame]);
-
-    const handlePressComments = React.useCallback(
-        () => onPressComments(frame.id),
-        [frame]
-    );
     const handlePressLikes = React.useCallback(() => {
         if (+frame.numOfLikes > 0) onPressLikes(frame.id);
     }, [frame, onPressLikes]);
@@ -118,9 +117,9 @@ const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
             <Footer
                 createdAt={frame.createdAt}
                 description={frame.description}
+                handlePressComments={handlePressComments}
                 handlePressLike={handlePressLike}
                 handlePressLikes={handlePressLikes}
-                handlePressComments={handlePressComments}
                 liked={frame.liked}
                 numOfComments={frame.numOfComments}
                 numOfLikes={frame.numOfLikes}

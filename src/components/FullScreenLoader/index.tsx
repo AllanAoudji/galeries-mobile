@@ -26,7 +26,7 @@ const FullScreenLoader = ({
     const theme = useTheme();
 
     const [display, setDisplay] = React.useState<boolean>(show);
-    const opacity = useSharedValue(show ? 1 : 0);
+    const opacity = useSharedValue(display ? 1 : 0);
 
     const style = useAnimatedStyle(
         () => ({

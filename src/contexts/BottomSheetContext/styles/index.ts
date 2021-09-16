@@ -37,7 +37,6 @@ const InnerContainer = styled.View`
         `${theme.spacings.smallest} ${theme.spacings.small} ${theme.spacings.small}`};
 `;
 const Overlay = styled(Animated.View)<OverlayProps>`
-    background-color: rgba(0, 0, 0, 0.4);
     bottom: 0;
     display: none;
     height: ${({ height }) => `${height}px`};

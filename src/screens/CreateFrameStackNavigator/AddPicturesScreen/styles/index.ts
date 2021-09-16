@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import styled from 'styled-components/native';
 
 type ReturnButtonProps = {
-    currentHeight?: number;
+    paddingTop?: number;
 };
 
 const Body = styled.View`
@@ -25,13 +25,13 @@ const Header = styled.View`
 `;
 const ReturnButtonContainer = styled.View<ReturnButtonProps>`
     left: 0;
-    padding-top: ${({ currentHeight }) => `${currentHeight || 0}px`};
+    padding-top: ${({ paddingTop }) => `${paddingTop || 0}px`};
     position: absolute;
     top: 0;
 `;
 const Separator = styled.View`
-    border-radius: 100px;
-    background-color: #fffff4;
+    background-color: ${({ theme }) => theme.colors['primary-light']};
+    border-radius: 1px;
     height: 2px;
     margin-top: 10px;
     width: ${({ theme }) => theme.spacings.normal};

@@ -5,8 +5,8 @@ import { useDispatch } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import Typography from '#components/Typography';
-import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
 import { END_POINT } from '#helpers/constants';
+import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
 import request from '#helpers/request';
 import {
     setCurrentGalerieId,
@@ -25,11 +25,8 @@ import {
 } from './styles';
 
 type Props = {
-    galerie: Store.Models.Galerie & { id: string };
+    galerie: Store.Models.Galerie;
 };
-
-// TODO:
-// issue here with galerie selection
 
 const GalerieModal = ({ galerie }: Props) => {
     const dispatch = useDispatch();
@@ -39,11 +36,11 @@ const GalerieModal = ({ galerie }: Props) => {
     const dimension = useWindowDimensions();
 
     const [defaultCoverPicture, setDefaultCoverPicture] = React.useState<{
-        startX: number;
-        startY: number;
+        colors: string[];
         endX: number;
         endY: number;
-        colors: string[];
+        startX: number;
+        startY: number;
     } | null>(null);
 
     const handlePress = React.useCallback(() => {
@@ -63,7 +60,7 @@ const GalerieModal = ({ galerie }: Props) => {
                     res.data &&
                     res.data.data &&
                     res.data.data.coverPicture &&
-                    typeof res.data.data.coverPicture === 'string'
+                    typeof res.data.data.coverPicture === 'object'
                 ) {
                     const { id } = res.data.data.coverPicture;
                     dispatch(

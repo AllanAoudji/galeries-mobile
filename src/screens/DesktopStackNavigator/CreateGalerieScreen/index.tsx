@@ -1,25 +1,14 @@
-import { AxiosError } from 'axios';
 import { useFormik } from 'formik';
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 
+import { useDispatch } from 'react-redux';
 import { CustomButton, CustomTextInput, FormContainer } from '#components';
-import {
-    END_POINT,
-    ERROR_MESSAGE,
-    FIELD_REQUIREMENT,
-} from '#helpers/constants';
-import normalizeData from '#helpers/normalizeData';
-import request from '#helpers/request';
+import { FIELD_REQUIREMENT } from '#helpers/constants';
 import { createGaleriesSchema } from '#helpers/schemas';
-import {
-    resetGaleries,
-    setCurrentGalerieId,
-    setGaleries,
-    setNotification,
-} from '#store/actions';
+import { usePostGalerie } from '#hooks';
 
 import { ButtonsContainer, Container } from './styles';
+import { setCurrentGalerieId } from '#store/actions';
 
 type Props = {
     navigation: Screen.DesktopStack.CreateGalerieNavigationProp;
@@ -32,115 +21,14 @@ const initialValues = {
 
 const CreateGalerieScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
+    const { loading, postGalerie, resetServerErrorField, serverErrors } =
+        usePostGalerie();
     const formik = useFormik({
-        onSubmit: async (values) => {
-            setLoading(true);
-            request({
-                body: values,
-                method: 'POST',
-                url: END_POINT.GALERIES,
-            })
-                .then((res) => {
-                    if (
-                        res.data.data &&
-                        res.data.data.galerie &&
-                        typeof res.data.data.galerie === 'object'
-                    ) {
-                        const normalizedGalerie = {
-                            ...res.data.data.galerie,
-                            frames: {
-                                allIds: [],
-                                end: true,
-                                status: 'SUCCESS',
-                            },
-                            users: {
-                                allIds: [],
-                                end: true,
-                                status: 'SUCCESS',
-                            },
-                        };
-                        const normalizedData = normalizeData(normalizedGalerie);
-                        dispatch(
-                            setGaleries({
-                                data: normalizedData,
-                                meta: {},
-                            })
-                        );
-                        dispatch(resetGaleries());
-                        setGalerieId(res.data.data.galerie.id);
-                    } else {
-                        dispatch(
-                            setNotification({
-                                status: 'error',
-                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                            })
-                        );
-                    }
-                })
-                .catch((err: AxiosError) => {
-                    if (err.response && err.response.data.errors) {
-                        if (typeof err.response.data.errors === 'object') {
-                            if (
-                                err.response.data.errors.name ||
-                                err.response.data.errors.description
-                            ) {
-                                setServerErrors({
-                                    description:
-                                        err.response.data.errors.description ||
-                                        '',
-                                    name: err.response.data.errors.name || '',
-                                });
-                            } else {
-                                dispatch(
-                                    setNotification({
-                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                        status: 'error',
-                                    })
-                                );
-                            }
-                        } else if (
-                            typeof err.response.data.errors === 'string'
-                        ) {
-                            dispatch(
-                                setNotification({
-                                    text: err.response.data.errors,
-                                    status: 'error',
-                                })
-                            );
-                        } else {
-                            dispatch(
-                                setNotification({
-                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                    status: 'error',
-                                })
-                            );
-                        }
-                    } else {
-                        dispatch(
-                            setNotification({
-                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                status: 'error',
-                            })
-                        );
-                    }
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
-        },
+        onSubmit: async (values) => postGalerie(values, postGalerieCallBack),
         initialValues,
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: createGaleriesSchema,
-    });
-
-    const [galerieId, setGalerieId] = React.useState<string | null>(null);
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const [serverErrors, setServerErrors] = React.useState<
-        typeof initialValues
-    >({
-        description: '',
-        name: '',
     });
 
     const descriptionError = React.useMemo(
@@ -160,19 +48,23 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         [formik.errors.name, serverErrors.name]
     );
 
+    const postGalerieCallBack = React.useCallback(
+        ({ id }: Store.Models.Galerie) => {
+            dispatch(setCurrentGalerieId(id));
+            navigation.navigate('Navigation', {
+                screen: 'Main',
+                params: { screen: 'Galerie' },
+            });
+        },
+        []
+    );
     const handleChangeDescriptionText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            description: '',
-        }));
+        resetServerErrorField('description');
         formik.setFieldError('description', '');
         formik.setFieldValue('description', e);
     }, []);
     const handleChangeNameText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            name: '',
-        }));
+        resetServerErrorField('name');
         formik.setFieldError('name', '');
         formik.setFieldValue('name', e);
     }, []);
@@ -184,16 +76,6 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                 params: { screen: 'Home' },
             });
     }, [navigation]);
-
-    React.useEffect(() => {
-        if (galerieId) {
-            dispatch(setCurrentGalerieId(galerieId));
-            navigation.navigate('Navigation', {
-                screen: 'Main',
-                params: { screen: 'Galerie' },
-            });
-        }
-    }, [galerieId, navigation]);
 
     return (
         <FormContainer>

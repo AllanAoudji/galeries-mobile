@@ -7,8 +7,8 @@ const Container = styled.View`
 `;
 const Header = styled(Animated.View)`
     background-color: ${({ theme }) => theme.colors['secondary-light']};
-    position: absolute;
     padding-bottom: ${({ theme }) => theme.spacings.smallest};
+    position: absolute;
     width: 100%;
     z-index: 10;
 `;

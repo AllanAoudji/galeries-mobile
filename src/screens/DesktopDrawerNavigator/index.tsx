@@ -33,8 +33,8 @@ const DesktopStack = () => {
             drawerContent={drawerContent}
             initialRouteName="Main"
             screenOptions={{
-                swipeEnabled: false,
                 headerShown: false,
+                swipeEnabled: false,
             }}
         >
             <Drawer.Screen name="Main" component={MainScreen} />

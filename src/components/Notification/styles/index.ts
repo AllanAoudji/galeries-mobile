@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-type Props = {
+type InnerContainerProps = {
     status: 'error' | 'success';
 };
 
@@ -20,7 +20,7 @@ const Container = styled.Pressable`
     width: 100%;
     z-index: 1;
 `;
-const InnerContainer = styled.Pressable<Props>`
+const InnerContainer = styled.Pressable<InnerContainerProps>`
     align-items: center;
     background-color: ${({ status, theme }) =>
         status === 'error' ? theme.colors.danger : theme.colors.success};

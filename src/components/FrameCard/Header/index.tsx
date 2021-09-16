@@ -1,9 +1,9 @@
 import * as React from 'react';
 
+import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
 
 import { Container, InfoContainer, ProfilePicturesContainer } from './styles';
-import Pictogram from '#components/Pictogram';
 
 type Props = {
     user?: Store.Models.User;

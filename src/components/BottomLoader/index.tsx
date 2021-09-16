@@ -34,7 +34,7 @@ const BottomLoader = ({
 
     const [display, setDisplay] = React.useState<boolean>(show);
 
-    const visible = useSharedValue(show ? 1 : 0);
+    const visible = useSharedValue(display ? 1 : 0);
 
     const containerStyle = useAnimatedStyle(() => {
         const bottom = interpolate(

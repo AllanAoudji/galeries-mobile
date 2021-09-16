@@ -1,131 +1,136 @@
 import * as React from 'react';
-import { Keyboard } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { FlatList, Keyboard, ListRenderItemInfo } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import styled, { useTheme } from 'styled-components/native';
 
 import {
+    AnimatedFlatList,
+    CommentCard,
     DefaultHeader,
     EmptyMessage,
     FullScreenLoader,
-    Typography,
 } from '#components';
-import { FIELD_REQUIREMENT, GLOBAL_STYLE } from '#helpers/constants';
+import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 import { fetchComments } from '#store/actions';
 import {
+    currentFrameCommentsSelector,
     currentFrameCommentsStatusSelector,
     currentFrameSelector,
 } from '#store/selectors';
-import currentFrameCommentsSelector from '#store/selectors/currentFrameComments.selector';
 
-type CommentTextInputProps = {
-    height: number;
+import CreateComment from './CreateComment';
+
+import { Container, Header } from './styles';
+
+type Props = {
+    navigation: Screen.DesktopBottomTab.CommentsNavigationProp;
 };
 
-const Container = styled.Pressable`
-    background-color: ${({ theme }) => theme.colors['secondary-light']};
-    flex: 1;
-`;
-const Header = styled(Animated.View)`
-    background-color: ${({ theme }) => theme.colors['secondary-light']};
-    position: absolute;
-    width: 100%;
-    z-index: 10;
-`;
-const CommentFormContainer = styled.View`
-    align-items: center;
-    background-color: ${({ theme }) => theme.colors.secondary};
-    bottom: 0;
-    left: 0;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-left: ${({ theme }) => theme.spacings.small};
-    position: absolute;
-    right: 0;
-`;
-const CommentFormButton = styled.Pressable`
-    opacity: 0.5;
-    padding: ${({ theme }) => `0 ${theme.spacings.small}`};
-    flex-direction: row;
-    align-self: stretch;
-    align-items: center;
-`;
-const CommentTextInput = styled.TextInput<CommentTextInputProps>`
-    background-color: ${({ theme }) => theme.colors['secondary-light']};
-    flex: 1;
-    margin: ${({ theme }) =>
-        `${theme.spacings.smallest} 0 ${theme.spacings.small}`};
-    border-bottom-width: 3px;
-    padding: ${({ theme }) => `10px ${theme.spacings.smallest}`};
-    border-color: ${({ theme }) => theme.colors['primary-dark']};
-    height: ${({ height }) => `${height}px`};
-`;
+const renderItem = ({
+    item,
+}: ListRenderItemInfo<Store.Models.Comments & { user: Store.Models.User }>) => (
+    <CommentCard comment={item} />
+);
 
-const CommentScreen = () => {
+const CommentScreen = ({ navigation }: Props) => {
+    const dispatch = useDispatch();
+
     const currentFrame = useSelector(currentFrameSelector);
     const currentFrameComments = useSelector(currentFrameCommentsSelector);
     const currentFrameCommentsStatus = useSelector(
         currentFrameCommentsStatusSelector
     );
-    const dispatch = useDispatch();
-    const theme = useTheme();
-    const { onLayout } = useComponentSize();
-    const { containerStyle, headerStyle } = useHideHeaderOnScroll(
+
+    const { onLayout: headerOnLayout, size: headerSize } = useComponentSize();
+    const { onLayout: footerOnLayout, size: footerSize } = useComponentSize();
+
+    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
         GLOBAL_STYLE.HEADER_TAB_HEIGHT
     );
 
+    const flatListRef = React.useRef<FlatList | null>(null);
+
     const [firstFetchFinished, setFirstFetchFinished] =
         React.useState<boolean>(false);
-    const [height, setHeight] = React.useState<number>(0);
 
+    const frameHasComment = React.useMemo(
+        () => currentFrameComments && currentFrameComments.length > 0,
+        [currentFrameComments]
+    );
+    const paddingBottom = React.useMemo(
+        () => (footerSize ? footerSize.height : 0),
+        [footerSize]
+    );
+    const paddingTop = React.useMemo(
+        () => (headerSize ? headerSize.height : 0),
+        [headerSize]
+    );
+
+    const handleScrollBeginDrag = React.useCallback(
+        () => Keyboard.dismiss(),
+        []
+    );
+    const keyExtractor = React.useCallback((data) => data.id, []);
+    const scrollToTop = React.useCallback(() => {
+        if (flatListRef.current)
+            flatListRef.current.scrollToOffset({ offset: 0 });
+    }, []);
+
+    React.useEffect(() => {
+        if (!currentFrame) {
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
+        }
+    }, [currentFrame, navigation]);
     React.useEffect(() => {
         if (currentFrame && currentFrameCommentsStatus === 'PENDING') {
             setFirstFetchFinished(false);
             dispatch(fetchComments({ frameId: currentFrame.id }));
         }
-    }, [currentFrameCommentsStatus, currentFrame]);
+    }, [currentFrame, currentFrameCommentsStatus]);
     React.useEffect(() => {
         if (
             (currentFrameCommentsStatus === 'SUCCESS' ||
                 currentFrameCommentsStatus === 'ERROR') &&
             !firstFetchFinished
-        ) {
+        )
             setFirstFetchFinished(true);
-        }
-    }, [currentFrameCommentsStatus]);
+    }, [currentFrameCommentsStatus, firstFetchFinished]);
+
+    if (!currentFrame) return null;
 
     return (
-        <Container onPress={Keyboard.dismiss}>
-            <Header onLayout={onLayout} style={containerStyle}>
-                <DefaultHeader
-                    style={headerStyle}
-                    title="comments"
-                    variant="secondary"
-                />
+        <Container>
+            <Header onLayout={headerOnLayout} style={containerStyle}>
+                <DefaultHeader title="comments" variant="secondary" />
             </Header>
-            {firstFetchFinished && !!currentFrameComments && (
+            {firstFetchFinished && (
                 <>
-                    {currentFrameComments.length === 0 && (
+                    {frameHasComment ? (
+                        <AnimatedFlatList
+                            contentContainerStyle={{
+                                paddingBottom,
+                                paddingTop,
+                            }}
+                            data={currentFrameComments}
+                            keyExtractor={keyExtractor}
+                            maxToRenderPerBatch={15}
+                            onScroll={scrollHandler}
+                            onScrollBeginDrag={handleScrollBeginDrag}
+                            ref={flatListRef}
+                            renderItem={renderItem}
+                            removeClippedSubviews={true}
+                            showsVerticalScrollIndicator={false}
+                            scrollEventThrottle={4}
+                        />
+                    ) : (
                         <EmptyMessage text="This frame do not have comment yet..." />
                     )}
-                    <CommentFormContainer>
-                        <CommentTextInput
-                            placeholder="post a comment..."
-                            multiline
-                            selectionColor={theme.colors['primary-dark']}
-                            maxLength={FIELD_REQUIREMENT.COMMENT_MAX_LENGTH}
-                            height={Math.max(35, height)}
-                            onContentSizeChange={(e) =>
-                                setHeight(e.nativeEvent.contentSize.height)
-                            }
-                        />
-                        <CommentFormButton>
-                            <Typography color="primary" fontSize={18}>
-                                post
-                            </Typography>
-                        </CommentFormButton>
-                    </CommentFormContainer>
+                    <CreateComment
+                        frame={currentFrame}
+                        onLayout={footerOnLayout}
+                        scrollToTop={scrollToTop}
+                    />
                 </>
             )}
             <FullScreenLoader show={!firstFetchFinished} />

@@ -20,5 +20,4 @@ const ProfilePicturesContainer = styled.View`
     width: ${() => `${PROFILE_PICTURE_SIZE}px`};
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export { Container, InfoContainer, ProfilePicturesContainer };

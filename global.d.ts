@@ -226,7 +226,21 @@ declare global {
         type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
         namespace Models {
             type Comments = {
+                autoIncrementId: string;
+                body: string;
+                comments: {
+                    allIds: string;
+                    end: boolean;
+                    previousComment?: string;
+                    status: Store.Status;
+                };
                 createdAt: string;
+                frameId: string;
+                id: string;
+                level: number;
+                numOfComments: number;
+                updatedAt: string;
+                userId: string;
             };
             type Frame = {
                 autoIncrementId: string;

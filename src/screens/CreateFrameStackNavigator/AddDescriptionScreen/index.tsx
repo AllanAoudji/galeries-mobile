@@ -1,8 +1,8 @@
+import { AxiosError } from 'axios';
 import { useFormik } from 'formik';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AxiosError } from 'axios';
 import { CustomButton, CustomTextInput, FormContainer } from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
 import {
@@ -10,6 +10,8 @@ import {
     ERROR_MESSAGE,
     FIELD_REQUIREMENT,
 } from '#helpers/constants';
+import normalizeData from '#helpers/normalizeData';
+import normalizeFrame from '#helpers/normalizeFrame';
 import request from '#helpers/request';
 import { frameDescriptionSchema } from '#helpers/schemas';
 import {
@@ -19,8 +21,6 @@ import {
     setNotification,
 } from '#store/actions';
 import { currentGalerieSelector } from '#store/selectors';
-import normalizeFrame from '#helpers/normalizeFrame';
-import normalizeData from '#helpers/normalizeData';
 
 import { ButtonsContainer, Container } from './styles';
 
@@ -33,13 +33,13 @@ const initialValues = {
 };
 
 const AddDescriptionScreen = ({ navigation }: Props) => {
-    const currentGalerie = useSelector(currentGalerieSelector);
     const dispatch = useDispatch();
+    const currentGalerie = useSelector(currentGalerieSelector);
+
     const { picturesUri } = React.useContext(CreateFrameContext);
 
     const formik = useFormik({
         onSubmit: ({ description }) => {
-            // Check if loading
             if (currentGalerie && !loading && picturesUri.length) {
                 setLoading(true);
                 const formData = new FormData();
@@ -52,14 +52,13 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
                         name: pictureUri,
                     });
                 });
-                if (description !== '') {
+                if (description !== '')
                     formData.append('description', description);
-                }
                 request({
                     body: formData,
+                    contentType: 'multipart/form-data',
                     method: 'POST',
                     url: END_POINT.GALERIE_FRAMES(currentGalerie.id),
-                    contentType: 'multipart/form-data',
                 })
                     .then((res) => {
                         if (
@@ -169,16 +168,24 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
         [formik.errors.description, serverErrors.description]
     );
 
-    const handleReturn = React.useCallback(() => {
-        if (!loading) navigation.navigate('AddPictures');
-    }, [navigation]);
-
     const disableButton = React.useMemo(() => {
         const clientHasError =
             formik.submitCount > 0 && !!formik.errors.description;
         const serverHasError = !!serverErrors.description;
         return clientHasError || serverHasError;
     }, [formik.submitCount, formik.errors, serverErrors]);
+
+    const handleChangeDescriptionText = React.useCallback((e: string) => {
+        setServerErrors((prevState) => ({
+            ...prevState,
+            description: '',
+        }));
+        formik.setFieldError('description', '');
+        formik.setFieldValue('description', e);
+    }, []);
+    const handleReturn = React.useCallback(() => {
+        if (!loading) navigation.navigate('AddPictures');
+    }, [navigation]);
 
     return (
         <FormContainer>
@@ -190,14 +197,7 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
                     maxLength={FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH}
                     multiline
                     onBlur={formik.handleBlur('description')}
-                    onChangeText={(e: string) => {
-                        setServerErrors((prevState) => ({
-                            ...prevState,
-                            description: '',
-                        }));
-                        formik.setFieldError('description', '');
-                        formik.setFieldValue('description', e);
-                    }}
+                    onChangeText={handleChangeDescriptionText}
                     optional
                     touched={formik.touched.description || false}
                     value={formik.values.description}

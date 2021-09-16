@@ -1,5 +1,5 @@
 export { default as currentFrameSelector } from './currentFrame.selector';
-export { default as currentFrameComments } from './currentFrameComments.selector';
+export { default as currentFrameCommentsSelector } from './currentFrameComments.selector';
 export { default as currentFrameLikesSelector } from './currentFrameLikes.selector';
 export { default as currentFrameLikesStatusSelector } from './currentFrameLikesStatus.selector';
 export { default as currentFrameCommentsStatusSelector } from './currentFrameCommentsStatus.selector';

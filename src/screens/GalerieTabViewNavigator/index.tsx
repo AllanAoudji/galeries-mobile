@@ -196,6 +196,8 @@ const GalerieTabViewNavigator = () => {
         };
     }, [reset]);
 
+    // TODO: reset paddingTop when currentFrame change
+
     return (
         <Container>
             <AbsoluteTopContainer currentHeight={StatusBar.currentHeight}>

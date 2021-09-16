@@ -1,7 +1,7 @@
 import moment from 'moment';
 import * as React from 'react';
-
 import { Pressable } from 'react-native';
+
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
 
@@ -34,10 +34,17 @@ const Footer = ({
     numOfComments,
     numOfLikes,
 }: Props) => {
-    const [descriptionIsCroped, setDescriptionIsCroped] =
-        React.useState<boolean>(false);
     const [cropedDescription, setCropedDescription] =
         React.useState<string>('');
+    const [descriptionIsCroped, setDescriptionIsCroped] =
+        React.useState<boolean>(false);
+
+    const handlePressDescription = React.useCallback(() => {
+        if (description) {
+            if (descriptionIsCroped) setDescriptionIsCroped(false);
+            else handlePressComments();
+        }
+    }, [description, descriptionIsCroped]);
 
     React.useEffect(() => {
         if (description && description.length > 40) {
@@ -46,20 +53,15 @@ const Footer = ({
         }
     }, []);
 
-    const handlePressDescription = React.useCallback(() => {
-        if (descriptionIsCroped) setDescriptionIsCroped(false);
-        else handlePressComments();
-    }, [descriptionIsCroped]);
-
     return (
         <Container>
             <ActionNavigationContainer>
                 <CommentsButtonContainer onPress={handlePressComments}>
                     <Pictogram
                         color="primary"
+                        mb="smallest"
                         ml="smallest"
                         mr="smallest"
-                        mb="smallest"
                         variant="comments-stroke"
                     />
                     <Typography>{numOfComments} comments</Typography>
@@ -72,8 +74,8 @@ const Footer = ({
                         color="danger"
                         ml="smallest"
                         pr="smallest"
-                        pb="smallest"
                         onPress={handlePressLike}
+                        pb="smallest"
                         variant={liked ? 'heart-fill' : 'heart-stroke'}
                     />
                 </LikesButtonContainer>

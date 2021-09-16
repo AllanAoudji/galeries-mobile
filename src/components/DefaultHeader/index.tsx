@@ -10,13 +10,12 @@ import { Container } from './styles';
 
 type Props = {
     onPress?: () => void;
-    onPressBack?: () => void;
     title?: string;
     variant?: 'primary' | 'secondary';
 };
 
 const DefaultHeader = ({
-    onPressBack,
+    onPress,
     title,
     variant = 'primary',
     ...rest
@@ -33,7 +32,7 @@ const DefaultHeader = ({
     );
     const handlePressPictogram = React.useCallback(() => {
         if (isArrow) {
-            if (onPressBack) onPressBack();
+            if (onPress) onPress();
             else navigation.goBack();
         } else navigation.dispatch(DrawerActions.openDrawer());
     }, [isArrow, navigation]);

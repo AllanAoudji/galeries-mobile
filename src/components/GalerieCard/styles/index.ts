@@ -41,8 +41,8 @@ const UserContainer = styled.View`
     width: ${() => `${USER_CONTAINER_SIZE}px`};
 `;
 const UsersContainer = styled.View`
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
 `;
 
 export {

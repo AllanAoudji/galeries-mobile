@@ -1,8 +1,13 @@
 import * as React from 'react';
-import Animated from 'react-native-reanimated';
+import { ListRenderItemInfo } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components/native';
 
+import {
+    AnimatedFlatList,
+    DefaultHeader,
+    FullScreenLoader,
+    UserCard,
+} from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 import { fetchLikes } from '#store/actions';
@@ -11,34 +16,32 @@ import {
     currentFrameLikesSelector,
     currentFrameLikesStatusSelector,
 } from '#store/selectors';
-import {
-    AnimatedFlatList,
-    DefaultHeader,
-    FullScreenLoader,
-    UserCard,
-} from '#components';
 
-const Container = styled.View`
-    background-color: ${({ theme }) => theme.colors['secondary-light']};
-    flex: 1;
-`;
-const Header = styled(Animated.View)`
-    background-color: ${({ theme }) => theme.colors['secondary-light']};
-    position: absolute;
-    width: 100%;
-    z-index: 10;
-`;
+import { Container, Header } from './styles';
 
-const LikesScreen = () => {
-    const { onLayout, size } = useComponentSize();
-    const { containerStyle, headerStyle, scrollHandler } =
-        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT);
+type Props = {
+    navigation: Screen.DesktopBottomTab.LikesNavigationProp;
+};
 
+const renderItem = ({
+    item,
+}: ListRenderItemInfo<Store.Models.Like & { user: Store.Models.User }>) => (
+    <UserCard user={item.user} />
+);
+
+const LikesScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
+
     const currentFrame = useSelector(currentFrameSelector);
     const currentFrameLikes = useSelector(currentFrameLikesSelector);
     const currentFrameLikesStatus = useSelector(
         currentFrameLikesStatusSelector
+    );
+
+    const { onLayout, size } = useComponentSize();
+
+    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
+        GLOBAL_STYLE.HEADER_TAB_HEIGHT
     );
 
     const [firstFetchFinished, setFirstFetchFinished] =
@@ -60,16 +63,29 @@ const LikesScreen = () => {
         ) {
             setFirstFetchFinished(true);
         }
-    }, [currentFrameLikesStatus]);
+    }, [currentFrameLikesStatus, firstFetchFinished]);
+    React.useEffect(() => {
+        if (!currentFrame) {
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
+        }
+    }, [currentFrame, navigation]);
+    React.useEffect(() => {
+        if (
+            (currentFrameLikesStatus === 'SUCCESS' ||
+                currentFrameLikesStatus === 'ERROR') &&
+            currentFrameLikes &&
+            currentFrameLikes.length === 0
+        ) {
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
+        }
+    }, [currentFrameLikes, currentFrameLikesStatus, navigation]);
 
     return (
         <Container>
             <Header onLayout={onLayout} style={containerStyle}>
-                <DefaultHeader
-                    style={headerStyle}
-                    title="likes"
-                    variant="secondary"
-                />
+                <DefaultHeader title="likes" variant="secondary" />
             </Header>
             {firstFetchFinished && (
                 <AnimatedFlatList
@@ -84,7 +100,7 @@ const LikesScreen = () => {
                     onEndReachedThreshold={0.2}
                     onScroll={scrollHandler}
                     removeClippedSubviews={true}
-                    renderItem={({ item }) => <UserCard user={item.user} />}
+                    renderItem={renderItem}
                     scrollEventThrottle={4}
                     showsVerticalScrollIndicator={false}
                 />

@@ -32,8 +32,7 @@ const DeleteModal = ({ handleClose, onPressDelete, open, title }: Props) => {
 
     const [display, setDisplay] = React.useState<boolean>(open);
 
-    const visible = useSharedValue(open ? 1 : 0);
-
+    const visible = useSharedValue(display ? 1 : 0);
     const style = useAnimatedStyle(() => {
         const scale = interpolate(visible.value, [0, 1], [1.2, 1]);
         return {

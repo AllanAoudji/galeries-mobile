@@ -18,6 +18,7 @@ const List = ({ children, handlePressOpenSheet }: Props) => {
         [children]
     );
 
+    // TODO: Need to restyle
     const addPicture = React.useMemo(
         () =>
             children.length < 6 && (
