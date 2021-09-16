@@ -1,68 +1,95 @@
 import { AxiosError } from 'axios';
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import normalizeData from '#helpers/normalizeData';
+import normalizeFrame from '#helpers/normalizeFrame';
 import request from '#helpers/request';
-import { resetGaleries, setGaleries, setNotification } from '#store/actions';
+import {
+    setFrames,
+    setGaleriePictures,
+    setGaleries,
+    setNotification,
+} from '#store/actions';
+import { currentGalerieSelector } from '#store/selectors';
 
 type Values = {
     description: string;
-    name: string;
 };
 
-const usePostGalerie = () => {
+const usePostFrame = () => {
     const dispatch = useDispatch();
+
+    const currentGalerie = useSelector(currentGalerieSelector);
 
     const [loading, setLoading] = React.useState<boolean>(false);
     const [serverErrors, setServerErrors] = React.useState<Values>({
         description: '',
-        name: '',
     });
 
-    const postGalerie = React.useCallback(
-        async (
-            values: Values,
-            successCallback?: (galerie: Store.Models.Galerie) => void
+    const postFrame = React.useCallback(
+        (
+            { description }: Values,
+            picturesUri: string[],
+            successCallback?: (frame?: Store.Models.Frame) => void
         ) => {
-            if (!loading) {
+            if (currentGalerie && !loading && picturesUri.length) {
                 setLoading(true);
+                const formData = new FormData();
+                picturesUri.forEach((pictureUri) => {
+                    formData.append('image', {
+                        // @ts-ignore
+                        uri: pictureUri,
+                        // TODO: Should transform pictureUri to 'image/...' and check if all files are images.
+                        type: 'image/jpg',
+                        name: pictureUri,
+                    });
+                });
+                if (description !== '')
+                    formData.append('description', description);
                 request({
-                    body: values,
+                    body: formData,
+                    contentType: 'multipart/form-data',
                     method: 'POST',
-                    url: END_POINT.GALERIES,
+                    url: END_POINT.GALERIE_FRAMES(currentGalerie.id),
                 })
                     .then((res) => {
                         if (
-                            res.data &&
-                            res.data.data.galerie &&
-                            typeof res.data.data.galerie === 'object'
+                            res.data.data &&
+                            res.data.data.frame &&
+                            typeof res.data.data.frame === 'object'
                         ) {
-                            const normalizedGalerie: Store.Models.Galerie = {
-                                ...res.data.data.galerie,
-                                frames: {
-                                    allIds: [],
-                                    end: true,
-                                    status: 'SUCCESS',
-                                },
-                                users: {
-                                    allIds: [],
-                                    end: true,
-                                    status: 'SUCCESS',
-                                },
-                            };
-                            const normalizedData =
-                                normalizeData(normalizedGalerie);
+                            const { galeriePicturesById, normalizedFrames } =
+                                normalizeFrame(res.data.data.frame);
                             dispatch(
-                                setGaleries({
-                                    data: normalizedData,
-                                    meta: {},
+                                setGaleriePictures({
+                                    byId: galeriePicturesById,
                                 })
                             );
-                            dispatch(resetGaleries());
+                            const normalized = normalizeData(normalizedFrames);
+                            dispatch(setFrames({ data: normalized }));
+                            dispatch(
+                                setGaleries({
+                                    data: {
+                                        byId: {
+                                            [currentGalerie.id]: {
+                                                ...currentGalerie,
+                                                frames: {
+                                                    ...currentGalerie.frames,
+                                                    allIds: [
+                                                        ...normalized.allIds,
+                                                        ...currentGalerie.frames
+                                                            .allIds,
+                                                    ],
+                                                },
+                                            },
+                                        },
+                                    },
+                                })
+                            );
                             if (successCallback)
-                                successCallback(normalizedGalerie);
+                                successCallback(normalizedFrames[0]);
                         } else {
                             dispatch(
                                 setNotification({
@@ -75,16 +102,11 @@ const usePostGalerie = () => {
                     .catch((err: AxiosError) => {
                         if (err.response && err.response.data.errors) {
                             if (typeof err.response.data.errors === 'object') {
-                                if (
-                                    err.response.data.errors.name ||
-                                    err.response.data.errors.description
-                                ) {
+                                if (err.response.data.errors.description) {
                                     setServerErrors({
                                         description:
                                             err.response.data.errors
-                                                .description || '',
-                                        name:
-                                            err.response.data.errors.name || '',
+                                                .description,
                                     });
                                 } else {
                                     dispatch(
@@ -132,12 +154,7 @@ const usePostGalerie = () => {
         }));
     }, []);
 
-    return {
-        loading,
-        postGalerie,
-        resetServerErrorField,
-        serverErrors,
-    };
+    return { loading, postFrame, resetServerErrorField, serverErrors };
 };
 
-export default usePostGalerie;
+export default usePostFrame;

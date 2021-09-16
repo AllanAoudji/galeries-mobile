@@ -1,26 +1,11 @@
-import { AxiosError } from 'axios';
 import { useFormik } from 'formik';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { CustomButton, CustomTextInput, FormContainer } from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
-import {
-    END_POINT,
-    ERROR_MESSAGE,
-    FIELD_REQUIREMENT,
-} from '#helpers/constants';
-import normalizeData from '#helpers/normalizeData';
-import normalizeFrame from '#helpers/normalizeFrame';
-import request from '#helpers/request';
+import { FIELD_REQUIREMENT } from '#helpers/constants';
 import { frameDescriptionSchema } from '#helpers/schemas';
-import {
-    setFrames,
-    setGaleriePictures,
-    setGaleries,
-    setNotification,
-} from '#store/actions';
-import { currentGalerieSelector } from '#store/selectors';
+import { usePostFrame } from '#hooks';
 
 import { ButtonsContainer, Container } from './styles';
 
@@ -33,134 +18,17 @@ const initialValues = {
 };
 
 const AddDescriptionScreen = ({ navigation }: Props) => {
-    const dispatch = useDispatch();
-    const currentGalerie = useSelector(currentGalerieSelector);
+    const { loading, postFrame, resetServerErrorField, serverErrors } =
+        usePostFrame();
 
     const { picturesUri } = React.useContext(CreateFrameContext);
 
     const formik = useFormik({
-        onSubmit: ({ description }) => {
-            if (currentGalerie && !loading && picturesUri.length) {
-                setLoading(true);
-                const formData = new FormData();
-                picturesUri.forEach((pictureUri) => {
-                    formData.append('image', {
-                        // @ts-ignore
-                        uri: pictureUri,
-                        // TODO: Should transform pictureUri to 'image/...' and check if all files are images.
-                        type: 'image/jpg',
-                        name: pictureUri,
-                    });
-                });
-                if (description !== '')
-                    formData.append('description', description);
-                request({
-                    body: formData,
-                    contentType: 'multipart/form-data',
-                    method: 'POST',
-                    url: END_POINT.GALERIE_FRAMES(currentGalerie.id),
-                })
-                    .then((res) => {
-                        if (
-                            res.data.data &&
-                            res.data.data.frame &&
-                            typeof res.data.data.frame === 'object'
-                        ) {
-                            const { galeriePicturesById, normalizedFrames } =
-                                normalizeFrame(res.data.data.frame);
-                            dispatch(
-                                setGaleriePictures({
-                                    byId: galeriePicturesById,
-                                })
-                            );
-                            const { allIds, byId } =
-                                normalizeData(normalizedFrames);
-                            dispatch(setFrames({ data: { allIds, byId } }));
-                            dispatch(
-                                setGaleries({
-                                    data: {
-                                        byId: {
-                                            [currentGalerie.id]: {
-                                                ...currentGalerie,
-                                                frames: {
-                                                    ...currentGalerie.frames,
-                                                    allIds: [
-                                                        ...allIds,
-                                                        ...currentGalerie.frames
-                                                            .allIds,
-                                                    ],
-                                                },
-                                            },
-                                        },
-                                    },
-                                })
-                            );
-                            if (navigation.getParent() !== undefined) {
-                                // @ts-ignore
-                                navigation.getParent().navigate('Navigation', {
-                                    screen: 'Main',
-                                    params: { screen: 'Galerie' },
-                                });
-                            }
-                        }
-                    })
-                    .catch((err: AxiosError) => {
-                        if (err.response && err.response.data.errors) {
-                            if (typeof err.response.data.errors === 'object') {
-                                if (err.response.data.errors.description) {
-                                    setServerErrors({
-                                        description:
-                                            err.response.data.errors
-                                                .description,
-                                    });
-                                } else {
-                                    dispatch(
-                                        setNotification({
-                                            text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                            status: 'error',
-                                        })
-                                    );
-                                }
-                            } else if (
-                                typeof err.response.data.errors === 'string'
-                            ) {
-                                dispatch(
-                                    setNotification({
-                                        text: err.response.data.errors,
-                                        status: 'error',
-                                    })
-                                );
-                            } else {
-                                dispatch(
-                                    setNotification({
-                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                        status: 'error',
-                                    })
-                                );
-                            }
-                        } else {
-                            dispatch(
-                                setNotification({
-                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                    status: 'error',
-                                })
-                            );
-                        }
-                    })
-                    .finally(() => setLoading(false));
-            }
-        },
+        onSubmit: (values) => postFrame(values, picturesUri, successCallback),
         initialValues,
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: frameDescriptionSchema,
-    });
-
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const [serverErrors, setServerErrors] = React.useState<
-        typeof initialValues
-    >({
-        description: '',
     });
 
     const descriptionError = React.useMemo(
@@ -176,16 +44,22 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
     }, [formik.submitCount, formik.errors, serverErrors]);
 
     const handleChangeDescriptionText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            description: '',
-        }));
+        resetServerErrorField('description');
         formik.setFieldError('description', '');
         formik.setFieldValue('description', e);
     }, []);
     const handleReturn = React.useCallback(() => {
         if (!loading) navigation.navigate('AddPictures');
     }, [navigation]);
+    const successCallback = React.useCallback(() => {
+        if (navigation.getParent() !== undefined) {
+            // @ts-ignore
+            navigation.getParent().navigate('Navigation', {
+                screen: 'Main',
+                params: { screen: 'Galerie' },
+            });
+        }
+    }, []);
 
     return (
         <FormContainer>
