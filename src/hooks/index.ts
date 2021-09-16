@@ -6,5 +6,6 @@ export { default as useHideHeaderOnScroll } from './useHideHeaderOnScroll';
 export { default as useKeyboard } from './useKeyboard';
 export { default as useLike } from './useLike';
 export { default as useLogin } from './useLogin';
+export { default as usePostComment } from './usePostComment';
 export { default as usePostFrame } from './usePostFrame';
 export { default as usePostGalerie } from './usePostGalerie';

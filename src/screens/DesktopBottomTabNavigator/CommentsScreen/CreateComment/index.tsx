@@ -1,5 +1,4 @@
 import { useFocusEffect } from '@react-navigation/native';
-import { AxiosError } from 'axios';
 import { useFormik } from 'formik';
 import * as React from 'react';
 import {
@@ -7,18 +6,12 @@ import {
     NativeSyntheticEvent,
     TextInputContentSizeChangeEventData,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import { Typography } from '#components';
-import {
-    END_POINT,
-    ERROR_MESSAGE,
-    FIELD_REQUIREMENT,
-} from '#helpers/constants';
+import { FIELD_REQUIREMENT } from '#helpers/constants';
 import { createCommentSchema } from '#helpers/schemas';
-import request from '#helpers/request';
-import { setComments, setFrames, setNotification } from '#store/actions';
+import { usePostComment } from '#hooks';
 
 import { Container, PostButton, TextInputStyled } from './styles';
 
@@ -35,132 +28,18 @@ const initialValues = {
 };
 
 const CreateComment = ({ frame, onLayout, scrollToTop }: Props) => {
-    const dispatch = useDispatch();
     const theme = useTheme();
 
-    const formik = useFormik({
-        onSubmit: async (values) => {
-            if (!loading) {
-                setLoading(true);
-                request({
-                    body: values,
-                    method: 'POST',
-                    url: END_POINT.COMMENTS(frame.id),
-                })
-                    .then((res) => {
-                        if (
-                            res.data.data.comment &&
-                            typeof res.data.data.comment === 'object'
-                        ) {
-                            const { id } = res.data.data.comment;
-                            const numOfComments =
-                                res.data.data.numOfComments &&
-                                typeof res.data.data.numOfComments === 'number'
-                                    ? res.data.data.numOfComments
-                                    : frame.numOfComments;
+    const { loading, postComment } = usePostComment();
 
-                            scrollToTop();
-                            dispatch(
-                                setComments({
-                                    data: {
-                                        byId: {
-                                            [id]: {
-                                                ...res.data.data.comment,
-                                                comments: {
-                                                    allIds: [],
-                                                    status: 'SUCCESS',
-                                                    end: true,
-                                                },
-                                            },
-                                        },
-                                    },
-                                })
-                            );
-                            dispatch(
-                                setFrames({
-                                    data: {
-                                        byId: {
-                                            [frame.id]: {
-                                                ...frame,
-                                                comments: {
-                                                    ...frame.comments,
-                                                    allIds: [
-                                                        id,
-                                                        ...frame.comments
-                                                            .allIds,
-                                                    ],
-                                                },
-                                                numOfComments,
-                                            },
-                                        },
-                                    },
-                                })
-                            );
-                        } else {
-                            dispatch(
-                                setNotification({
-                                    status: 'error',
-                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                })
-                            );
-                        }
-                    })
-                    .catch((err: AxiosError) => {
-                        if (err.response && err.response.data.errors) {
-                            if (typeof err.response.data.errors === 'object') {
-                                if (err.response.data.errors.body) {
-                                    dispatch(
-                                        setNotification({
-                                            status: 'error',
-                                            text: err.response.data.errors.body,
-                                        })
-                                    );
-                                } else {
-                                    setNotification({
-                                        status: 'error',
-                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                    });
-                                }
-                            } else if (
-                                typeof err.response.data.errors === 'string'
-                            ) {
-                                dispatch(
-                                    setNotification({
-                                        status: 'error',
-                                        text: err.response.data.errors,
-                                    })
-                                );
-                            } else {
-                                dispatch(
-                                    setNotification({
-                                        status: 'error',
-                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                    })
-                                );
-                            }
-                        } else {
-                            dispatch(
-                                setNotification({
-                                    status: 'error',
-                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                })
-                            );
-                        }
-                    })
-                    .finally(() => {
-                        setLoading(false);
-                        setTextInputHeight(0);
-                        formik.setValues(formik.initialValues);
-                    });
-            }
-        },
+    const formik = useFormik({
+        onSubmit: (values) => postComment(values, frame, successCallback),
         initialValues,
         validateOnBlur: false,
         validateOnChange: true,
         validationSchema: createCommentSchema,
     });
 
-    const [loading, setLoading] = React.useState<boolean>(false);
     const [textInputHeight, setTextInputHeight] = React.useState<number>(0);
 
     const disableButton = React.useMemo(() => {
@@ -188,11 +67,15 @@ const CreateComment = ({ frame, onLayout, scrollToTop }: Props) => {
             formik.handleSubmit();
         }
     }, [disableButton, loading, formik.values.body]);
+    const successCallback = React.useCallback(() => {
+        scrollToTop();
+        setTextInputHeight(0);
+        formik.setValues(formik.initialValues);
+    }, []);
 
     useFocusEffect(
         React.useCallback(() => {
             return () => {
-                setLoading(false);
                 setTextInputHeight(0);
                 formik.setFieldError('body', '');
                 formik.setFieldValue('body', '');
