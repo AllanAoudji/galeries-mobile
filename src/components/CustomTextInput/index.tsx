@@ -41,10 +41,8 @@ type Props = {
     value: string;
 };
 
-const ANIMATION_TIMING = 100;
-
 const AFTER_ANIMATION_LABEL_FONT_SIZE = 10;
-
+const ANIMATION_TIMING = 100;
 const INITIAL_CONTAINER_OPACITY = 0.5;
 const INITIAL_LABEL_CONTAINER_OPACITY = 0.5;
 const INITIAL_LABEL_CONTAINER_TOP = 21;
@@ -72,7 +70,6 @@ const CustomTextInput = ({
 
     const animatedFocus = useSharedValue(0);
     const containerOpacity = useSharedValue(INITIAL_CONTAINER_OPACITY);
-
     const containerStyle = useAnimatedStyle(
         () => ({
             opacity: containerOpacity.value,

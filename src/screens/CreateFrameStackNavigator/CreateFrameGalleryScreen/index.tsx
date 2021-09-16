@@ -30,27 +30,33 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
 
     const { getPhotos, loading, photos } = useCameraRoll();
     const { containerStyle, headerStyle, scrollHandler } =
-        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT);
+        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT, true);
     const { onLayout, size } = useComponentSize();
 
     const [firstLoad, setFirstLoad] = React.useState<boolean>(true);
 
+    const CustomButtonVariant = React.useMemo(
+        () => (!picturesUri.length ? 'stroke' : 'fill'),
+        [picturesUri]
+    );
     const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
     const showButtonLoader = React.useMemo(
         () => !firstLoad && loading,
         [firstLoad, loading]
     );
 
-    const handlePressAddPictures = React.useCallback(() => {
-        navigation.navigate('AddPictures');
-    }, [navigation]);
+    const handlePressAddPictures = React.useCallback(
+        () => navigation.navigate('AddPictures'),
+        [navigation]
+    );
     const keyExtractor = React.useCallback(
         (item: MediaLibrary.Asset) => item.uri,
         []
     );
-    const renderItem = React.useCallback(({ item }) => {
-        return <Item uri={item.uri} />;
-    }, []);
+    const renderItem = React.useCallback(
+        ({ item }) => <Item uri={item.uri} />,
+        []
+    );
 
     React.useEffect(() => {
         getPhotos();
@@ -70,7 +76,7 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
                             onPress={handlePressAddPictures}
                             small
                             title="add pictures"
-                            variant={!picturesUri.length ? 'stroke' : 'fill'}
+                            variant={CustomButtonVariant}
                         />
                     </ButtonContainer>
                     <Typography fontFamily="bold" fontSize={14}>

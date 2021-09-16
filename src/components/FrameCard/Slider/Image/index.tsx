@@ -16,18 +16,17 @@ type Props = {
 };
 
 const Image = ({ galeriePicture }: Props) => {
+    const [loaded, setLoaded] = React.useState<boolean>(false);
+
     const opacity = useSharedValue(0);
+    const style = useAnimatedStyle(() => ({ opacity: opacity.value }), []);
 
-    const style = useAnimatedStyle(
-        () => ({
-            opacity: opacity.value,
-        }),
-        []
-    );
+    const handleLoadEnd = React.useCallback(() => setLoaded(true), []);
 
-    const handleLoadEnd = React.useCallback(() => {
-        opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(200));
-    }, []);
+    React.useEffect(() => {
+        if (loaded)
+            opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(200));
+    }, [loaded]);
 
     return (
         <Container colors={galeriePicture.pendingHexes}>

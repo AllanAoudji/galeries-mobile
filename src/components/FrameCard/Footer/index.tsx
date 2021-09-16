@@ -1,20 +1,22 @@
 import moment from 'moment';
 import * as React from 'react';
-
 import { Pressable } from 'react-native';
+
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
 
 import {
     ActionNavigationContainer,
-    ButtonContainer,
+    CommentsButtonContainer,
     Container,
     DescriptionContainer,
+    LikesButtonContainer,
 } from './styles';
 
 type Props = {
     createdAt: string;
     description: string;
+    handlePressComments: () => void;
     handlePressLike: () => void;
     handlePressLikes: () => void;
     liked: boolean;
@@ -25,16 +27,24 @@ type Props = {
 const Footer = ({
     createdAt,
     description,
+    handlePressComments,
     handlePressLike,
     handlePressLikes,
     liked,
     numOfComments,
     numOfLikes,
 }: Props) => {
-    const [descriptionIsCroped, setDescriptionIsCroped] =
-        React.useState<boolean>(false);
     const [cropedDescription, setCropedDescription] =
         React.useState<string>('');
+    const [descriptionIsCroped, setDescriptionIsCroped] =
+        React.useState<boolean>(false);
+
+    const handlePressDescription = React.useCallback(() => {
+        if (description) {
+            if (descriptionIsCroped) setDescriptionIsCroped(false);
+            else handlePressComments();
+        }
+    }, [description, descriptionIsCroped]);
 
     React.useEffect(() => {
         if (description && description.length > 40) {
@@ -43,32 +53,32 @@ const Footer = ({
         }
     }, []);
 
-    const handlePressDescription = React.useCallback(() => {
-        if (descriptionIsCroped) setDescriptionIsCroped(false);
-    }, [descriptionIsCroped]);
-
     return (
         <Container>
             <ActionNavigationContainer>
-                <ButtonContainer>
+                <CommentsButtonContainer onPress={handlePressComments}>
                     <Pictogram
                         color="primary"
+                        mb="smallest"
+                        ml="smallest"
                         mr="smallest"
                         variant="comments-stroke"
                     />
                     <Typography>{numOfComments} comments</Typography>
-                </ButtonContainer>
-                <ButtonContainer>
+                </CommentsButtonContainer>
+                <LikesButtonContainer>
                     <Pressable onPress={handlePressLikes}>
                         <Typography>{numOfLikes} likes</Typography>
                     </Pressable>
                     <Pictogram
                         color="danger"
                         ml="smallest"
+                        pr="smallest"
                         onPress={handlePressLike}
+                        pb="smallest"
                         variant={liked ? 'heart-fill' : 'heart-stroke'}
                     />
-                </ButtonContainer>
+                </LikesButtonContainer>
             </ActionNavigationContainer>
             <DescriptionContainer onPress={handlePressDescription}>
                 {!!description &&

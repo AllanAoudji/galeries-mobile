@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
 import Animated from 'react-native-reanimated';
+import styled from 'styled-components/native';
 
 type Props = {
     color?: keyof Style.Colors;
@@ -15,7 +15,6 @@ const Container = styled(Animated.Text)<Props>`
     font-size: ${({ fontSize, theme }) => theme.font.sizes[fontSize || 14]};
     text-align: ${(props) => props.textAlign || 'left'};
 `;
-
 Container.defaultProps = {
     color: 'black',
     fontFamily: 'roman',

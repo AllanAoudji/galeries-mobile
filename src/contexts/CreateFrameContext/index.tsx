@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Animated, {
+    runOnJS,
     useSharedValue,
     useAnimatedReaction,
-    runOnJS,
 } from 'react-native-reanimated';
 
 export const CreateFrameContext = React.createContext<{
@@ -74,13 +74,12 @@ export const CreateFrameProvider: React.FC<{}> = ({ children }) => {
 
     useAnimatedReaction(
         () => positions.value,
-        (newPositions) => {
+        (newPositions) =>
             runOnJS(setPicturesUri)(
                 Object.entries(newPositions)
                     .sort((a, b) => (a[1] > b[1] ? 1 : -1))
                     .map((item) => item[0])
-            );
-        },
+            ),
         []
     );
 

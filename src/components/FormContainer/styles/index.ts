@@ -14,5 +14,4 @@ const InnerContainer = styled.KeyboardAvoidingView<ContainerProps>`
     margin: ${({ theme }) => `0 ${theme.spacings.normal}`};
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export { Container, InnerContainer };

@@ -158,6 +158,7 @@ declare global {
             type: string;
         };
         type Entity =
+            | '[COMMENTS]'
             | '[FRAMES]'
             | '[GALERIES]'
             | '[GALERIE PICTURES]'
@@ -184,6 +185,9 @@ declare global {
                         name: string;
                     };
                 };
+            };
+            comments: {
+                byId: { [key: string]: Store.Models.Comments };
             };
             frames: {
                 allIds: string[];
@@ -221,8 +225,31 @@ declare global {
         type Role = 'admin' | 'moderator' | 'user';
         type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
         namespace Models {
+            type Comments = {
+                autoIncrementId: string;
+                body: string;
+                comments: {
+                    allIds: string;
+                    end: boolean;
+                    previousComment?: string;
+                    status: Store.Status;
+                };
+                createdAt: string;
+                frameId: string;
+                id: string;
+                level: number;
+                numOfComments: number;
+                updatedAt: string;
+                userId: string;
+            };
             type Frame = {
                 autoIncrementId: string;
+                comments: {
+                    allIds: string[];
+                    end: boolean;
+                    previousComment?: string;
+                    status: Store.Status;
+                };
                 createdAt: string;
                 description: string;
                 galerieId: string;

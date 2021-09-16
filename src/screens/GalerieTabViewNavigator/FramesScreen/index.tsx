@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     AddButton,
     AnimatedFlatList,
+    EmptyMessage,
     FrameCard,
     FullScreenLoader,
-    Typography,
 } from '#components';
 import { GalerieTabbarScreenContainer } from '#components/Screen';
 import { GLOBAL_STYLE } from '#helpers/constants';
@@ -17,8 +17,6 @@ import {
     currentGalerieFramesSelector,
     currentGalerieFramesStatusSelector,
 } from '#store/selectors';
-
-import { TextContainer } from './styles';
 
 type Props = {
     galerie?: Store.Models.Galerie & { id: string };
@@ -41,6 +39,13 @@ const FramesScreen = ({
 
     const [isFirstFetch, setIsFirstFetch] = React.useState<boolean>(true);
 
+    const onPressComments = React.useCallback(
+        (id: string) => {
+            dispatch(setCurrentFrameId(id));
+            navigation.navigate('Comments');
+        },
+        [navigation]
+    );
     const onPressLikes = React.useCallback(
         (id: string) => {
             dispatch(setCurrentFrameId(id));
@@ -75,6 +80,7 @@ const FramesScreen = ({
                                 renderItem={({ item }) => (
                                     <FrameCard
                                         frame={item}
+                                        onPressComments={onPressComments}
                                         onPressLikes={onPressLikes}
                                     />
                                 )}
@@ -82,17 +88,10 @@ const FramesScreen = ({
                                 showsVerticalScrollIndicator={false}
                             />
                         ) : (
-                            <TextContainer paddingTop={paddingTop}>
-                                <Typography
-                                    color="primary"
-                                    fontSize={14}
-                                    fontFamily="light"
-                                    textAlign="center"
-                                >
-                                    This galerie doesn't have frame yet. Click
-                                    on the + button to post a new one
-                                </Typography>
-                            </TextContainer>
+                            <EmptyMessage
+                                pt={paddingTop}
+                                text="This galerie doesn't have frame yet. Click on the + button to post a new one"
+                            />
                         )}
                         <AddButton
                             bottom="largest"

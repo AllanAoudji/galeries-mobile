@@ -11,6 +11,7 @@ import {
 } from 'react-native-reanimated';
 
 import { ANIMATIONS } from '#helpers/constants';
+import { useComponentSize } from '#hooks';
 
 import {
     Container,
@@ -23,43 +24,38 @@ import {
 
 export const BottomSheetContext = React.createContext<{
     closeBottomSheet: (callback?: () => void) => void;
-    fadeOutBottomSheet: (callback?: () => void) => void;
     openBottomSheet: (component: React.ReactNode) => () => void;
     resetBottomSheet: () => void;
 }>({
     closeBottomSheet: () => {},
-    fadeOutBottomSheet: () => {},
     openBottomSheet: () => () => {},
     resetBottomSheet: () => {},
 });
 
 export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     const dimension = useWindowDimensions();
+    const { onLayout, size } = useComponentSize();
 
-    const containerTop = useSharedValue(dimension.height);
-    const opacity = useSharedValue(1);
-    const overLayBackgroundColor = useSharedValue(0);
+    const containerValue = useSharedValue(dimension.height);
+    const overLayValue = useSharedValue(0);
 
     const overLayStyle = useAnimatedStyle(() => {
         const backgroundColor = interpolateColor(
-            overLayBackgroundColor.value,
+            overLayValue.value,
             [0, 1],
             ['rgba(0,0,0,0)', 'rgba(0,0,0,0.4)']
         );
         return {
             backgroundColor,
-            opacity: opacity.value,
+            opacity: overLayValue.value,
         };
     });
-    const containerStyle = useAnimatedStyle(() => {
-        return {
-            top: containerTop.value,
-        };
-    });
+    const containerStyle = useAnimatedStyle(() => ({
+        top: containerValue.value,
+    }));
 
-    const [containerHeight, setContainerHeight] = React.useState<number | null>(
-        null
-    );
+    const [bottomSheetIsOpen, setBottomSheetIsOpen] =
+        React.useState<boolean>(false);
     const [content, setContent] = React.useState<React.ReactNode | null>(null);
     const [newContent, setNewContent] = React.useState<React.ReactNode | null>(
         null
@@ -67,105 +63,19 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     const [show, setShow] = React.useState<boolean>(false);
     const [switchContent, setSwitchContent] = React.useState<boolean>(false);
 
-    // Reset show value on mount/unmount
-    React.useEffect(() => {
-        setShow(false);
-        return () => {
-            setShow(false);
-        };
-    }, []);
-
-    // Show overlay when 'show' state is true.
-    // Reset all sharedValue/value when show === false.
-    React.useEffect(() => {
-        let BackHandlerListerner: any;
-        if (show) {
-            overLayBackgroundColor.value = withTiming(
-                1,
-                ANIMATIONS.TIMING_CONFIG()
-            );
-            BackHandlerListerner = BackHandler.addEventListener(
-                'hardwareBackPress',
-                () => {
-                    if (show) {
-                        setShow(false);
-                        return true;
-                    }
-                    return false;
-                }
-            );
-        } else {
-            resetBottomSheet();
-            if (BackHandlerListerner) {
-                BackHandlerListerner.remove();
-            }
-        }
-        return () => {
-            if (BackHandlerListerner) {
-                BackHandlerListerner.remove();
-            }
-        };
-    }, [show]);
-
-    // Display sheet content
-    // or start the switch animation between 2 content.
-    React.useEffect(() => {
-        if (!!newContent && content !== newContent) {
-            if (!content) {
-                setContent(newContent);
-                setNewContent(null);
-            } else {
-                containerTop.value = withTiming(
-                    containerHeight || dimension.height,
-                    ANIMATIONS.TIMING_CONFIG(),
-                    (isFinished) => {
-                        if (isFinished) {
-                            runOnJS(setSwitchContent)(true);
-                        }
-                    }
-                );
-            }
-        }
-        if (content && !newContent) {
-            containerTop.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
-        }
-    }, [newContent, content]);
-
-    // Display new content after Switch animation.
-    React.useEffect(() => {
-        if (switchContent) {
-            setContent(newContent);
-            setNewContent(null);
-            setSwitchContent(false);
-        }
-    }, [switchContent]);
-
     const closeBottomSheet = React.useCallback((callback?: () => void) => {
-        overLayBackgroundColor.value = withTiming(
-            0,
-            ANIMATIONS.TIMING_CONFIG(800),
-            (isFinished) => {
-                if (isFinished) runOnJS(setShow)(false);
-            }
-        );
-        containerTop.value = withTiming(
+        containerValue.value = withTiming(
             dimension.height,
-            ANIMATIONS.TIMING_CONFIG(800),
+            ANIMATIONS.TIMING_CONFIG(1000)
+        );
+        overLayValue.value = withTiming(
+            0,
+            ANIMATIONS.TIMING_CONFIG(200),
             (isFinished) => {
                 if (isFinished) {
+                    runOnJS(setBottomSheetIsOpen)(false);
                     runOnJS(setContent)(null);
                     runOnJS(setNewContent)(null);
-                    if (callback) runOnJS(callback)();
-                }
-            }
-        );
-    }, []);
-    const fadeOutBottomSheet = React.useCallback((callback?: () => void) => {
-        opacity.value = withTiming(
-            0,
-            ANIMATIONS.TIMING_CONFIG(),
-            (isFinish) => {
-                if (isFinish) {
                     runOnJS(setShow)(false);
                     if (callback) runOnJS(callback)();
                 }
@@ -182,35 +92,97 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
         [show]
     );
     const resetBottomSheet = React.useCallback(() => {
+        setBottomSheetIsOpen(false);
         setContent(null);
         setNewContent(null);
-        overLayBackgroundColor.value = 0;
-        containerTop.value = dimension.height;
-        opacity.value = 1;
+        containerValue.value = dimension.height;
+        overLayValue.value = 0;
     }, []);
+
+    // Reset show value on mount/unmount
+    React.useEffect(() => {
+        setShow(false);
+        return () => setShow(false);
+    }, []);
+
+    // Show overlay when 'show' state is true.
+    // Reset all sharedValue/value when show === false.
+    React.useEffect(() => {
+        let BackHandlerListerner: any;
+        if (show) {
+            overLayValue.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
+            BackHandlerListerner = BackHandler.addEventListener(
+                'hardwareBackPress',
+                () => {
+                    if (show) {
+                        setShow(false);
+                        return true;
+                    }
+                    return false;
+                }
+            );
+        } else {
+            resetBottomSheet();
+            if (BackHandlerListerner) BackHandlerListerner.remove();
+        }
+        return () => {
+            if (BackHandlerListerner) BackHandlerListerner.remove();
+        };
+    }, [show]);
+
+    // Display sheet content
+    // or start the switch animation between 2 content.
+    React.useEffect(() => {
+        if (!!newContent && content !== newContent) {
+            if (!content) {
+                setContent(newContent);
+                setNewContent(null);
+            } else
+                containerValue.value = withTiming(
+                    size ? size.height : dimension.height,
+                    ANIMATIONS.TIMING_CONFIG(),
+                    (isFinished) => {
+                        if (isFinished) {
+                            runOnJS(setSwitchContent)(true);
+                        }
+                    }
+                );
+        }
+        if (content && !newContent && !bottomSheetIsOpen) {
+            setBottomSheetIsOpen(true);
+            containerValue.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
+        }
+    }, [bottomSheetIsOpen, newContent, content, size]);
+
+    // Display new content after Switch animation.
+    React.useEffect(() => {
+        if (switchContent) {
+            setBottomSheetIsOpen(false);
+            setContent(newContent);
+            setNewContent(null);
+            setSwitchContent(false);
+        }
+    }, [switchContent]);
 
     const gestureHandler = useAnimatedGestureHandler({
         onStart(_, ctx: { startTop: number }) {
-            ctx.startTop = containerTop.value;
+            ctx.startTop = containerValue.value;
         },
         onActive(e, ctx) {
             if (
                 e.translationY + ctx.startTop > 0 &&
                 e.translationY + ctx.startTop <=
-                    (containerHeight || dimension.height)
-            ) {
-                containerTop.value = e.translationY + ctx.startTop;
-            }
+                    (size ? size.height : dimension.height)
+            )
+                containerValue.value = e.translationY + ctx.startTop;
         },
         onEnd() {
-            if (
-                !containerHeight ||
-                containerTop.value < (containerHeight * 2) / 5
-            ) {
-                containerTop.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
-            } else {
-                runOnJS(closeBottomSheet)();
-            }
+            if (!size || containerValue.value < (size.height * 2) / 5)
+                containerValue.value = withTiming(
+                    0,
+                    ANIMATIONS.TIMING_CONFIG()
+                );
+            else runOnJS(closeBottomSheet)();
         },
     });
 
@@ -218,7 +190,6 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
         <BottomSheetContext.Provider
             value={{
                 closeBottomSheet,
-                fadeOutBottomSheet,
                 openBottomSheet,
                 resetBottomSheet,
             }}
@@ -234,13 +205,7 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
                             <PressableOutside
                                 onPress={() => closeBottomSheet()}
                             />
-                            <InnerContainer
-                                onLayout={(e) => {
-                                    setContainerHeight(
-                                        e.nativeEvent.layout.height
-                                    );
-                                }}
-                            >
+                            <InnerContainer onLayout={onLayout}>
                                 <HandleContainer>
                                     <Handle />
                                 </HandleContainer>

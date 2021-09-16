@@ -8,8 +8,8 @@ const useComponentSize = () => {
     } | null>(null);
 
     const onLayout = React.useCallback((event: LayoutChangeEvent) => {
-        const { width, height } = event.nativeEvent.layout;
-        setSize({ width, height });
+        const { height, width } = event.nativeEvent.layout;
+        setSize({ height, width });
     }, []);
 
     return { onLayout, size };

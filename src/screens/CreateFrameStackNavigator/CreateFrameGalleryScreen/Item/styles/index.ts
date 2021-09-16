@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 
 type ImageContainerProps = {
-    size: number;
     picked: boolean;
+    size: number;
 };
 type ImageStyledProps = {
     picked: boolean;
@@ -19,9 +19,9 @@ const ImageContainer = styled.Pressable<ImageContainerProps>`
 const ImageStyled = styled.Image<ImageStyledProps>`
     background-color: ${({ theme }) => theme.colors['secondary-light']};
     bottom: 0;
-    position: absolute;
-    opacity: ${({ picked }) => (picked ? 0.6 : 1)};
     left: 0;
+    opacity: ${({ picked }) => (picked ? 0.6 : 1)};
+    position: absolute;
     right: 0;
     top: 0;
 `;

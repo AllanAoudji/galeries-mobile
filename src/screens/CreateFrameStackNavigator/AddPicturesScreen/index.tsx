@@ -34,7 +34,7 @@ type Props = {
 const AddPicturesScreen = ({ navigation }: Props) => {
     const theme = useTheme();
 
-    const { fadeOutBottomSheet, openBottomSheet } =
+    const { closeBottomSheet, openBottomSheet } =
         React.useContext(BottomSheetContext);
     const { picturesUri, removePictures } =
         React.useContext(CreateFrameContext);
@@ -51,14 +51,18 @@ const AddPicturesScreen = ({ navigation }: Props) => {
         [picturesUri]
     );
 
-    const handleCloseBackModal = React.useCallback(() => {
-        setOpenBackModal(false);
-    }, []);
+    const handleCloseBackModal = React.useCallback(
+        () => setOpenBackModal(false),
+        []
+    );
     const handleCloseDeleteModal = React.useCallback(() => {
         setOpenDeleteModal(false);
         setPictureToDelete(null);
     }, []);
-    const handleCloseWithPictures = React.useCallback(() => {
+    const handleDeletePicture = React.useCallback(() => {
+        if (pictureToDelete) removePictures(pictureToDelete);
+    }, [pictureToDelete, removePictures]);
+    const handleGoBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else {
             // @ts-ignore
@@ -68,32 +72,27 @@ const AddPicturesScreen = ({ navigation }: Props) => {
             });
         }
     }, [navigation]);
-    const handleDeletePicture = React.useCallback(() => {
-        if (pictureToDelete) removePictures(pictureToDelete);
-    }, [pictureToDelete, removePictures]);
     const handleNavigateCamera = React.useCallback(() => {
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             if (status === 'granted') {
-                fadeOutBottomSheet();
+                closeBottomSheet();
                 navigation.navigate('CreateFrameCamera');
             }
         })();
     }, []);
     const handleNavigateDescription = React.useCallback(() => {
-        if (picturesUri.length > 0) {
-            navigation.navigate('AddDescription');
-        }
+        if (picturesUri.length > 0) navigation.navigate('AddDescription');
     }, [picturesUri]);
     const handleNavigateGallery = React.useCallback(() => {
         (async () => {
             const { status } = await MediaLibrary.requestPermissionsAsync();
-            if (status === 'granted') {
-                fadeOutBottomSheet();
-                navigation.navigate('CreateFrameGallery');
-            }
+            if (status === 'granted')
+                closeBottomSheet(() =>
+                    navigation.navigate('CreateFrameGallery')
+                );
         })();
-    }, [fadeOutBottomSheet, navigation]);
+    }, [closeBottomSheet, navigation]);
     const handleOpenDeleteModal = React.useCallback((id: string) => {
         setOpenDeleteModal(true);
         setPictureToDelete(id);
@@ -122,18 +121,18 @@ const AddPicturesScreen = ({ navigation }: Props) => {
     ]);
     const handleReturn = React.useCallback(() => {
         if (picturesUri.length) setOpenBackModal(true);
-        else handleCloseWithPictures();
-    }, [handleCloseWithPictures, picturesUri, setOpenBackModal]);
+        else handleGoBack();
+    }, [handleGoBack, picturesUri, setOpenBackModal]);
 
     return (
         <Container colors={[theme.colors.tertiary, theme.colors.primary]}>
-            <ReturnButtonContainer currentHeight={StatusBar.currentHeight}>
+            <ReturnButtonContainer paddingTop={StatusBar.currentHeight}>
                 <Pictogram
                     color="secondary-light"
                     height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
+                    onPress={handleReturn}
                     pl="small"
                     pr="small"
-                    onPress={handleReturn}
                     variant="arrow-left"
                 />
             </ReturnButtonContainer>
@@ -159,9 +158,9 @@ const AddPicturesScreen = ({ navigation }: Props) => {
                     {picturesUri.map((pictureUri) => (
                         <Tile
                             id={pictureUri}
+                            key={pictureUri}
                             onLongPress={handleOpenDeleteModal}
                             uri={pictureUri}
-                            key={pictureUri}
                         />
                     ))}
                 </List>
@@ -186,7 +185,7 @@ const AddPicturesScreen = ({ navigation }: Props) => {
             />
             <DeleteModal
                 handleClose={handleCloseBackModal}
-                onPressDelete={handleCloseWithPictures}
+                onPressDelete={handleGoBack}
                 open={openBackModal}
                 title="Are you sure to delete this image?"
             />

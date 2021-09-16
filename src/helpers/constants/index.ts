@@ -51,6 +51,7 @@ export const DRAG_AND_DROP_UTILS = {
 };
 
 export const END_POINT = {
+    COMMENTS: (id: string) => `/frames/${id}/comments/`,
     FORGOT_PASSWORD: '/users/password/',
     FRAMES: `/frames/`,
     GALERIE: (id: string) => `/galeries/${id}/`,
@@ -82,6 +83,8 @@ export const ERROR_MESSAGE = {
 };
 
 export const FIELD_REQUIREMENT = {
+    COMMENT_MAX_LENGTH: 200,
+    COMMENT_MIN_LENGTH: 1,
     FRAME_DESCRIPTION_MAX_LENGTH: 200,
     GALERIE_DESCRIPTION_MAX_LENGTH: 200,
     GALERIE_NAME_MAX_LENGTH: 30,

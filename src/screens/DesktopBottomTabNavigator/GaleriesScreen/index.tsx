@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import * as React from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, ListRenderItemInfo } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { withTiming } from 'react-native-reanimated';
 
@@ -9,7 +9,7 @@ import {
     BottomLoader,
     DefaultHeader,
     FullScreenLoader,
-    GalerieModal,
+    GalerieCard,
     SearchBar,
 } from '#components';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
@@ -24,13 +24,19 @@ import {
 
 import { Container, Header, SearchBarContainer } from './styles';
 
+const renderItem = ({ item }: ListRenderItemInfo<Store.Models.Galerie>) => (
+    <GalerieCard galerie={item} />
+);
+
 const GaleriesScreen = () => {
+    const dispatch = useDispatch();
+
     const focus = useIsFocused();
+
     const { onLayout, size } = useComponentSize();
     const { containerStyle, headerStyle, scrollHandler, translateY } =
-        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT);
+        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT, true);
 
-    const dispatch = useDispatch();
     const filtersGaleriesName = useSelector(filtersGaleriesNameSelector);
     const galeries = useSelector(galeriesSelector);
     const galeriesEnd = useSelector(galeriesEndSelector);
@@ -67,9 +73,6 @@ const GaleriesScreen = () => {
     const onScrollBeginDrag = React.useCallback(() => Keyboard.dismiss(), []);
     const onStopTyping = React.useCallback(() => {
         setSearchFinished(true);
-    }, []);
-    const renderItem = React.useCallback(({ item }) => {
-        return <GalerieModal galerie={item} />;
     }, []);
 
     // Fetch galeries

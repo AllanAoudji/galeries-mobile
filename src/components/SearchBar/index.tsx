@@ -5,6 +5,7 @@ import Pictogram from '#components/Pictogram';
 import { Container, PictogramContainer, TextInputStyled } from './styles';
 
 type Props = {
+    maxLength?: number;
     mb?: keyof Style.Spacings;
     ml?: keyof Style.Spacings;
     mr?: keyof Style.Spacings;
@@ -19,6 +20,7 @@ type Props = {
 const DELAY = 1000;
 
 const SearchBar = ({
+    maxLength = 50,
     mb,
     ml,
     mr,
@@ -54,7 +56,7 @@ const SearchBar = ({
                 <Pictogram size="small" variant="search" />
             </PictogramContainer>
             <TextInputStyled
-                maxLength={50}
+                maxLength={maxLength}
                 onFocus={onFocus}
                 onChangeText={handleChangeText}
                 value={value}

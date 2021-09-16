@@ -3,7 +3,6 @@ import {
     NativeScrollEvent,
     NativeSyntheticEvent,
     useWindowDimensions,
-    View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -31,7 +30,8 @@ const Slider = ({ galeriePictures }: Props) => {
     );
 
     return (
-        <View>
+        // TODO: No need ScrollView if galeriePictures.length === 1
+        <>
             <ScrollView
                 decelerationRate="fast"
                 disableIntervalMomentum={true}
@@ -56,7 +56,7 @@ const Slider = ({ galeriePictures }: Props) => {
                         />
                     ))}
             </DotsContainer>
-        </View>
+        </>
     );
 };
 

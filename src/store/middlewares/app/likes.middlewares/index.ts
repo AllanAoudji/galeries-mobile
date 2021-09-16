@@ -1,16 +1,19 @@
 import { Middleware } from 'redux';
+
+import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
+import normalizeData from '#helpers/normalizeData';
+import uniqueArray from '#helpers/uniqueArray';
 import {
-    apiRequest,
     API_SUCCESS,
     LIKES,
     LIKES_FETCH,
+    apiRequest,
     setFrames,
     setLikes,
     setNotification,
 } from '#store/actions';
-import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
-import normalizeData from '#helpers/normalizeData';
-import uniqueArray from '#helpers/uniqueArray';
+
+// TODO: errorLikes
 
 const fetchLikes: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

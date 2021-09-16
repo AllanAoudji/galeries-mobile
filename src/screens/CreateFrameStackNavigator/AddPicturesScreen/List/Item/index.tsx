@@ -34,6 +34,16 @@ const Item: React.FC<Props> = ({ children, id }) => {
 
     const translateX = useSharedValue(position.x);
     const translateY = useSharedValue(position.y);
+    const style = useAnimatedStyle(() => {
+        const zIndex = isGestureActive.value ? 100 : 0;
+        return {
+            transform: [
+                { translateX: translateX.value },
+                { translateY: translateY.value },
+            ],
+            zIndex,
+        };
+    }, []);
 
     useAnimatedReaction(
         () => positions.value[id],
@@ -86,17 +96,6 @@ const Item: React.FC<Props> = ({ children, id }) => {
             );
         },
     });
-
-    const style = useAnimatedStyle(() => {
-        const zIndex = isGestureActive.value ? 100 : 0;
-        return {
-            transform: [
-                { translateX: translateX.value },
-                { translateY: translateY.value },
-            ],
-            zIndex,
-        };
-    }, []);
 
     return (
         <Container style={style}>

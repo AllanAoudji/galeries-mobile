@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { StatusBar } from 'react-native';
 import {
     interpolate,
@@ -8,7 +9,10 @@ import {
 
 import clamp from '#helpers/clamp';
 
-const useHideHeaderOnScroll = (headerHeight: number) => {
+const useHideHeaderOnScroll = (
+    headerHeight: number,
+    addStatusBar?: boolean
+) => {
     const translateY = useSharedValue(0);
 
     const scrollHandler = useAnimatedScrollHandler({
@@ -22,11 +26,16 @@ const useHideHeaderOnScroll = (headerHeight: number) => {
         },
     });
 
+    const statusBar = React.useMemo(
+        () => (addStatusBar ? StatusBar.currentHeight || 0 : 0),
+        [addStatusBar]
+    );
+
     const containerStyle = useAnimatedStyle(() => {
         const transform = interpolate(
             translateY.value,
-            [0, headerHeight + (StatusBar.currentHeight || 0)],
-            [0, -(headerHeight - (StatusBar.currentHeight || 0))]
+            [0, headerHeight],
+            [0, -(headerHeight - statusBar)]
         );
         return {
             transform: [{ translateY: transform }],

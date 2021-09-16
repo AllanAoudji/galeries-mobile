@@ -2,7 +2,7 @@ import { Camera } from 'expo-camera';
 import styled from 'styled-components/native';
 
 type BackButtonContainerProps = {
-    currentHeight?: number;
+    paddingTop?: number;
 };
 type CameraStyledProps = {
     margins: number;
@@ -22,9 +22,8 @@ const ActionsContainer = styled.View`
 `;
 const BackButtonContainer = styled.Pressable<BackButtonContainerProps>`
     left: 0;
+    padding-top: ${({ paddingTop }) => (paddingTop ? `${paddingTop}px` : 0)};
     position: absolute;
-    padding-top: ${({ currentHeight }) =>
-        currentHeight ? `${currentHeight}px` : 0};
     top: 0;
 `;
 const BottomContainer = styled.View`
@@ -70,6 +69,7 @@ const SavePicturesButton = styled.Pressable`
     right: 0;
     top: 0;
 `;
+// TODO: Here need to center
 const SwitchFlashModeButtonContainer = styled.Pressable`
     padding: ${({ theme }) => theme.spacings.small};
     position: absolute;

@@ -1,5 +1,6 @@
-export * from './api.actions';
 export * from './UIStates.actions';
+export * from './api.actions';
+export * from './comments.actions';
 export * from './frames.actions';
 export * from './galeries.actions';
 export * from './galeriePictures.actions';

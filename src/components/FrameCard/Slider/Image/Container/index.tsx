@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { useWindowDimensions } from 'react-native';
 
 import { LinearGradiantContainer, ViewContainer } from './styles';
@@ -33,7 +32,7 @@ const Container: React.FC<Props> = ({ children, colors }) => {
                 {children}
             </LinearGradiantContainer>
         );
-    }, [dimension, colors]);
+    }, [colors, dimension]);
 
     return imageContainer;
 };

@@ -9,33 +9,21 @@ import {
 } from 'react-native-reanimated';
 import { useTheme } from 'styled-components/native';
 
-import BottomSheetButton from '#components/BottomSheetButton';
-import Pictogram from '#components/Pictogram';
+import { BottomSheetButton, Pictogram } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
-
-import { Container, IconContainer, PictogramContainer } from './styles';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 import { useKeyboard } from '#hooks';
+
+import { Container, IconContainer, PictogramContainer } from './styles';
 
 const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     const { keyboardShown } = useKeyboard();
     const theme = useTheme();
-    const { fadeOutBottomSheet, openBottomSheet } =
+
+    const { closeBottomSheet, openBottomSheet } =
         React.useContext(BottomSheetContext);
 
     const bottom = useSharedValue(0);
-
-    React.useEffect(() => {
-        if (keyboardShown) {
-            bottom.value = withTiming(
-                -GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-                ANIMATIONS.TIMING_CONFIG()
-            );
-        } else {
-            bottom.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
-        }
-    }, [keyboardShown]);
-
     const style = useAnimatedStyle(() => {
         return {
             bottom: bottom.value,
@@ -46,24 +34,52 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         () => state.routes[state.index].name,
         [state.index]
     );
+    const galeriesVariant = React.useMemo(
+        () =>
+            currentRouteName === 'Galeries'
+                ? 'galeries-fill'
+                : 'galeries-stroke',
+        [currentRouteName]
+    );
+    const homeVariant = React.useMemo(
+        () => (currentRouteName === 'Home' ? 'home-fill' : 'home-stroke'),
+        [currentRouteName]
+    );
+    const notificationsvariant = React.useMemo(
+        () =>
+            currentRouteName === 'Notifications'
+                ? 'heart-fill'
+                : 'heart-stroke',
+        [currentRouteName]
+    );
+    const profileVariant = React.useMemo(
+        () =>
+            currentRouteName === 'Profile' ? 'profile-fill' : 'profile-stroke',
+        [currentRouteName]
+    );
+    const showTabBar = React.useMemo(
+        () => currentRouteName === 'Comments' || currentRouteName === 'Likes',
+        [currentRouteName]
+    );
 
     const handleCreateGaleriePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else {
-            fadeOutBottomSheet();
-            if (navigation.getParent() !== undefined) {
-                // @ts-ignore
-                navigation.getParent().navigate('CreateGalerie');
-            }
+            closeBottomSheet(() => {
+                if (navigation.getParent() !== undefined) {
+                    // @ts-ignore
+                    navigation.getParent().navigate('CreateGalerie');
+                }
+            });
         }
-    }, [navigation, keyboardShown]);
-    const handleHomePress = React.useCallback(() => {
-        if (keyboardShown) Keyboard.dismiss();
-        else navigation.navigate('Home');
     }, [navigation, keyboardShown]);
     const handleGaleriesPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Galeries');
+    }, [navigation, keyboardShown]);
+    const handleHomePress = React.useCallback(() => {
+        if (keyboardShown) Keyboard.dismiss();
+        else navigation.navigate('Home');
     }, [navigation, keyboardShown]);
     const handleNotificationsPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
@@ -87,33 +103,16 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
             ))();
     }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
 
-    const homeVariant = React.useMemo(
-        () => (currentRouteName === 'Home' ? 'home-fill' : 'home-stroke'),
-        [currentRouteName]
-    );
-    const galeriesVariant = React.useMemo(
-        () =>
-            currentRouteName === 'Galeries'
-                ? 'galeries-fill'
-                : 'galeries-stroke',
-        [currentRouteName]
-    );
-    const notificationsvariant = React.useMemo(
-        () =>
-            currentRouteName === 'Notifications'
-                ? 'heart-fill'
-                : 'heart-stroke',
-        [currentRouteName]
-    );
-    const profileVariant = React.useMemo(
-        () =>
-            currentRouteName === 'Profile' ? 'profile-fill' : 'profile-stroke',
-        [currentRouteName]
-    );
+    React.useEffect(() => {
+        if (keyboardShown)
+            bottom.value = withTiming(
+                -GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+                ANIMATIONS.TIMING_CONFIG()
+            );
+        else bottom.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
+    }, [keyboardShown]);
 
-    if (currentRouteName === 'Comments' || currentRouteName === 'Likes') {
-        return null;
-    }
+    if (showTabBar) return null;
 
     return (
         <Container style={style}>

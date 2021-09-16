@@ -14,10 +14,10 @@ type Props = {
 
 const AddButton = ({
     backgroundColor = 'primary',
-    right,
+    bottom,
     color = 'secondary-light',
     onPress,
-    bottom,
+    right,
 }: Props) => {
     const handlePress = React.useCallback(() => {
         if (onPress) onPress();

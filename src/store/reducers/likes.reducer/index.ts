@@ -2,9 +2,7 @@ import { LIKES_SET } from '#store/actions';
 
 const initialState: {
     byId: { [key: string]: Store.Models.GaleriePicture };
-} = {
-    byId: {},
-};
+} = { byId: {} };
 
 export default (state = initialState, action: Store.Action) => {
     switch (action.type) {

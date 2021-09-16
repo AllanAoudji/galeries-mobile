@@ -34,6 +34,8 @@ type Props = {
 const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
     const dimension = useWindowDimensions();
 
+    const cameraRef = React.useRef<Camera | null>(null);
+
     const [flashMode, setFlashMode] = React.useState<FlashMode>(
         Camera.Constants.FlashMode.off
     );
@@ -42,8 +44,6 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
     const [type, setType] = React.useState<CameraType>(
         Camera.Constants.Type.back
     );
-
-    const cameraRef = React.useRef<Camera | null>(null);
 
     const flashState = React.useMemo(
         () => flashMode !== Camera.Constants.FlashMode.off,
@@ -95,7 +95,7 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
     }, [dimension, Platform]);
     React.useEffect(() => {
         let BackHandlerListerner: any;
-        if (snapShot) {
+        if (snapShot)
             BackHandlerListerner = BackHandler.addEventListener(
                 'hardwareBackPress',
                 () => {
@@ -103,11 +103,9 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                     return true;
                 }
             );
-        } else if (BackHandlerListerner) BackHandlerListerner.remove();
+        else if (BackHandlerListerner) BackHandlerListerner.remove();
         return () => {
-            if (BackHandlerListerner) {
-                BackHandlerListerner.remove();
-            }
+            if (BackHandlerListerner) BackHandlerListerner.remove();
         };
     }, [snapShot]);
 
@@ -123,7 +121,7 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                 <ImageStyled margins={margins} source={{ uri: snapShot }} />
             )}
             {!!onPressBack && (
-                <BackButtonContainer currentHeight={StatusBar.currentHeight}>
+                <BackButtonContainer paddingTop={StatusBar.currentHeight}>
                     <Pictogram
                         color="secondary-light"
                         height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
@@ -140,14 +138,10 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                 <SwitchFlashModeButtonContainer
                     onPress={handlePressSwitchFlashMode}
                 >
-                    {flashState ? (
-                        <Pictogram color="secondary-light" variant="flash-on" />
-                    ) : (
-                        <Pictogram
-                            color="secondary-light"
-                            variant="flash-off"
-                        />
-                    )}
+                    <Pictogram
+                        color="secondary-light"
+                        variant={flashState ? 'flash-off' : 'flash-on'}
+                    />
                 </SwitchFlashModeButtonContainer>
             )}
             <BottomContainer>

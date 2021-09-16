@@ -11,5 +11,4 @@ const Container = styled.View`
     margin-top: ${({ theme }) => theme.spacings.large};
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export { Container, ButtonsContainer };
