@@ -18,7 +18,7 @@ import {
     useHideHeaderOnScroll,
 } from '#hooks';
 import { setGaleriesNameFilter } from '#store/actions';
-import { galeriesSelector, galeriesStatusSelector } from '#store/selectors';
+import { galeriesSelector } from '#store/selectors';
 
 import { Container, Header, SearchBarContainer } from './styles';
 
@@ -30,16 +30,16 @@ const GaleriesScreen = () => {
     const dispatch = useDispatch();
 
     const galeries = useSelector(galeriesSelector);
-    const galeriesStatus = useSelector(galeriesStatusSelector);
 
-    const { fetchFrame, fetching, firstFetchIsFinished } = useFetchGaleries();
+    const { fetchGaleries, fetchNextGaleries, fetching, firstFetchIsFinished } =
+        useFetchGaleries();
 
     const { onLayout, size } = useComponentSize();
     const { containerStyle, headerStyle, scrollHandler, translateY } =
         useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT, true);
 
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
-    const [searchValue, setSearchValue] = React.useState<string>('');
+    const [value, setValue] = React.useState<string>('');
     const [show, setShow] = React.useState<boolean>(false);
 
     const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
@@ -55,10 +55,9 @@ const GaleriesScreen = () => {
     const handleChangeText = React.useCallback((e: string) => {
         dispatch(setGaleriesNameFilter(e.trim()));
     }, []);
-    const handleReachEnd = React.useCallback(() => {
-        if (galeriesStatus === 'ERROR' || galeriesStatus === 'SUCCESS')
-            fetchFrame();
-    }, [fetchFrame, galeriesStatus]);
+    const handleFocusSearchBar = React.useCallback(() => {
+        translateY.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(200));
+    }, []);
     const handleScrollBeginDrag = React.useCallback(
         () => Keyboard.dismiss(),
         []
@@ -68,21 +67,17 @@ const GaleriesScreen = () => {
         []
     );
     const keyExtractor = React.useCallback((galerie) => galerie.id, []);
-    const onFocusSearchBar = React.useCallback(() => {
-        translateY.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(200));
-    }, []);
 
-    React.useEffect(() => fetchFrame(), []);
-
+    React.useEffect(() => fetchGaleries(), []);
     React.useEffect(() => {
         if (!firstFetchIsFinished) setShow(true);
     }, [firstFetchIsFinished]);
     React.useEffect(() => {
-        if (searchFinished && firstFetchIsFinished) {
+        if (firstFetchIsFinished && searchFinished) {
             setSearchFinished(false);
             setShow(false);
         }
-    }, [searchFinished, firstFetchIsFinished]);
+    }, [firstFetchIsFinished, searchFinished]);
 
     return (
         <Container>
@@ -92,10 +87,10 @@ const GaleriesScreen = () => {
                     <SearchBar
                         mt="smallest"
                         onChangeText={handleChangeText}
-                        onFocus={onFocusSearchBar}
+                        onFocus={handleFocusSearchBar}
                         onStopTyping={handleStopTyping}
-                        setValue={setSearchValue}
-                        value={searchValue}
+                        setValue={setValue}
+                        value={value}
                     />
                 </SearchBarContainer>
             </Header>
@@ -110,7 +105,7 @@ const GaleriesScreen = () => {
                     keyExtractor={keyExtractor}
                     keyboardShouldPersistTaps="handled"
                     maxToRenderPerBatch={4}
-                    onEndReached={handleReachEnd}
+                    onEndReached={fetchNextGaleries}
                     onEndReachedThreshold={0.2}
                     onScroll={scrollHandler}
                     onScrollBeginDrag={handleScrollBeginDrag}
