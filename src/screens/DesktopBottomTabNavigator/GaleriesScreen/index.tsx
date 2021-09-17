@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Keyboard, ListRenderItemInfo } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { withTiming } from 'react-native-reanimated';
 
 import {
     AnimatedFlatList,
     BottomLoader,
     DefaultHeader,
+    EmptyMessage,
     FullScreenLoader,
     GalerieCard,
     SearchBar,
@@ -18,7 +19,6 @@ import {
     useHideHeaderOnScroll,
 } from '#hooks';
 import { setGaleriesNameFilter } from '#store/actions';
-import { galeriesSelector } from '#store/selectors';
 
 import { Container, Header, SearchBarContainer } from './styles';
 
@@ -29,9 +29,7 @@ const renderItem = ({ item }: ListRenderItemInfo<Store.Models.Galerie>) => (
 const GaleriesScreen = () => {
     const dispatch = useDispatch();
 
-    const galeries = useSelector(galeriesSelector);
-
-    const { fetchGaleries, fetchNextGaleries, fetching, firstFetchIsFinished } =
+    const { fetchNextGaleries, fetching, filtersGaleriesName, galeries } =
         useFetchGaleries();
 
     const { onLayout, size } = useComponentSize();
@@ -39,10 +37,13 @@ const GaleriesScreen = () => {
         useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT, true);
 
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
-    const [value, setValue] = React.useState<string>('');
-    const [show, setShow] = React.useState<boolean>(false);
+    const [value, setValue] = React.useState<string>(filtersGaleriesName);
+    const [show, setShow] = React.useState<boolean>(true);
 
-    const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
+    const paddingTop = React.useMemo(
+        () => (size ? size.height : undefined),
+        [size]
+    );
 
     const getItemLayout = React.useCallback(
         (_, index) => ({
@@ -68,16 +69,17 @@ const GaleriesScreen = () => {
     );
     const keyExtractor = React.useCallback((galerie) => galerie.id, []);
 
-    React.useEffect(() => fetchGaleries(), []);
     React.useEffect(() => {
-        if (!firstFetchIsFinished) setShow(true);
-    }, [firstFetchIsFinished]);
+        if (!galeries) {
+            setShow(true);
+        }
+    }, [galeries, show]);
     React.useEffect(() => {
-        if (firstFetchIsFinished && searchFinished) {
+        if (galeries && searchFinished) {
             setSearchFinished(false);
             setShow(false);
         }
-    }, [firstFetchIsFinished, searchFinished]);
+    }, [galeries, searchFinished]);
 
     return (
         <Container>
@@ -94,7 +96,7 @@ const GaleriesScreen = () => {
                     />
                 </SearchBarContainer>
             </Header>
-            {firstFetchIsFinished && (
+            {!!galeries && galeries.length > 0 && paddingTop ? (
                 <AnimatedFlatList
                     contentContainerStyle={{
                         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
@@ -114,9 +116,11 @@ const GaleriesScreen = () => {
                     scrollEventThrottle={4}
                     showsVerticalScrollIndicator={false}
                 />
+            ) : (
+                <EmptyMessage pt={paddingTop} text="No galerie found" />
             )}
             <FullScreenLoader show={show} />
-            <BottomLoader show={fetching} />
+            <BottomLoader show={fetching} bottom="huge" />
         </Container>
     );
 };

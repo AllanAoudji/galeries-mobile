@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import normalizeData from '#helpers/normalizeData';
 import request from '#helpers/request';
-import { resetGaleries, setGaleries, setNotification } from '#store/actions';
+import { setGaleries, setNotification } from '#store/actions';
 
 type Values = {
     description: string;
@@ -60,7 +60,6 @@ const usePostGalerie = () => {
                                     meta: {},
                                 })
                             );
-                            dispatch(resetGaleries());
                             if (successCallback)
                                 successCallback(normalizedGalerie);
                         } else {

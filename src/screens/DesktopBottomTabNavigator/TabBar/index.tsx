@@ -23,7 +23,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     const { closeBottomSheet, openBottomSheet } =
         React.useContext(BottomSheetContext);
 
-    const bottom = useSharedValue(0);
+    const bottom = useSharedValue(-GLOBAL_STYLE.BOTTOM_TAB_HEIGHT);
     const style = useAnimatedStyle(() => {
         return {
             bottom: bottom.value,
@@ -103,6 +103,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
             ))();
     }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
 
+    // TODO: Bug here when reload
     React.useEffect(() => {
         if (keyboardShown)
             bottom.value = withTiming(

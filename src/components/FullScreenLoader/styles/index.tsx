@@ -1,11 +1,10 @@
-import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 type ContainerProps = {
     color: keyof Style.Colors;
 };
 
-const Container = styled(Animated.View)<ContainerProps>`
+const Container = styled.View<ContainerProps>`
     align-items: center;
     background-color: ${({ color, theme }) => theme.colors[color]};
     bottom: 0;

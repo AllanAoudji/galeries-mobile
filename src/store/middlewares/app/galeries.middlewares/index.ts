@@ -34,13 +34,11 @@ const fetchGaleries: Middleware =
                     action.payload.meta.query &&
                     typeof action.payload.meta.query.name === 'string'
                 ) {
-                    return getState().galeries.allIdsByName[
-                        action.payload.meta.query.name
-                    ]
-                        ? !getState().galeries.allIdsByName[
-                              action.payload.meta.query.name
-                          ].end
-                        : true;
+                    const galerie =
+                        getState().galeries.allIdsByName[
+                            action.payload.meta.query.name
+                        ];
+                    return galerie ? !galerie.end : true;
                 }
                 return false;
             })();

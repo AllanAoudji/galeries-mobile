@@ -39,7 +39,7 @@ const useFetchGalerieFrames = () => {
     ]);
     const fetchNextGalerieFrames = React.useCallback(() => {
         if (currentGalerieFrames && !fetching) fetch();
-    }, [currentGalerieFrames, fetching]);
+    }, [currentGalerieFrames, fetch, fetching]);
 
     React.useEffect(() => {
         if (
@@ -51,15 +51,25 @@ const useFetchGalerieFrames = () => {
             setFetching(true);
     }, [currentGalerieFrames, currentGalerieFramesStatus]);
     React.useEffect(() => {
-        if (currentGalerie && currentGalerie.id !== currentGalerieId) {
+        if (
+            currentGalerie &&
+            currentGalerie.id !== currentGalerieId &&
+            !currentGalerieFramesEnd &&
+            currentGalerieFramesStatus === 'PENDING'
+        ) {
             setcurrentGalerieId(currentGalerie.id);
             fetch();
         }
-    }, [currentGalerie, currentGalerieId, currentGalerieFramesStatus]);
+    }, [
+        currentGalerie,
+        currentGalerieFramesEnd,
+        currentGalerieFramesStatus,
+        currentGalerieId,
+        fetch,
+    ]);
 
     return {
         currentGalerieFrames,
-        fetchFrames: fetch,
         fetchNextGalerieFrames,
         fetching,
     };

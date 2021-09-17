@@ -4,7 +4,7 @@ import { GALERIES_SET } from '#store/actions';
 const initialState: {
     allIdsByName: {
         [key: string]: {
-            allIds: string[];
+            allIds?: string[];
             end: boolean;
             previousGalerie?: string;
             status: Store.Status;
@@ -29,7 +29,6 @@ export default (state = initialState, action: Store.Action) => {
                     ? action.payload.meta.query.name
                     : '';
             const byName = state.allIdsByName[queryName] || {
-                allIds: [],
                 end: false,
                 status: 'PENDING',
             };
@@ -37,23 +36,26 @@ export default (state = initialState, action: Store.Action) => {
                 ...state.allIdsByName,
                 [queryName]: {
                     ...byName,
-                    allIds: uniqueArray([
-                        ...byName.allIds,
-                        ...(action.payload.data.allIds || []),
-                    ]).sort((a, b) => {
-                        if (!byId[a] || !byId[b]) return 0;
-                        if (
-                            byId[a].hiddenName.toLowerCase() <
-                            byId[b].hiddenName.toLowerCase()
-                        )
-                            return -1;
-                        if (
-                            byId[a].hiddenName.toLowerCase() >
-                            byId[b].hiddenName.toLowerCase()
-                        )
-                            return 1;
-                        return 0;
-                    }),
+                    allIds:
+                        byName.allIds || action.payload.data.allIds
+                            ? uniqueArray([
+                                  ...(byName.allIds || []),
+                                  ...(action.payload.data.allIds || []),
+                              ]).sort((a, b) => {
+                                  if (!byId[a] || !byId[b]) return 0;
+                                  if (
+                                      byId[a].hiddenName.toLowerCase() <
+                                      byId[b].hiddenName.toLowerCase()
+                                  )
+                                      return -1;
+                                  if (
+                                      byId[a].hiddenName.toLowerCase() >
+                                      byId[b].hiddenName.toLowerCase()
+                                  )
+                                      return 1;
+                                  return 0;
+                              })
+                            : undefined,
                     end: action.payload.meta.end || byName.end,
                     previousGalerie:
                         action.payload.meta.method === 'GET' &&

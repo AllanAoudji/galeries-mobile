@@ -181,7 +181,7 @@ const GalerieTabViewNavigator = () => {
 
     // Cleaner
     React.useEffect(() => {
-        setReset(false);
+        if (reset) setReset(false);
         return () => {
             if (reset) {
                 // TODO: if currentGalerie.id change =>
