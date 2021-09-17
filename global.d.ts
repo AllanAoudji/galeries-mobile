@@ -190,7 +190,7 @@ declare global {
                 byId: { [key: string]: Store.Models.Comments };
             };
             frames: {
-                allIds: string[];
+                allIds?: string[];
                 byId: { [key: string]: Store.Models.Frame };
                 end: boolean;
                 previousFrame?: string;
@@ -199,7 +199,7 @@ declare global {
             galeries: {
                 allIdsByName: {
                     [key: string]: {
-                        allIds: string[];
+                        allIds?: string[];
                         end: boolean;
                         previousGalerie?: string;
                         status: Store.Status;
@@ -229,7 +229,7 @@ declare global {
                 autoIncrementId: string;
                 body: string;
                 comments: {
-                    allIds: string;
+                    allIds?: string[];
                     end: boolean;
                     previousComment?: string;
                     status: Store.Status;
@@ -245,7 +245,7 @@ declare global {
             type Frame = {
                 autoIncrementId: string;
                 comments: {
-                    allIds: string[];
+                    allIds?: string[];
                     end: boolean;
                     previousComment?: string;
                     status: Store.Status;
@@ -256,7 +256,7 @@ declare global {
                 galeriePicturesId: string[];
                 id: string;
                 likes: {
-                    allIds: string[];
+                    allIds?: string[];
                     end: boolean;
                     previousLike?: string;
                     status: Store.Status;
@@ -274,7 +274,7 @@ declare global {
                 defaultCoverPicture: string;
                 description: string;
                 frames: {
-                    allIds: string[];
+                    allIds?: string[];
                     end: boolean;
                     previousFrame?: string;
                     status: Store.Status;
@@ -286,7 +286,7 @@ declare global {
                 numOfUsers: number;
                 role: Role;
                 users: {
-                    allIds: string[];
+                    allIds?: string[];
                     end: boolean;
                     previousFrame?: string;
                     status: Store.Status;

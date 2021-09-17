@@ -1,7 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+    ListRenderItemInfo,
+    NativeScrollEvent,
+    NativeSyntheticEvent,
+} from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import {
     AddButton,
@@ -12,33 +16,29 @@ import {
 } from '#components';
 import { GalerieTabbarScreenContainer } from '#components/Screen';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { fetchFrames, setCurrentFrameId } from '#store/actions';
-import {
-    currentGalerieFramesSelector,
-    currentGalerieFramesStatusSelector,
-} from '#store/selectors';
+import { useFetchGalerieFrames } from '#hooks';
+import { setCurrentFrameId } from '#store/actions';
 
 type Props = {
-    galerie?: Store.Models.Galerie & { id: string };
     handleNavigateToCreateGalerieScreen: () => void;
     paddingTop: number;
     scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 };
 
 const FramesScreen = ({
-    galerie,
     handleNavigateToCreateGalerieScreen,
     paddingTop,
     scrollHandler,
 }: Props) => {
     const dispatch = useDispatch();
-    const frames = useSelector(currentGalerieFramesSelector);
-    const status = useSelector(currentGalerieFramesStatusSelector);
+    const { currentGalerieFrames } = useFetchGalerieFrames();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
 
-    const [isFirstFetch, setIsFirstFetch] = React.useState<boolean>(true);
-
+    const keyExtractor = React.useCallback(
+        (data: Store.Models.Frame) => data.id,
+        []
+    );
     const onPressComments = React.useCallback(
         (id: string) => {
             dispatch(setCurrentFrameId(id));
@@ -53,37 +53,41 @@ const FramesScreen = ({
         },
         [navigation]
     );
-
-    React.useEffect(() => {
-        if (galerie && status === 'PENDING') {
-            setIsFirstFetch(true);
-            dispatch(fetchFrames({ galerieId: galerie.id }));
-        }
-        if (status === 'SUCCESS' || status === 'ERROR') setIsFirstFetch(false);
-    }, [galerie, status]);
+    const renderItem = React.useCallback(
+        ({
+            item,
+        }: ListRenderItemInfo<
+            Store.Models.Frame & {
+                galerie?: Store.Models.Galerie;
+                galeriePictures: Store.Models.GaleriePicture[];
+                user?: Store.Models.User;
+            }
+        >) => (
+            <FrameCard
+                frame={item}
+                onPressComments={onPressComments}
+                onPressLikes={onPressLikes}
+            />
+        ),
+        []
+    );
 
     return (
         <>
             <GalerieTabbarScreenContainer>
-                {!isFirstFetch && status !== 'PENDING' && (
+                {currentGalerieFrames && (
                     <>
-                        {frames && frames.length > 0 ? (
+                        {currentGalerieFrames.length > 0 ? (
                             <AnimatedFlatList
                                 contentContainerStyle={{
                                     paddingBottom:
                                         GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
                                     paddingTop,
                                 }}
-                                data={frames}
-                                keyExtractor={(data) => data.id}
+                                data={currentGalerieFrames}
+                                keyExtractor={keyExtractor}
                                 onScroll={scrollHandler}
-                                renderItem={({ item }) => (
-                                    <FrameCard
-                                        frame={item}
-                                        onPressComments={onPressComments}
-                                        onPressLikes={onPressLikes}
-                                    />
-                                )}
+                                renderItem={renderItem}
                                 scrollEventThrottle={4}
                                 showsVerticalScrollIndicator={false}
                             />
@@ -100,7 +104,7 @@ const FramesScreen = ({
                         />
                     </>
                 )}
-                <FullScreenLoader show={isFirstFetch} />
+                <FullScreenLoader show={!currentGalerieFrames} />
             </GalerieTabbarScreenContainer>
         </>
     );

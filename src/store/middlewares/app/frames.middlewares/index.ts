@@ -150,7 +150,7 @@ const successFrames: Middleware<{}, Store.Reducer> =
                                 ...normalize.byId,
                             };
                             const allIds = uniqueArray([
-                                ...galerie.frames.allIds,
+                                ...(galerie.frames.allIds || []),
                                 ...normalize.allIds,
                             ]).sort((a, b) => {
                                 if (!framesById[a] || !framesById[b]) return 0;

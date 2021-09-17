@@ -29,8 +29,8 @@ const BottomLoader = ({
     endBottomPosition,
     show,
 }: Props) => {
-    const dimension = useWindowDimensions();
     const theme = useTheme();
+    const dimension = useWindowDimensions();
 
     const [display, setDisplay] = React.useState<boolean>(show);
 
@@ -65,7 +65,6 @@ const BottomLoader = ({
     }, [display]);
 
     if (!display) return null;
-
     return (
         <Container style={containerStyle} width={dimension.width}>
             <LoaderContainer color={backgroundColor}>

@@ -8,6 +8,7 @@ export { default as filtersGaleriesNameSelector } from './filtersGaleriesName.se
 
 export { default as currentGalerieSelector } from './currentGalerie.selector';
 export { default as currentGalerieFramesSelector } from './currentGalerieFrames.selector';
+export { default as currentGalerieFramesEndSelector } from './currentGalerieFramesEnd.selector';
 export { default as currentGalerieFramesStatusSelector } from './currentGalerieFramesStatus.selector';
 
 export { default as galeriesEndSelector } from './galeriesEnd.selector';

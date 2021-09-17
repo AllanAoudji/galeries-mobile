@@ -111,7 +111,7 @@ const successLikes: Middleware<{}, Store.Reducer> =
                             ...normalize.byId,
                         };
                         const allIds = uniqueArray([
-                            ...frame.likes.allIds,
+                            ...(frame.likes.allIds || []),
                             ...normalize.allIds,
                         ]).sort((a, b) => {
                             if (!likesById[a] || !likesById[b]) return 0;

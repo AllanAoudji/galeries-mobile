@@ -27,12 +27,8 @@ const useFetchGaleries = () => {
         }
     }, [filtersGaleriesName, galeriesEnd, galeriesStatus]);
     const fetchNextGaleries = React.useCallback(() => {
-        if (
-            firstFetchIsFinished &&
-            (galeriesStatus === 'ERROR' || galeriesStatus === 'SUCCESS')
-        )
-            fetch();
-    }, [firstFetchIsFinished, galeriesStatus]);
+        if (!fetching && firstFetchIsFinished) fetch();
+    }, [fetching, firstFetchIsFinished]);
 
     React.useEffect(() => {
         if (galeriesStatus === 'PENDING') {

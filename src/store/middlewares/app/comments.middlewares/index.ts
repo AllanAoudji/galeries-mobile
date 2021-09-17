@@ -109,7 +109,7 @@ const successComments: Middleware<{}, Store.Reducer> =
                             ...normalize.byId,
                         };
                         const allIds = uniqueArray([
-                            ...frame.comments.allIds,
+                            ...(frame.comments.allIds || []),
                             ...normalize.allIds,
                         ]).sort((a, b) => {
                             if (!commentsById[a] || !commentsById[b]) return 0;
