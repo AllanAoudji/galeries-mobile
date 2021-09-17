@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import {
     AddButton,
     AnimatedFlatList,
+    BottomLoader,
     EmptyMessage,
     FrameCard,
     FullScreenLoader,
@@ -31,7 +32,8 @@ const FramesScreen = ({
     scrollHandler,
 }: Props) => {
     const dispatch = useDispatch();
-    const { currentGalerieFrames } = useFetchGalerieFrames();
+    const { currentGalerieFrames, fetchNextGalerieFrames, fetching } =
+        useFetchGalerieFrames();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
 
@@ -86,7 +88,11 @@ const FramesScreen = ({
                                 }}
                                 data={currentGalerieFrames}
                                 keyExtractor={keyExtractor}
+                                maxToRenderPerBatch={4}
+                                onEndReached={fetchNextGalerieFrames}
+                                onEndReachedThreshold={0.2}
                                 onScroll={scrollHandler}
+                                removeClippedSubviews={true}
                                 renderItem={renderItem}
                                 scrollEventThrottle={4}
                                 showsVerticalScrollIndicator={false}
@@ -105,6 +111,7 @@ const FramesScreen = ({
                     </>
                 )}
                 <FullScreenLoader show={!currentGalerieFrames} />
+                <BottomLoader show={fetching} bottom="huge" />
             </GalerieTabbarScreenContainer>
         </>
     );

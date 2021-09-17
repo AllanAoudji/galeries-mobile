@@ -39,21 +39,13 @@ export default (state = initialState, action: Store.Action) => {
                     allIds:
                         byName.allIds || action.payload.data.allIds
                             ? uniqueArray([
-                                  ...(byName.allIds || []),
                                   ...(action.payload.data.allIds || []),
+                                  ...(byName.allIds || []),
                               ]).sort((a, b) => {
                                   if (!byId[a] || !byId[b]) return 0;
-                                  if (
-                                      byId[a].hiddenName.toLowerCase() <
-                                      byId[b].hiddenName.toLowerCase()
-                                  )
-                                      return -1;
-                                  if (
-                                      byId[a].hiddenName.toLowerCase() >
-                                      byId[b].hiddenName.toLowerCase()
-                                  )
-                                      return 1;
-                                  return 0;
+                                  return byId[a].hiddenName.localeCompare(
+                                      byId[b].hiddenName
+                                  );
                               })
                             : undefined,
                     end: action.payload.meta.end || byName.end,

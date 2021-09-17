@@ -36,10 +36,8 @@ const useFetchGaleries = () => {
         galeriesStatus,
     ]);
     const fetchNextGaleries = React.useCallback(() => {
-        if (!fetching && firstFetchIsFinished && !galeriesEnd) {
-            fetch();
-        }
-    }, [fetching, firstFetchIsFinished, galeries, galeriesEnd]);
+        if (!fetching && firstFetchIsFinished && !galeriesEnd) fetch();
+    }, [fetch, fetching, firstFetchIsFinished, galeries, galeriesEnd]);
 
     React.useEffect(() => {
         if (galeriesStatus === 'PENDING') setFirstFetchIsFinished(false);
@@ -47,13 +45,13 @@ const useFetchGaleries = () => {
             setFetching(false);
             setFirstFetchIsFinished(true);
         }
-    }, [firstFetchIsFinished, galeries, galeriesStatus]);
+    }, [galeriesStatus]);
     React.useEffect(() => {
         if (currentFilter !== filtersGaleriesName && !firstFetchIsFinished) {
             setCurrentFilter(filtersGaleriesName);
             fetch();
         }
-    }, [currentFilter, filtersGaleriesName, firstFetchIsFinished]);
+    }, [currentFilter, fetch, filtersGaleriesName, firstFetchIsFinished]);
 
     return {
         fetchNextGaleries,
