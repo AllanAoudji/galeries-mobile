@@ -77,14 +77,16 @@ const successComments: Middleware<{}, Store.Reducer> =
                         Array.isArray(action.payload.data.data.comments)
                     ) {
                         normalize = normalizeData(
-                            action.payload.data.data.comments
+                            action.payload.data.data
+                                .comments as Store.Models.Comments[]
                         );
                     } else if (
                         action.payload.data.data.comment &&
                         typeof action.payload.data.data.comment === 'object'
                     ) {
                         normalize = normalizeData(
-                            action.payload.data.data.comment
+                            action.payload.data.data
+                                .comment as Store.Models.Comments
                         );
                     } else {
                         dispatch(
@@ -118,7 +120,12 @@ const successComments: Middleware<{}, Store.Reducer> =
                                 new Date(commentsById[a].createdAt).getTime()
                             );
                         });
-                        const previousComment = allIds[allIds.length - 1];
+                        const previousComment = commentsById[
+                            allIds[allIds.length - 1]
+                        ]
+                            ? commentsById[allIds[allIds.length - 1]]
+                                  .autoIncrementId
+                            : undefined;
                         dispatch(
                             setFrames({
                                 data: {
@@ -127,7 +134,9 @@ const successComments: Middleware<{}, Store.Reducer> =
                                             ...frame,
                                             comments: {
                                                 allIds,
-                                                end: allIds.length < 20,
+                                                end:
+                                                    normalize.allIds.length <
+                                                    20,
                                                 status: 'SUCCESS',
                                                 previousComment,
                                             },

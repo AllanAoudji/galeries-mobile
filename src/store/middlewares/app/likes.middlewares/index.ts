@@ -79,14 +79,15 @@ const successLikes: Middleware<{}, Store.Reducer> =
                         Array.isArray(action.payload.data.data.likes)
                     ) {
                         normalize = normalizeData(
-                            action.payload.data.data.likes
+                            action.payload.data.data
+                                .likes as Store.Models.Like[]
                         );
                     } else if (
                         action.payload.data.data.like &&
                         typeof action.payload.data.data.like === 'object'
                     ) {
                         normalize = normalizeData(
-                            action.payload.data.data.like
+                            action.payload.data.data.like as Store.Models.Like
                         );
                     } else {
                         dispatch(
@@ -120,7 +121,12 @@ const successLikes: Middleware<{}, Store.Reducer> =
                                 new Date(likesById[a].createdAt).getTime()
                             );
                         });
-                        const previousLike = allIds[allIds.length - 1];
+                        const previousLike = likesById[
+                            allIds[allIds.length - 1]
+                        ]
+                            ? likesById[allIds[allIds.length - 1]]
+                                  .autoIncrementId
+                            : undefined;
                         dispatch(
                             setFrames({
                                 data: {
@@ -129,7 +135,9 @@ const successLikes: Middleware<{}, Store.Reducer> =
                                             ...frame,
                                             likes: {
                                                 allIds,
-                                                end: allIds.length < 20,
+                                                end:
+                                                    normalize.allIds.length <
+                                                    20,
                                                 status: 'SUCCESS',
                                                 previousLike,
                                             },

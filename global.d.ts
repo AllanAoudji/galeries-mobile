@@ -312,6 +312,7 @@ declare global {
                 userId: string;
             };
             type Image = {
+                id: string;
                 format: string;
                 height: number;
                 signedUrl: string;

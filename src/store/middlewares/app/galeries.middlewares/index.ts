@@ -105,7 +105,9 @@ const successGaleries: Middleware =
                                 action.payload.data.data.galeries.map(
                                     (galerie: any) => normalizeGalerie(galerie)
                                 );
-                            normalize = normalizeData(normalizedGaleries);
+                            normalize = normalizeData(
+                                normalizedGaleries as Store.Models.Galerie[]
+                            );
                         } else if (
                             action.payload.data.data.galerie &&
                             typeof action.payload.data.data.galerie === 'object'
@@ -113,7 +115,9 @@ const successGaleries: Middleware =
                             const normalizedGalerie = normalizeGalerie(
                                 action.payload.data.data.galerie
                             );
-                            normalize = normalizeData(normalizedGalerie);
+                            normalize = normalizeData(
+                                normalizedGalerie as Store.Models.Galerie
+                            );
                         } else {
                             dispatch(
                                 setNotification({
