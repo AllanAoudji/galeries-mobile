@@ -6,6 +6,7 @@ const normalizeData = <
         | Store.Models.GaleriePicture
         | Store.Models.Image
         | Store.Models.Like
+        | Store.Models.ProfilePicture
         | Store.Models.User
 >(
     data: T[] | T

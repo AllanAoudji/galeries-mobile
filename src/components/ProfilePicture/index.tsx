@@ -14,7 +14,9 @@ type Props = {
     mr?: keyof Style.Spacings;
     mt?: keyof Style.Spacings;
     size?: Style.Variant.ProfilePicture;
-    user?: Store.Models.User;
+    user?: Store.Models.User & {
+        currentProfilePicture: Store.Models.ProfilePicture;
+    };
 };
 
 const DEFAULT_PROFILE_PICTURE = Image.resolveAssetSource(
@@ -38,13 +40,14 @@ const ProfilePicture = ({
 
     React.useEffect(() => fetchProfilePicture(user), []);
     React.useEffect(() => {
-        if (user) {
-            if (user.currentProfilePicture) setUri(user.currentProfilePicture);
+        if (user && uri === DEFAULT_PROFILE_PICTURE) {
+            if (user.currentProfilePicture)
+                setUri(user.currentProfilePicture.cropedImage.signedUrl);
             else if (user.defaultProfilePicture)
                 setUri(user.defaultProfilePicture);
             else setUri(DEFAULT_PROFILE_PICTURE);
         } else setUri(DEFAULT_PROFILE_PICTURE);
-    }, [user]);
+    }, [user, uri]);
 
     return (
         <Container border={border} mb={mb} ml={ml} mr={mr} mt={mt} size={size}>
@@ -57,79 +60,6 @@ const ProfilePicture = ({
             </InnerContainer>
         </Container>
     );
-
-    // if (
-    //     user.currentProfilePicture === null &&
-    //     user.defaultProfilePicture === null
-    // )
-    //     return (
-    //         <Container
-    //             border={border}
-    //             mb={mb}
-    //             ml={ml}
-    //             mr={mr}
-    //             mt={mt}
-    //             size={size}
-    //         >
-    //             <InnerContainer
-    //                 border={true}
-    //                 containerBorder={border}
-    //                 size={size}
-    //             >
-    //                 <ImageStyled source={{ uri: DEFAULT_PROFILE_PICTURE }} />
-    //             </InnerContainer>
-    //         </Container>
-    //     );
-
-    // if (user.currentProfilePicture === null && user.defaultProfilePicture) {
-    //     return (
-    //         <Container
-    //             border={border}
-    //             mb={mb}
-    //             ml={ml}
-    //             mr={mr}
-    //             mt={mt}
-    //             size={size}
-    //         >
-    //             <InnerContainer
-    //                 border={false}
-    //                 containerBorder={border}
-    //                 size={size}
-    //             >
-    //                 <ImageStyled source={{ uri: user.defaultProfilePicture }} />
-    //             </InnerContainer>
-    //         </Container>
-    //     );
-    // }
-
-    // if (user.currentProfilePicture) {
-    //     return (
-    //         <Container
-    //             border={border}
-    //             mb={mb}
-    //             ml={ml}
-    //             mr={mr}
-    //             mt={mt}
-    //             size={size}
-    //         >
-    //             <InnerContainer
-    //                 border={false}
-    //                 containerBorder={border}
-    //                 size={size}
-    //             >
-    //                 <ImageStyled source={{ uri: user.currentProfilePicture }} />
-    //             </InnerContainer>
-    //         </Container>
-    //     );
-    // }
-
-    // return (
-    //     <Container border={border} mb={mb} ml={ml} mr={mr} mt={mt} size={size}>
-    //         <InnerContainer border={true} containerBorder={border} size={size}>
-    //             <ImageStyled source={{ uri: DEFAULT_PROFILE_PICTURE }} />
-    //         </InnerContainer>
-    //     </Container>
-    // );
 };
 
 export default ProfilePicture;

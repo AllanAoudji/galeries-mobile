@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { END_POINT } from '#helpers/constants';
 import request from '#helpers/request';
-import { setUsers } from '#store/actions';
+import { setProfilePictures, setUsers } from '#store/actions';
 import { meSelector } from '#store/selectors';
+import normalizeData from '#helpers/normalizeData';
 
 export const ProfilePicturesFetcherContext = React.createContext<{
     fetchProfilePicture: (user?: Store.Models.User) => void;
@@ -73,20 +74,36 @@ export const ProfilePicturesFetcherProvider: React.FC<{}> = ({ children }) => {
                                 res.data.data &&
                                 res.data.data.currentProfilePicture !==
                                     undefined
-                                    ? res.data.data.currentProfilePicture
+                                    ? (res.data.data
+                                          .currentProfilePicture as Store.Models.ProfilePicture)
                                     : null;
-                            const userWithCurrentProfilePicture = {
-                                ...data.user,
-                                currentProfilePicture,
-                            };
                             dispatch(
                                 setUsers({
                                     byId: {
-                                        [data.user.id]:
-                                            userWithCurrentProfilePicture,
+                                        [data.user.id]: {
+                                            ...data.user,
+                                            currentProfilePictureId:
+                                                currentProfilePicture
+                                                    ? currentProfilePicture.id
+                                                    : null,
+                                        },
                                     },
                                 })
                             );
+                            if (currentProfilePicture) {
+                                const normalized = normalizeData(
+                                    currentProfilePicture
+                                );
+                                dispatch(
+                                    setProfilePictures({
+                                        data: {
+                                            byId: {
+                                                ...normalized.byId,
+                                            },
+                                        },
+                                    })
+                                );
+                            }
                             setUsersFetched((prevState) => ({
                                 ...prevState,
                                 [id]: { user: data.user, status: 'SUCCESS' },

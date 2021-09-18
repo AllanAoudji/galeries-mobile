@@ -49,9 +49,13 @@ const initialValues = {
 
 const renderItem = ({
     item,
-}: ListRenderItemInfo<Store.Models.Comments & { user: Store.Models.User }>) => (
-    <CommentCard comment={item} />
-);
+}: ListRenderItemInfo<
+    Store.Models.Comments & {
+        user: Store.Models.User & {
+            currentProfilePicture: Store.Models.ProfilePicture;
+        };
+    }
+>) => <CommentCard comment={item} />;
 
 const CommentScreen = ({ navigation }: Props) => {
     const theme = useTheme();

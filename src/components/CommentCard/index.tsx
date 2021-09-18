@@ -13,7 +13,11 @@ import {
 } from './styles';
 
 type Props = {
-    comment: Store.Models.Comments & { user: Store.Models.User };
+    comment: Store.Models.Comments & {
+        user: Store.Models.User & {
+            currentProfilePicture: Store.Models.ProfilePicture;
+        };
+    };
 };
 
 const CommentCard = ({ comment }: Props) => {

@@ -166,6 +166,7 @@ declare global {
             | '[NOTIFICATION]'
             | '[LOGOUT]'
             | '[ME]'
+            | '[PROFILE PICTURE]'
             | '[UI STATES]'
             | '[USERS]';
         type Meta = {
@@ -216,6 +217,13 @@ declare global {
             me: {
                 status: Status;
                 id: string | null;
+            };
+            profilePictures: {
+                allIds?: string[];
+                byId: { [key: string]: Store.Models.ProfilePicture };
+                end: boolean;
+                previousProfilePicture?: string;
+                status: Store.Status;
             };
             notification: Store.Models.Notification | null;
             users: {
@@ -323,9 +331,21 @@ declare global {
                 status: 'error' | 'success';
                 text: string;
             };
+            type ProfilePicture = {
+                autoIncrementId: string;
+                createdAt: string;
+                cropedImage: Image;
+                current: boolean;
+                frameId: string;
+                id: string;
+                index: string;
+                originalImage: string;
+                pendingHexes: string;
+                updatedAt: string;
+            };
             type User = {
                 createdAt: Date;
-                currentProfilePicture?: string | null;
+                currentProfilePictureId?: string | null;
                 defaultProfilePicture: string | null;
                 hasNewNotification?: boolean;
                 id: string;

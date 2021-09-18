@@ -8,4 +8,5 @@ export * from './likes.actions';
 export * from './logout.actions';
 export * from './me.actions';
 export * from './notification.actions';
+export * from './profilePictures.action';
 export * from './users.actions';
