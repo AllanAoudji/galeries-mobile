@@ -4,6 +4,7 @@ import { Pressable, useWindowDimensions } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
+import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
 import { useGetCurrentCoverPicture } from '#hooks';
@@ -88,11 +89,24 @@ const GalerieModal = ({ galerie }: Props) => {
                         {galerie.name}
                     </Typography>
                     <UsersContainer>
-                        <UserContainer />
-                        <UserContainer />
-                        <UserContainer />
-                        <UserContainer />
-                        <UserContainer />
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
                         <NumOfUsersContainer>
                             <Typography fontFamily="light" fontSize={14}>
                                 +3 others

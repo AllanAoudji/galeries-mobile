@@ -1,9 +1,10 @@
 import * as React from 'react';
 
 import Pictogram from '#components/Pictogram';
+import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 
-import { Container, InfoContainer, ProfilePicturesContainer } from './styles';
+import { Container, InfoContainer } from './styles';
 
 type Props = {
     user?: Store.Models.User;
@@ -13,7 +14,7 @@ const Header = ({ user }: Props) => {
     return (
         <Container>
             <InfoContainer>
-                <ProfilePicturesContainer />
+                <ProfilePicture mr="smallest" />
                 <Typography>posted by </Typography>
                 <Typography fontFamily="bold">
                     {user ? user.pseudonym : 'username'}

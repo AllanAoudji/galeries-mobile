@@ -2,6 +2,7 @@ import moment from 'moment';
 import * as React from 'react';
 import { View } from 'react-native';
 
+import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 
 import {
@@ -19,7 +20,7 @@ type Props = {
 const CommentCard = ({ comment }: Props) => {
     return (
         <Container>
-            <ProfilePictureContainer />
+            <ProfilePicture mr="smallest" />
             <View>
                 <ContentContainer>
                     <Typography>

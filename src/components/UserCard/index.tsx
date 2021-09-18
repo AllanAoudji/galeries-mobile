@@ -1,8 +1,9 @@
 import * as React from 'react';
 
 import Typography from '#components/Typography';
+import ProfilePicture from '#components/ProfilePicture';
 
-import { Container, InfoContainer, ProfilePictureContainer } from './styles';
+import { Container, InfoContainer } from './styles';
 
 type Props = {
     user: Store.Models.User;
@@ -11,7 +12,7 @@ type Props = {
 const UserCard = ({ user }: Props) => {
     return (
         <Container>
-            <ProfilePictureContainer />
+            <ProfilePicture size="large" />
             <InfoContainer>
                 <Typography fontFamily="bold" fontSize={18}>
                     {user.pseudonym}

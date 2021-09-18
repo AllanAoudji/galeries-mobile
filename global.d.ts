@@ -426,6 +426,7 @@ declare global {
             type Button = 'fill' | 'stroke';
             type Logo = 'large' | 'largest' | 'normal' | 'small' | 'smallest';
             type Pictogram = 'large' | 'normal' | 'small';
+            type ProfilePicture = 'small' | 'normal' | 'large';
         }
     }
 }
