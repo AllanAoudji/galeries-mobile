@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Image } from 'react-native';
 
+import { useGetCurrentProfilePicture } from '#hooks';
+
 import DefaultProfilePicture from '../../../assets/images/PP.jpg';
 
 import { Container, ImageStyled, InnerContainer } from './styles';
@@ -28,6 +30,93 @@ const ProfilePicture = ({
     size = 'normal',
     user,
 }: Props) => {
+    const { loading } = useGetCurrentProfilePicture(user);
+
+    if (!user || loading)
+        return (
+            <Container
+                border={border}
+                mb={mb}
+                ml={ml}
+                mr={mr}
+                mt={mt}
+                size={size}
+            >
+                <InnerContainer
+                    border={true}
+                    containerBorder={border}
+                    size={size}
+                >
+                    <ImageStyled source={{ uri: DEFAULT_PROFILE_PICTURE }} />
+                </InnerContainer>
+            </Container>
+        );
+
+    if (
+        user.currentProfilePicute === null &&
+        user.defaultProfilePicture === null
+    )
+        return (
+            <Container
+                border={border}
+                mb={mb}
+                ml={ml}
+                mr={mr}
+                mt={mt}
+                size={size}
+            >
+                <InnerContainer
+                    border={true}
+                    containerBorder={border}
+                    size={size}
+                >
+                    <ImageStyled source={{ uri: DEFAULT_PROFILE_PICTURE }} />
+                </InnerContainer>
+            </Container>
+        );
+
+    if (user.currentProfilePicute === null && user.defaultProfilePicture) {
+        return (
+            <Container
+                border={border}
+                mb={mb}
+                ml={ml}
+                mr={mr}
+                mt={mt}
+                size={size}
+            >
+                <InnerContainer
+                    border={false}
+                    containerBorder={border}
+                    size={size}
+                >
+                    <ImageStyled source={{ uri: user.defaultProfilePicture }} />
+                </InnerContainer>
+            </Container>
+        );
+    }
+
+    if (user.currentProfilePicute) {
+        return (
+            <Container
+                border={border}
+                mb={mb}
+                ml={ml}
+                mr={mr}
+                mt={mt}
+                size={size}
+            >
+                <InnerContainer
+                    border={false}
+                    containerBorder={border}
+                    size={size}
+                >
+                    <ImageStyled source={{ uri: user.currentProfilePicute }} />
+                </InnerContainer>
+            </Container>
+        );
+    }
+
     return (
         <Container border={border} mb={mb} ml={ml} mr={mr} mt={mt} size={size}>
             <InnerContainer border={true} containerBorder={border} size={size}>
@@ -35,24 +124,6 @@ const ProfilePicture = ({
             </InnerContainer>
         </Container>
     );
-    // If not user
-    // return default PP
-    //
-    // State finished (false)
-    //
-    // If currentProfilePicture === undefined
-    // FetchCurrentPP
-    //
-    // When fetch finished setFinished(true)
-    //
-    // If !currentPP && !finished
-    // return currentPP
-    //
-    // If currentPP === null && defaultPP === null
-    //   return localPP
-    // If currentPP === null && defaultPP !== null
-    //   return defaultPP
-    // else return currentPP
 };
 
 export default ProfilePicture;

@@ -9,7 +9,6 @@ import {
     Container,
     ContentContainer,
     ContentContainerFooter,
-    ProfilePictureContainer,
     TimeContainer,
 } from './styles';
 
@@ -20,7 +19,7 @@ type Props = {
 const CommentCard = ({ comment }: Props) => {
     return (
         <Container>
-            <ProfilePicture mr="smallest" />
+            <ProfilePicture mr="smallest" user={comment.user} />
             <View>
                 <ContentContainer>
                     <Typography>
