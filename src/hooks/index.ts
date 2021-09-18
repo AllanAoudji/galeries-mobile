@@ -3,6 +3,7 @@ export { default as useCheckIfUser } from './useCheckIfUser';
 export { default as useComponentSize } from './useComponentSize';
 export { default as useFetchGalerieFrames } from './useFetchGalerieFrames';
 export { default as useFetchGaleries } from './useFetchGaleries';
+export { default as useFetchLikes } from './useFetchLikes';
 export { default as useForgotPassword } from './useForgotPassword';
 export { default as useGetCurrentCoverPicture } from './useGetCurrentCoverPicture';
 export { default as useHideHeaderOnScroll } from './useHideHeaderOnScroll';

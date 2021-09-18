@@ -73,7 +73,7 @@ const useFetchGalerieFrames = () => {
             setFetching(false);
             setFirstFetchIsFinished(true);
         }
-    }, [currentGalerieFrames, currentGalerieFramesStatus]);
+    }, [currentGalerieFramesStatus]);
     React.useEffect(() => {
         if (
             currentGalerie &&

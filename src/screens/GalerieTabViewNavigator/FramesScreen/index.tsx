@@ -75,45 +75,42 @@ const FramesScreen = ({
     );
 
     return (
-        <>
-            <GalerieTabbarScreenContainer>
-                {currentGalerieFrames && (
-                    <>
-                        {currentGalerieFrames.length > 0 ? (
-                            <AnimatedFlatList
-                                contentContainerStyle={{
-                                    paddingBottom:
-                                        GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-                                    paddingTop,
-                                }}
-                                data={currentGalerieFrames}
-                                keyExtractor={keyExtractor}
-                                maxToRenderPerBatch={4}
-                                onEndReached={fetchNextGalerieFrames}
-                                onEndReachedThreshold={0.2}
-                                onScroll={scrollHandler}
-                                removeClippedSubviews={true}
-                                renderItem={renderItem}
-                                scrollEventThrottle={4}
-                                showsVerticalScrollIndicator={false}
-                            />
-                        ) : (
-                            <EmptyMessage
-                                pt={paddingTop}
-                                text="This galerie doesn't have frame yet. Click on the + button to post a new one"
-                            />
-                        )}
-                        <AddButton
-                            bottom="largest"
-                            right="normal"
-                            onPress={handleNavigateToCreateGalerieScreen}
+        <GalerieTabbarScreenContainer>
+            {currentGalerieFrames && paddingTop && (
+                <>
+                    {currentGalerieFrames.length > 0 ? (
+                        <AnimatedFlatList
+                            contentContainerStyle={{
+                                paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+                                paddingTop,
+                            }}
+                            data={currentGalerieFrames}
+                            keyExtractor={keyExtractor}
+                            maxToRenderPerBatch={4}
+                            onEndReached={fetchNextGalerieFrames}
+                            onEndReachedThreshold={0.2}
+                            onScroll={scrollHandler}
+                            removeClippedSubviews={true}
+                            renderItem={renderItem}
+                            scrollEventThrottle={4}
+                            showsVerticalScrollIndicator={false}
                         />
-                    </>
-                )}
-                <FullScreenLoader show={!currentGalerieFrames} />
-                <BottomLoader show={fetching} bottom="huge" />
-            </GalerieTabbarScreenContainer>
-        </>
+                    ) : (
+                        <EmptyMessage
+                            pt={paddingTop}
+                            text="This galerie doesn't have frame yet. Click on the + button to post a new one"
+                        />
+                    )}
+                    <AddButton
+                        bottom="largest"
+                        right="normal"
+                        onPress={handleNavigateToCreateGalerieScreen}
+                    />
+                </>
+            )}
+            <FullScreenLoader show={!currentGalerieFrames} />
+            <BottomLoader show={fetching} bottom="huge" />
+        </GalerieTabbarScreenContainer>
     );
 };
 
