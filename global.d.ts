@@ -325,7 +325,7 @@ declare global {
             };
             type User = {
                 createdAt: Date;
-                currentProfilePicute?: string | null;
+                currentProfilePicture?: string | null;
                 defaultProfilePicture: string | null;
                 hasNewNotification?: boolean;
                 id: string;

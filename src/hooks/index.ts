@@ -6,7 +6,6 @@ export { default as useFetchGalerieFrames } from './useFetchGalerieFrames';
 export { default as useFetchGaleries } from './useFetchGaleries';
 export { default as useFetchLikes } from './useFetchLikes';
 export { default as useForgotPassword } from './useForgotPassword';
-export { default as useGetCurrentProfilePicture } from './useGetCurrentProfilePicture';
 export { default as useGetCurrentCoverPicture } from './useGetCurrentCoverPicture';
 export { default as useHideHeaderOnScroll } from './useHideHeaderOnScroll';
 export { default as useKeyboard } from './useKeyboard';
