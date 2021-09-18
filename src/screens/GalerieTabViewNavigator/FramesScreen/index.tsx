@@ -76,7 +76,7 @@ const FramesScreen = ({
 
     return (
         <GalerieTabbarScreenContainer>
-            {currentGalerieFrames && paddingTop && (
+            {currentGalerieFrames && !!paddingTop && (
                 <>
                     {currentGalerieFrames.length > 0 ? (
                         <AnimatedFlatList

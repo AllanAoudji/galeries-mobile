@@ -1,29 +1,50 @@
+import { useFocusEffect } from '@react-navigation/native';
+import { useFormik } from 'formik';
 import * as React from 'react';
-import { FlatList, Keyboard, ListRenderItemInfo } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+    FlatList,
+    Keyboard,
+    ListRenderItemInfo,
+    NativeSyntheticEvent,
+    TextInputContentSizeChangeEventData,
+} from 'react-native';
+import { useSelector } from 'react-redux';
+import { useTheme } from 'styled-components/native';
 
 import {
     AnimatedFlatList,
+    BottomLoader,
     CommentCard,
     DefaultHeader,
     EmptyMessage,
     FullScreenLoader,
+    Typography,
 } from '#components';
-import { GLOBAL_STYLE } from '#helpers/constants';
-import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
-import { fetchComments } from '#store/actions';
+import { FIELD_REQUIREMENT, GLOBAL_STYLE } from '#helpers/constants';
+import { createCommentSchema } from '#helpers/schemas';
 import {
-    currentFrameCommentsSelector,
-    currentFrameCommentsStatusSelector,
-    currentFrameSelector,
-} from '#store/selectors';
+    useComponentSize,
+    useFetchComments,
+    useHideHeaderOnScroll,
+    usePostComment,
+} from '#hooks';
+import { currentFrameSelector } from '#store/selectors';
 
-import CreateComment from './CreateComment';
-
-import { Container, Header } from './styles';
+import {
+    Container,
+    FormContainer,
+    Header,
+    PostButton,
+    TextInputStyled,
+} from './styles';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CommentsNavigationProp;
+};
+
+const TEXT_INPUT_DEFAULT_HEIGHT = 35;
+const initialValues = {
+    body: '',
 };
 
 const renderItem = ({
@@ -33,29 +54,42 @@ const renderItem = ({
 );
 
 const CommentScreen = ({ navigation }: Props) => {
-    const dispatch = useDispatch();
+    const theme = useTheme();
+
+    const { currentFrameComments, fetching, fetchNextFrameComments } =
+        useFetchComments();
+    const { loading, postComment } = usePostComment();
 
     const currentFrame = useSelector(currentFrameSelector);
-    const currentFrameComments = useSelector(currentFrameCommentsSelector);
-    const currentFrameCommentsStatus = useSelector(
-        currentFrameCommentsStatusSelector
-    );
 
     const { onLayout: headerOnLayout, size: headerSize } = useComponentSize();
     const { onLayout: footerOnLayout, size: footerSize } = useComponentSize();
-
     const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
         GLOBAL_STYLE.HEADER_TAB_HEIGHT
     );
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
-    const [firstFetchFinished, setFirstFetchFinished] =
-        React.useState<boolean>(false);
+    const [textInputHeight, setTextInputHeight] = React.useState<number>(0);
 
-    const frameHasComment = React.useMemo(
-        () => currentFrameComments && currentFrameComments.length > 0,
-        [currentFrameComments]
+    const formik = useFormik({
+        onSubmit: (values) => {
+            if (currentFrame)
+                postComment(values, currentFrame, successCallback);
+        },
+        initialValues,
+        validateOnBlur: false,
+        validateOnChange: true,
+        validationSchema: createCommentSchema,
+    });
+
+    const disableButton = React.useMemo(() => {
+        const clientHasError = !!formik.errors.body && formik.submitCount > 0;
+        return clientHasError;
+    }, [formik.errors, formik.submitCount]);
+    const height = React.useMemo(
+        () => Math.max(TEXT_INPUT_DEFAULT_HEIGHT, textInputHeight),
+        [textInputHeight]
     );
     const paddingBottom = React.useMemo(
         () => (footerSize ? footerSize.height : 0),
@@ -66,6 +100,28 @@ const CommentScreen = ({ navigation }: Props) => {
         [headerSize]
     );
 
+    const handleChangeBodyText = React.useCallback((e: string) => {
+        formik.setFieldError('body', '');
+        formik.setFieldValue('body', e);
+    }, []);
+    const handleContentSizeChange = React.useCallback(
+        ({
+            nativeEvent,
+        }: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) =>
+            setTextInputHeight(nativeEvent.contentSize.height),
+        []
+    );
+    const handlePress = React.useCallback(() => {
+        if (!loading && !disableButton && formik.values.body !== '') {
+            formik.handleSubmit();
+        }
+    }, [disableButton, loading, formik.values.body]);
+    const onPressReturn = React.useCallback(() => {
+        if (!loading) {
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
+        }
+    }, [loading, navigation]);
     const handleScrollBeginDrag = React.useCallback(
         () => Keyboard.dismiss(),
         []
@@ -75,6 +131,11 @@ const CommentScreen = ({ navigation }: Props) => {
         if (flatListRef.current)
             flatListRef.current.scrollToOffset({ offset: 0 });
     }, []);
+    const successCallback = React.useCallback(() => {
+        scrollToTop();
+        setTextInputHeight(0);
+        formik.setValues(formik.initialValues);
+    }, [scrollToTop]);
 
     React.useEffect(() => {
         if (!currentFrame) {
@@ -82,31 +143,29 @@ const CommentScreen = ({ navigation }: Props) => {
             else navigation.navigate('Home');
         }
     }, [currentFrame, navigation]);
-    React.useEffect(() => {
-        if (currentFrame && currentFrameCommentsStatus === 'PENDING') {
-            setFirstFetchFinished(false);
-            dispatch(fetchComments({ frameId: currentFrame.id }));
-        }
-    }, [currentFrame, currentFrameCommentsStatus]);
-    React.useEffect(() => {
-        if (
-            (currentFrameCommentsStatus === 'SUCCESS' ||
-                currentFrameCommentsStatus === 'ERROR') &&
-            !firstFetchFinished
-        )
-            setFirstFetchFinished(true);
-    }, [currentFrameCommentsStatus, firstFetchFinished]);
 
-    if (!currentFrame) return null;
+    useFocusEffect(
+        React.useCallback(() => {
+            return () => {
+                setTextInputHeight(0);
+                formik.setFieldError('body', '');
+                formik.setFieldValue('body', '');
+            };
+        }, [])
+    );
 
     return (
         <Container>
             <Header onLayout={headerOnLayout} style={containerStyle}>
-                <DefaultHeader title="comments" variant="secondary" />
+                <DefaultHeader
+                    onPress={onPressReturn}
+                    title="comments"
+                    variant="secondary"
+                />
             </Header>
-            {firstFetchFinished && (
+            {currentFrameComments && !!paddingTop && (
                 <>
-                    {frameHasComment ? (
+                    {!!paddingBottom && currentFrameComments.length > 0 ? (
                         <AnimatedFlatList
                             contentContainerStyle={{
                                 paddingBottom,
@@ -116,24 +175,41 @@ const CommentScreen = ({ navigation }: Props) => {
                             keyExtractor={keyExtractor}
                             maxToRenderPerBatch={15}
                             onScroll={scrollHandler}
+                            onEndReached={fetchNextFrameComments}
+                            onEndReachedThreshold={0.2}
                             onScrollBeginDrag={handleScrollBeginDrag}
                             ref={flatListRef}
                             renderItem={renderItem}
                             removeClippedSubviews={true}
-                            showsVerticalScrollIndicator={false}
                             scrollEventThrottle={4}
+                            showsVerticalScrollIndicator={false}
                         />
                     ) : (
                         <EmptyMessage text="This frame do not have comment yet..." />
                     )}
-                    <CreateComment
-                        frame={currentFrame}
-                        onLayout={footerOnLayout}
-                        scrollToTop={scrollToTop}
-                    />
+                    <FormContainer onLayout={footerOnLayout}>
+                        <TextInputStyled
+                            editable={!loading}
+                            height={height}
+                            loading={loading}
+                            maxLength={FIELD_REQUIREMENT.COMMENT_MAX_LENGTH}
+                            multiline
+                            onChangeText={handleChangeBodyText}
+                            onContentSizeChange={handleContentSizeChange}
+                            placeholder="post a comment..."
+                            selectionColor={theme.colors['primary-dark']}
+                            value={formik.values.body}
+                        />
+                        <PostButton onPress={handlePress}>
+                            <Typography color="primary" fontSize={18}>
+                                post
+                            </Typography>
+                        </PostButton>
+                    </FormContainer>
                 </>
             )}
-            <FullScreenLoader show={!firstFetchFinished} />
+            <FullScreenLoader show={!currentFrameComments} />
+            <BottomLoader show={fetching} bottom="huge" />
         </Container>
     );
 };

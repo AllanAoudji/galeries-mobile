@@ -46,7 +46,7 @@ const usePostComment = () => {
                                     ...currentFrame.comments,
                                     allIds: [
                                         id,
-                                        ...currentFrame.comments.allIds,
+                                        ...(currentFrame.comments.allIds || []),
                                     ],
                                 },
                                 numOfComments,

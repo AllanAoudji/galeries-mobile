@@ -1,22 +1,24 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchLikes } from '#store/actions';
+import { fetchComments } from '#store/actions';
 import {
-    currentFrameLikesEndSelector,
-    currentFrameLikesSelector,
-    currentFrameLikesStatusSelector,
+    currentFrameCommentsSelector,
+    currentFrameCommentsEndSelector,
     currentFrameSelector,
+    currentFrameCommentsStatusSelector,
 } from '#store/selectors';
 
-const useGetLikes = () => {
+const useFetchComments = () => {
     const dispatch = useDispatch();
 
     const currentFrame = useSelector(currentFrameSelector);
-    const currentFrameLikes = useSelector(currentFrameLikesSelector);
-    const currentFrameLikesEnd = useSelector(currentFrameLikesEndSelector);
-    const currentFrameLikesStatus = useSelector(
-        currentFrameLikesStatusSelector
+    const currentFrameComments = useSelector(currentFrameCommentsSelector);
+    const currentFrameCommentsEnd = useSelector(
+        currentFrameCommentsEndSelector
+    );
+    const currentFrameCommentsStatus = useSelector(
+        currentFrameCommentsStatusSelector
     );
 
     const [currentFrameId, setCurrentFrameId] = React.useState<string | null>(
@@ -29,33 +31,33 @@ const useGetLikes = () => {
     const fetch = React.useCallback(() => {
         if (
             currentFrame &&
-            !currentFrameLikesEnd &&
-            currentFrameLikesStatus !== 'FETCHING'
+            !currentFrameCommentsEnd &&
+            currentFrameCommentsStatus !== 'FETCHING'
         ) {
             if (firstFetchIsFinished) setFetching(true);
-            dispatch(fetchLikes({ frameId: currentFrame.id }));
+            dispatch(fetchComments({ frameId: currentFrame.id }));
         }
     }, [
         currentFrame,
-        currentFrameLikesEnd,
-        currentFrameLikesStatus,
+        currentFrameCommentsEnd,
+        currentFrameCommentsStatus,
         firstFetchIsFinished,
     ]);
-    const fetchNextFrameLikes = React.useCallback(() => {
+    const fetchNextFrameComments = React.useCallback(() => {
         if (!fetching && firstFetchIsFinished) fetch();
     }, [fetch, fetching, firstFetchIsFinished]);
 
     React.useEffect(() => {
-        if (currentFrameLikesStatus === 'PENDING')
+        if (currentFrameCommentsStatus === 'PENDING')
             setFirstFetchIsFinished(false);
         if (
-            currentFrameLikesStatus === 'ERROR' ||
-            currentFrameLikesStatus === 'SUCCESS'
+            currentFrameCommentsStatus === 'ERROR' ||
+            currentFrameCommentsStatus === 'SUCCESS'
         ) {
             setFetching(false);
             setFirstFetchIsFinished(true);
         }
-    }, [currentFrameLikesStatus]);
+    }, [currentFrameCommentsStatus]);
     React.useEffect(() => {
         if (
             currentFrame &&
@@ -67,7 +69,7 @@ const useGetLikes = () => {
         }
     }, [currentFrame, currentFrameId, firstFetchIsFinished, fetch]);
 
-    return { currentFrameLikes, fetchNextFrameLikes, fetching };
+    return { currentFrameComments, fetchNextFrameComments, fetching };
 };
 
-export default useGetLikes;
+export default useFetchComments;

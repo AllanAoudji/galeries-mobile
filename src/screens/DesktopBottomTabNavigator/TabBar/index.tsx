@@ -23,7 +23,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     const { closeBottomSheet, openBottomSheet } =
         React.useContext(BottomSheetContext);
 
-    const bottom = useSharedValue(-GLOBAL_STYLE.BOTTOM_TAB_HEIGHT);
+    const bottom = useSharedValue(0);
     const style = useAnimatedStyle(() => {
         return {
             bottom: bottom.value,
