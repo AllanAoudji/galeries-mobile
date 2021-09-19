@@ -22,7 +22,7 @@ type Props = {
 
 const renderItem = ({
     item,
-}: ListRenderItemInfo<Store.Models.Like & { user: Store.Models.User }>) => (
+}: ListRenderItemInfo<Store.Models.LikePopulated>) => (
     <UserCard user={item.user} />
 );
 

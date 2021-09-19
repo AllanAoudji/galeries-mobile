@@ -56,15 +56,7 @@ const FramesScreen = ({
         [navigation]
     );
     const renderItem = React.useCallback(
-        ({
-            item,
-        }: ListRenderItemInfo<
-            Store.Models.Frame & {
-                galerie?: Store.Models.Galerie;
-                galeriePictures: Store.Models.GaleriePicture[];
-                user?: Store.Models.User;
-            }
-        >) => (
+        ({ item }: ListRenderItemInfo<Store.Models.FramePopulated>) => (
             <FrameCard
                 frame={item}
                 onPressComments={onPressComments}

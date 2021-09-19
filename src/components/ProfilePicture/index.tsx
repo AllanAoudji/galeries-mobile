@@ -14,9 +14,7 @@ type Props = {
     mr?: keyof Style.Spacings;
     mt?: keyof Style.Spacings;
     size?: Style.Variant.ProfilePicture;
-    user?: Store.Models.User & {
-        currentProfilePicture?: Store.Models.ProfilePicture;
-    };
+    user?: Store.Models.UserPopulated;
 };
 
 const DEFAULT_PROFILE_PICTURE = Image.resolveAssetSource(

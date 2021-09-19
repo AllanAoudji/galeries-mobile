@@ -41,7 +41,8 @@ export const ProfilePicturesFetcherProvider: React.FC<{}> = ({ children }) => {
     React.useEffect(() => {
         if (Object.keys(usersFetched).length) {
             const needToBeFetched = Object.entries(usersFetched).filter(
-                (data) => data[1].status === 'PENDING'
+                (data) =>
+                    data[1].status === 'PENDING' || data[1].status === 'ERROR'
             );
             if (needToBeFetched.length) {
                 const fetching: {
