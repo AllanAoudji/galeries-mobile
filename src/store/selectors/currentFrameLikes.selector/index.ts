@@ -5,7 +5,8 @@ export default createSelector(
     (state: Store.Reducer) => state.frames.byId,
     (state: Store.Reducer) => state.likes.byId,
     (state: Store.Reducer) => state.users.byId,
-    (currentFrameId, frameById, likesById, usersById) => {
+    (state: Store.Reducer) => state.profilePictures.byId,
+    (currentFrameId, frameById, likesById, usersById, profilePicturesById) => {
         if (!currentFrameId) return undefined;
         const currentFrame = frameById[currentFrameId];
         if (!currentFrameId) return undefined;
@@ -16,9 +17,21 @@ export default createSelector(
                   .map((id) => {
                       const like = likesById[id];
                       const user = usersById[like.userId];
+                      let currentProfilePicture:
+                          | Store.Models.ProfilePicture
+                          | undefined;
+                      if (user)
+                          currentProfilePicture = user.currentProfilePictureId
+                              ? profilePicturesById[
+                                    user.currentProfilePictureId
+                                ]
+                              : undefined;
                       return {
                           ...like,
-                          user,
+                          user: {
+                              ...user,
+                              currentProfilePicture,
+                          },
                       };
                   })
             : allIds;

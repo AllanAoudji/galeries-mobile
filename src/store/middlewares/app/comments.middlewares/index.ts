@@ -78,7 +78,7 @@ const successComments: Middleware<{}, Store.Reducer> =
                     ) {
                         normalize = normalizeData(
                             action.payload.data.data
-                                .comments as Store.Models.Comments[]
+                                .comments as Store.Models.Comment[]
                         );
                     } else if (
                         action.payload.data.data.comment &&
@@ -86,7 +86,7 @@ const successComments: Middleware<{}, Store.Reducer> =
                     ) {
                         normalize = normalizeData(
                             action.payload.data.data
-                                .comment as Store.Models.Comments
+                                .comment as Store.Models.Comment
                         );
                     } else {
                         dispatch(

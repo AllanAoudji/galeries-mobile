@@ -26,13 +26,13 @@ export default createSelector(
                       let currentProfilePicture:
                           | Store.Models.ProfilePicture
                           | undefined;
-                      if (user) {
+                      if (user)
                           currentProfilePicture = user.currentProfilePictureId
                               ? profilePicturesById[
                                     user.currentProfilePictureId
                                 ]
                               : undefined;
-                      }
+
                       return {
                           ...comment,
                           user: {

@@ -1,6 +1,6 @@
 const normalizeData = <
     T extends
-        | Store.Models.Comments
+        | Store.Models.Comment
         | Store.Models.Frame
         | Store.Models.Galerie
         | Store.Models.GaleriePicture

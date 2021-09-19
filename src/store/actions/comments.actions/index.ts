@@ -1,5 +1,5 @@
 type SetCommentsParams = {
-    byId?: { [key: string]: Store.Models.Comments };
+    byId?: { [key: string]: Store.Models.Comment };
 };
 
 export const COMMENTS: Store.Entity = '[COMMENTS]';

@@ -188,7 +188,7 @@ declare global {
                 };
             };
             comments: {
-                byId: { [key: string]: Store.Models.Comments };
+                byId: { [key: string]: Store.Models.Comment };
             };
             frames: {
                 allIds?: string[];
@@ -233,7 +233,7 @@ declare global {
         type Role = 'admin' | 'moderator' | 'user';
         type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
         namespace Models {
-            type Comments = {
+            type Comment = {
                 autoIncrementId: string;
                 body: string;
                 comments: {
@@ -250,6 +250,7 @@ declare global {
                 updatedAt: string;
                 userId: string;
             };
+            type CommentPopulated = Comment & { user: UserPopulated };
             type Frame = {
                 autoIncrementId: string;
                 comments: {
@@ -274,6 +275,11 @@ declare global {
                 numOfLikes: string;
                 updatedAt: string;
                 userId: string;
+            };
+            type FramePopulated = Frame & {
+                galerie?: Store.Models.Galerie;
+                galeriePictures: Store.Models.GaleriePicture[];
+                user?: Store.Models.PopulatedUser;
             };
             type Galerie = {
                 allowNotification: boolean;
@@ -319,6 +325,7 @@ declare global {
                 updatedAt: string;
                 userId: string;
             };
+            type LikePopulated = Like & { user: UserPopulated };
             type Image = {
                 id: string;
                 format: string;
@@ -354,6 +361,9 @@ declare global {
                 role: Role;
                 socialMediaUserName: string | null;
                 userName: string;
+            };
+            type UserPopulated = User & {
+                currentProfilePicture?: ProfilePicture;
             };
         }
     }

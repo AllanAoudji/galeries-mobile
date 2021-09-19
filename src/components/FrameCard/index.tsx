@@ -8,13 +8,8 @@ import Slider from './Slider';
 
 import { Container } from './styles';
 
-type Frame = Store.Models.Frame & {
-    galerie?: Store.Models.Galerie;
-    galeriePictures: Store.Models.GaleriePicture[];
-    user?: Store.Models.User;
-};
 type Props = {
-    frame: Frame;
+    frame: Store.Models.FramePopulated;
     onPressComments: (id: string) => void;
     onPressLikes: (id: string) => void;
 };

@@ -6,12 +6,14 @@ export default createSelector(
     (state: Store.Reducer) => state.frames.byId,
     (state: Store.Reducer) => state.galeriePictures.byId,
     (state: Store.Reducer) => state.users.byId,
+    (state: Store.Reducer) => state.profilePictures.byId,
     (
         currentGalerieId,
         galerieById,
         frameById,
         galeriePicturesById,
-        usersById
+        usersById,
+        profilePicturesById
     ) => {
         if (!currentGalerieId) return undefined;
         const currentGalerie = galerieById[currentGalerieId];
@@ -28,11 +30,23 @@ export default createSelector(
                               galeriePicturesById[galeriePictureId]
                       );
                       const user = usersById[frame.userId];
+                      let currentProfilePicture:
+                          | Store.Models.ProfilePicture
+                          | undefined;
+                      if (user)
+                          currentProfilePicture = user.currentProfilePictureId
+                              ? profilePicturesById[
+                                    user.currentProfilePictureId
+                                ]
+                              : undefined;
                       return {
                           ...frame,
                           galerie,
                           galeriePictures,
-                          user,
+                          user: {
+                              ...user,
+                              currentProfilePicture,
+                          },
                       };
                   })
             : allIds;

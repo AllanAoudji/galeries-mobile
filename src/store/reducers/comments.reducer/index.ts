@@ -1,7 +1,7 @@
 import { COMMENTS_SET } from '#store/actions';
 
 const initialState: {
-    byId: { [key: string]: Store.Models.Comments };
+    byId: { [key: string]: Store.Models.Comment };
 } = { byId: {} };
 
 export default (state = initialState, action: Store.Action) => {

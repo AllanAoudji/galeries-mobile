@@ -50,7 +50,7 @@ const initialValues = {
 const renderItem = ({
     item,
 }: ListRenderItemInfo<
-    Store.Models.Comments & {
+    Store.Models.Comment & {
         user: Store.Models.User & {
             currentProfilePicture: Store.Models.ProfilePicture;
         };

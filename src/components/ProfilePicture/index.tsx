@@ -15,7 +15,7 @@ type Props = {
     mt?: keyof Style.Spacings;
     size?: Style.Variant.ProfilePicture;
     user?: Store.Models.User & {
-        currentProfilePicture: Store.Models.ProfilePicture;
+        currentProfilePicture?: Store.Models.ProfilePicture;
     };
 };
 

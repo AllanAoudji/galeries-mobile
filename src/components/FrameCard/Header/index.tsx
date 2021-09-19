@@ -7,14 +7,14 @@ import Typography from '#components/Typography';
 import { Container, InfoContainer } from './styles';
 
 type Props = {
-    user?: Store.Models.User;
+    user?: Store.Models.UserPopulated;
 };
 
 const Header = ({ user }: Props) => {
     return (
         <Container>
             <InfoContainer>
-                <ProfilePicture mr="smallest" />
+                <ProfilePicture mr="smallest" user={user} />
                 <Typography>posted by </Typography>
                 <Typography fontFamily="bold">
                     {user ? user.pseudonym : 'username'}
