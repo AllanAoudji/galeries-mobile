@@ -39,6 +39,7 @@ declare global {
         namespace DesktopBottomTab {
             type ParamList = {
                 Comments: undefined;
+                CreateFrame: NavigatorScreenParams<CreateFrameStack.ParamList>;
                 Galerie: undefined;
                 Galeries: undefined;
                 Home: undefined;
@@ -101,7 +102,6 @@ declare global {
         }
         namespace DesktopStack {
             type ParamList = {
-                CreateFrame: NavigatorScreenParams<CreateFrameStack.ParamList>;
                 CreateGalerie: undefined;
                 Navigation: NavigatorScreenParams<DesktopDrawer.ParamList>;
             };

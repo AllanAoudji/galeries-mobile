@@ -6,7 +6,7 @@ import request from '#helpers/request';
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import { setFrames, setNotification } from '#store/actions';
 
-const useLike = () => {
+const usePostLike = () => {
     const dispatch = useDispatch();
 
     const like = React.useCallback((frame: Store.Models.Frame) => {
@@ -89,4 +89,4 @@ const useLike = () => {
     return { like };
 };
 
-export default useLike;
+export default usePostLike;

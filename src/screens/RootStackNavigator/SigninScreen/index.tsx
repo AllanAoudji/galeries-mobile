@@ -8,7 +8,7 @@ import {
     Logo,
 } from '#components';
 import { signinSchema } from '#helpers/schemas';
-import { useSignin } from '#hooks';
+import { usePostSignin } from '#hooks';
 
 import FooterNavigation from '../FooterNavigation';
 
@@ -26,7 +26,7 @@ type Props = {
 
 const SigninScreen = ({ navigation }: Props) => {
     const { serverErrors, loading, resetServerErrorField, signin } =
-        useSignin();
+        usePostSignin();
     const formik = useFormik({
         initialValues,
         onSubmit: async (values) => signin(values),

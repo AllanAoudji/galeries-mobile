@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useLike } from '#hooks';
+import { usePostLike } from '#hooks';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
-    const { like } = useLike();
+    const { like } = usePostLike();
 
     const handlePressComments = React.useCallback(
         () => onPressComments(frame.id),

@@ -14,7 +14,7 @@ type Values = {
     userName: string;
 };
 
-const useSignin = () => {
+const usePostSignin = () => {
     const dispatch = useDispatch();
 
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -103,4 +103,4 @@ const useSignin = () => {
     return { loading, resetServerErrorField, serverErrors, signin };
 };
 
-export default useSignin;
+export default usePostSignin;

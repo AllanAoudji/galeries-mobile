@@ -13,7 +13,7 @@ type Values = {
     userNameOrEmail: string;
 };
 
-const useLogin = () => {
+const usePostLogin = () => {
     const dispatch = useDispatch();
 
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -138,4 +138,4 @@ const useLogin = () => {
     return { loading, login, resetServerErrorField, serverErrors };
 };
 
-export default useLogin;
+export default usePostLogin;

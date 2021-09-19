@@ -7,7 +7,7 @@ import { useTheme } from 'styled-components/native';
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
-import { useGetCurrentCoverPicture } from '#hooks';
+import { useFetchCurrentCoverPicture } from '#hooks';
 import { setCurrentGalerieId } from '#store/actions';
 
 import {
@@ -25,7 +25,7 @@ type Props = {
 };
 
 const GalerieModal = ({ galerie }: Props) => {
-    const { getCurrentCoverPicture } = useGetCurrentCoverPicture();
+    const { getCurrentCoverPicture } = useFetchCurrentCoverPicture();
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GaleriesNavigationProp>();

@@ -9,7 +9,7 @@ import {
     Typography,
 } from '#components';
 import { loginSchema } from '#helpers/schemas';
-import { useLogin } from '#hooks';
+import { usePostLogin } from '#hooks';
 
 import FooterNavigation from '../FooterNavigation';
 
@@ -25,7 +25,8 @@ type Props = {
 };
 
 const LoginScreen = ({ navigation }: Props) => {
-    const { loading, login, resetServerErrorField, serverErrors } = useLogin();
+    const { loading, login, resetServerErrorField, serverErrors } =
+        usePostLogin();
 
     const formik = useFormik({
         initialValues,

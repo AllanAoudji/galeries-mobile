@@ -5,7 +5,7 @@ import { END_POINT } from '#helpers/constants';
 import request from '#helpers/request';
 import { setGaleriePictures, setGaleries } from '#store/actions';
 
-const useGetCurrentCoverPicture = () => {
+const useFetchCurrentCoverPicture = () => {
     const dispatch = useDispatch();
 
     const getCurrentCoverPicture = React.useCallback(
@@ -51,4 +51,4 @@ const useGetCurrentCoverPicture = () => {
     return { getCurrentCoverPicture };
 };
 
-export default useGetCurrentCoverPicture;
+export default useFetchCurrentCoverPicture;
