@@ -10,12 +10,14 @@ export const CreateFrameContext = React.createContext<{
     picturesUri: string[];
     positions: Animated.SharedValue<DragAndDrop.Positions>;
     removePictures: (uri: string, callback?: () => void) => void;
+    resetPictures: () => void;
     switchPosition: (id: string, oldOrder: number, newOrder: number) => void;
 }>({
     addPictures: () => {},
     picturesUri: [],
     positions: { value: {} },
     removePictures: () => {},
+    resetPictures: () => {},
     switchPosition: () => {},
 });
 
@@ -51,6 +53,9 @@ export const CreateFrameProvider: React.FC<{}> = ({ children }) => {
         },
         []
     );
+    const resetPictures = React.useCallback(() => {
+        positions.value = {};
+    }, []);
     const switchPosition = React.useCallback(
         (id: string, oldOrder: number, newOrder: number) => {
             'worklet';
@@ -90,6 +95,7 @@ export const CreateFrameProvider: React.FC<{}> = ({ children }) => {
                 picturesUri,
                 positions,
                 removePictures,
+                resetPictures,
                 switchPosition,
             }}
         >
