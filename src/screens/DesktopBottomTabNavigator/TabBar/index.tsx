@@ -103,6 +103,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
             ))();
     }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
 
+    // TODO: Bug here when reload
     React.useEffect(() => {
         if (keyboardShown)
             bottom.value = withTiming(

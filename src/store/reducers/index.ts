@@ -8,6 +8,7 @@ import galeriePictures from './galeriePictures.reducer';
 import likes from './likes.reducer';
 import me from './me.reducer';
 import notification from './notification.reducer';
+import profilePictures from './profilePicturesReducer';
 import users from './users.reducer';
 
 export default combineReducers({
@@ -19,5 +20,6 @@ export default combineReducers({
     likes,
     me,
     notification,
+    profilePictures,
     users,
 });

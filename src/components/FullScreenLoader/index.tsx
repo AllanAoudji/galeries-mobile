@@ -1,14 +1,6 @@
 import * as React from 'react';
 import { ActivityIndicator } from 'react-native';
-import {
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
-} from 'react-native-reanimated';
 import { useTheme } from 'styled-components/native';
-
-import { ANIMATIONS } from '#helpers/constants';
 
 import { Container } from './styles';
 
@@ -25,37 +17,10 @@ const FullScreenLoader = ({
 }: Props) => {
     const theme = useTheme();
 
-    const [display, setDisplay] = React.useState<boolean>(show);
-    const opacity = useSharedValue(display ? 1 : 0);
-
-    const style = useAnimatedStyle(
-        () => ({
-            opacity: opacity.value,
-        }),
-        []
-    );
-
-    React.useEffect(() => {
-        if (show) setDisplay(true);
-        else {
-            opacity.value = withTiming(
-                0,
-                ANIMATIONS.TIMING_CONFIG(100),
-                (isFinished) => {
-                    if (isFinished) runOnJS(setDisplay)(false);
-                }
-            );
-        }
-    }, [show]);
-    React.useEffect(() => {
-        if (display)
-            opacity.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(200));
-    }, [display]);
-
-    if (!display) return null;
+    if (!show) return null;
 
     return (
-        <Container color={backgroundColor} style={style}>
+        <Container color={backgroundColor}>
             <ActivityIndicator
                 color={theme.colors[color]}
                 size="large"
@@ -65,4 +30,4 @@ const FullScreenLoader = ({
     );
 };
 
-export default React.memo(FullScreenLoader);
+export default FullScreenLoader;

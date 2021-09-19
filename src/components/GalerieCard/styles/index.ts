@@ -31,14 +31,7 @@ const PictureContainer = styled(LinearGradient)`
     overflow: hidden;
 `;
 const UserContainer = styled.View`
-    background-color: ${({ theme }) => theme.colors.primary};
-    border-color: ${({ theme }) => theme.colors['secondary-light']};
-    border-radius: ${() => `${USER_CONTAINER_SIZE / 2}px`};
-    border-width: 2px;
-    height: ${() => `${USER_CONTAINER_SIZE}px`};
-    margin-left: -15px;
-    overflow: hidden;
-    width: ${() => `${USER_CONTAINER_SIZE}px`};
+    margin-left: -16px;
 `;
 const UsersContainer = styled.View`
     align-items: center;

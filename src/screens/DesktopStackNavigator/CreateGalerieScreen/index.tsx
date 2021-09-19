@@ -24,7 +24,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     const { loading, postGalerie, resetServerErrorField, serverErrors } =
         usePostGalerie();
     const formik = useFormik({
-        onSubmit: async (values) => postGalerie(values, postGalerieCallBack),
+        onSubmit: async (values) => postGalerie(values, successCallback),
         initialValues,
         validateOnBlur: true,
         validateOnChange: false,
@@ -48,16 +48,6 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         [formik.errors.name, serverErrors.name]
     );
 
-    const postGalerieCallBack = React.useCallback(
-        ({ id }: Store.Models.Galerie) => {
-            dispatch(setCurrentGalerieId(id));
-            navigation.navigate('Navigation', {
-                screen: 'Main',
-                params: { screen: 'Galerie' },
-            });
-        },
-        []
-    );
     const handleChangeDescriptionText = React.useCallback((e: string) => {
         resetServerErrorField('description');
         formik.setFieldError('description', '');
@@ -76,6 +66,16 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                 params: { screen: 'Home' },
             });
     }, [navigation]);
+    const successCallback = React.useCallback(
+        ({ id }: Store.Models.Galerie) => {
+            dispatch(setCurrentGalerieId(id));
+            navigation.navigate('Navigation', {
+                screen: 'Main',
+                params: { screen: 'Galerie' },
+            });
+        },
+        []
+    );
 
     return (
         <FormContainer>

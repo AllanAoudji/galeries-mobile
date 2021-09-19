@@ -4,15 +4,11 @@ import { Pressable, useWindowDimensions } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
+import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
-import { END_POINT } from '#helpers/constants';
 import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
-import request from '#helpers/request';
-import {
-    setCurrentGalerieId,
-    setGaleriePictures,
-    setGaleries,
-} from '#store/actions';
+import { useFetchCurrentCoverPicture } from '#hooks';
+import { setCurrentGalerieId } from '#store/actions';
 
 import {
     Container,
@@ -29,6 +25,7 @@ type Props = {
 };
 
 const GalerieModal = ({ galerie }: Props) => {
+    const { getCurrentCoverPicture } = useFetchCurrentCoverPicture();
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GaleriesNavigationProp>();
@@ -50,40 +47,7 @@ const GalerieModal = ({ galerie }: Props) => {
 
     // Fetch coverPicture and users.
     React.useEffect(() => {
-        if (galerie.currentCoverPicture === undefined) {
-            request({
-                body: {},
-                method: 'GET',
-                url: END_POINT.GALERIE_COVER_PICTURE(galerie.id),
-            }).then((res) => {
-                if (
-                    res.data &&
-                    res.data.data &&
-                    res.data.data.coverPicture &&
-                    typeof res.data.data.coverPicture === 'object'
-                ) {
-                    const { id } = res.data.data.coverPicture;
-                    dispatch(
-                        setGaleries({
-                            data: {
-                                byId: {
-                                    [galerie.id]: {
-                                        ...galerie,
-                                        currentCoverPicture:
-                                            res.data.data.coverPicture,
-                                    },
-                                },
-                            },
-                        })
-                    );
-                    dispatch(
-                        setGaleriePictures({
-                            byId: { [id]: res.data.data.coverPicture },
-                        })
-                    );
-                }
-            });
-        }
+        getCurrentCoverPicture(galerie);
         // TODO:
         // Fetch user if galerie.numOfUsers > 0
     }, [galerie]);
@@ -125,11 +89,24 @@ const GalerieModal = ({ galerie }: Props) => {
                         {galerie.name}
                     </Typography>
                     <UsersContainer>
-                        <UserContainer />
-                        <UserContainer />
-                        <UserContainer />
-                        <UserContainer />
-                        <UserContainer />
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
+                        <UserContainer>
+                            <ProfilePicture border size="small" />
+                        </UserContainer>
                         <NumOfUsersContainer>
                             <Typography fontFamily="light" fontSize={14}>
                                 +3 others

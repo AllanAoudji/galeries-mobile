@@ -118,7 +118,6 @@ const GalerieTabViewNavigator = () => {
                 case 'frames':
                     return (
                         <FramesScreen
-                            galerie={galerie}
                             handleNavigateToCreateGalerieScreen={
                                 handleNavigateToCreateGalerieScreen
                             }
@@ -159,12 +158,7 @@ const GalerieTabViewNavigator = () => {
                     return null;
             }
         },
-        [
-            galerie,
-            scrollHandler,
-            sizeContainer,
-            handleNavigateToCreateGalerieScreen,
-        ]
+        [scrollHandler, sizeContainer, handleNavigateToCreateGalerieScreen]
     );
     const renderTabBar = React.useCallback(
         (
@@ -187,9 +181,10 @@ const GalerieTabViewNavigator = () => {
 
     // Cleaner
     React.useEffect(() => {
-        setReset(false);
+        if (reset) setReset(false);
         return () => {
             if (reset) {
+                // TODO: if currentGalerie.id change =>
                 scrollY.value = 0;
                 setNavigationState({ index: 0, routes });
             }

@@ -34,13 +34,11 @@ const fetchGaleries: Middleware =
                     action.payload.meta.query &&
                     typeof action.payload.meta.query.name === 'string'
                 ) {
-                    return getState().galeries.allIdsByName[
-                        action.payload.meta.query.name
-                    ]
-                        ? !getState().galeries.allIdsByName[
-                              action.payload.meta.query.name
-                          ].end
-                        : true;
+                    const galerie =
+                        getState().galeries.allIdsByName[
+                            action.payload.meta.query.name
+                        ];
+                    return galerie ? !galerie.end : true;
                 }
                 return false;
             })();
@@ -107,7 +105,9 @@ const successGaleries: Middleware =
                                 action.payload.data.data.galeries.map(
                                     (galerie: any) => normalizeGalerie(galerie)
                                 );
-                            normalize = normalizeData(normalizedGaleries);
+                            normalize = normalizeData(
+                                normalizedGaleries as Store.Models.Galerie[]
+                            );
                         } else if (
                             action.payload.data.data.galerie &&
                             typeof action.payload.data.data.galerie === 'object'
@@ -115,7 +115,9 @@ const successGaleries: Middleware =
                             const normalizedGalerie = normalizeGalerie(
                                 action.payload.data.data.galerie
                             );
-                            normalize = normalizeData(normalizedGalerie);
+                            normalize = normalizeData(
+                                normalizedGalerie as Store.Models.Galerie
+                            );
                         } else {
                             dispatch(
                                 setNotification({

@@ -39,6 +39,7 @@ declare global {
         namespace DesktopBottomTab {
             type ParamList = {
                 Comments: undefined;
+                CreateFrame: NavigatorScreenParams<CreateFrameStack.ParamList>;
                 Galerie: undefined;
                 Galeries: undefined;
                 Home: undefined;
@@ -101,7 +102,6 @@ declare global {
         }
         namespace DesktopStack {
             type ParamList = {
-                CreateFrame: NavigatorScreenParams<CreateFrameStack.ParamList>;
                 CreateGalerie: undefined;
                 Navigation: NavigatorScreenParams<DesktopDrawer.ParamList>;
             };
@@ -166,6 +166,7 @@ declare global {
             | '[NOTIFICATION]'
             | '[LOGOUT]'
             | '[ME]'
+            | '[PROFILE PICTURE]'
             | '[UI STATES]'
             | '[USERS]';
         type Meta = {
@@ -187,10 +188,10 @@ declare global {
                 };
             };
             comments: {
-                byId: { [key: string]: Store.Models.Comments };
+                byId: { [key: string]: Store.Models.Comment };
             };
             frames: {
-                allIds: string[];
+                allIds?: string[];
                 byId: { [key: string]: Store.Models.Frame };
                 end: boolean;
                 previousFrame?: string;
@@ -199,7 +200,7 @@ declare global {
             galeries: {
                 allIdsByName: {
                     [key: string]: {
-                        allIds: string[];
+                        allIds?: string[];
                         end: boolean;
                         previousGalerie?: string;
                         status: Store.Status;
@@ -217,6 +218,13 @@ declare global {
                 status: Status;
                 id: string | null;
             };
+            profilePictures: {
+                allIds?: string[];
+                byId: { [key: string]: Store.Models.ProfilePicture };
+                end: boolean;
+                previousProfilePicture?: string;
+                status: Store.Status;
+            };
             notification: Store.Models.Notification | null;
             users: {
                 byId: { [key: string]: Store.Models.User };
@@ -225,11 +233,11 @@ declare global {
         type Role = 'admin' | 'moderator' | 'user';
         type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
         namespace Models {
-            type Comments = {
+            type Comment = {
                 autoIncrementId: string;
                 body: string;
                 comments: {
-                    allIds: string;
+                    allIds?: string[];
                     end: boolean;
                     previousComment?: string;
                     status: Store.Status;
@@ -242,10 +250,11 @@ declare global {
                 updatedAt: string;
                 userId: string;
             };
+            type CommentPopulated = Comment & { user: UserPopulated };
             type Frame = {
                 autoIncrementId: string;
                 comments: {
-                    allIds: string[];
+                    allIds?: string[];
                     end: boolean;
                     previousComment?: string;
                     status: Store.Status;
@@ -256,7 +265,7 @@ declare global {
                 galeriePicturesId: string[];
                 id: string;
                 likes: {
-                    allIds: string[];
+                    allIds?: string[];
                     end: boolean;
                     previousLike?: string;
                     status: Store.Status;
@@ -267,6 +276,11 @@ declare global {
                 updatedAt: string;
                 userId: string;
             };
+            type FramePopulated = Frame & {
+                galerie?: Store.Models.Galerie;
+                galeriePictures: Store.Models.GaleriePicture[];
+                user?: Store.Models.PopulatedUser;
+            };
             type Galerie = {
                 allowNotification: boolean;
                 createdAt: Date;
@@ -274,7 +288,7 @@ declare global {
                 defaultCoverPicture: string;
                 description: string;
                 frames: {
-                    allIds: string[];
+                    allIds?: string[];
                     end: boolean;
                     previousFrame?: string;
                     status: Store.Status;
@@ -286,7 +300,7 @@ declare global {
                 numOfUsers: number;
                 role: Role;
                 users: {
-                    allIds: string[];
+                    allIds?: string[];
                     end: boolean;
                     previousFrame?: string;
                     status: Store.Status;
@@ -311,7 +325,9 @@ declare global {
                 updatedAt: string;
                 userId: string;
             };
+            type LikePopulated = Like & { user: UserPopulated };
             type Image = {
+                id: string;
                 format: string;
                 height: number;
                 signedUrl: string;
@@ -322,9 +338,21 @@ declare global {
                 status: 'error' | 'success';
                 text: string;
             };
+            type ProfilePicture = {
+                autoIncrementId: string;
+                createdAt: string;
+                cropedImage: Image;
+                current: boolean;
+                frameId: string;
+                id: string;
+                index: string;
+                originalImage: string;
+                pendingHexes: string;
+                updatedAt: string;
+            };
             type User = {
                 createdAt: Date;
-                currentProfilePicute?: string | null;
+                currentProfilePictureId?: string | null;
                 defaultProfilePicture: string | null;
                 hasNewNotification?: boolean;
                 id: string;
@@ -333,6 +361,9 @@ declare global {
                 role: Role;
                 socialMediaUserName: string | null;
                 userName: string;
+            };
+            type UserPopulated = User & {
+                currentProfilePicture?: ProfilePicture;
             };
         }
     }
@@ -425,6 +456,7 @@ declare global {
             type Button = 'fill' | 'stroke';
             type Logo = 'large' | 'largest' | 'normal' | 'small' | 'smallest';
             type Pictogram = 'large' | 'normal' | 'small';
+            type ProfilePicture = 'small' | 'normal' | 'large';
         }
     }
 }

@@ -60,6 +60,9 @@ export const END_POINT = {
     GALERIE_USERS: (id: string) => `/galeries/${id}/users/`,
     GALERIES: '/galeries/',
     GET_ME: '/users/me/',
+    GET_ME_CURRENT_PROFILE_PICTURE: '/users/me/currentProfilePicture',
+    GET_USER_CURRENT_PROFILE_PICTURE: (id: string) =>
+        `/users/${id}/currentProfilePicture`,
     LIKES: (id: string) => `/frames/${id}/likes/`,
     LOGIN: '/users/login/',
     LOGOUT: '/users/logout/',

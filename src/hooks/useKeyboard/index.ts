@@ -20,12 +20,19 @@ const useKeyboard = () => {
     const [keyboardHeight, setKeyboardHeight] = React.useState<number>(0);
     const [shown, setShown] = React.useState(false);
 
-    const handleKeyboardWillShow: KeyboardEventListener = React.useCallback(
-        (e) =>
-            setCoordinates({
-                end: e.endCoordinates,
-                start: e.startCoordinates,
-            }),
+    const handleKeyboardDidHide: KeyboardEventListener = React.useCallback(
+        (e) => {
+            setShown(false);
+            if (e) {
+                setCoordinates({
+                    end: e.endCoordinates,
+                    start: e.startCoordinates,
+                });
+            } else {
+                setCoordinates(initialValue);
+                setKeyboardHeight(0);
+            }
+        },
         []
     );
     const handleKeyboardDidShow: KeyboardEventListener = React.useCallback(
@@ -47,19 +54,12 @@ const useKeyboard = () => {
             }),
         []
     );
-    const handleKeyboardDidHide: KeyboardEventListener = React.useCallback(
-        (e) => {
-            setShown(false);
-            if (e) {
-                setCoordinates({
-                    end: e.endCoordinates,
-                    start: e.startCoordinates,
-                });
-            } else {
-                setCoordinates(initialValue);
-                setKeyboardHeight(0);
-            }
-        },
+    const handleKeyboardWillShow: KeyboardEventListener = React.useCallback(
+        (e) =>
+            setCoordinates({
+                end: e.endCoordinates,
+                start: e.startCoordinates,
+            }),
         []
     );
 

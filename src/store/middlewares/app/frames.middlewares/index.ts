@@ -150,7 +150,7 @@ const successFrames: Middleware<{}, Store.Reducer> =
                                 ...normalize.byId,
                             };
                             const allIds = uniqueArray([
-                                ...galerie.frames.allIds,
+                                ...(galerie.frames.allIds || []),
                                 ...normalize.allIds,
                             ]).sort((a, b) => {
                                 if (!framesById[a] || !framesById[b]) return 0;
@@ -161,7 +161,12 @@ const successFrames: Middleware<{}, Store.Reducer> =
                                     new Date(framesById[a].createdAt).getTime()
                                 );
                             });
-                            const previousFrame = allIds[allIds.length - 1];
+                            const previousFrame = framesById[
+                                allIds[allIds.length - 1]
+                            ]
+                                ? framesById[allIds[allIds.length - 1]]
+                                      .autoIncrementId
+                                : undefined;
                             dispatch(
                                 setGaleries({
                                     data: {
@@ -170,7 +175,9 @@ const successFrames: Middleware<{}, Store.Reducer> =
                                                 ...galerie,
                                                 frames: {
                                                     allIds,
-                                                    end: allIds.length < 20,
+                                                    end:
+                                                        normalize.allIds
+                                                            .length < 20,
                                                     status: 'SUCCESS',
                                                     previousFrame,
                                                 },

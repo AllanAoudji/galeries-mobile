@@ -2,24 +2,24 @@ import moment from 'moment';
 import * as React from 'react';
 import { View } from 'react-native';
 
+import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 
 import {
     Container,
     ContentContainer,
     ContentContainerFooter,
-    ProfilePictureContainer,
     TimeContainer,
 } from './styles';
 
 type Props = {
-    comment: Store.Models.Comments & { user: Store.Models.User };
+    comment: Store.Models.CommentPopulated;
 };
 
 const CommentCard = ({ comment }: Props) => {
     return (
         <Container>
-            <ProfilePictureContainer />
+            <ProfilePicture mr="smallest" user={comment.user} />
             <View>
                 <ContentContainer>
                     <Typography>

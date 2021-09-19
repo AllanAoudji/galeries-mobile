@@ -1,10 +1,6 @@
-import { AxiosError } from 'axios';
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 
-import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
-import request from '#helpers/request';
 import {
     CustomButton,
     CustomTextInput,
@@ -12,7 +8,7 @@ import {
     Logo,
 } from '#components';
 import { signinSchema } from '#helpers/schemas';
-import { setNotification } from '#store/actions';
+import { usePostSignin } from '#hooks';
 
 import FooterNavigation from '../FooterNavigation';
 
@@ -29,84 +25,14 @@ type Props = {
 };
 
 const SigninScreen = ({ navigation }: Props) => {
-    const dispatch = useDispatch();
+    const { serverErrors, loading, resetServerErrorField, signin } =
+        usePostSignin();
     const formik = useFormik({
         initialValues,
-        onSubmit: async (values) => {
-            setLoading(true);
-            request({
-                body: values,
-                method: 'POST',
-                url: END_POINT.SIGNIN,
-            })
-                .then((res) => {
-                    console.log('success', res);
-                })
-                .catch((err: AxiosError) => {
-                    if (err.response && err.response.data.errors) {
-                        if (typeof err.response.data.errors === 'object') {
-                            if (
-                                err.response.data.errors.betaKey ||
-                                err.response.data.errors.confirmPassword ||
-                                err.response.data.errors.email ||
-                                err.response.data.errors.password ||
-                                err.response.data.errors.userName
-                            ) {
-                                setServerErrors({
-                                    betaKey: err.response.data.errors.betaKey,
-                                    confirmPassword:
-                                        err.response.data.errors
-                                            .confirmPassword,
-                                    email: err.response.data.errors.email,
-                                    password: err.response.data.errors.password,
-                                    userName: err.response.data.errors.userName,
-                                });
-                            } else {
-                                dispatch(
-                                    setNotification({
-                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                        status: 'error',
-                                    })
-                                );
-                            }
-                        } else {
-                            dispatch(
-                                setNotification({
-                                    text: err.response.data.errors,
-                                    status: 'error',
-                                })
-                            );
-                        }
-                    } else {
-                        dispatch(
-                            setNotification({
-                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                status: 'error',
-                            })
-                        );
-                    }
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
-        },
+        onSubmit: async (values) => signin(values),
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: signinSchema,
-    });
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const [serverErrors, setServerErrors] = React.useState<{
-        betaKey: string;
-        confirmPassword: string;
-        email: string;
-        password: string;
-        userName: string;
-    }>({
-        betaKey: '',
-        confirmPassword: '',
-        email: '',
-        password: '',
-        userName: '',
     });
 
     const betaKeyError = React.useMemo(
@@ -147,42 +73,27 @@ const SigninScreen = ({ navigation }: Props) => {
     );
 
     const handleChangeBetaKeyText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            betaKey: '',
-        }));
+        resetServerErrorField('betaKey');
         formik.setFieldError('betaKey', '');
         formik.setFieldValue('betaKey', e);
     }, []);
     const handleChangeConfirmPasswordText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            confirmPassword: '',
-        }));
+        resetServerErrorField('confirmPassword');
         formik.setFieldError('confirmPassword', '');
         formik.setFieldValue('confirmPassword', e);
     }, []);
     const handleChangeEmailText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            email: '',
-        }));
+        resetServerErrorField('email');
         formik.setFieldError('email', '');
         formik.setFieldValue('email', e);
     }, []);
     const handleChangePasswordText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            password: '',
-        }));
+        resetServerErrorField('password');
         formik.setFieldError('password', '');
         formik.setFieldValue('password', e);
     }, []);
     const handeChangeUserNameText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            userName: '',
-        }));
+        resetServerErrorField('userName');
         formik.setFieldError('userName', '');
         formik.setFieldValue('userName', e);
     }, []);

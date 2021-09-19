@@ -1,9 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AxiosError } from 'axios';
 import { useFormik } from 'formik';
-import moment from 'moment';
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 
 import {
     CustomButton,
@@ -12,10 +8,8 @@ import {
     Logo,
     Typography,
 } from '#components';
-import { ASYNC_STORAGE, END_POINT, ERROR_MESSAGE } from '#helpers/constants';
-import request from '#helpers/request';
 import { loginSchema } from '#helpers/schemas';
-import { fetchMe, setNotification } from '#store/actions';
+import { usePostLogin } from '#hooks';
 
 import FooterNavigation from '../FooterNavigation';
 
@@ -31,126 +25,15 @@ type Props = {
 };
 
 const LoginScreen = ({ navigation }: Props) => {
-    const dispatch = useDispatch();
+    const { loading, login, resetServerErrorField, serverErrors } =
+        usePostLogin();
 
     const formik = useFormik({
         initialValues,
-        onSubmit: async (values) => {
-            setLoading(true);
-            request({
-                body: values,
-                method: 'POST',
-                url: END_POINT.LOGIN,
-            })
-                .then(async (res) => {
-                    if (
-                        !res.data.data &&
-                        !res.data.data.expiresIn &&
-                        typeof res.data.data.expiresIn !== 'number' &&
-                        !res.data.data.token &&
-                        typeof res.data.data.token !== 'string'
-                    ) {
-                        dispatch(
-                            setNotification({
-                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                status: 'error',
-                            })
-                        );
-                    } else {
-                        try {
-                            const normalizeExpiredIn = moment()
-                                .add(res.data.data.expiresIn, 's')
-                                .valueOf()
-                                .toString();
-                            await AsyncStorage.setItem(
-                                ASYNC_STORAGE.AUTH_TOKEN_EXPIRES_IN,
-                                normalizeExpiredIn
-                            );
-                            await AsyncStorage.setItem(
-                                ASYNC_STORAGE.AUTH_TOKEN_TOKEN,
-                                res.data.data.token
-                            );
-                            dispatch(fetchMe());
-                        } catch (err) {
-                            dispatch(
-                                setNotification({
-                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                    status: 'error',
-                                })
-                            );
-                        }
-                    }
-                })
-                .catch((err: AxiosError) => {
-                    if (err.response && err.response.data.errors) {
-                        if (typeof err.response.data.errors === 'object') {
-                            if (
-                                err.response.data.errors.password ||
-                                err.response.data.errors.userNameOrEmail
-                            ) {
-                                setServerErrors({
-                                    password:
-                                        err.response.data.errors.password || '',
-                                    userNameOrEmail:
-                                        err.response.data.errors
-                                            .userNameOrEmail || '',
-                                });
-                            } else {
-                                dispatch(
-                                    setNotification({
-                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                        status: 'error',
-                                    })
-                                );
-                            }
-                        } else if (
-                            typeof err.response.data.errors === 'string'
-                        ) {
-                            if (
-                                err.response.data.errors ===
-                                ERROR_MESSAGE.USER_SHOULD_NOT_BE_AUTHENTICATED
-                            ) {
-                                dispatch(fetchMe());
-                            } else {
-                                dispatch(
-                                    setNotification({
-                                        text: err.response.data.errors,
-                                        status: 'error',
-                                    })
-                                );
-                            }
-                        } else {
-                            dispatch(
-                                setNotification({
-                                    text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                    status: 'error',
-                                })
-                            );
-                        }
-                    } else {
-                        dispatch(
-                            setNotification({
-                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                status: 'error',
-                            })
-                        );
-                    }
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
-        },
+        onSubmit: (values) => login(values),
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: loginSchema,
-    });
-
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const [serverErrors, setServerErrors] = React.useState<
-        typeof initialValues
-    >({
-        password: '',
-        userNameOrEmail: '',
     });
 
     const disableButton = React.useMemo(() => {
@@ -171,18 +54,12 @@ const LoginScreen = ({ navigation }: Props) => {
     );
 
     const handleChangePasswordText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            password: '',
-        }));
+        resetServerErrorField('password');
         formik.setFieldError('password', '');
         formik.setFieldValue('password', e);
     }, []);
     const handleChangeUserNameOrEmailText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            userNameOrEmail: '',
-        }));
+        resetServerErrorField('userNameOrEmail');
         formik.setFieldError('userNameOrEmail', '');
         formik.setFieldValue('userNameOrEmail', e);
     }, []);

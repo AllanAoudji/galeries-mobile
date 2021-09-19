@@ -1,7 +1,7 @@
-import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 type ContainerProps = {
+    bottom?: keyof Style.Spacings;
     width: number;
 };
 type LoaderContainerProps = {
@@ -10,8 +10,10 @@ type LoaderContainerProps = {
 
 const LOADER_CONTAINER_SIZE = 40;
 
-const Container = styled(Animated.View)<ContainerProps>`
+const Container = styled.View<ContainerProps>`
     align-items: center;
+    bottom: ${({ bottom, theme }) =>
+        bottom ? theme.spacings[bottom] : theme.spacings.small};
     flex: 1;
     position: absolute;
     width: ${({ width }) => `${width}px`};

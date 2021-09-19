@@ -1,7 +1,5 @@
-import { AxiosError } from 'axios';
 import { useFormik } from 'formik';
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 
 import {
     CustomButton,
@@ -10,10 +8,8 @@ import {
     Logo,
     Typography,
 } from '#components';
-import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
-import request from '#helpers/request';
 import { forgotPassworSchema } from '#helpers/schemas';
-import { setNotification } from '#store/actions';
+import { useForgotPassword } from '#hooks';
 
 import { TextContainer } from './styles';
 
@@ -24,65 +20,14 @@ type Props = {
 const initialValues = { email: '' };
 
 const ForgotYourPasswordScreen = ({ navigation }: Props) => {
-    const dispatch = useDispatch();
+    const { forgotPassword, loading, serverErrors, resetServerErrorField } =
+        useForgotPassword();
     const formik = useFormik({
         initialValues,
-        onSubmit: async (values) => {
-            setLoading(true);
-            request({
-                body: values,
-                method: 'POST',
-                url: END_POINT.FORGOT_PASSWORD,
-            })
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch((err: AxiosError) => {
-                    if (err.response && err.response.data.errors) {
-                        if (typeof err.response.data.errors === 'object') {
-                            if (err.response.data.errors.email) {
-                                setServerErrors({
-                                    email: err.response.data.errors.email,
-                                });
-                            } else {
-                                dispatch(
-                                    setNotification({
-                                        text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                        status: 'error',
-                                    })
-                                );
-                            }
-                        } else {
-                            dispatch(
-                                setNotification({
-                                    text: err.response.data.errors,
-                                    status: 'error',
-                                })
-                            );
-                        }
-                    } else {
-                        dispatch(
-                            setNotification({
-                                text: ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE,
-                                status: 'error',
-                            })
-                        );
-                    }
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
-        },
+        onSubmit: (values) => forgotPassword(values),
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: forgotPassworSchema,
-    });
-
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const [serverErrors, setServerErrors] = React.useState<{
-        email: string;
-    }>({
-        email: '',
     });
 
     const disableButton = React.useMemo(() => {
@@ -96,10 +41,7 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
     );
 
     const handleChangeEmailText = React.useCallback((e: string) => {
-        setServerErrors((prevState) => ({
-            ...prevState,
-            email: '',
-        }));
+        resetServerErrorField('email');
         formik.setFieldError('email', '');
         formik.setFieldValue('email', e);
     }, []);

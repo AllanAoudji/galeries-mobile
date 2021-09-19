@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
 import normalizeData from '#helpers/normalizeData';
 import request from '#helpers/request';
-import { resetGaleries, setGaleries, setNotification } from '#store/actions';
+import { setGaleries, setNotification } from '#store/actions';
 
 type Values = {
     description: string;
@@ -24,7 +24,7 @@ const usePostGalerie = () => {
     const postGalerie = React.useCallback(
         async (
             values: Values,
-            success?: (galerie: Store.Models.Galerie) => void
+            successCallback?: (galerie: Store.Models.Galerie) => void
         ) => {
             if (!loading) {
                 setLoading(true);
@@ -60,8 +60,8 @@ const usePostGalerie = () => {
                                     meta: {},
                                 })
                             );
-                            dispatch(resetGaleries());
-                            if (success) success(normalizedGalerie);
+                            if (successCallback)
+                                successCallback(normalizedGalerie);
                         } else {
                             dispatch(
                                 setNotification({
@@ -118,7 +118,8 @@ const usePostGalerie = () => {
                                 })
                             );
                         }
-                    });
+                    })
+                    .finally(() => setLoading(false));
             }
         },
         []

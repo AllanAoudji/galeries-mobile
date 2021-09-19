@@ -1,26 +1,24 @@
-import { useIsFocused } from '@react-navigation/native';
 import * as React from 'react';
 import { Keyboard, ListRenderItemInfo } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { withTiming } from 'react-native-reanimated';
 
 import {
     AnimatedFlatList,
     BottomLoader,
     DefaultHeader,
+    EmptyMessage,
     FullScreenLoader,
     GalerieCard,
     SearchBar,
 } from '#components';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
-import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
-import { fetchGaleries, setGaleriesNameFilter } from '#store/actions';
 import {
-    filtersGaleriesNameSelector,
-    galeriesStatusSelector,
-    galeriesEndSelector,
-    galeriesSelector,
-} from '#store/selectors';
+    useComponentSize,
+    useFetchGaleries,
+    useHideHeaderOnScroll,
+} from '#hooks';
+import { setGaleriesNameFilter } from '#store/actions';
 
 import { Container, Header, SearchBarContainer } from './styles';
 
@@ -31,23 +29,21 @@ const renderItem = ({ item }: ListRenderItemInfo<Store.Models.Galerie>) => (
 const GaleriesScreen = () => {
     const dispatch = useDispatch();
 
-    const focus = useIsFocused();
+    const { fetchNextGaleries, fetching, filtersGaleriesName, galeries } =
+        useFetchGaleries();
 
     const { onLayout, size } = useComponentSize();
     const { containerStyle, headerStyle, scrollHandler, translateY } =
         useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT, true);
 
-    const filtersGaleriesName = useSelector(filtersGaleriesNameSelector);
-    const galeries = useSelector(galeriesSelector);
-    const galeriesEnd = useSelector(galeriesEndSelector);
-    const galeriesStatus = useSelector(galeriesStatusSelector);
-
-    const [firstFetchFinished, setFirstFetchFinished] =
-        React.useState<boolean>(false);
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
-    const [searchValue, setSearchValue] = React.useState<string>('');
+    const [value, setValue] = React.useState<string>(filtersGaleriesName);
+    const [show, setShow] = React.useState<boolean>(true);
 
-    const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
+    const paddingTop = React.useMemo(
+        () => (size ? size.height : undefined),
+        [size]
+    );
 
     const getItemLayout = React.useCallback(
         (_, index) => ({
@@ -58,40 +54,32 @@ const GaleriesScreen = () => {
         []
     );
     const handleChangeText = React.useCallback((e: string) => {
-        setSearchFinished(false);
         dispatch(setGaleriesNameFilter(e.trim()));
     }, []);
-    const handleReachEnd = React.useCallback(() => {
-        if (!galeriesEnd && galeriesStatus !== 'FETCHING') {
-            dispatch(fetchGaleries({ name: filtersGaleriesName }));
-        }
-    }, [filtersGaleriesName, galeriesEnd, galeriesStatus]);
-    const keyExtractor = React.useCallback((galerie) => galerie.id, []);
-    const onFocusSearchBar = React.useCallback(() => {
+    const handleFocusSearchBar = React.useCallback(() => {
         translateY.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(200));
     }, []);
-    const onScrollBeginDrag = React.useCallback(() => Keyboard.dismiss(), []);
-    const onStopTyping = React.useCallback(() => {
-        setSearchFinished(true);
-    }, []);
+    const handleScrollBeginDrag = React.useCallback(
+        () => Keyboard.dismiss(),
+        []
+    );
+    const handleStopTyping = React.useCallback(
+        () => setSearchFinished(true),
+        []
+    );
+    const keyExtractor = React.useCallback((galerie) => galerie.id, []);
 
-    // Fetch galeries
     React.useEffect(() => {
-        if (galeriesStatus === 'PENDING' && focus) {
-            setFirstFetchFinished(false);
-            dispatch(fetchGaleries({ name: filtersGaleriesName }));
+        if (!galeries) {
+            setShow(true);
         }
-    }, [galeriesStatus, filtersGaleriesName, focus]);
-    // Check if fetch is finished
+    }, [galeries, show]);
     React.useEffect(() => {
-        if (
-            (galeriesStatus === 'SUCCESS' || galeriesStatus === 'ERROR') &&
-            focus &&
-            searchFinished &&
-            !firstFetchFinished
-        )
-            setFirstFetchFinished(true);
-    }, [firstFetchFinished, focus, galeriesStatus, searchFinished]);
+        if (galeries && searchFinished) {
+            setSearchFinished(false);
+            setShow(false);
+        }
+    }, [galeries, searchFinished]);
 
     return (
         <Container>
@@ -101,14 +89,14 @@ const GaleriesScreen = () => {
                     <SearchBar
                         mt="smallest"
                         onChangeText={handleChangeText}
-                        onFocus={onFocusSearchBar}
-                        onStopTyping={onStopTyping}
-                        setValue={setSearchValue}
-                        value={searchValue}
+                        onFocus={handleFocusSearchBar}
+                        onStopTyping={handleStopTyping}
+                        setValue={setValue}
+                        value={value}
                     />
                 </SearchBarContainer>
             </Header>
-            {firstFetchFinished && (
+            {!!galeries && galeries.length > 0 && paddingTop ? (
                 <AnimatedFlatList
                     contentContainerStyle={{
                         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
@@ -119,24 +107,20 @@ const GaleriesScreen = () => {
                     keyExtractor={keyExtractor}
                     keyboardShouldPersistTaps="handled"
                     maxToRenderPerBatch={4}
-                    onEndReached={handleReachEnd}
+                    onEndReached={fetchNextGaleries}
                     onEndReachedThreshold={0.2}
                     onScroll={scrollHandler}
-                    onScrollBeginDrag={onScrollBeginDrag}
+                    onScrollBeginDrag={handleScrollBeginDrag}
                     removeClippedSubviews={true}
                     renderItem={renderItem}
                     scrollEventThrottle={4}
                     showsVerticalScrollIndicator={false}
                 />
+            ) : (
+                <EmptyMessage pt={paddingTop} text="No galerie found" />
             )}
-            <FullScreenLoader show={!firstFetchFinished} />
-            <BottomLoader
-                show={
-                    firstFetchFinished &&
-                    galeriesStatus === 'FETCHING' &&
-                    !galeriesEnd
-                }
-            />
+            <FullScreenLoader show={show} />
+            <BottomLoader show={fetching} bottom="huge" />
         </Container>
     );
 };

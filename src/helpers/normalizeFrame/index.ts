@@ -15,14 +15,12 @@ export default (frames: any) => {
             const normalizedFrame = {
                 ...rest,
                 comments: {
-                    allIds: [],
                     end: false,
                     status: 'PENDING',
                 },
                 galeriePicturesId: galeriePicturesAllIds,
                 galeriePictures: undefined,
                 likes: {
-                    allIds: [],
                     end: false,
                     status: 'PENDING',
                 },
@@ -43,14 +41,12 @@ export default (frames: any) => {
         const normalizedFrame = {
             ...rest,
             comments: {
-                allIds: [],
                 end: false,
                 status: 'PENDING',
             },
             galeriePicturesId: galeriePicturesAllIds,
             galeriePictures: undefined,
             likes: {
-                allIds: [],
                 end: false,
                 status: 'PENDING',
             },
