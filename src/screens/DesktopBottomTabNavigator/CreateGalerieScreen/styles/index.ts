@@ -8,7 +8,7 @@ const ButtonsContainer = styled.View`
     margin-bottom: ${({ theme }) => theme.spacings.normal};
 `;
 const Container = styled.View`
-    margin-top: ${({ theme }) => theme.spacings.large};
+    margin-top: ${({ theme }) => theme.spacings.normal};
 `;
 
 export { Container, ButtonsContainer };

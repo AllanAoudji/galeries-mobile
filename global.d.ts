@@ -40,6 +40,7 @@ declare global {
             type ParamList = {
                 Comments: undefined;
                 CreateFrame: NavigatorScreenParams<CreateFrameStack.ParamList>;
+                CreateGalerie: undefined;
                 Galerie: undefined;
                 Galeries: undefined;
                 Home: undefined;
@@ -50,6 +51,14 @@ declare global {
             type CommentsNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'Comments'
+            >;
+            type CreateFrameProp = BottomTabNavigationProp<
+                ParamList,
+                'CreateFrame'
+            >;
+            type CreateGalerieProp = BottomTabNavigationProp<
+                ParamList,
+                'CreateGalerie'
             >;
             type GalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,
@@ -100,27 +109,9 @@ declare global {
                 'Settings'
             >;
         }
-        namespace DesktopStack {
-            type ParamList = {
-                CreateGalerie: undefined;
-                Navigation: NavigatorScreenParams<DesktopDrawer.ParamList>;
-            };
-            type CreateFrameNavigationProp = StackNavigationProp<
-                ParamList,
-                'CreateFrame'
-            >;
-            type CreateGalerieNavigationProp = StackNavigationProp<
-                ParamList,
-                'CreateGalerie'
-            >;
-            type DesktopNavigationProp = StackNavigationProp<
-                ParamList,
-                'Desktop'
-            >;
-        }
         namespace RootStack {
             type ParamList = {
-                Desktop: NavigatorScreenParams<DesktopStack.ParamList>;
+                Desktop: NavigatorScreenParams<DesktopDrawer.ParamList>;
                 ForgotYourPassword: undefined;
                 Landing: undefined;
                 Login: undefined;
