@@ -22,7 +22,7 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
     const { loading, postFrame, resetServerErrorField, serverErrors } =
         usePostFrame();
 
-    const { picturesUri } = React.useContext(CreateFrameContext);
+    const { picturesUri, resetPictures } = React.useContext(CreateFrameContext);
 
     const formik = useFormik({
         onSubmit: (values) => postFrame(values, picturesUri, successCallback),
@@ -53,6 +53,7 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
         if (!loading) navigation.navigate('AddPictures');
     }, [navigation]);
     const successCallback = React.useCallback(() => {
+        resetPictures();
         navigation
             .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
             .navigate('Galerie');

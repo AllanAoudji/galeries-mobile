@@ -37,7 +37,7 @@ const AddPicturesScreen = ({ navigation }: Props) => {
 
     const { closeBottomSheet, openBottomSheet } =
         React.useContext(BottomSheetContext);
-    const { picturesUri, removePictures } =
+    const { picturesUri, removePictures, resetPictures } =
         React.useContext(CreateFrameContext);
 
     const [openBackModal, setOpenBackModal] = React.useState<boolean>(false);
@@ -64,6 +64,7 @@ const AddPicturesScreen = ({ navigation }: Props) => {
         if (pictureToDelete) removePictures(pictureToDelete);
     }, [pictureToDelete, removePictures]);
     const handleGoBack = React.useCallback(() => {
+        resetPictures();
         if (navigation.canGoBack()) navigation.goBack();
         else {
             navigation
