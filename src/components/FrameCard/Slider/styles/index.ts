@@ -3,7 +3,16 @@ import styled from 'styled-components/native';
 type DotNavigationProps = {
     current: boolean;
 };
+type LinearGradiantStyledProps = {
+    size: number;
+};
 
+const ActivityIndicatorContainer = styled.View`
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+`;
 const Dot = styled.View<DotNavigationProps>`
     background-color: ${({ theme, current }) =>
         current ? theme.colors.primary : theme.colors['secondary-dark']};
@@ -19,5 +28,9 @@ const DotsContainer = styled.View`
     height: 22px;
     justify-content: center;
 `;
+const LinearGradiantStyled = styled.View<LinearGradiantStyledProps>`
+    height: ${({ size }) => `${size}px`};
+    width: ${({ size }) => `${size}px`};
+`;
 
-export { Dot, DotsContainer };
+export { ActivityIndicatorContainer, Dot, DotsContainer, LinearGradiantStyled };

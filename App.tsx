@@ -42,3 +42,5 @@ export default function App() {
 // and a selector
 // return byId(state.ui.galerieIdSelector)
 // so no need route.params.id
+
+// Do not store GaleriePicture on store.

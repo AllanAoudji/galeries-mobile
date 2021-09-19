@@ -6,12 +6,10 @@ import {
     FRAMES,
     FRAMES_FETCH,
     setFrames,
-    setGaleriePictures,
     setGaleries,
     setNotification,
 } from '#store/actions';
 import { END_POINT, ERROR_MESSAGE } from '#helpers/constants';
-import normalizeData from '#helpers/normalizeData';
 import uniqueArray from '#helpers/uniqueArray';
 import normalizeFrame from '#helpers/normalizeFrame';
 
@@ -110,28 +108,20 @@ const successFrames: Middleware<{}, Store.Reducer> =
                         if (
                             action.payload.data.data.frames &&
                             Array.isArray(action.payload.data.data.frames)
-                        ) {
-                            const { galeriePicturesById, normalizedFrames } =
-                                normalizeFrame(action.payload.data.data.frames);
-                            normalize = normalizeData(normalizedFrames);
-                            dispatch(
-                                setGaleriePictures({
-                                    byId: galeriePicturesById,
-                                })
+                        )
+                            normalize = normalizeFrame(
+                                action.payload.data.data
+                                    .frames as Store.Models.Frame[]
                             );
-                        } else if (
+                        else if (
                             action.payload.data.data.frame &&
                             typeof action.payload.data.data.frame === 'object'
-                        ) {
-                            const { galeriePicturesById, normalizedFrames } =
-                                normalizeFrame(action.payload.data.data.frame);
-                            normalize = normalizeData(normalizedFrames);
-                            dispatch(
-                                setGaleriePictures({
-                                    byId: galeriePicturesById,
-                                })
+                        )
+                            normalize = normalizeFrame(
+                                action.payload.data.data
+                                    .frame as Store.Models.Frame
                             );
-                        } else {
+                        else {
                             dispatch(
                                 setNotification({
                                     status: 'error',
@@ -155,10 +145,8 @@ const successFrames: Middleware<{}, Store.Reducer> =
                             ]).sort((a, b) => {
                                 if (!framesById[a] || !framesById[b]) return 0;
                                 return (
-                                    new Date(
-                                        framesById[b].createdAt
-                                    ).getTime() -
-                                    new Date(framesById[a].createdAt).getTime()
+                                    +framesById[b].autoIncrementId -
+                                    +framesById[a].autoIncrementId
                                 );
                             });
                             const previousFrame = framesById[

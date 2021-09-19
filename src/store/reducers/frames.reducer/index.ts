@@ -5,6 +5,7 @@ const initialState: {
     allIds?: string[];
     byId: { [key: string]: Store.Models.Frame };
     end: boolean;
+    previousFrame?: string;
     status: Store.Status;
 } = {
     byId: {},
@@ -31,12 +32,24 @@ export default (state = initialState, action: Store.Action) => {
                       )
                     : undefined;
             const end = action.payload.meta.end || state.end;
+            const previousFrame =
+                action.payload.meta.method === 'GET' &&
+                action.payload.data.allIds &&
+                action.payload.data.allIds.length
+                    ? byId[
+                          action.payload.data.allIds[
+                              action.payload.data.allIds.length - 1
+                          ]
+                      ].autoIncrementId
+                    : state.previousFrame;
+
             const status = action.payload.data.status || state.status;
             return {
                 ...state,
                 allIds,
                 byId,
                 end,
+                previousFrame,
                 status,
             };
         }
