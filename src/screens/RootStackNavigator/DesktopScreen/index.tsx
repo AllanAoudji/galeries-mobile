@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import DesktopStackNavigator from '#screens/DesktopStackNavigator';
+import DesktopDrawerNavigator from '#screens/DesktopDrawerNavigator';
 
-const DesktopScreen = () => <DesktopStackNavigator />;
+const DesktopScreen = () => <DesktopDrawerNavigator />;
 
 export default DesktopScreen;

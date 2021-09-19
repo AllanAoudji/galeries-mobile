@@ -58,20 +58,17 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         [currentRouteName]
     );
     const showTabBar = React.useMemo(
-        () => currentRouteName === 'Comments' || currentRouteName === 'Likes',
+        () =>
+            currentRouteName === 'Comments' ||
+            currentRouteName === 'CreateFrame' ||
+            currentRouteName === 'CreateGalerie' ||
+            currentRouteName === 'Likes',
         [currentRouteName]
     );
 
     const handleCreateGaleriePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
-        else {
-            closeBottomSheet(() => {
-                if (navigation.getParent() !== undefined) {
-                    // @ts-ignore
-                    navigation.getParent().navigate('CreateGalerie');
-                }
-            });
-        }
+        else closeBottomSheet(() => navigation.navigate('CreateGalerie'));
     }, [navigation, keyboardShown]);
     const handleGaleriesPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();

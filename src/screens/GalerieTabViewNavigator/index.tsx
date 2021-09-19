@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar } from 'react-native';
 import {
@@ -97,8 +97,9 @@ const GalerieTabViewNavigator = () => {
     }, [maxScroll]);
 
     const handleNavigateToCreateGalerieScreen = React.useCallback(() => {
-        // @ts-ignore
-        navigation.getParent().getParent().getParent().navigate('CreateFrame');
+        navigation
+            .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
+            .navigate('CreateFrame', { screen: 'AddPictures' });
     }, [navigation]);
     const onPressBack = React.useCallback(() => {
         setReset(true);

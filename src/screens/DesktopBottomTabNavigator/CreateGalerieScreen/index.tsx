@@ -11,7 +11,7 @@ import { ButtonsContainer, Container } from './styles';
 import { setCurrentGalerieId } from '#store/actions';
 
 type Props = {
-    navigation: Screen.DesktopStack.CreateGalerieNavigationProp;
+    navigation: Screen.DesktopBottomTab.CreateGalerieProp;
 };
 
 const initialValues = {
@@ -60,19 +60,12 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     }, []);
     const handlePressBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
-        else
-            navigation.navigate('Navigation', {
-                screen: 'Main',
-                params: { screen: 'Home' },
-            });
+        else navigation.navigate('Home');
     }, [navigation]);
     const successCallback = React.useCallback(
         ({ id }: Store.Models.Galerie) => {
             dispatch(setCurrentGalerieId(id));
-            navigation.navigate('Navigation', {
-                screen: 'Main',
-                params: { screen: 'Galerie' },
-            });
+            navigation.navigate('Galerie');
         },
         []
     );
