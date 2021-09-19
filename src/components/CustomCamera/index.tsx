@@ -132,21 +132,23 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                     />
                 </BackButtonContainer>
             )}
-            {/* TODO: Need animation */}
-            {!snapShot && (
-                // TODO: Need to center pictograms
+            {!snapShot && type === Camera.Constants.Type.back && (
                 <SwitchFlashModeButtonContainer
-                    onPress={handlePressSwitchFlashMode}
+                    paddingTop={StatusBar.currentHeight}
                 >
                     <Pictogram
                         color="secondary-light"
+                        onPress={handlePressSwitchFlashMode}
+                        height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
                         variant={flashState ? 'flash-off' : 'flash-on'}
+                        pl="small"
+                        pr="small"
+                        width={80}
                     />
                 </SwitchFlashModeButtonContainer>
             )}
             <BottomContainer>
                 <ActionsContainer>
-                    {/* TODO: Need animation */}
                     {!snapShot ? (
                         <TakePictureButton onPress={handleTakePicture}>
                             <InnerTakePictureButton />
@@ -157,7 +159,6 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                         </SavePicturesButton>
                     )}
                 </ActionsContainer>
-                {/* TODO: Need animation */}
                 {!snapShot && (
                     <SwitchTypeButtonContainer onPress={handlePressSwitchType}>
                         <Pictogram
