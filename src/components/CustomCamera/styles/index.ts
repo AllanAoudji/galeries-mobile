@@ -10,6 +10,9 @@ type CameraStyledProps = {
 type ImageStyledProps = {
     margins: number;
 };
+type SwitchFlashModeButtonContainerProps = {
+    paddingTop?: number;
+};
 
 const ACTION_CONTAINER_SIZE = 82;
 const TAKE_PICTURE_BUTTON_BORDER_SIZE = 5;
@@ -69,9 +72,8 @@ const SavePicturesButton = styled.Pressable`
     right: 0;
     top: 0;
 `;
-// TODO: Here need to center
-const SwitchFlashModeButtonContainer = styled.Pressable`
-    padding: ${({ theme }) => theme.spacings.small};
+const SwitchFlashModeButtonContainer = styled.View<SwitchFlashModeButtonContainerProps>`
+    padding-top: ${({ paddingTop }) => (paddingTop ? `${paddingTop}px` : 0)};
     position: absolute;
     right: 0;
     top: 0;
