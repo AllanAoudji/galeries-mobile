@@ -1,3 +1,4 @@
+import { NavigationProp } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import * as React from 'react';
@@ -65,11 +66,9 @@ const AddPicturesScreen = ({ navigation }: Props) => {
     const handleGoBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else {
-            // @ts-ignore
-            navigation.getParent().navigate('Desktop', {
-                screen: 'Main',
-                params: { screen: 'Home' },
-            });
+            navigation
+                .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
+                .navigate('Home');
         }
     }, [navigation]);
     const handleNavigateCamera = React.useCallback(() => {

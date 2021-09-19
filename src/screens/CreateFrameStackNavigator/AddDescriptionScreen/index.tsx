@@ -1,3 +1,4 @@
+import { NavigationProp } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as React from 'react';
 
@@ -52,13 +53,9 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
         if (!loading) navigation.navigate('AddPictures');
     }, [navigation]);
     const successCallback = React.useCallback(() => {
-        if (navigation.getParent() !== undefined) {
-            // @ts-ignore
-            navigation.getParent().navigate('Navigation', {
-                screen: 'Main',
-                params: { screen: 'Galerie' },
-            });
-        }
+        navigation
+            .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
+            .navigate('Galerie');
     }, []);
 
     return (
