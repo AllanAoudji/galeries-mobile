@@ -6,7 +6,6 @@ import {
 import * as React from 'react';
 import { DefaultHeader } from '#components';
 
-import CreateFrameScreen from './CreateFrameScreen';
 import CreateGalerieScreen from './CreateGalerieScreen';
 import NavigationScreen from './NavigationScreen';
 
@@ -38,11 +37,6 @@ const DesktopStackNavigator = () => {
                 cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
             }}
         >
-            <Stack.Screen
-                component={CreateFrameScreen}
-                name="CreateFrame"
-                options={{ headerShown: false }}
-            />
             <Stack.Screen
                 component={CreateGalerieScreen}
                 name="CreateGalerie"
