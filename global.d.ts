@@ -253,7 +253,7 @@ declare global {
                 createdAt: string;
                 description: string;
                 galerieId: string;
-                galeriePicturesId: string[];
+                galeriePicturesId?: string[];
                 id: string;
                 likes: {
                     allIds?: string[];
@@ -269,7 +269,7 @@ declare global {
             };
             type FramePopulated = Frame & {
                 galerie?: Store.Models.Galerie;
-                galeriePictures: Store.Models.GaleriePicture[];
+                galeriePictures?: Store.Models.GaleriePicture[];
                 user?: Store.Models.PopulatedUser;
             };
             type Galerie = {

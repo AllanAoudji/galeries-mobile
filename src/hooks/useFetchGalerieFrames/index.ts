@@ -48,20 +48,8 @@ const useFetchGalerieFrames = () => {
         firstFetchIsFinished,
     ]);
     const fetchNextGalerieFrames = React.useCallback(() => {
-        if (
-            currentGalerieFrames &&
-            !fetching &&
-            firstFetchIsFinished &&
-            !currentGalerieFramesEnd
-        )
-            fetch();
-    }, [
-        currentGalerieFrames,
-        currentGalerieFramesEnd,
-        fetch,
-        fetching,
-        firstFetchIsFinished,
-    ]);
+        if (currentGalerieFrames && !fetching && firstFetchIsFinished) fetch();
+    }, [currentGalerieFrames, fetch, fetching, firstFetchIsFinished]);
 
     React.useEffect(() => {
         if (currentGalerieFramesStatus === 'PENDING')

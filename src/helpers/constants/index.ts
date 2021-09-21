@@ -54,6 +54,7 @@ export const END_POINT = {
     COMMENTS: (id: string) => `/frames/${id}/comments/`,
     FORGOT_PASSWORD: '/users/password/',
     FRAMES: `/frames/`,
+    FRAMES_GALERIE_PICTURES: (id: string) => `/frames/${id}/galeriePictures/`,
     GALERIE: (id: string) => `/galeries/${id}/`,
     GALERIE_COVER_PICTURE: (id: string) => `/galeries/${id}/coverPicture/`,
     GALERIE_FRAMES: (id: string) => `/galeries/${id}/frames/`,

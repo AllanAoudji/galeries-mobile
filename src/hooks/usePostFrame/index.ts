@@ -79,8 +79,9 @@ const usePostFrame = () => {
                                                     ...currentGalerie.frames,
                                                     allIds: [
                                                         ...normalized.allIds,
-                                                        ...currentGalerie.frames
-                                                            .allIds,
+                                                        ...(currentGalerie
+                                                            .frames.allIds ||
+                                                            []),
                                                     ],
                                                 },
                                             },

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { usePostLike } from '#hooks';
+import { usePostLike, useFetchGaleriePictures } from '#hooks';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -16,6 +16,7 @@ type Props = {
 
 const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
     const { like } = usePostLike();
+    const { galeriePictures } = useFetchGaleriePictures(frame.id);
 
     const handlePressComments = React.useCallback(
         () => onPressComments(frame.id),
@@ -31,7 +32,7 @@ const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
     return (
         <Container>
             <Header user={frame.user} />
-            <Slider galeriePictures={frame.galeriePictures} />
+            <Slider galeriePictures={galeriePictures} />
             <Footer
                 createdAt={frame.createdAt}
                 description={frame.description}

@@ -10,6 +10,9 @@ export { default as currentGalerieFramesSelector } from './currentGalerieFrames.
 export { default as currentGalerieFramesEndSelector } from './currentGalerieFramesEnd.selector';
 export { default as currentGalerieFramesStatusSelector } from './currentGalerieFramesStatus.selector';
 export { default as filtersGaleriesNameSelector } from './filtersGaleriesName.selector';
+export { default as framesSelector } from './frames.selector';
+export { default as framesEndSelector } from './framesEnd.selector';
+export { default as framesStatusSelector } from './framesStatus.selector';
 export { default as galeriesSelector } from './galeries.selector';
 export { default as galeriesEndSelector } from './galeriesEnd.selector';
 export { default as galeriesStatusSelector } from './galeriesStatus.selector';

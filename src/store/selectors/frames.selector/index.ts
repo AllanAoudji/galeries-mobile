@@ -1,30 +1,26 @@
 import { createSelector } from 'reselect';
 
 export default createSelector(
-    (state: Store.Reducer) => state.UIStates.currentGalerieId,
-    (state: Store.Reducer) => state.galeries.byId,
+    (state: Store.Reducer) => state.frames.allIds,
     (state: Store.Reducer) => state.frames.byId,
+    (state: Store.Reducer) => state.galeries.byId,
     (state: Store.Reducer) => state.galeriePictures.byId,
     (state: Store.Reducer) => state.users.byId,
     (state: Store.Reducer) => state.profilePictures.byId,
     (
-        currentGalerieId,
-        galerieById,
-        frameById,
+        allIds,
+        framesById,
+        galeriesById,
         galeriePicturesById,
         usersById,
         profilePicturesById
     ) => {
-        if (!currentGalerieId) return undefined;
-        const currentGalerie = galerieById[currentGalerieId];
-        if (!currentGalerie) return undefined;
-        const { allIds } = currentGalerie.frames;
-        const frames = allIds
+        return allIds
             ? allIds
-                  .filter((id) => frameById[id] !== undefined)
+                  .filter((id) => framesById[id] !== undefined)
                   .map((id) => {
-                      const frame = frameById[id];
-                      const galerie = galerieById[frame.galerieId];
+                      const frame = framesById[id];
+                      const galerie = galeriesById[frame.galerieId];
                       const galeriePictures = frame.galeriePicturesId
                           ? frame.galeriePicturesId.map(
                                 (galeriePictureId) =>
@@ -51,7 +47,6 @@ export default createSelector(
                           },
                       };
                   })
-            : allIds;
-        return frames;
+            : undefined;
     }
 );
