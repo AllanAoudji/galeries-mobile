@@ -85,10 +85,10 @@ export const getProfilePictures: () => Store.Action = () => ({
     payload: {},
     type: PROFILE_PICTURES_GET,
 });
-export const getUserCurrentProfilePicture: (id: string) => Store.Action = (
-    id: string
+export const getUserCurrentProfilePicture: (userId: string) => Store.Action = (
+    userId: string
 ) => ({
-    meta: { query: { userId: id } },
+    meta: { query: { userId } },
     payload: {},
     type: PROFILE_PICTURES_GET,
 });

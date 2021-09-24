@@ -523,7 +523,6 @@ export const selectGalerieUser = createSelector(
         return galerieUsers.map((id) => usersById[id]).filter((user) => !!user);
     }
 );
-
 export const selectUserId = (id: string) =>
     createSelector([selectUsersById], (usersById) => usersById[id] || null);
 export const selectUsers = createSelector(

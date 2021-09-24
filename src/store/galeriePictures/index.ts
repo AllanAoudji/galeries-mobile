@@ -389,6 +389,12 @@ export const selectFrameGaleriePictures = (id: string) =>
                 .filter((galeriePictures) => !!galeriePictures);
         }
     );
+export const selectFrameGaleriePicturesStatus = (id: string) =>
+    createSelector([selectFramesById], (framesById) => {
+        const frame = framesById[id];
+        if (!frame || !frame.galeriePictures) return undefined;
+        return frame.galeriePictures.status;
+    });
 export const selectGalerieCoverPicture = (id: string) =>
     createSelector(
         [selectGaleriesById, selectGaleriePicturesById],
@@ -400,3 +406,9 @@ export const selectGalerieCoverPicture = (id: string) =>
             return galeriePicturesById[galeriePictureId];
         }
     );
+export const selectGalerieCoverPictureStatus = (id: string) =>
+    createSelector([selectGaleriesById], (galeriesById) => {
+        const galerie = galeriesById[id];
+        if (!galerie || !galerie.coverPicture) return undefined;
+        return galerie.coverPicture.status;
+    });

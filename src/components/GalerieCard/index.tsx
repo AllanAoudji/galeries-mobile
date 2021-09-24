@@ -1,14 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { Pressable, useWindowDimensions } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
-import { useFetchCurrentCoverPicture } from '#hooks';
-import { setCurrentGalerieId } from '#store/actions';
+import { updateGaleriesCurrent } from '#store/galeries';
+import {
+    getGalerieCurrentCoverPicture,
+    selectGalerieCoverPicture,
+    selectGalerieCoverPictureStatus,
+} from '#store/galeriePictures';
 
 import {
     Container,
@@ -25,8 +29,19 @@ type Props = {
 };
 
 const GalerieModal = ({ galerie }: Props) => {
-    const { getCurrentCoverPicture } = useFetchCurrentCoverPicture();
     const dispatch = useDispatch();
+
+    const selectCoverPicture = React.useCallback(
+        () => selectGalerieCoverPicture(galerie.id),
+        [galerie]
+    );
+    const coverPicture = useSelector(selectCoverPicture());
+    const selectCoverPictureStatus = React.useCallback(
+        () => selectGalerieCoverPictureStatus(galerie.id),
+        [galerie]
+    );
+    const coverPictureStatus = useSelector(selectCoverPictureStatus());
+
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GaleriesNavigationProp>();
     const theme = useTheme();
@@ -41,16 +56,17 @@ const GalerieModal = ({ galerie }: Props) => {
     } | null>(null);
 
     const handlePress = React.useCallback(() => {
-        dispatch(setCurrentGalerieId(galerie.id));
+        dispatch(updateGaleriesCurrent(galerie.id));
         navigation.navigate('Galerie');
     }, [navigation]);
 
     // Fetch coverPicture and users.
     React.useEffect(() => {
-        getCurrentCoverPicture(galerie);
+        if (coverPictureStatus === 'PENDING')
+            dispatch(getGalerieCurrentCoverPicture(galerie.id));
         // TODO:
         // Fetch user if galerie.numOfUsers > 0
-    }, [galerie]);
+    }, [coverPictureStatus, galerie]);
 
     // Get defaultCoverPicture.
     React.useEffect(() => {
@@ -69,7 +85,7 @@ const GalerieModal = ({ galerie }: Props) => {
                     end={{ x: 0.8, y: 1 }}
                     start={{ x: 0.2, y: 0 }}
                 >
-                    {!galerie.currentCoverPicture && defaultCoverPicture && (
+                    {!coverPicture && defaultCoverPicture && (
                         <DefaultCoverPicture
                             colors={defaultCoverPicture.colors}
                             end={{

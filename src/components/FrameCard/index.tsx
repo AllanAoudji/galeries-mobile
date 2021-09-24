@@ -1,6 +1,12 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { usePostLike, useFetchGaleriePictures } from '#hooks';
+import {
+    getFrameGaleriePictures,
+    selectFrameGaleriePictures,
+    selectFrameGaleriePicturesStatus,
+} from '#store/galeriePictures';
+import { postLike } from '#store/likes';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -15,19 +21,35 @@ type Props = {
 };
 
 const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
-    const { like } = usePostLike();
-    const { galeriePictures } = useFetchGaleriePictures(frame.id);
+    const dispatch = useDispatch();
+
+    const selectGaleriePictures = React.useCallback(
+        () => selectFrameGaleriePictures(frame.id),
+        [frame]
+    );
+    const galeriePictures = useSelector(selectGaleriePictures());
+    const selectGaleriePicturesStatus = React.useCallback(
+        () => selectFrameGaleriePicturesStatus(frame.id),
+        [frame]
+    );
+    const galeriePicturesStatus = useSelector(selectGaleriePicturesStatus());
 
     const handlePressComments = React.useCallback(
         () => onPressComments(frame.id),
         [frame]
     );
-    const handlePressLike = React.useCallback(() => {
-        like(frame);
-    }, [frame]);
+    const handlePressLike = React.useCallback(
+        () => dispatch(postLike(frame.id)),
+        [frame]
+    );
     const handlePressLikes = React.useCallback(() => {
         if (+frame.numOfLikes > 0) onPressLikes(frame.id);
     }, [frame, onPressLikes]);
+
+    React.useEffect(() => {
+        if (galeriePicturesStatus === 'PENDING')
+            dispatch(getFrameGaleriePictures(frame.id));
+    }, [frame, galeriePicturesStatus]);
 
     return (
         <Container>

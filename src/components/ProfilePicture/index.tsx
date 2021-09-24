@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Image } from 'react-native';
-
-import { ProfilePicturesFetcherContext } from '#contexts/ProfilePicturesFetcherContext';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    getUserCurrentProfilePicture,
+    selectUserCurrentProfilePicture,
+    selectUserCurrentProfilePictureStatus,
+} from '#store/profilePictures';
 
 import DefaultProfilePicture from '../../../assets/images/PP.jpg';
 
@@ -14,7 +18,7 @@ type Props = {
     mr?: keyof Style.Spacings;
     mt?: keyof Style.Spacings;
     size?: Style.Variant.ProfilePicture;
-    user?: Store.Models.UserPopulated;
+    user: Store.Models.UserPopulated;
 };
 
 const DEFAULT_PROFILE_PICTURE = Image.resolveAssetSource(
@@ -30,13 +34,27 @@ const ProfilePicture = ({
     size = 'normal',
     user,
 }: Props) => {
-    const { fetchProfilePicture } = React.useContext(
-        ProfilePicturesFetcherContext
-    );
+    const dispatch = useDispatch();
 
+    const selectCurrentProfilePicture = React.useCallback(
+        () => selectUserCurrentProfilePicture(user.id),
+        [user]
+    );
+    const currentProfilePicture = useSelector(selectCurrentProfilePicture);
+    const selectCurrentProfilepictureStatus = React.useCallback(
+        () => selectUserCurrentProfilePictureStatus(user.id),
+        [user]
+    );
+    const currentProfilePictureStatus = useSelector(
+        selectCurrentProfilepictureStatus()
+    );
     const [uri, setUri] = React.useState<string>(DEFAULT_PROFILE_PICTURE);
 
-    React.useEffect(() => fetchProfilePicture(user), []);
+    React.useEffect(() => {
+        if (currentProfilePictureStatus === 'PENDING')
+            dispatch(getUserCurrentProfilePicture(user.id));
+    }, [currentProfilePictureStatus, user]);
+
     React.useEffect(() => {
         if (user && uri === DEFAULT_PROFILE_PICTURE) {
             if (user.currentProfilePicture)

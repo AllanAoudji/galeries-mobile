@@ -109,6 +109,13 @@ export const resetGaleriesFieldsError: () => Store.Action = () => ({
     meta: {},
     type: GALERIES_FIELDS_ERROR_RESET,
 });
+export const updateGaleriesCurrent: (payload: string) => Store.Action = (
+    payload
+) => ({
+    meta: {},
+    payload,
+    type: GALERIES_CURRENT_UPDATE,
+});
 
 const resetGaleriesAllIds: () => Store.Action = () => ({
     meta: {},
@@ -153,11 +160,6 @@ const resetGaleriesCurrent: () => Store.Action = () => ({
     meta: {},
     payload: {},
     type: GALERIES_CURRENT_RESET,
-});
-const updateGaleriesCurrent: (payload: string) => Store.Action = (payload) => ({
-    meta: {},
-    payload,
-    type: GALERIES_CURRENT_UPDATE,
 });
 
 const resetGaleriesEnd: () => Store.Action = () => ({
