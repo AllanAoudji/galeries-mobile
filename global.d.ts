@@ -142,10 +142,8 @@ declare global {
 
     namespace Store {
         type Action = {
-            payload: {
-                data: any;
-                meta: Meta;
-            };
+            payload: any;
+            meta: Meta;
             type: string;
         };
         type Entity =
@@ -154,11 +152,13 @@ declare global {
             | '[GALERIES]'
             | '[GALERIE PICTURES]'
             | '[LIKES]'
-            | '[NOTIFICATION]'
+            | '[LOADING]'
+            | '[LOGIN]'
             | '[LOGOUT]'
+            | '[NOTIFICATION]'
             | '[ME]'
             | '[PROFILE PICTURE]'
-            | '[UI STATES]'
+            | '[UI]'
             | '[USERS]';
         type Meta = {
             end?: boolean;
@@ -169,35 +169,26 @@ declare global {
             url?: string;
         };
         type Reducer = {
-            UIStates: {
-                currentGalerieId?: string;
-                currentFrameId?: string;
-                filters: {
-                    galeries: {
-                        name: string;
-                    };
-                };
-            };
             comments: {
                 byId: { [key: string]: Store.Models.Comment };
             };
             frames: {
-                allIds?: string[];
+                allIds: string[];
                 byId: { [key: string]: Store.Models.Frame };
+                current: string | null;
                 end: boolean;
-                previousFrame?: string;
+                fieldsError: { description?: string };
+                previous: string | null;
                 status: Store.Status;
             };
             galeries: {
-                allIdsByName: {
-                    [key: string]: {
-                        allIds?: string[];
-                        end: boolean;
-                        previousGalerie?: string;
-                        status: Store.Status;
-                    };
-                };
+                allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.Galerie };
+                current: string | null;
+                end: { [key: string]: boolean };
+                fieldsError: { description?: string; name?: string };
+                previous: { [key: string]: string | null };
+                status: { [key: string]: Store.Status };
             };
             galeriePictures: {
                 byId: { [key: string]: Store.Models.GaleriePicture };
@@ -205,24 +196,47 @@ declare global {
             likes: {
                 byId: { [key: string]: Store.Models.Like };
             };
+            loading: boolean;
+            login: {
+                errors: {
+                    password?: undefined;
+                    userNameOrEmail?: undefined;
+                };
+            };
             me: {
-                status: Status;
                 id: string | null;
+                status: Status;
             };
             profilePictures: {
-                allIds?: string[];
+                allIds: string[];
                 byId: { [key: string]: Store.Models.ProfilePicture };
+                current: string | null;
                 end: boolean;
-                previousProfilePicture?: string;
+                previous: string | null;
                 status: Store.Status;
             };
             notification: Store.Models.Notification | null;
+            ui: {
+                currentGalerieId: string | null;
+                currentFrameId: string | null;
+                filterGaleriesName: string;
+            };
             users: {
+                allIds: string[];
                 byId: { [key: string]: Store.Models.User };
+                current: string | null;
+                end: boolean;
+                previous: string | null;
+                status: Store.Status;
             };
         };
         type Role = 'admin' | 'moderator' | 'user';
-        type Status = 'ERROR' | 'FETCHING' | 'PENDING' | 'SUCCESS';
+        type Status =
+            | 'ERROR'
+            | 'INITIAL_LOADING'
+            | 'LOADING'
+            | 'PENDING'
+            | 'SUCCESS';
         namespace Models {
             type Comment = {
                 autoIncrementId: string;
@@ -245,20 +259,23 @@ declare global {
             type Frame = {
                 autoIncrementId: string;
                 comments: {
-                    allIds?: string[];
+                    allIds: string[];
                     end: boolean;
-                    previousComment?: string;
+                    previous?: string;
                     status: Store.Status;
                 };
                 createdAt: string;
                 description: string;
                 galerieId: string;
-                galeriePicturesId?: string[];
+                galeriePictures?: {
+                    allIds: string[];
+                    status: Store.Status;
+                };
                 id: string;
-                likes: {
-                    allIds?: string[];
+                likes?: {
+                    allIds: string[];
                     end: boolean;
-                    previousLike?: string;
+                    previous?: string;
                     status: Store.Status;
                 };
                 liked: boolean;
@@ -275,13 +292,16 @@ declare global {
             type Galerie = {
                 allowNotification: boolean;
                 createdAt: Date;
-                currentCoverPicture?: string | null;
+                coverPicture?: {
+                    id: string | null;
+                    status: Store.Status;
+                };
                 defaultCoverPicture: string;
                 description: string;
-                frames: {
-                    allIds?: string[];
+                frames?: {
+                    allIds: string[];
                     end: boolean;
-                    previousFrame?: string;
+                    previous?: string;
                     status: Store.Status;
                 };
                 hasNewFrames: boolean;
@@ -290,8 +310,8 @@ declare global {
                 name: string;
                 numOfUsers: number;
                 role: Role;
-                users: {
-                    allIds?: string[];
+                users?: {
+                    allIds: string[];
                     end: boolean;
                     previousFrame?: string;
                     status: Store.Status;
@@ -343,7 +363,10 @@ declare global {
             };
             type User = {
                 createdAt: Date;
-                currentProfilePictureId?: string | null;
+                currentProfilePicture?: {
+                    id: string | null;
+                    status: Store.Status;
+                };
                 defaultProfilePicture: string | null;
                 hasNewNotification?: boolean;
                 id: string;

@@ -1,21 +1,27 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchGaleries } from '#store/actions';
 import {
-    filtersGaleriesNameSelector,
-    galeriesEndSelector,
-    galeriesSelector,
-    galeriesStatusSelector,
-} from '#store/selectors';
+    getGaleries,
+    selectGaleries,
+    selectGaleriesNameStatus,
+} from '#store/galeries';
+import { filtersGaleriesNameSelector } from '#store/selectors';
 
 const useFetchGaleries = () => {
     const dispatch = useDispatch();
 
     const filtersGaleriesName = useSelector(filtersGaleriesNameSelector);
-    const galeries = useSelector(galeriesSelector);
-    const galeriesEnd = useSelector(galeriesEndSelector);
-    const galeriesStatus = useSelector(galeriesStatusSelector);
+    const galeriesName = React.useMemo(
+        () => selectGaleries(filtersGaleriesName),
+        [filtersGaleriesName]
+    );
+    const galeriesNameStatus = React.useMemo(
+        () => selectGaleriesNameStatus(filtersGaleriesName),
+        [filtersGaleriesName]
+    );
+    const galeries = useSelector(galeriesName);
+    const galeriesStatus = useSelector(galeriesNameStatus);
 
     const [currentFilter, setCurrentFilter] = React.useState<string | null>(
         null
@@ -25,19 +31,14 @@ const useFetchGaleries = () => {
         React.useState<boolean>(true);
 
     const fetch = React.useCallback(() => {
-        if (!galeriesEnd && galeriesStatus !== 'FETCHING') {
+        if (galeriesStatus !== 'LOADING') {
             if (firstFetchIsFinished) setFetching(true);
-            dispatch(fetchGaleries({ name: filtersGaleriesName }));
+            dispatch(getGaleries(filtersGaleriesName));
         }
-    }, [
-        filtersGaleriesName,
-        firstFetchIsFinished,
-        galeriesEnd,
-        galeriesStatus,
-    ]);
+    }, [filtersGaleriesName, firstFetchIsFinished, galeriesStatus]);
     const fetchNextGaleries = React.useCallback(() => {
-        if (!fetching && firstFetchIsFinished && !galeriesEnd) fetch();
-    }, [fetch, fetching, firstFetchIsFinished, galeries, galeriesEnd]);
+        if (!fetching && firstFetchIsFinished) fetch();
+    }, [fetch, fetching, firstFetchIsFinished, galeries]);
 
     React.useEffect(() => {
         if (galeriesStatus === 'PENDING') setFirstFetchIsFinished(false);
