@@ -122,6 +122,20 @@ export const resetFramesFieldsError: () => Store.Action = () => ({
     payload: {},
     type: FRAMES_FIELDS_ERROR_RESET,
 });
+export const updateFramesById: (payload: Store.Models.Frame) => Store.Action = (
+    payload
+) => ({
+    meta: {},
+    payload,
+    type: FRAMES_BY_ID_UPDATE,
+});
+export const updateFramesFieldsError: (payload: {
+    descritpion?: string;
+}) => Store.Action = (payload) => ({
+    meta: {},
+    payload,
+    type: FRAMES_FIELDS_ERROR_UPDATE,
+});
 
 const removeFramesAllIds: (payload: string) => Store.Action = (payload) => ({
     meta: {},
@@ -156,13 +170,6 @@ const setFramesById: (payload: {
     payload,
     type: FRAMES_BY_ID_SET,
 });
-export const updateFramesById: (payload: Store.Models.Frame) => Store.Action = (
-    payload
-) => ({
-    meta: {},
-    payload,
-    type: FRAMES_BY_ID_UPDATE,
-});
 
 const resetFramesCurrent: () => Store.Action = () => ({
     meta: {},
@@ -179,14 +186,6 @@ const updateFramesEnd: (payload: boolean) => Store.Action = (payload) => ({
     meta: {},
     payload,
     type: FRAMES_END_UPDATE,
-});
-
-const updateFramesFieldsError: (payload: {
-    descritpion?: string;
-}) => Store.Action = (payload) => ({
-    meta: {},
-    payload,
-    type: FRAMES_FIELDS_ERROR_UPDATE,
 });
 
 const resetFramesPrevious: () => Store.Action = () => ({
@@ -626,9 +625,7 @@ const successPostFrames = (
                     allIds,
                 });
             }
-        } else {
-            dispatch(setFramesAllIds(allIds));
-        }
+        } else dispatch(setFramesAllIds(allIds));
     }
 };
 const successPutFrame = (
@@ -855,12 +852,10 @@ export const selectFrameId = (id: string) =>
     createSelector([selectFramesById], (byId) => byId[id]);
 export const selectFrames = createSelector(
     [selectFramesAllIds, selectFramesById],
-    (allIds, byId) => {
-        allIds.map((id) => byId[id]).filter((frame) => !!frame);
-    }
+    (allIds, byId) => allIds.map((id) => byId[id]).filter((frame) => !!frame)
 );
 export const selectFramesStatus = (state: Store.Reducer) => state.frames.status;
-export const selectGalerieFrame = createSelector(
+export const selectCurrentGalerieFrame = createSelector(
     [selectFramesById, selectGaleriesCurrent, selectGaleriesById],
     (frameById, currentGalerie, galeriesById) => {
         if (!currentGalerie) return undefined;
@@ -870,5 +865,14 @@ export const selectGalerieFrame = createSelector(
         return galerieFrames
             .map((id) => frameById[id])
             .filter((frame) => !!frame);
+    }
+);
+export const selectCurrentGalerieFrameStatus = createSelector(
+    [selectGaleriesCurrent, selectGaleriesById],
+    (galeriesCurrent, galeriesById) => {
+        if (!galeriesCurrent) return undefined;
+        const galerie = galeriesById[galeriesCurrent];
+        if (!galerie || !galerie.frames) return undefined;
+        return galerie.frames.status;
     }
 );

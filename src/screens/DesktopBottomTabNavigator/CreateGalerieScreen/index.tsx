@@ -1,14 +1,18 @@
 import { useFormik } from 'formik';
 import * as React from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CustomButton, CustomTextInput, FormContainer } from '#components';
 import { FIELD_REQUIREMENT } from '#helpers/constants';
 import { createGaleriesSchema } from '#helpers/schemas';
-import { usePostGalerie } from '#hooks';
 
 import { ButtonsContainer, Container } from './styles';
-import { setCurrentGalerieId } from '#store/actions';
+import {
+    postGalerie,
+    selectGaleriesFieldsError,
+    setGaleriesFieldsError,
+} from '#store/galeries';
+import { selectLoading } from '#store/loading';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CreateGalerieProp;
@@ -21,10 +25,12 @@ const initialValues = {
 
 const CreateGalerieScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
-    const { loading, postGalerie, resetServerErrorField, serverErrors } =
-        usePostGalerie();
+
+    const galeriesFieldsError = useSelector(selectGaleriesFieldsError);
+    const loading = useSelector(selectLoading);
+
     const formik = useFormik({
-        onSubmit: async (values) => postGalerie(values, successCallback),
+        onSubmit: async (values) => dispatch(postGalerie(values)),
         initialValues,
         validateOnBlur: true,
         validateOnChange: false,
@@ -32,29 +38,29 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     });
 
     const descriptionError = React.useMemo(
-        () => formik.errors.description || serverErrors.description,
-        [formik.errors.description, serverErrors.description]
+        () => formik.errors.description || galeriesFieldsError.description,
+        [formik.errors.description, galeriesFieldsError.description]
     );
     const disableButton = React.useMemo(() => {
         const clientHasError =
             formik.submitCount > 0 &&
             (!!formik.errors.description || !!formik.errors.name);
         const serverHasError =
-            !!serverErrors.description || !!serverErrors.name;
+            !!galeriesFieldsError.description || !!galeriesFieldsError.name;
         return clientHasError || serverHasError;
-    }, [formik.submitCount, formik.errors, serverErrors]);
+    }, [formik.submitCount, formik.errors, galeriesFieldsError]);
     const nameError = React.useMemo(
-        () => formik.errors.name || serverErrors.name,
-        [formik.errors.name, serverErrors.name]
+        () => formik.errors.name || galeriesFieldsError.name,
+        [formik.errors.name, galeriesFieldsError.name]
     );
 
     const handleChangeDescriptionText = React.useCallback((e: string) => {
-        resetServerErrorField('description');
+        dispatch(setGaleriesFieldsError({ description: '' }));
         formik.setFieldError('description', '');
         formik.setFieldValue('description', e);
     }, []);
     const handleChangeNameText = React.useCallback((e: string) => {
-        resetServerErrorField('name');
+        dispatch(setGaleriesFieldsError({ name: '' }));
         formik.setFieldError('name', '');
         formik.setFieldValue('name', e);
     }, []);
@@ -62,11 +68,9 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
     }, [navigation]);
+    // TODO: need to trigger callback when postGalerie === success
     const successCallback = React.useCallback(
-        ({ id }: Store.Models.Galerie) => {
-            dispatch(setCurrentGalerieId(id));
-            navigation.navigate('Galerie');
-        },
+        () => navigation.navigate('Galerie'),
         []
     );
 

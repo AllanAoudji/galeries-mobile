@@ -405,6 +405,15 @@ export const selectCurrentFrameLikes = createSelector(
             .filter((like) => !!like);
     }
 );
+export const selectCurrentFrameLikesStatus = createSelector(
+    [selectFramesById, selectFramesCurrent],
+    (framesById, framesCurrent) => {
+        if (!framesCurrent) return undefined;
+        const frame = framesById[framesCurrent];
+        if (!frame || !frame.likes) return undefined;
+        return frame.likes.status;
+    }
+);
 export const selectFrameLikes = (frameId: string) =>
     createSelector(
         [selectFramesById, selectLikesById],

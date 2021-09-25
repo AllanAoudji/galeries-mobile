@@ -588,3 +588,12 @@ export const selectCurrentFrameComments = createSelector(
             .filter((item) => !!item);
     }
 );
+export const selectCurrentFrameCommentsStatus = createSelector(
+    [selectFramesById, selectFramesCurrent],
+    (framesById, framesCurrent) => {
+        if (!framesCurrent) return undefined;
+        const frame = framesById[framesCurrent];
+        if (!frame || !frame.comments) return undefined;
+        return frame.comments.status;
+    }
+);

@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { ListRenderItemInfo } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     AnimatedFlatList,
     BottomLoader,
@@ -9,9 +10,9 @@ import {
     FrameCard,
     FullScreenLoader,
 } from '#components';
-import { useFetchFrames } from '#hooks';
 
 import { Container } from './styles';
+import { getFrames, selectFrames, selectFramesStatus } from '#store/frames';
 
 const renderItem = ({
     item,
@@ -24,8 +25,14 @@ const renderItem = ({
 );
 
 const HomeScreen = () => {
-    const { fetching, fetchNextFrames, frames } = useFetchFrames();
+    const dispatch = useDispatch();
+    const frames = useSelector(selectFrames);
+    const framesStatus = useSelector(selectFramesStatus);
 
+    const handleEndReach = React.useCallback(() => {
+        if (framesStatus === 'ERROR' || framesStatus === 'SUCCESS')
+            dispatch(getFrames());
+    }, [framesStatus]);
     const keyExtractor = React.useCallback(
         (data: Store.Models.Frame) => data.id,
         []
@@ -41,7 +48,7 @@ const HomeScreen = () => {
                             data={frames}
                             keyExtractor={keyExtractor}
                             maxToRenderPerBatch={10}
-                            onEndReached={fetchNextFrames}
+                            onEndReached={handleEndReach}
                             onEndReachedThreshold={0.2}
                             renderItem={renderItem}
                             scrollEventThrottle={4}
@@ -52,8 +59,13 @@ const HomeScreen = () => {
                     )}
                 </>
             )}
-            <FullScreenLoader show={!frames} />
-            <BottomLoader show={fetching} bottom="huge" />
+            <FullScreenLoader
+                show={
+                    framesStatus === 'PENDING' ||
+                    framesStatus === 'INITIAL_LOADING'
+                }
+            />
+            <BottomLoader show={framesStatus === 'LOADING'} bottom="huge" />
         </Container>
     );
 };

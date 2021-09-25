@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useFormik } from 'formik';
 
+import { useSelector } from 'react-redux';
 import {
     CustomButton,
     CustomTextInput,
@@ -8,9 +9,9 @@ import {
     Logo,
 } from '#components';
 import { signinSchema } from '#helpers/schemas';
-import { usePostSignin } from '#hooks';
 
 import FooterNavigation from '../FooterNavigation';
+import { selectLoading } from '#store/loading';
 
 const initialValues = {
     betaKey: '',
@@ -25,23 +26,23 @@ type Props = {
 };
 
 const SigninScreen = ({ navigation }: Props) => {
-    const { serverErrors, loading, resetServerErrorField, signin } =
-        usePostSignin();
+    const loading = useSelector(selectLoading);
+
     const formik = useFormik({
         initialValues,
-        onSubmit: async (values) => signin(values),
+        onSubmit: async (values) => console.log(values),
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: signinSchema,
     });
 
     const betaKeyError = React.useMemo(
-        () => formik.errors.betaKey || serverErrors.betaKey,
-        [formik.errors.betaKey, serverErrors.betaKey]
+        () => formik.errors.betaKey,
+        [formik.errors.betaKey]
     );
     const confirmPasswordError = React.useMemo(
-        () => formik.errors.confirmPassword || serverErrors.confirmPassword,
-        [formik.errors.confirmPassword, serverErrors.confirmPassword]
+        () => formik.errors.confirmPassword,
+        [formik.errors.confirmPassword]
     );
     const disableButton = React.useMemo(() => {
         const clientHasError =
@@ -51,49 +52,38 @@ const SigninScreen = ({ navigation }: Props) => {
                 !!formik.errors.email ||
                 !!formik.errors.password ||
                 !!formik.errors.userName);
-        const serverHasError =
-            !!serverErrors.betaKey ||
-            !!serverErrors.confirmPassword ||
-            !!serverErrors.email ||
-            !!serverErrors.password ||
-            !!serverErrors.userName;
-        return clientHasError || serverHasError;
-    }, [formik.submitCount, formik.errors, serverErrors]);
+        return clientHasError;
+    }, [formik.submitCount, formik.errors]);
     const emailError = React.useMemo(
-        () => formik.errors.email || serverErrors.email,
-        [formik.errors.email, serverErrors.email]
+        () => formik.errors.email,
+        [formik.errors.email]
     );
     const passwordError = React.useMemo(
-        () => formik.errors.password || serverErrors.password,
-        [formik.errors.password, serverErrors.password]
+        () => formik.errors.password,
+        [formik.errors.password]
     );
     const userNameError = React.useMemo(
-        () => formik.errors.userName || serverErrors.userName,
-        [formik.errors.userName, serverErrors.userName]
+        () => formik.errors.userName,
+        [formik.errors.userName]
     );
 
     const handleChangeBetaKeyText = React.useCallback((e: string) => {
-        resetServerErrorField('betaKey');
         formik.setFieldError('betaKey', '');
         formik.setFieldValue('betaKey', e);
     }, []);
     const handleChangeConfirmPasswordText = React.useCallback((e: string) => {
-        resetServerErrorField('confirmPassword');
         formik.setFieldError('confirmPassword', '');
         formik.setFieldValue('confirmPassword', e);
     }, []);
     const handleChangeEmailText = React.useCallback((e: string) => {
-        resetServerErrorField('email');
         formik.setFieldError('email', '');
         formik.setFieldValue('email', e);
     }, []);
     const handleChangePasswordText = React.useCallback((e: string) => {
-        resetServerErrorField('password');
         formik.setFieldError('password', '');
         formik.setFieldValue('password', e);
     }, []);
     const handeChangeUserNameText = React.useCallback((e: string) => {
-        resetServerErrorField('userName');
         formik.setFieldError('userName', '');
         formik.setFieldValue('userName', e);
     }, []);

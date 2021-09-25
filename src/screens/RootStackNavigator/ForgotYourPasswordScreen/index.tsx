@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import * as React from 'react';
 
+import { useSelector } from 'react-redux';
 import {
     CustomButton,
     CustomTextInput,
@@ -9,9 +10,9 @@ import {
     Typography,
 } from '#components';
 import { forgotPassworSchema } from '#helpers/schemas';
-import { useForgotPassword } from '#hooks';
 
 import { TextContainer } from './styles';
+import { selectLoading } from '#store/loading';
 
 type Props = {
     navigation: Screen.RootStack.ForgotYourPasswordNavigationProp;
@@ -20,11 +21,11 @@ type Props = {
 const initialValues = { email: '' };
 
 const ForgotYourPasswordScreen = ({ navigation }: Props) => {
-    const { forgotPassword, loading, serverErrors, resetServerErrorField } =
-        useForgotPassword();
+    const loading = useSelector(selectLoading);
+
     const formik = useFormik({
         initialValues,
-        onSubmit: (values) => forgotPassword(values),
+        onSubmit: (values) => console.log(values),
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: forgotPassworSchema,
@@ -32,16 +33,14 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
 
     const disableButton = React.useMemo(() => {
         const clientHasError = formik.submitCount > 0 && !!formik.errors.email;
-        const serverHasError = !!serverErrors.email;
-        return clientHasError || serverHasError;
-    }, [formik.submitCount, formik.errors, serverErrors]);
+        return clientHasError;
+    }, [formik.submitCount, formik.errors]);
     const emailError = React.useMemo(
-        () => formik.errors.email || serverErrors.email,
-        [formik.errors.email, serverErrors.email]
+        () => formik.errors.email,
+        [formik.errors.email]
     );
 
     const handleChangeEmailText = React.useCallback((e: string) => {
-        resetServerErrorField('email');
         formik.setFieldError('email', '');
         formik.setFieldValue('email', e);
     }, []);

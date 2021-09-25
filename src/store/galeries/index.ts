@@ -109,12 +109,27 @@ export const resetGaleriesFieldsError: () => Store.Action = () => ({
     meta: {},
     type: GALERIES_FIELDS_ERROR_RESET,
 });
+export const setGaleriesFieldsError: (payload: {
+    description?: string;
+    name?: string;
+}) => Store.Action = (payload) => ({
+    meta: {},
+    payload,
+    type: GALERIES_FIELDS_ERROR_SET,
+});
 export const updateGaleriesCurrent: (payload: string) => Store.Action = (
     payload
 ) => ({
     meta: {},
     payload,
     type: GALERIES_CURRENT_UPDATE,
+});
+export const updateGaleriesById: (
+    payload: Store.Models.Galerie
+) => Store.Action = (payload) => ({
+    meta: {},
+    payload,
+    type: GALERIES_BY_UD_UPDATE,
 });
 
 const resetGaleriesAllIds: () => Store.Action = () => ({
@@ -148,13 +163,6 @@ const setGaleriesById: (payload: {
     payload,
     type: GALERIES_BY_ID_SET,
 });
-export const updateGaleriesById: (
-    payload: Store.Models.Galerie
-) => Store.Action = (payload) => ({
-    meta: {},
-    payload,
-    type: GALERIES_BY_UD_UPDATE,
-});
 
 const resetGaleriesCurrent: () => Store.Action = () => ({
     meta: {},
@@ -174,15 +182,6 @@ const updateGaleriesEnd: (payload: {
     meta: {},
     payload,
     type: GALERIES_END_UPDATE,
-});
-
-const setGaleriesFieldsError: (payload: {
-    description?: string;
-    name?: string;
-}) => Store.Action = (payload) => ({
-    meta: {},
-    payload,
-    type: GALERIES_FIELDS_ERROR_SET,
 });
 
 const resetGaleriesPrevious: () => Store.Action = () => ({

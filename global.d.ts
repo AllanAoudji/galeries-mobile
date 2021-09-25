@@ -217,8 +217,6 @@ declare global {
             };
             notification: Store.Models.Notification | null;
             ui: {
-                currentGalerieId: string | null;
-                currentFrameId: string | null;
                 filterGaleriesName: string;
             };
             users: {
@@ -258,7 +256,7 @@ declare global {
             type CommentPopulated = Comment & { user: UserPopulated };
             type Frame = {
                 autoIncrementId: string;
-                comments: {
+                comments?: {
                     allIds: string[];
                     end: boolean;
                     previous?: string;

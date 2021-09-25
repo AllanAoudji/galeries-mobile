@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ListRenderItemInfo } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
     AnimatedFlatList,
@@ -11,10 +11,15 @@ import {
     UserCard,
 } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { useComponentSize, useFetchLikes, useHideHeaderOnScroll } from '#hooks';
-import { currentFrameSelector } from '#store/selectors';
+import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 
 import { Container, Header } from './styles';
+import { selectCurrentFrame } from '#store/frames';
+import {
+    getLikeId,
+    selectCurrentFrameLikes,
+    selectCurrentFrameLikesStatus,
+} from '#store/likes';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.LikesNavigationProp;
@@ -27,10 +32,11 @@ const renderItem = ({
 );
 
 const LikesScreen = ({ navigation }: Props) => {
-    const { currentFrameLikes, fetching, fetchNextFrameLikes } =
-        useFetchLikes();
+    const dispatch = useDispatch();
 
-    const currentFrame = useSelector(currentFrameSelector);
+    const currentFrame = useSelector(selectCurrentFrame);
+    const currentFrameLikes = useSelector(selectCurrentFrameLikes);
+    const currentFrameLikesStatus = useSelector(selectCurrentFrameLikesStatus);
 
     const { onLayout, size } = useComponentSize();
 
@@ -40,6 +46,14 @@ const LikesScreen = ({ navigation }: Props) => {
 
     const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
 
+    const handleEndReach = React.useCallback(() => {
+        if (
+            currentFrame &&
+            (currentFrameLikesStatus === 'ERROR' ||
+                currentFrameLikesStatus === 'SUCCESS')
+        )
+            dispatch(getLikeId(currentFrame.id));
+    }, [currentFrameLikesStatus, currentFrame]);
     const keyExtractor = React.useCallback(
         (data: Store.Models.Like) => data.id,
         []
@@ -68,7 +82,7 @@ const LikesScreen = ({ navigation }: Props) => {
                         data={currentFrameLikes}
                         keyExtractor={keyExtractor}
                         maxToRenderPerBatch={4}
-                        onEndReached={fetchNextFrameLikes}
+                        onEndReached={handleEndReach}
                         onEndReachedThreshold={0.2}
                         onScroll={scrollHandler}
                         removeClippedSubviews={true}
@@ -82,8 +96,16 @@ const LikesScreen = ({ navigation }: Props) => {
                         text="This frame doesn't have likes."
                     />
                 ))}
-            <FullScreenLoader show={!currentFrameLikes} />
-            <BottomLoader show={fetching} bottom="huge" />
+            <FullScreenLoader
+                show={
+                    currentFrameLikesStatus === 'INITIAL_LOADING' ||
+                    currentFrameLikesStatus === 'PENDING'
+                }
+            />
+            <BottomLoader
+                show={currentFrameLikesStatus === 'LOADING'}
+                bottom="huge"
+            />
         </Container>
     );
 };

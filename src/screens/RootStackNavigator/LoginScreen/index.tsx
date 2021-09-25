@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import * as React from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
 import {
     CustomButton,
     CustomTextInput,
@@ -9,11 +10,16 @@ import {
     Typography,
 } from '#components';
 import { loginSchema } from '#helpers/schemas';
-import { usePostLogin } from '#hooks';
 
 import FooterNavigation from '../FooterNavigation';
 
 import { ForgotYourPasswordContainer } from './styles';
+import {
+    login,
+    selectLoginFieldsError,
+    updateLoginFieldsError,
+} from '#store/login';
+import { selectLoading } from '#store/loading';
 
 const initialValues = {
     password: '',
@@ -25,12 +31,16 @@ type Props = {
 };
 
 const LoginScreen = ({ navigation }: Props) => {
-    const { loading, login, resetServerErrorField, serverErrors } =
-        usePostLogin();
+    const dispatch = useDispatch();
+
+    const loading = useSelector(selectLoading);
+    const loginFieldsError = useSelector(selectLoginFieldsError);
 
     const formik = useFormik({
         initialValues,
-        onSubmit: (values) => login(values),
+        onSubmit: (values) => {
+            dispatch(login(values));
+        },
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: loginSchema,
@@ -41,25 +51,25 @@ const LoginScreen = ({ navigation }: Props) => {
             formik.submitCount > 0 &&
             (!!formik.errors.password || !!formik.errors.userNameOrEmail);
         const serverHasError =
-            !!serverErrors.password || !!serverErrors.userNameOrEmail;
+            !!loginFieldsError.password || !!loginFieldsError.userNameOrEmail;
         return clientHasError || serverHasError;
-    }, [formik.submitCount, formik.errors, serverErrors]);
+    }, [formik.submitCount, formik.errors, loginFieldsError]);
     const passwordError = React.useMemo(
-        () => formik.errors.password || serverErrors.password,
-        [formik.errors.password, serverErrors.password]
+        () => formik.errors.password || loginFieldsError.password,
+        [formik.errors.password, loginFieldsError.password]
     );
     const userNameOrEmailError = React.useMemo(
-        () => formik.errors.userNameOrEmail || serverErrors.userNameOrEmail,
-        [formik.errors.userNameOrEmail, serverErrors.userNameOrEmail]
+        () => formik.errors.userNameOrEmail || loginFieldsError.userNameOrEmail,
+        [formik.errors.userNameOrEmail, loginFieldsError.userNameOrEmail]
     );
 
     const handleChangePasswordText = React.useCallback((e: string) => {
-        resetServerErrorField('password');
+        dispatch(updateLoginFieldsError({ password: '' }));
         formik.setFieldError('password', '');
         formik.setFieldValue('password', e);
     }, []);
     const handleChangeUserNameOrEmailText = React.useCallback((e: string) => {
-        resetServerErrorField('userNameOrEmail');
+        dispatch(updateLoginFieldsError({ userNameOrEmail: '' }));
         formik.setFieldError('userNameOrEmail', '');
         formik.setFieldValue('userNameOrEmail', e);
     }, []);
