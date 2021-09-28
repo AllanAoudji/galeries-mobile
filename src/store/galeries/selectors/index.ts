@@ -28,6 +28,12 @@ export const selectGaleries = createSelector(
         return allIds.map((id) => byId[id]).filter((galerie) => !!galerie);
     }
 );
+export const selectGaleriesLoadingDelete = (state: Store.Reducer) =>
+    state.galeries.loading.delete;
+export const selectGaleriesLoadingPost = (state: Store.Reducer) =>
+    state.galeries.loading.post;
+export const selectGaleriesLoadingPut = (state: Store.Reducer) =>
+    state.galeries.loading.put;
 export const selectGaleriesNameStatus = createSelector(
     [selectGaleriesStatus, selectGaleriesFilterGaleriesName],
     (galeriesStatus, galeriesFilterGaleriesName) =>
