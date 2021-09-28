@@ -23,7 +23,7 @@ import {
 } from '#store/frames';
 import { getFrameGaleriePictures } from '#store/galeriePictures';
 import { FRAMES } from '#store/genericActionTypes';
-import { getGalerie, getFrame } from '#store/getters';
+import { getGalerie, getFrame, getUser } from '#store/getters';
 import { getUserId } from '#store/users';
 
 const successDefaultMethod = (dispatch: Dispatch<Store.Action>) =>
@@ -93,7 +93,8 @@ const successGetFrames = (
             }
             allIds.forEach((id) => {
                 dispatch(getFrameGaleriePictures(id));
-                dispatch(getUserId(frame.userId));
+                const user = getUser(getState, byId[id].userId);
+                if (!user) dispatch(getUserId(byId[id].userId));
             });
         }
     }

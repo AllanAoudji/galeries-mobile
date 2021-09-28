@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 
+const selectCommentsById = (state: Store.Reducer) => state.comments.byId;
 const selectFramesById = (state: Store.Reducer) => state.frames.byId;
 const selectGalerieCurrent = (state: Store.Reducer) => state.galeries.current;
 const selectGaleriesById = (state: Store.Reducer) => state.galeries.byId;
@@ -7,6 +8,15 @@ const selectUsersAllIds = (state: Store.Reducer) => state.users.allIds;
 const selectUsersById = (state: Store.Reducer) => state.users.byId;
 const selectUsersCurrent = (state: Store.Reducer) => state.users.current;
 
+export const selectCommentStatus = (commentId: string) =>
+    createSelector(
+        [selectCommentsById, selectUsersById],
+        (commentsById, usersById) => {
+            const comment = commentsById[commentId];
+            if (!comment || !comment.user) return undefined;
+            return usersById[comment.user.id];
+        }
+    );
 export const selectFrameUser = (frameId: string) =>
     createSelector(
         [selectFramesById, selectUsersById],

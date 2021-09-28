@@ -35,6 +35,7 @@ import { selectCurrentFrame } from '#store/frames';
 import {
     getFrameComments,
     postComment,
+    selectCommentsLoadingPost,
     selectCurrentFrameComments,
     selectCurrentFrameCommentsStatus,
 } from '#store/comments';
@@ -67,7 +68,7 @@ const CommentScreen = ({ navigation }: Props) => {
         selectCurrentFrameCommentsStatus
     );
     const currentFrame = useSelector(selectCurrentFrame);
-    const loading = useSelector(selectLoading);
+    const loading = useSelector(selectCommentsLoadingPost);
 
     const { onLayout: headerOnLayout, size: headerSize } = useComponentSize();
     const { onLayout: footerOnLayout, size: footerSize } = useComponentSize();
@@ -118,7 +119,11 @@ const CommentScreen = ({ navigation }: Props) => {
         []
     );
     const handlePress = React.useCallback(() => {
-        if (!loading && !disableButton && formik.values.body !== '') {
+        if (
+            !loading.includes('LOADING') &&
+            !disableButton &&
+            formik.values.body !== ''
+        ) {
             formik.handleSubmit();
         }
     }, [disableButton, loading, formik.values.body]);
@@ -131,7 +136,7 @@ const CommentScreen = ({ navigation }: Props) => {
             dispatch(getFrameComments(currentFrame.id));
     }, [currentFrame, currentFrameCommentsStatus]);
     const onPressReturn = React.useCallback(() => {
-        if (!loading) {
+        if (!loading.includes('LOADING')) {
             if (navigation.canGoBack()) navigation.goBack();
             else navigation.navigate('Home');
         }
@@ -158,6 +163,9 @@ const CommentScreen = ({ navigation }: Props) => {
             else navigation.navigate('Home');
         }
     }, [currentFrame, navigation]);
+    React.useEffect(() => {
+        if (loading === 'SUCCESS') successCallback();
+    }, [loading]);
 
     React.useEffect(() => {
         if (currentFrame && currentFrameCommentsStatus === 'PENDING')
@@ -211,7 +219,7 @@ const CommentScreen = ({ navigation }: Props) => {
                         <TextInputStyled
                             editable={!loading}
                             height={height}
-                            loading={loading}
+                            loading={loading.includes('LOADING')}
                             maxLength={FIELD_REQUIREMENT.COMMENT_MAX_LENGTH}
                             multiline
                             onChangeText={handleChangeBodyText}

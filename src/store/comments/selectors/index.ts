@@ -9,6 +9,10 @@ export const selectComment = (commentId: string) =>
         [selectCommentsById],
         (commentsById) => commentsById[commentId]
     );
+export const selectCommentsLoadingDelete = (state: Store.Reducer) =>
+    state.comments.loading.delete;
+export const selectCommentsLoadingPost = (state: Store.Reducer) =>
+    state.comments.loading.post;
 export const selectCurrentFrameComments = createSelector(
     [selectCommentsById, selectFramesCurrent, selectFramesById],
     (commentsById, framesCurrent, framesById) => {

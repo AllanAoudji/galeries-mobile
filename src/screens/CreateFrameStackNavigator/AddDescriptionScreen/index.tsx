@@ -78,8 +78,6 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
     const handleReturn = React.useCallback(() => {
         if (!loading) navigation.navigate('AddPictures');
     }, [navigation]);
-    // TODO: how to redirect after successfully post a frame ?
-    // and not when an error appear.
     const successCallback = React.useCallback(() => {
         resetPictures();
         navigation

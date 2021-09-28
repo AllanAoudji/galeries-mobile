@@ -318,10 +318,6 @@ declare global {
                 numOfLikes: string;
                 updatedAt: string;
                 userId: string;
-                user?: {
-                    id: string;
-                    status: string;
-                };
             };
             type Galerie = {
                 allowNotification: boolean;

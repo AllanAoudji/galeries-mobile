@@ -14,7 +14,8 @@ import {
     dispatchUpdateFrameComments,
 } from '#store/dispatchers';
 import { COMMENTS } from '#store/genericActionTypes';
-import { getComment, getFrame } from '#store/getters';
+import { getComment, getFrame, getUser } from '#store/getters';
+import { getUserId } from '#store/users';
 
 const successDefaultMethod = (dispatch: Dispatch<Store.Action>) =>
     dispatchErrorNotification(dispatch, ERROR_MESSAGE.METHOD_NOT_FOUND);
@@ -73,6 +74,10 @@ const successGetComments = (
                         status: 'SUCCESS',
                     });
             }
+            allIds.forEach((id) => {
+                const user = getUser(getState, byId[id].userId);
+                if (!user) dispatch(getUserId(byId[id].userId));
+            });
         }
     }
 };

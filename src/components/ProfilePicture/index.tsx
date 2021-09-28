@@ -18,6 +18,15 @@ type Props = {
     mr?: keyof Style.Spacings;
     mt?: keyof Style.Spacings;
     size?: Style.Variant.ProfilePicture;
+    user?: Store.Models.User;
+};
+type ProfilePictureWithUserProps = {
+    border?: boolean;
+    mb?: keyof Style.Spacings;
+    ml?: keyof Style.Spacings;
+    mr?: keyof Style.Spacings;
+    mt?: keyof Style.Spacings;
+    size?: Style.Variant.ProfilePicture;
     user: Store.Models.User;
 };
 
@@ -25,7 +34,7 @@ const DEFAULT_PROFILE_PICTURE = Image.resolveAssetSource(
     DefaultProfilePicture
 ).uri;
 
-const ProfilePicture = ({
+const ProfilePictureWithUser = ({
     border = false,
     mb,
     ml,
@@ -33,9 +42,8 @@ const ProfilePicture = ({
     mt,
     size = 'normal',
     user,
-}: Props) => {
+}: ProfilePictureWithUserProps) => {
     const dispatch = useDispatch();
-
     const selectCurrentProfilePicture = React.useMemo(
         () => selectUserCurrentProfilePicture(user.id),
         [user]
@@ -75,6 +83,30 @@ const ProfilePicture = ({
                 <ImageStyled source={{ uri }} />
             </InnerContainer>
         </Container>
+    );
+};
+
+const ProfilePicture = ({
+    border = false,
+    mb,
+    ml,
+    mr,
+    mt,
+    size = 'normal',
+    user,
+}: Props) => {
+    if (!user) return null;
+
+    return (
+        <ProfilePictureWithUser
+            user={user}
+            border={border}
+            mb={mb}
+            ml={ml}
+            mr={mr}
+            mt={mt}
+            size={size}
+        />
     );
 };
 

@@ -32,10 +32,8 @@ const DefaultHeader = ({
     );
     const handlePressPictogram = React.useCallback(() => {
         if (isArrow) {
-            if (!loading) {
-                if (onPress) onPress();
-                else navigation.goBack();
-            }
+            if (onPress) onPress();
+            else navigation.goBack();
         } else navigation.dispatch(DrawerActions.openDrawer());
     }, [isArrow, navigation]);
 

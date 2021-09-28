@@ -19,7 +19,6 @@ const Header = ({ userId }: Props) => {
     return (
         <Container>
             <InfoContainer>
-                {/* TODO: ProfilePicture should deal when user === undefined */}
                 {user && <ProfilePicture mr="smallest" user={user} />}
                 <Typography>posted by </Typography>
                 <Typography fontFamily="bold">

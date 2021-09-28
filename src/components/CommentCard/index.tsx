@@ -2,6 +2,7 @@ import moment from 'moment';
 import * as React from 'react';
 import { View } from 'react-native';
 
+import { useSelector } from 'react-redux';
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 
@@ -11,21 +12,27 @@ import {
     ContentContainerFooter,
     TimeContainer,
 } from './styles';
+import { selectUserId } from '#store/users';
 
 type Props = {
-    comment: Store.Models.CommentPopulated;
+    comment: Store.Models.Comment;
 };
 
 const CommentCard = ({ comment }: Props) => {
+    const selectUser = React.useMemo(() => selectUserId(comment.id), [comment]);
+    const user = useSelector(selectUser);
+
     return (
         <Container>
-            <ProfilePicture mr="smallest" user={comment.user} />
+            <ProfilePicture mr="smallest" user={user} />
             <View>
                 <ContentContainer>
                     <Typography>
-                        <Typography fontFamily="bold">
-                            {comment.user.pseudonym}{' '}
-                        </Typography>
+                        {!!user && (
+                            <Typography fontFamily="bold">
+                                {user.pseudonym}{' '}
+                            </Typography>
+                        )}
                         {comment.body}
                     </Typography>
                 </ContentContainer>
