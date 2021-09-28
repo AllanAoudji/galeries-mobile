@@ -3,7 +3,7 @@ import {
     FRAMES_FIELDS_ERROR_UPDATE,
 } from '#store/frames';
 
-const initialState: { description?: string } = {};
+const initialState: { description: string } = { description: '' };
 const framesFieldsErrorReducer = (
     state = initialState,
     action: Store.Action
@@ -12,7 +12,10 @@ const framesFieldsErrorReducer = (
         case FRAMES_FIELDS_ERROR_RESET:
             return initialState;
         case FRAMES_FIELDS_ERROR_UPDATE:
-            if (typeof action.payload === 'object')
+            if (
+                typeof action.payload === 'object' &&
+                typeof action.payload.description === 'string'
+            )
                 return {
                     ...state,
                     ...action.payload,

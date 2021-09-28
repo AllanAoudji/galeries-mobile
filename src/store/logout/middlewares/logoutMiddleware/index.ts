@@ -1,17 +1,21 @@
 import { Middleware } from 'redux';
 
 import { LOGOUT } from '#store/genericActionTypes';
-import { setLoading } from '#store/loading';
 import { dispatchLogout } from '#store/dispatchers';
+import { getLogoutStatus } from '#store/getters';
+import { updateLogoutStatus } from '#store/logout';
 
 const logoutMiddleware: Middleware<{}, Store.Reducer> =
-    ({ dispatch }) =>
+    ({ dispatch, getState }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
         if (action.type === LOGOUT) {
-            dispatch(setLoading(true));
-            dispatchLogout(dispatch);
+            const status = getLogoutStatus(getState);
+            if (!status.includes('LOADING')) {
+                dispatch(updateLogoutStatus('LOADING'));
+                dispatchLogout(dispatch);
+            }
         }
     };
 

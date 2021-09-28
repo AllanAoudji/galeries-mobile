@@ -12,12 +12,13 @@ import {
 } from './galeriePictures';
 import { likesMiddlewares, likesReducers } from './likes';
 import { loginMiddlewares, loginReducer } from './login';
-import { logoutMiddlewares } from './logout';
+import { logoutMiddlewares, logoutReducer } from './logout';
 import { meMiddlewares, meReducer } from './me';
 import {
     profilePicturesMiddlewares,
     profilePicturesReducer,
 } from './profilePictures';
+import { signinReducer } from './signin';
 import { usersMiddleware, usersReducer } from './users';
 
 const reducers = combineReducers({
@@ -28,8 +29,10 @@ const reducers = combineReducers({
     galeriePictures: galeriePicturesReducer,
     like: likesReducers,
     login: loginReducer,
+    logout: logoutReducer,
     me: meReducer,
     profilePictures: profilePicturesReducer,
+    signin: signinReducer,
     users: usersReducer,
 });
 

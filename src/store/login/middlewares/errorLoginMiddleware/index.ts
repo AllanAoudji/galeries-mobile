@@ -3,8 +3,7 @@ import { Middleware } from 'redux';
 import { API_ERROR } from '#store/api';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import { LOGIN } from '#store/genericActionTypes';
-import { setLoading } from '#store/loading';
-import { updateLoginFieldsError } from '#store/login';
+import { updateLoginFieldsError, updateLoginStatus } from '#store/login';
 
 const errorLoginMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>
@@ -19,7 +18,7 @@ const errorLoginMiddleware: Middleware<{}, Store.Reducer> =
             )
                 dispatch(updateLoginFieldsError(action.payload));
             else dispatchErrorNotification(dispatch, action);
-            dispatch(setLoading(false));
+            dispatch(updateLoginStatus('ERROR'));
         }
     };
 

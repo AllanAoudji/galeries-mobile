@@ -38,6 +38,8 @@ export const getGaleriesStatus = (
 ) => getState().galeries.status[name];
 export const getLoginStatus = (getState: () => Store.Reducer) =>
     getState().login.status;
+export const getLogoutStatus = (getState: () => Store.Reducer) =>
+    getState().logout.status;
 export const getMe = (getState: () => Store.Reducer) => {
     const meId = getState().me.id;
     if (!meId) return undefined;

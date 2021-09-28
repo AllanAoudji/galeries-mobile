@@ -9,11 +9,11 @@ import { resetGaleriePictures } from '#store/galeriePictures';
 import { LOGOUT } from '#store/genericActionTypes';
 import { resetLikes } from '#store/likes';
 import { resetLogin } from '#store/login';
+import { updateLogoutStatus } from '#store/logout';
 import { resetNotification } from '#store/notification';
 import { resetMe } from '#store/me';
 import { resetProfilePictures } from '#store/profilePictures';
 import { resetUsers } from '#store/users';
-import { setLoading } from '#store/loading';
 
 const successLogoutMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>
@@ -32,8 +32,8 @@ const successLogoutMiddleware: Middleware<{}, Store.Reducer> =
                 dispatch(resetMe());
                 dispatch(resetProfilePictures());
                 dispatch(resetUsers());
+                dispatch(updateLogoutStatus('SUCCESS'));
             });
-            dispatch(setLoading(false));
         }
     };
 

@@ -1,5 +1,6 @@
 import { Dispatch, Middleware } from 'redux';
 
+import { ERROR_MESSAGE } from '#helpers/constants';
 import { API_ERROR } from '#store/api';
 import {
     dispatchErrorNotification,
@@ -14,7 +15,6 @@ import {
 } from '#store/frames';
 import { FRAMES } from '#store/genericActionTypes';
 import { getGalerie } from '#store/getters';
-import { ERROR_MESSAGE } from '#helpers/constants';
 
 const errorDefaultMethod = (dispatch: Dispatch<Store.Action>) =>
     dispatchErrorNotification(dispatch, ERROR_MESSAGE.METHOD_NOT_FOUND);

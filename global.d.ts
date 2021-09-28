@@ -159,6 +159,7 @@ declare global {
             | '[NOTIFICATION]'
             | '[ME]'
             | '[PROFILE PICTURE]'
+            | '[SIGNIN]'
             | '[UI]'
             | '[USERS]';
         type Meta = {
@@ -225,6 +226,9 @@ declare global {
                 };
                 status: Store.Status;
             };
+            logout: {
+                status: Store.Status;
+            };
             me: {
                 id: string | null;
                 status: Status;
@@ -242,6 +246,16 @@ declare global {
                 status: Store.Status;
             };
             notification: Store.Models.Notification | null;
+            signin: {
+                fieldsError: {
+                    userName: string;
+                    email: string;
+                    password: string;
+                    confirmPassword: string;
+                    betaKey: string;
+                };
+                status: Store.Status;
+            };
             users: {
                 allIds: string[];
                 byId: { [key: string]: Store.Models.User };

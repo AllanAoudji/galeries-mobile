@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useFormik } from 'formik';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     CustomButton,
     CustomTextInput,
@@ -11,7 +11,11 @@ import {
 import { signinSchema } from '#helpers/schemas';
 
 import FooterNavigation from '../FooterNavigation';
-import { selectLoading } from '#store/loading';
+import {
+    selectSigninFieldsError,
+    selectSigninStatus,
+    updateSigninFieldsError,
+} from '#store/signin';
 
 const initialValues = {
     betaKey: '',
@@ -26,7 +30,9 @@ type Props = {
 };
 
 const SigninScreen = ({ navigation }: Props) => {
-    const loading = useSelector(selectLoading);
+    const dispatch = useDispatch();
+    const loading = useSelector(selectSigninStatus);
+    const fieldsError = useSelector(selectSigninFieldsError);
 
     const formik = useFormik({
         initialValues,
@@ -52,7 +58,13 @@ const SigninScreen = ({ navigation }: Props) => {
                 !!formik.errors.email ||
                 !!formik.errors.password ||
                 !!formik.errors.userName);
-        return clientHasError;
+        const serverHasError =
+            !!fieldsError.betaKey ||
+            !!fieldsError.confirmPassword ||
+            !!fieldsError.email ||
+            !!fieldsError.password ||
+            !!fieldsError.userName;
+        return clientHasError || serverHasError;
     }, [formik.submitCount, formik.errors]);
     const emailError = React.useMemo(
         () => formik.errors.email,
@@ -68,27 +80,32 @@ const SigninScreen = ({ navigation }: Props) => {
     );
 
     const handleChangeBetaKeyText = React.useCallback((e: string) => {
+        dispatch(updateSigninFieldsError({ betaKey: '' }));
         formik.setFieldError('betaKey', '');
         formik.setFieldValue('betaKey', e);
     }, []);
     const handleChangeConfirmPasswordText = React.useCallback((e: string) => {
+        dispatch(updateSigninFieldsError({ confirmPassword: '' }));
         formik.setFieldError('confirmPassword', '');
         formik.setFieldValue('confirmPassword', e);
     }, []);
     const handleChangeEmailText = React.useCallback((e: string) => {
+        dispatch(updateSigninFieldsError({ email: '' }));
         formik.setFieldError('email', '');
         formik.setFieldValue('email', e);
     }, []);
     const handleChangePasswordText = React.useCallback((e: string) => {
+        dispatch(updateSigninFieldsError({ password: '' }));
         formik.setFieldError('password', '');
         formik.setFieldValue('password', e);
     }, []);
     const handeChangeUserNameText = React.useCallback((e: string) => {
+        dispatch(updateSigninFieldsError({ userName: '' }));
         formik.setFieldError('userName', '');
         formik.setFieldValue('userName', e);
     }, []);
     const handlePressLogin = React.useCallback(() => {
-        if (!loading) navigation.navigate('Login');
+        if (!loading.includes('LOADING')) navigation.navigate('Login');
     }, [loading, navigation]);
 
     return (
@@ -96,6 +113,7 @@ const SigninScreen = ({ navigation }: Props) => {
             <Logo mb="small" size="smallest" variant="text" />
             <CustomTextInput
                 error={userNameError}
+                loading={loading.includes('LOADING')}
                 label="user name"
                 onBlur={formik.handleBlur('userName')}
                 onChangeText={handeChangeUserNameText}
@@ -105,6 +123,7 @@ const SigninScreen = ({ navigation }: Props) => {
             <CustomTextInput
                 error={emailError}
                 keyboardType="email-address"
+                loading={loading.includes('LOADING')}
                 label="email"
                 onBlur={formik.handleBlur('email')}
                 onChangeText={handleChangeEmailText}
@@ -113,6 +132,7 @@ const SigninScreen = ({ navigation }: Props) => {
             />
             <CustomTextInput
                 error={passwordError}
+                loading={loading.includes('LOADING')}
                 label="password"
                 onBlur={formik.handleBlur('password')}
                 onChangeText={handleChangePasswordText}
@@ -122,6 +142,7 @@ const SigninScreen = ({ navigation }: Props) => {
             />
             <CustomTextInput
                 error={confirmPasswordError}
+                loading={loading.includes('LOADING')}
                 label="confirm password"
                 onBlur={formik.handleBlur('confirmPassword')}
                 onChangeText={handleChangeConfirmPasswordText}
@@ -131,6 +152,7 @@ const SigninScreen = ({ navigation }: Props) => {
             />
             <CustomTextInput
                 error={betaKeyError}
+                loading={loading.includes('LOADING')}
                 label="beta key"
                 onBlur={formik.handleBlur('betaKey')}
                 onChangeText={handleChangeBetaKeyText}
@@ -139,7 +161,7 @@ const SigninScreen = ({ navigation }: Props) => {
             />
             <CustomButton
                 disable={disableButton}
-                loading={loading}
+                loading={loading.includes('LOADING')}
                 mt="smallest"
                 onPress={formik.handleSubmit}
                 title="sign-in"

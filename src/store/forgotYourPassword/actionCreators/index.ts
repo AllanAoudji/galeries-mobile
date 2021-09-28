@@ -29,7 +29,7 @@ export const resetForgotYourPasswordStatus: () => Store.Action = () => ({
     type: FORGOT_YOUR_PASSWORD_STATUS_RESET,
 });
 export const updateForgotYourPasswordFieldsError: (payload: {
-    email: string;
+    email?: string;
 }) => Store.Action = (payload) => ({
     meta: {},
     payload,

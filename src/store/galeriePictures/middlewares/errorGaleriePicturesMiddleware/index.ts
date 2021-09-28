@@ -8,7 +8,6 @@ import {
 } from '#store/dispatchers';
 import { GALERIE_PICTURES } from '#store/genericActionTypes';
 import { getFrame, getGalerie } from '#store/getters';
-import { setLoading } from '#store/loading';
 
 const errorGaleriePictures: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -36,7 +35,6 @@ const errorGaleriePictures: Middleware<{}, Store.Reducer> =
                     });
             }
             dispatchErrorNotification(dispatch, action);
-            dispatch(setLoading(false));
         }
     };
 

@@ -3,7 +3,7 @@ import {
     FORGOT_YOUR_PASSWORD_FIELDS_ERROR_UPDATE,
 } from '#store/forgotYourPassword';
 
-const initialState: { email?: string } = {};
+const initialState: { email: string } = { email: '' };
 const forgotYourPasswordFieldsErrorReducer = (
     state = initialState,
     action: Store.Action

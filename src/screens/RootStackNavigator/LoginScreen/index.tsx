@@ -17,9 +17,9 @@ import { ForgotYourPasswordContainer } from './styles';
 import {
     login,
     selectLoginFieldsError,
+    selectLoginStatus,
     updateLoginFieldsError,
 } from '#store/login';
-import { selectLoading } from '#store/loading';
 
 const initialValues = {
     password: '',
@@ -33,7 +33,7 @@ type Props = {
 const LoginScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
-    const loading = useSelector(selectLoading);
+    const loading = useSelector(selectLoginStatus);
     const loginFieldsError = useSelector(selectLoginFieldsError);
 
     const formik = useFormik({
@@ -82,10 +82,11 @@ const LoginScreen = ({ navigation }: Props) => {
         [loginFieldsError.userNameOrEmail]
     );
     const handlePressForgotYourPassword = React.useCallback(() => {
-        if (!loading) navigation.navigate('ForgotYourPassword');
+        if (!loading.includes('LOADING'))
+            navigation.navigate('ForgotYourPassword');
     }, [loading, navigation]);
     const handlePressSignin = React.useCallback(() => {
-        if (!loading) navigation.navigate('Signin');
+        if (!loading.includes('LOADING')) navigation.navigate('Signin');
     }, [loading, navigation]);
 
     return (
@@ -94,7 +95,7 @@ const LoginScreen = ({ navigation }: Props) => {
             <CustomTextInput
                 error={userNameOrEmailError}
                 label="email or user name"
-                loading={loading}
+                loading={loading.includes('LOADING')}
                 onBlur={formik.handleBlur('userNameOrEmail')}
                 onChangeText={handleChangeUserNameOrEmailText}
                 touched={formik.touched.userNameOrEmail || false}
@@ -103,7 +104,7 @@ const LoginScreen = ({ navigation }: Props) => {
             <CustomTextInput
                 error={passwordError}
                 label="password"
-                loading={loading}
+                loading={loading.includes('LOADING')}
                 onBlur={formik.handleBlur('password')}
                 onChangeText={handleChangePasswordText}
                 secureTextEntry
@@ -112,7 +113,7 @@ const LoginScreen = ({ navigation }: Props) => {
             />
             <CustomButton
                 disable={disableButton}
-                loading={loading}
+                loading={loading.includes('LOADING')}
                 mt="smallest"
                 onPress={formik.handleSubmit}
                 title="log-in"

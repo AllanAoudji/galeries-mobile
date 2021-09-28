@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import * as React from 'react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     CustomButton,
     CustomTextInput,
@@ -12,6 +12,11 @@ import {
 import { forgotPassworSchema } from '#helpers/schemas';
 
 import { TextContainer } from './styles';
+import {
+    selectForgotYourPasswordFieldsError,
+    selectForgotYourPasswordStatus,
+    updateForgotYourPasswordFieldsError,
+} from '#store/forgotYourPassword';
 
 type Props = {
     navigation: Screen.RootStack.ForgotYourPasswordNavigationProp;
@@ -20,7 +25,9 @@ type Props = {
 const initialValues = { email: '' };
 
 const ForgotYourPasswordScreen = ({ navigation }: Props) => {
-    const loading = useSelector(selectLoading);
+    const dispatch = useDispatch();
+    const fieldsError = useSelector(selectForgotYourPasswordFieldsError);
+    const loading = useSelector(selectForgotYourPasswordStatus);
 
     const formik = useFormik({
         initialValues,
@@ -32,7 +39,8 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
 
     const disableButton = React.useMemo(() => {
         const clientHasError = formik.submitCount > 0 && !!formik.errors.email;
-        return clientHasError;
+        const serverHasError = !!fieldsError.email;
+        return clientHasError || serverHasError;
     }, [formik.submitCount, formik.errors]);
     const emailError = React.useMemo(
         () => formik.errors.email,
@@ -40,11 +48,13 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
     );
 
     const handleChangeEmailText = React.useCallback((e: string) => {
+        dispatch(updateForgotYourPasswordFieldsError({ email: '' }));
         formik.setFieldError('email', '');
         formik.setFieldValue('email', e);
     }, []);
+
     const handlePressReturn = React.useCallback(() => {
-        if (!loading) navigation.navigate('Login');
+        if (!loading.includes('LOADING')) navigation.navigate('Login');
     }, []);
 
     return (
@@ -63,7 +73,7 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
                 error={emailError}
                 keyboardType="email-address"
                 label="email"
-                loading={loading}
+                loading={loading.includes('LOADING')}
                 onBlur={formik.handleBlur('email')}
                 onChangeText={handleChangeEmailText}
                 touched={formik.touched.email || false}
@@ -71,7 +81,7 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
             />
             <CustomButton
                 disable={disableButton}
-                loading={loading}
+                loading={loading.includes('LOADING')}
                 mb="smallest"
                 mt="smallest"
                 onPress={formik.handleSubmit}
