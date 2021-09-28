@@ -148,6 +148,7 @@ declare global {
         };
         type Entity =
             | '[COMMENTS]'
+            | '[FORGOT YOUR PASSWORD]'
             | '[FRAMES]'
             | '[GALERIES]'
             | '[GALERIE PICTURES]'
@@ -175,6 +176,12 @@ declare global {
                     delete: Store.Status;
                     post: Store.Status;
                 };
+            };
+            forgotYourPassword: {
+                fieldsError: {
+                    email?: string;
+                };
+                status: Store.Status;
             };
             frames: {
                 allIds: string[];

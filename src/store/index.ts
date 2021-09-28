@@ -3,6 +3,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { apiMiddlewares } from './api';
 import { commentsMiddlewares, commentsReducer } from './comments';
+import { forgotYourPasswordReducer } from './forgotYourPassword';
 import { framesMiddlewares, framesReducer } from './frames';
 import { galeriesMiddleware, galeriesReducer } from './galeries';
 import {
@@ -21,6 +22,7 @@ import { usersMiddleware, usersReducer } from './users';
 
 const reducers = combineReducers({
     comments: commentsReducer,
+    forgotYourPassword: forgotYourPasswordReducer,
     frames: framesReducer,
     galeries: galeriesReducer,
     galeriePictures: galeriePicturesReducer,

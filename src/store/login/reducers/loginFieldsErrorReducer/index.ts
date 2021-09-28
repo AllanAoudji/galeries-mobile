@@ -1,6 +1,6 @@
 import {
-    LOGIN_FIELD_ERRORS_RESET,
-    LOGIN_FIELD_ERRORS_UPDATE,
+    LOGIN_FIELDS_ERROR_RESET,
+    LOGIN_FIELDS_ERROR_UPDATE,
 } from '#store/login/actionTypes';
 
 const initialState: {
@@ -15,9 +15,9 @@ const loginFieldsErrorReducer = (
     action: Store.Action
 ) => {
     switch (action.type) {
-        case LOGIN_FIELD_ERRORS_RESET:
+        case LOGIN_FIELDS_ERROR_RESET:
             return initialState;
-        case LOGIN_FIELD_ERRORS_UPDATE:
+        case LOGIN_FIELDS_ERROR_UPDATE:
             if (
                 typeof action.payload === 'object' &&
                 (typeof action.payload.description === 'string' ||

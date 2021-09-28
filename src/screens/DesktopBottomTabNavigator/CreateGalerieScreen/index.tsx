@@ -10,9 +10,9 @@ import { ButtonsContainer, Container } from './styles';
 import {
     postGalerie,
     selectGaleriesFieldsError,
-    setGaleriesFieldsError,
+    updateGaleriesFieldsError,
+    selectGaleriesLoadingPost,
 } from '#store/galeries';
-import { selectLoading } from '#store/loading';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CreateGalerieProp;
@@ -27,7 +27,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
     const galeriesFieldsError = useSelector(selectGaleriesFieldsError);
-    const loading = useSelector(selectLoading);
+    const loading = useSelector(selectGaleriesLoadingPost);
 
     const formik = useFormik({
         onSubmit: async (values) => dispatch(postGalerie(values)),
@@ -55,12 +55,12 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     );
 
     const handleChangeDescriptionText = React.useCallback((e: string) => {
-        dispatch(setGaleriesFieldsError({ description: '' }));
+        dispatch(updateGaleriesFieldsError({ description: '' }));
         formik.setFieldError('description', '');
         formik.setFieldValue('description', e);
     }, []);
     const handleChangeNameText = React.useCallback((e: string) => {
-        dispatch(setGaleriesFieldsError({ name: '' }));
+        dispatch(updateGaleriesFieldsError({ name: '' }));
         formik.setFieldError('name', '');
         formik.setFieldValue('name', e);
     }, []);
@@ -74,13 +74,17 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         []
     );
 
+    React.useEffect(() => {
+        if (loading === 'SUCCESS') successCallback();
+    }, [loading]);
+
     return (
         <FormContainer>
             <Container>
                 <CustomTextInput
                     error={nameError}
                     label="name"
-                    loading={loading}
+                    loading={loading.includes('LOADING')}
                     maxLength={FIELD_REQUIREMENT.GALERIE_NAME_MAX_LENGTH}
                     onBlur={formik.handleBlur('name')}
                     onChangeText={handleChangeNameText}
@@ -90,7 +94,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                 <CustomTextInput
                     error={descriptionError}
                     label="description"
-                    loading={loading}
+                    loading={loading.includes('LOADING')}
                     maxLength={FIELD_REQUIREMENT.GALERIE_DESCRIPTION_MAX_LENGTH}
                     multiline
                     onBlur={formik.handleBlur('description')}
@@ -103,13 +107,13 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
             <ButtonsContainer>
                 <CustomButton
                     disable={disableButton}
-                    loading={loading}
+                    loading={loading.includes('LOADING')}
                     mb="smallest"
                     onPress={formik.handleSubmit}
                     title="create galerie"
                 />
                 <CustomButton
-                    disable={loading}
+                    disable={loading.includes('LOADING')}
                     onPress={handlePressBack}
                     title="cancel"
                     variant="stroke"

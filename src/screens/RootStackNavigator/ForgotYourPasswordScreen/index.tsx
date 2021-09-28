@@ -12,7 +12,6 @@ import {
 import { forgotPassworSchema } from '#helpers/schemas';
 
 import { TextContainer } from './styles';
-import { selectLoading } from '#store/loading';
 
 type Props = {
     navigation: Screen.RootStack.ForgotYourPasswordNavigationProp;
