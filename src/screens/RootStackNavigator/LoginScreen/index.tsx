@@ -63,16 +63,24 @@ const LoginScreen = ({ navigation }: Props) => {
         [formik.errors.userNameOrEmail, loginFieldsError.userNameOrEmail]
     );
 
-    const handleChangePasswordText = React.useCallback((e: string) => {
-        dispatch(updateLoginFieldsError({ password: '' }));
-        formik.setFieldError('password', '');
-        formik.setFieldValue('password', e);
-    }, []);
-    const handleChangeUserNameOrEmailText = React.useCallback((e: string) => {
-        dispatch(updateLoginFieldsError({ userNameOrEmail: '' }));
-        formik.setFieldError('userNameOrEmail', '');
-        formik.setFieldValue('userNameOrEmail', e);
-    }, []);
+    const handleChangePasswordText = React.useCallback(
+        (e: string) => {
+            if (loginFieldsError.password !== '')
+                dispatch(updateLoginFieldsError({ password: '' }));
+            formik.setFieldError('password', '');
+            formik.setFieldValue('password', e);
+        },
+        [loginFieldsError.password]
+    );
+    const handleChangeUserNameOrEmailText = React.useCallback(
+        (e: string) => {
+            if (loginFieldsError.userNameOrEmail !== '')
+                dispatch(updateLoginFieldsError({ userNameOrEmail: '' }));
+            formik.setFieldError('userNameOrEmail', '');
+            formik.setFieldValue('userNameOrEmail', e);
+        },
+        [loginFieldsError.userNameOrEmail]
+    );
     const handlePressForgotYourPassword = React.useCallback(() => {
         if (!loading) navigation.navigate('ForgotYourPassword');
     }, [loading, navigation]);

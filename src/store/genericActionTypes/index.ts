@@ -33,3 +33,8 @@ export const FIELDS_ERROR = '/fieldsErrors';
 export const ID = '/id';
 export const PREVIOUS = '/previous';
 export const STATUS = '/status';
+
+// Loading reducers
+export const LOADING_DELETE = '/loading/delete';
+export const LOADING_POST = '/loading/post';
+export const LOADING_PUT = '/loading/put';

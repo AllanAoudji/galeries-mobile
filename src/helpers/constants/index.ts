@@ -51,10 +51,13 @@ export const DRAG_AND_DROP_UTILS = {
 };
 
 export const END_POINT = {
+    GALERIE_PICTURES: '/galeriePictures',
+    COVER_PICTURE: '/coverPicture',
     USERS: '/users',
     ME: '/me',
     CURRENT_PROFILE_PICTURE: '/currentProfilePicture',
     PROFILE_PICTURES: '/profilePictures',
+    Me: '/me',
     LIKE_ID: (id: string) => `/likes/${id}/`,
     COMMENTS: '/comments/',
     COMMENT_ID: (id: string) => `/comments/${id}/`,
@@ -74,7 +77,7 @@ export const END_POINT = {
     GET_USER_CURRENT_PROFILE_PICTURE: (id: string) =>
         `/users/${id}/currentProfilePicture`,
     GET_USER_ID: (id: string) => `/users/${id}/`,
-    LIKES: (id: string) => `/frames/${id}/likes/`,
+    LIKES: '/likes',
     LOGIN: '/users/login/',
     LOGOUT: '/users/logout/',
     REFRESH_TOKEN: '/users/refreshToken/',

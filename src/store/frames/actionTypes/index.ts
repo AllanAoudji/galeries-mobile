@@ -1,0 +1,50 @@
+import {
+    ALL_IDS,
+    BY_ID,
+    CURRENT,
+    DELETE,
+    END,
+    FIELDS_ERROR,
+    FRAMES,
+    GET,
+    LOADING_DELETE,
+    LOADING_POST,
+    LOADING_PUT,
+    POST,
+    PREVIOUS,
+    PUT,
+    REMOVE,
+    RESET,
+    SET,
+    STATUS,
+    UPDATE,
+} from '#store/genericActionTypes';
+
+export const FRAMES_ALL_IDS_REMOVE = `${FRAMES}${ALL_IDS} ${REMOVE}`;
+export const FRAMES_ALL_IDS_RESET = `${FRAMES}${ALL_IDS} ${RESET}`;
+export const FRAMES_ALL_IDS_SET = `${FRAMES}${ALL_IDS} ${SET}`;
+export const FRAMES_BY_ID_REMOVE = `${FRAMES}${BY_ID} ${REMOVE}`;
+export const FRAMES_BY_ID_RESET = `${FRAMES}${BY_ID} ${RESET}`;
+export const FRAMES_BY_ID_SET = `${FRAMES}${BY_ID} ${SET}`;
+export const FRAMES_BY_ID_UPDATE = `${FRAMES}${BY_ID} ${UPDATE}`;
+export const FRAMES_CURRENT_RESET = `${FRAMES}${CURRENT} ${RESET}`;
+export const FRAMES_CURRENT_UPDATE = `${FRAMES}${CURRENT} ${UPDATE}`;
+export const FRAMES_END_RESET = `${FRAMES}${END} ${RESET}`;
+export const FRAMES_END_UPDATE = `${FRAMES}${END} ${UPDATE}`;
+export const FRAMES_DELETE = `${FRAMES} ${DELETE}`;
+export const FRAMES_FIELDS_ERROR_RESET = `${FRAMES}${FIELDS_ERROR} ${RESET}`;
+export const FRAMES_FIELDS_ERROR_UPDATE = `${FRAMES}${FIELDS_ERROR} ${UPDATE}`;
+export const FRAMES_GET = `${FRAMES} ${GET}`;
+export const FRAMES_LOADING_DELETE_RESET = `${FRAMES}${LOADING_DELETE} ${RESET}`;
+export const FRAMES_LOADING_DELETE_UPDATE = `${FRAMES}${LOADING_DELETE} ${UPDATE}`;
+export const FRAMES_LOADING_POST_RESET = `${FRAMES}${LOADING_POST} ${RESET}`;
+export const FRAMES_LOADING_POST_UPDATE = `${FRAMES}${LOADING_POST} ${UPDATE}`;
+export const FRAMES_LOADING_PUT_RESET = `${FRAMES}${LOADING_PUT} ${RESET}`;
+export const FRAMES_LOADING_PUT_UPDATE = `${FRAMES}${LOADING_PUT} ${UPDATE}`;
+export const FRAMES_POST = `${FRAMES} ${POST}`;
+export const FRAMES_PREVIOUS_RESET = `${FRAMES}${PREVIOUS} ${RESET}`;
+export const FRAMES_PREVIOUS_UPDATE = `${FRAMES}${PREVIOUS} ${UPDATE}`;
+export const FRAMES_PUT = `${FRAMES} ${PUT}`;
+export const FRAMES_RESET = `${FRAMES} ${RESET}`;
+export const FRAMES_STATUS_RESET = `${FRAMES}${STATUS} ${RESET}`;
+export const FRAMES_STATUS_UPDATE = `${FRAMES}${STATUS} ${UPDATE}`;

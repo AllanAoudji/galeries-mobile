@@ -29,43 +29,43 @@ const HomeScreen = () => {
     const frames = useSelector(selectFrames);
     const framesStatus = useSelector(selectFramesStatus);
 
-    const handleEndReach = React.useCallback(() => {
-        if (framesStatus === 'ERROR' || framesStatus === 'SUCCESS')
-            dispatch(getFrames());
-    }, [framesStatus]);
+    const hasFrames = React.useMemo(() => frames.length > 0, [frames]);
+    const showBottomLoader = React.useMemo(
+        () => framesStatus === 'LOADING',
+        [framesStatus]
+    );
+    const showFullScreenLoader = React.useMemo(
+        () => framesStatus === 'PENDING' || framesStatus === 'INITIAL_LOADING',
+        [framesStatus]
+    );
+
+    const handleEndReach = React.useCallback(() => dispatch(getFrames()), []);
     const keyExtractor = React.useCallback(
         (data: Store.Models.Frame) => data.id,
         []
     );
 
+    React.useEffect(() => {
+        if (framesStatus === 'PENDING') dispatch(getFrames());
+    }, [framesStatus]);
+
     return (
         <Container>
             <DefaultHeader />
-            {frames && (
-                <>
-                    {frames.length > 0 ? (
-                        <AnimatedFlatList
-                            data={frames}
-                            keyExtractor={keyExtractor}
-                            maxToRenderPerBatch={10}
-                            onEndReached={handleEndReach}
-                            onEndReachedThreshold={0.2}
-                            renderItem={renderItem}
-                            scrollEventThrottle={4}
-                            showsVerticalScrollIndicator={false}
-                        />
-                    ) : (
-                        <EmptyMessage text="no frames" />
-                    )}
-                </>
+            {hasFrames ? (
+                <AnimatedFlatList
+                    data={frames}
+                    keyExtractor={keyExtractor}
+                    onEndReached={handleEndReach}
+                    onEndReachedThreshold={0}
+                    renderItem={renderItem}
+                    showsVerticalScrollIndicator={false}
+                />
+            ) : (
+                <EmptyMessage text="no frames" />
             )}
-            <FullScreenLoader
-                show={
-                    framesStatus === 'PENDING' ||
-                    framesStatus === 'INITIAL_LOADING'
-                }
-            />
-            <BottomLoader show={framesStatus === 'LOADING'} bottom="huge" />
+            <FullScreenLoader show={showFullScreenLoader} />
+            <BottomLoader show={showBottomLoader} bottom="huge" />
         </Container>
     );
 };

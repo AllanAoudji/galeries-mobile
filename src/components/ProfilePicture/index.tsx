@@ -18,7 +18,7 @@ type Props = {
     mr?: keyof Style.Spacings;
     mt?: keyof Style.Spacings;
     size?: Style.Variant.ProfilePicture;
-    user: Store.Models.UserPopulated;
+    user: Store.Models.User;
 };
 
 const DEFAULT_PROFILE_PICTURE = Image.resolveAssetSource(
@@ -36,7 +36,7 @@ const ProfilePicture = ({
 }: Props) => {
     const dispatch = useDispatch();
 
-    const selectCurrentProfilePicture = React.useCallback(
+    const selectCurrentProfilePicture = React.useMemo(
         () => selectUserCurrentProfilePicture(user.id),
         [user]
     );
@@ -57,8 +57,8 @@ const ProfilePicture = ({
 
     React.useEffect(() => {
         if (user && uri === DEFAULT_PROFILE_PICTURE) {
-            if (user.currentProfilePicture)
-                setUri(user.currentProfilePicture.cropedImage.signedUrl);
+            if (currentProfilePicture)
+                setUri(currentProfilePicture.cropedImage.signedUrl);
             else if (user.defaultProfilePicture)
                 setUri(user.defaultProfilePicture);
             else setUri(DEFAULT_PROFILE_PICTURE);

@@ -6,7 +6,10 @@ import {
     useWindowDimensions,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 import { useTheme } from 'styled-components';
+
+import { selectFrameGaleriePictures } from '#store/galeriePictures';
 
 import Image from './Image';
 
@@ -18,12 +21,18 @@ import {
 } from './styles';
 
 type Props = {
-    galeriePictures?: Store.Models.GaleriePicture[];
+    frameId: string;
 };
 
-const Slider = ({ galeriePictures }: Props) => {
+const Slider = ({ frameId }: Props) => {
     const dimension = useWindowDimensions();
     const theme = useTheme();
+
+    const selectGaleriePictures = React.useMemo(
+        () => selectFrameGaleriePictures(frameId),
+        [frameId]
+    );
+    const galeriePictures = useSelector(selectGaleriePictures);
 
     const [currentIndex, setCurrentIndex] = React.useState<number>(0);
 
@@ -40,7 +49,7 @@ const Slider = ({ galeriePictures }: Props) => {
     return (
         <>
             <LinearGradiantStyled size={dimension.width}>
-                {galeriePictures ? (
+                {/* {galeriePictures ? (
                     <ScrollView
                         decelerationRate="fast"
                         disableIntervalMomentum={true}
@@ -56,14 +65,14 @@ const Slider = ({ galeriePictures }: Props) => {
                             />
                         ))}
                     </ScrollView>
-                ) : (
-                    <ActivityIndicatorContainer>
-                        <ActivityIndicator
-                            color={theme.colors.primary}
-                            style={{ transform: [{ scale: 2 }] }}
-                        />
-                    </ActivityIndicatorContainer>
-                )}
+                ) : ( */}
+                <ActivityIndicatorContainer>
+                    <ActivityIndicator
+                        color={theme.colors.primary}
+                        style={{ transform: [{ scale: 2 }] }}
+                    />
+                </ActivityIndicatorContainer>
+                {/* )} */}
             </LinearGradiantStyled>
             <DotsContainer>
                 {galeriePictures &&
@@ -79,4 +88,4 @@ const Slider = ({ galeriePictures }: Props) => {
     );
 };
 
-export default Slider;
+export default React.memo(Slider);

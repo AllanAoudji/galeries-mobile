@@ -1,20 +1,26 @@
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 
 import Pictogram from '#components/Pictogram';
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
+import { selectUserId } from '#store/users';
 
 import { Container, InfoContainer } from './styles';
 
 type Props = {
-    user?: Store.Models.UserPopulated;
+    userId: string;
 };
 
-const Header = ({ user }: Props) => {
+const Header = ({ userId }: Props) => {
+    const selectUser = React.useMemo(() => selectUserId(userId), [userId]);
+    const user = useSelector(selectUser);
+
     return (
         <Container>
             <InfoContainer>
-                <ProfilePicture mr="smallest" user={user} />
+                {/* TODO: ProfilePicture should deal when user === undefined */}
+                {user && <ProfilePicture mr="smallest" user={user} />}
                 <Typography>posted by </Typography>
                 <Typography fontFamily="bold">
                     {user ? user.pseudonym : 'username'}
@@ -33,4 +39,4 @@ const Header = ({ user }: Props) => {
     );
 };
 
-export default Header;
+export default React.memo(Header);

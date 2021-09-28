@@ -5,7 +5,6 @@ import {
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import { meDataSelector } from '#store/selectors';
 import { DefaultHeader } from '#components';
 
 import DesktopScreen from './DesktopScreen';
@@ -13,11 +12,12 @@ import ForgotYourPasswordScreen from './ForgotYourPasswordScreen';
 import LangingScreen from './LandingScreen';
 import LoginScreen from './LoginScreen';
 import SigninScreen from './SigninScreen';
+import { selectMe } from '#store/me';
 
 const Stack = createStackNavigator<Screen.RootStack.ParamList>();
 
 const RootStackNavigator = () => {
-    const userData = useSelector(meDataSelector);
+    const me = useSelector(selectMe);
 
     return (
         <Stack.Navigator
@@ -26,7 +26,7 @@ const RootStackNavigator = () => {
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             }}
         >
-            {userData ? (
+            {me ? (
                 <Stack.Screen
                     component={DesktopScreen}
                     name="Desktop"
@@ -57,7 +57,7 @@ const RootStackNavigator = () => {
                         options={{
                             header: ({ navigation }) => (
                                 <DefaultHeader
-                                    onPressBack={() =>
+                                    onPress={() =>
                                         navigation.navigate('Landing')
                                     }
                                     title="log-in"
@@ -72,7 +72,7 @@ const RootStackNavigator = () => {
                         options={{
                             header: ({ navigation }) => (
                                 <DefaultHeader
-                                    onPressBack={() =>
+                                    onPress={() =>
                                         navigation.navigate('Landing')
                                     }
                                     title="sign-in"

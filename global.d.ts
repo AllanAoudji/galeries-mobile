@@ -178,7 +178,12 @@ declare global {
                 current: string | null;
                 end: boolean;
                 fieldsError: { description?: string };
-                previous: string | null;
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                    put: Store.Status;
+                };
+                previous?: string;
                 status: Store.Status;
             };
             galeries: {
@@ -186,7 +191,13 @@ declare global {
                 byId: { [key: string]: Store.Models.Galerie };
                 current: string | null;
                 end: { [key: string]: boolean };
+                filterName: string;
                 fieldsError: { description?: string; name?: string };
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                    put: Store.Status;
+                };
                 previous: { [key: string]: string | null };
                 status: { [key: string]: Store.Status };
             };
@@ -196,12 +207,12 @@ declare global {
             likes: {
                 byId: { [key: string]: Store.Models.Like };
             };
-            loading: boolean;
             login: {
-                errors: {
+                fieldsError: {
                     password?: undefined;
                     userNameOrEmail?: undefined;
                 };
+                status: Store.Status;
             };
             me: {
                 id: string | null;
@@ -212,13 +223,14 @@ declare global {
                 byId: { [key: string]: Store.Models.ProfilePicture };
                 current: string | null;
                 end: boolean;
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                };
                 previous: string | null;
                 status: Store.Status;
             };
             notification: Store.Models.Notification | null;
-            ui: {
-                filterGaleriesName: string;
-            };
             users: {
                 allIds: string[];
                 byId: { [key: string]: Store.Models.User };
@@ -281,11 +293,10 @@ declare global {
                 numOfLikes: string;
                 updatedAt: string;
                 userId: string;
-            };
-            type FramePopulated = Frame & {
-                galerie?: Store.Models.Galerie;
-                galeriePictures?: Store.Models.GaleriePicture[];
-                user?: Store.Models.PopulatedUser;
+                user?: {
+                    id: string;
+                    status: string;
+                };
             };
             type Galerie = {
                 allowNotification: boolean;
@@ -311,7 +322,7 @@ declare global {
                 users?: {
                     allIds: string[];
                     end: boolean;
-                    previousFrame?: string;
+                    previous?: string;
                     status: Store.Status;
                 };
             };
