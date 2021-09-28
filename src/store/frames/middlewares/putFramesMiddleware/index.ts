@@ -2,9 +2,10 @@ import { Middleware } from 'redux';
 
 import { dispatchPutFrame } from '#store/dispatchers';
 import { FRAMES_PUT, updateFramesLoadingPut } from '#store/frames';
+import { getFramesLoadingPut } from '#store/getters';
 
 const putFrameMiddleware: Middleware<{}, Store.Reducer> =
-    ({ dispatch }) =>
+    ({ dispatch, getState }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
@@ -12,10 +13,12 @@ const putFrameMiddleware: Middleware<{}, Store.Reducer> =
             const frameId = action.meta.query
                 ? action.meta.query.frameId
                 : undefined;
+            const loading = getFramesLoadingPut(getState);
             if (
                 typeof action.payload.description === 'string' &&
                 typeof action.payload.id === 'string' &&
-                frameId
+                frameId &&
+                !loading.includes('LOADING')
             ) {
                 dispatch(updateFramesLoadingPut('LOADING'));
                 dispatchPutFrame(dispatch, frameId, action.payload);

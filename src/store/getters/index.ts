@@ -4,6 +4,12 @@ export const getFrame = (getState: () => Store.Reducer, frameId: string) =>
     getState().frames.byId[frameId];
 export const getFramesEnd = (getState: () => Store.Reducer) =>
     getState().frames.end;
+export const getFramesLoadingDelete = (getState: () => Store.Reducer) =>
+    getState().frames.loading.delete;
+export const getFramesLoadingPost = (getState: () => Store.Reducer) =>
+    getState().frames.loading.post;
+export const getFramesLoadingPut = (getState: () => Store.Reducer) =>
+    getState().frames.loading.put;
 export const getFramesPrevious = (getState: () => Store.Reducer) =>
     getState().frames.previous;
 export const getFramesStatus = (getState: () => Store.Reducer) =>
@@ -12,6 +18,12 @@ export const getGalerie = (getState: () => Store.Reducer, galerieId: string) =>
     getState().galeries.byId[galerieId];
 export const getGaleriesEnd = (getState: () => Store.Reducer, name: string) =>
     getState().galeries.end[name];
+export const getGaleriesLoadingDelete = (getState: () => Store.Reducer) =>
+    getState().galeries.loading.delete;
+export const getGaleriesLoadingPost = (getState: () => Store.Reducer) =>
+    getState().galeries.loading.post;
+export const getGaleriesLoadingPut = (getState: () => Store.Reducer) =>
+    getState().galeries.loading.put;
 export const getGaleriesPrevious = (
     getState: () => Store.Reducer,
     name: string
@@ -30,6 +42,11 @@ export const getMeStatus = (getState: () => Store.Reducer) =>
     getState().me.status;
 export const getProfilePictures = (getState: () => Store.Reducer) =>
     getState().profilePictures;
+export const getProfilePicturesLoadingDelete = (
+    getState: () => Store.Reducer
+) => getState().profilePictures.loading.delete;
+export const getProfilePicturesLoadingPost = (getState: () => Store.Reducer) =>
+    getState().profilePictures.loading.post;
 export const getUsersEnd = (getState: () => Store.Reducer) =>
     getState().users.end;
 export const getUsersPrevious = (getState: () => Store.Reducer) =>

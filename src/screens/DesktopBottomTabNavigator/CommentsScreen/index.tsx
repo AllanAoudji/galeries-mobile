@@ -38,7 +38,6 @@ import {
     selectCurrentFrameComments,
     selectCurrentFrameCommentsStatus,
 } from '#store/comments';
-import { selectLoading } from '#store/loading';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CommentsNavigationProp;

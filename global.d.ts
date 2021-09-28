@@ -171,6 +171,10 @@ declare global {
         type Reducer = {
             comments: {
                 byId: { [key: string]: Store.Models.Comment };
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                };
             };
             frames: {
                 allIds: string[];

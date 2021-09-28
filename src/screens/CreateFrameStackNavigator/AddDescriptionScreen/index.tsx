@@ -11,11 +11,11 @@ import { frameDescriptionSchema } from '#helpers/schemas';
 import { ButtonsContainer, Container } from './styles';
 import {
     postFrame,
-    selectFrameFieldsError,
+    selectFramesFieldsError,
+    selectFramesLoadingPost,
     updateFramesFieldsError,
 } from '#store/frames';
 import { selectCurrentGalerie } from '#store/galeries';
-import { selectLoading } from '#store/loading';
 
 type Props = {
     navigation: Screen.CreateFrameStack.AddDescriptionNavigationProp;
@@ -29,9 +29,9 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
     const currentGalerie = useSelector(selectCurrentGalerie);
-    const loading = useSelector(selectLoading);
+    const loading = useSelector(selectFramesLoadingPost);
 
-    const framesFieldsError = useSelector(selectFrameFieldsError);
+    const framesFieldsError = useSelector(selectFramesFieldsError);
     const { picturesUri, resetPictures } = React.useContext(CreateFrameContext);
 
     const formik = useFormik({
@@ -87,13 +87,17 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
             .navigate('Galerie');
     }, []);
 
+    React.useEffect(() => {
+        if (loading === 'SUCCESS') successCallback();
+    }, [loading]);
+
     return (
         <FormContainer>
             <Container>
                 <CustomTextInput
                     error={descriptionError}
                     label="description"
-                    loading={loading}
+                    loading={loading.includes('LOADING')}
                     maxLength={FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH}
                     multiline
                     onBlur={formik.handleBlur('description')}
@@ -106,13 +110,13 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
             <ButtonsContainer>
                 <CustomButton
                     disable={disableButton}
-                    loading={loading}
+                    loading={loading.includes('LOADING')}
                     mb="smallest"
                     onPress={formik.handleSubmit}
                     title="post frame"
                 />
                 <CustomButton
-                    disable={loading}
+                    disable={loading.includes('LOADING')}
                     onPress={handleReturn}
                     title="return"
                     variant="stroke"
