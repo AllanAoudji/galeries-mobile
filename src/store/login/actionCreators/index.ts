@@ -3,6 +3,8 @@ import {
     LOGIN_FIELD_ERRORS_RESET,
     LOGIN_FIELD_ERRORS_UPDATE,
     LOGIN_RESET,
+    LOGIN_STATUS_RESET,
+    LOGIN_STATUS_UPDATE,
 } from '#store/login';
 
 export const login: (payload: {
@@ -18,6 +20,11 @@ export const resetLogin: () => Store.Action = () => ({
     payload: {},
     type: LOGIN_RESET,
 });
+export const resetLoginStatus: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: LOGIN_STATUS_RESET,
+});
 export const resetLoginFieldErrors: () => Store.Action = () => ({
     meta: {},
     payload: {},
@@ -30,4 +37,11 @@ export const updateLoginFieldsError: (payload: {
     meta: {},
     payload,
     type: LOGIN_FIELD_ERRORS_UPDATE,
+});
+export const updateLoginStatus: (payload: Store.Status) => Store.Action = (
+    payload
+) => ({
+    meta: {},
+    payload,
+    type: LOGIN_STATUS_UPDATE,
 });

@@ -6,8 +6,8 @@ import { ASYNC_STORAGE, ERROR_MESSAGE } from '#helpers/constants';
 import { API_SUCCESS } from '#store/api';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import { LOGIN } from '#store/genericActionTypes';
-import { setLoading } from '#store/loading';
 import { getMe } from '#store/me';
+import { updateLoginStatus } from '#store/login';
 
 const successLoginMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>
@@ -38,7 +38,7 @@ const successLoginMiddleware: Middleware<{}, Store.Reducer> =
                     ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE
                 );
             }
-            dispatch(setLoading(false));
+            dispatch(updateLoginStatus('SUCCESS'));
         }
     };
 

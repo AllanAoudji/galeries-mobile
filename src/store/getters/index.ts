@@ -32,6 +32,8 @@ export const getGaleriesStatus = (
     getState: () => Store.Reducer,
     name: string
 ) => getState().galeries.status[name];
+export const getLoginStatus = (getState: () => Store.Reducer) =>
+    getState().login.status;
 export const getMe = (getState: () => Store.Reducer) => {
     const meId = getState().me.id;
     if (!meId) return undefined;
