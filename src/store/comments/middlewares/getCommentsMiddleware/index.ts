@@ -35,11 +35,7 @@ const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
                         dispatchUpdateFrameComments(dispatch, frame, {
                             status: newStatus,
                         });
-                        dispatchGetFrameComments(
-                            dispatch,
-                            frameId,
-                            previous || ''
-                        );
+                        dispatchGetFrameComments(dispatch, frameId, previous);
                     }
                 }
             } else if (typeof action.payload === 'string')

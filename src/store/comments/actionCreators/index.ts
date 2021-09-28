@@ -4,6 +4,10 @@ import {
     COMMENTS_BY_ID_SET,
     COMMENTS_DELETE,
     COMMENTS_GET,
+    COMMENTS_LOADING_DELETE_RESET,
+    COMMENTS_LOADING_DELETE_UPDATE,
+    COMMENTS_LOADING_POST_RESET,
+    COMMENTS_LOADING_POST_UPDATE,
     COMMENTS_POST,
     COMMENTS_RESET,
 } from '#store/comments';
@@ -38,7 +42,16 @@ export const resetComments: () => Store.Action = () => ({
     payload: {},
     type: COMMENTS_RESET,
 });
-
+export const resetCommentsLoadingDelete: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: COMMENTS_LOADING_DELETE_RESET,
+});
+export const resetCommentsLoadingPost: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: COMMENTS_LOADING_POST_RESET,
+});
 export const removeCommentsById: (payload: string) => Store.Action = (
     payload
 ) => ({
@@ -57,4 +70,18 @@ export const setCommentsById: (payload: {
     meta: {},
     payload,
     type: COMMENTS_BY_ID_SET,
+});
+export const updateCommentsLoadingDelete: (
+    payload: Store.Status
+) => Store.Action = (payload) => ({
+    meta: {},
+    payload,
+    type: COMMENTS_LOADING_DELETE_UPDATE,
+});
+export const updateCommentsLoadingPost: (
+    payload: Store.Status
+) => Store.Action = (payload) => ({
+    meta: {},
+    payload,
+    type: COMMENTS_LOADING_POST_UPDATE,
 });

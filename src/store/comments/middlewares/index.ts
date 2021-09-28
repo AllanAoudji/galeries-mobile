@@ -1,7 +1,7 @@
 import deleteCommentsMiddleware from './deleteCommentsMiddleware';
 import errorCommentsMiddleware from './errorCommentsMiddleware';
 import getCommentsMiddleware from './getCommentsMiddleware';
-import postCommentMiddleware from './dispatchPostCommentMiddleware';
+import postCommentMiddleware from './postCommentMiddleware';
 import resetCommentsMiddleware from './resetCommentsMiddleware';
 import successCommentsMiddleware from './successCommentsMiddleware';
 

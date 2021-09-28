@@ -1,9 +1,8 @@
 import { Middleware } from 'redux';
 
-import { COMMENTS_POST } from '#store/comments';
+import { COMMENTS_POST, updateCommentsLoadingPost } from '#store/comments';
 import { dispatchPostFrameComments } from '#store/dispatchers';
-import { getFrame } from '#store/getters';
-import { setLoading } from '#store/loading';
+import { getCommentsLoadingPost, getFrame } from '#store/getters';
 
 const postCommentMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -11,17 +10,19 @@ const postCommentMiddleware: Middleware<{}, Store.Reducer> =
     (action: Store.Action) => {
         next(action);
         if (action.type === COMMENTS_POST) {
+            const loading = getCommentsLoadingPost(getState);
             const frameId = action.meta.query
                 ? action.meta.query.frameId
                 : undefined;
-            const body =
-                typeof action.payload === 'object'
-                    ? action.payload.body
-                    : undefined;
-            if (frameId && typeof body === 'string') {
+            if (
+                frameId &&
+                typeof action.payload === 'object' &&
+                typeof action.payload.body === 'string' &&
+                !loading.includes('LOADING')
+            ) {
                 const frame = getFrame(getState, frameId);
                 if (frame) {
-                    dispatch(setLoading(true));
+                    dispatch(updateCommentsLoadingPost('LOADING'));
                     dispatchPostFrameComments(
                         dispatch,
                         frameId,

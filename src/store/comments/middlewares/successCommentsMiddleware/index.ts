@@ -2,7 +2,12 @@ import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
 import { API_SUCCESS } from '#store/api';
-import { removeCommentsById, setCommentsById } from '#store/comments';
+import {
+    removeCommentsById,
+    setCommentsById,
+    updateCommentsLoadingDelete,
+    updateCommentsLoadingPost,
+} from '#store/comments';
 import {
     dispatchDeleteFrameComment,
     dispatchErrorNotification,
@@ -10,23 +15,10 @@ import {
 } from '#store/dispatchers';
 import { COMMENTS } from '#store/genericActionTypes';
 import { getComment, getFrame } from '#store/getters';
-import { setLoading } from '#store/loading';
 
-const successDefaultMethod = (
-    dispatch: Dispatch<Store.Action>,
-    getState: () => Store.Reducer,
-    action: Store.Action
-) => {
-    const frameId = action.meta.query ? action.meta.query.frameId : undefined;
-    if (frameId) {
-        const frame = getFrame(getState, frameId);
-        if (frame)
-            dispatchUpdateFrameComments(dispatch, frame, {
-                status: 'ERROR',
-            });
-    }
+const successDefaultMethod = (dispatch: Dispatch<Store.Action>) =>
     dispatchErrorNotification(dispatch, ERROR_MESSAGE.METHOD_NOT_FOUND);
-};
+
 const successDeleteComment = (
     dispatch: Dispatch<Store.Action>,
     getState: () => Store.Reducer,
@@ -43,6 +35,7 @@ const successDeleteComment = (
                     dispatchDeleteFrameComment(dispatch, frame, commentId);
             }
         }
+        dispatch(updateCommentsLoadingDelete('SUCCESS'));
     }
 };
 const successGetComments = (
@@ -105,6 +98,7 @@ const successPostComments = (
                     });
             }
         }
+        dispatch(updateCommentsLoadingPost('SUCCESS'));
     }
 };
 const successCommentsMiddleware: Middleware<{}, Store.Reducer> =
@@ -124,9 +118,8 @@ const successCommentsMiddleware: Middleware<{}, Store.Reducer> =
                     successPostComments(dispatch, getState, action);
                     break;
                 default:
-                    successDefaultMethod(dispatch, getState, action);
+                    successDefaultMethod(dispatch);
             }
-            dispatch(setLoading(false));
         }
     };
 
