@@ -1,6 +1,5 @@
 import { Middleware } from 'redux';
 
-import { USERS_GET } from '#store/users/actionTypes';
 import {
     dispatchGetGalerieUsers,
     dispatchGetUser,
@@ -14,7 +13,7 @@ import {
     getUsersPrevious,
     getUsersStatus,
 } from '#store/getters';
-import { updateUsersStatus } from '#store/users/actionCreators';
+import { USERS_GET, updateUsersStatus } from '#store/users';
 
 const getUsersMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

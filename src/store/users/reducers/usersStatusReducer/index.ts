@@ -1,8 +1,5 @@
 import { checkIfStatus } from '#store/checkers';
-import {
-    USERS_STATUS_RESET,
-    USERS_STATUS_UPDATE,
-} from '#store/users/actionTypes';
+import { USERS_STATUS_RESET, USERS_STATUS_UPDATE } from '#store/users';
 
 const intialState: Store.Status = 'PENDING';
 const usersStatusReducer = (state = intialState, action: Store.Action) => {

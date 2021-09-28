@@ -7,7 +7,7 @@ import {
 } from '#store/dispatchers';
 import { USERS } from '#store/genericActionTypes';
 import { getGalerie } from '#store/getters';
-import { updateUsersStatus } from '#store/users/actionCreators';
+import { updateUsersStatus } from '#store/users';
 
 const errorUsersMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

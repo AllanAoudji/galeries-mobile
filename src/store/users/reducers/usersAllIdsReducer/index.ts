@@ -1,8 +1,5 @@
 import { checkIfAllIds } from '#store/checkers';
-import {
-    USERS_ALL_IDS_RESET,
-    USERS_ALL_IDS_SET,
-} from '#store/users/actionTypes';
+import { USERS_ALL_IDS_RESET, USERS_ALL_IDS_SET } from '#store/users';
 
 const initialState: string[] = [];
 const usersAllIdsReducer = (state = initialState, action: Store.Action) => {

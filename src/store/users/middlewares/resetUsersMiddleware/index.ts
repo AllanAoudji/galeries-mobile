@@ -1,14 +1,14 @@
 import { Middleware } from 'redux';
 
-import { USERS_RESET } from '#store/users/actionTypes';
 import {
+    USERS_RESET,
     resetUserCurrent,
     resetUsersAllIds,
     resetUsersById,
     resetUsersEnd,
     resetUsersPrevious,
     resetUsersStatus,
-} from '#store/users/actionCreators';
+} from '#store/users';
 
 const resetUsersMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>

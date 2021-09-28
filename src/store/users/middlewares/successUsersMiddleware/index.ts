@@ -14,7 +14,7 @@ import {
     updateUsersEnd,
     updateUsersPrevious,
     updateUsersStatus,
-} from '#store/users/actionCreators';
+} from '#store/users';
 import { getUserCurrentProfilePicture } from '#store/profilePictures';
 
 const successDefaultMethod = (
