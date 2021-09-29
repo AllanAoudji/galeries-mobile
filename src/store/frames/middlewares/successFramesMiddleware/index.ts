@@ -87,7 +87,6 @@ const successGetFrames = (
                         previous,
                     });
             } else {
-                console.log('set frames');
                 dispatch(
                     setFramesAllIds(
                         combineFramesAllIds(

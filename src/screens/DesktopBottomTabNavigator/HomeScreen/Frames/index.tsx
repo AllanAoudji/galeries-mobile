@@ -23,10 +23,7 @@ const renderItem = ({ item }: ListRenderItemInfo<Store.Models.Frame>) => (
 const Frames = ({ frames, paddingTop, scrollHandler }: Props) => {
     const disaptch = useDispatch();
 
-    const handleEndReach = React.useCallback(() => {
-        console.log('en reached');
-        disaptch(getFrames());
-    }, []);
+    const handleEndReach = React.useCallback(() => disaptch(getFrames()), []);
     const keyExtractor = React.useCallback(
         (data: Store.Models.Frame) => data.id,
         []
@@ -39,14 +36,17 @@ const Frames = ({ frames, paddingTop, scrollHandler }: Props) => {
                 paddingTop,
             }}
             data={frames}
+            initialNumToRender={3}
             keyExtractor={keyExtractor}
-            maxToRenderPerBatch={6}
+            maxToRenderPerBatch={3}
             onEndReached={handleEndReach}
-            onEndReachedThreshold={0}
+            onEndReachedThreshold={0.4}
             onScroll={scrollHandler}
+            removeClippedSubviews
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}
+            windowSize={41}
         />
     );
 };

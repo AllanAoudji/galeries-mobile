@@ -50,7 +50,6 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
                     const newStatus: Store.Status =
                         status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';
                     const previous = getFramesPrevious(getState);
-                    console.log('get Frames');
                     dispatch(updateFramesStatus(newStatus));
                     dispatchGetFrames(dispatch, previous);
                 }
