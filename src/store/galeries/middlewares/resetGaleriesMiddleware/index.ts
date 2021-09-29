@@ -1,7 +1,6 @@
 import { Middleware } from 'redux';
 
 import {
-    GALERIES_RESET,
     resetGaleriesAllIds,
     resetGaleriesById,
     resetGaleriesCurrent,
@@ -13,7 +12,8 @@ import {
     resetGaleriesLoadingPut,
     resetGaleriesPrevious,
     resetGaleriesStatus,
-} from '#store/galeries';
+} from '#store/galeries/actionCreators';
+import { GALERIES_RESET } from '#store/galeries/actionTypes';
 
 const resetGaleriesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>

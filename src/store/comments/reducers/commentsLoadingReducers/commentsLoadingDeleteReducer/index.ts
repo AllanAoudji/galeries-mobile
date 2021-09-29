@@ -2,7 +2,7 @@ import { checkIfStatus } from '#store/checkers';
 import {
     COMMENTS_LOADING_DELETE_RESET,
     COMMENTS_LOADING_DELETE_UPDATE,
-} from '#store/comments';
+} from '#store/comments/actionTypes';
 
 const initialState: Store.Status = 'PENDING';
 const commentsLoadingDeleteReducer = (

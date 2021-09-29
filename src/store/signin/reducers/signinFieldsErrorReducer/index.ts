@@ -2,7 +2,7 @@ import { checkIfSigninFieldsError } from '#store/checkers';
 import {
     SIGNIN_FIELDS_ERROR_RESET,
     SIGNIN_FIELDS_ERROR_UPDATE,
-} from '#store/signin';
+} from '#store/signin/actionTypes';
 
 const initialState: {
     betaKey: string;

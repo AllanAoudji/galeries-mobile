@@ -2,7 +2,7 @@ import { Middleware } from 'redux';
 
 import { dispatchPostLike } from '#store/dispatchers';
 import { getFrame } from '#store/getters';
-import { LIKES_POST } from '#store/likes';
+import { LIKES_POST } from '#store/likes/actionTypes';
 
 const postLikesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

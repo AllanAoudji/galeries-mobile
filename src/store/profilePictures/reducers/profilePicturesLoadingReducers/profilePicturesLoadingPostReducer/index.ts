@@ -2,7 +2,7 @@ import { checkIfStatus } from '#store/checkers';
 import {
     PROFILE_PICTURES_LOADING_POST_RESET,
     PROFILE_PICTURES_LOADING_POST_UPDATE,
-} from '#store/profilePictures';
+} from '#store/profilePictures/actionTypes';
 
 const initialState: Store.Status = 'PENDING';
 const profilePicturesLoadingPostReducer = (

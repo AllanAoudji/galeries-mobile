@@ -2,7 +2,7 @@ import { checkIfAllIds } from '#store/checkers';
 import {
     FRAMES_LOADING_PUT_RESET,
     FRAMES_LOADING_PUT_UPDATE,
-} from '#store/frames';
+} from '#store/frames/actionTypes';
 
 const initialState: Store.Status = 'PENDING';
 const framesLoadingPutReducer = (

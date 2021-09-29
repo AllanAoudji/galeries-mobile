@@ -1,7 +1,7 @@
 import {
     GALERIES_PREVIOUS_RESET,
     GALERIES_PREVIOUS_UPDATE,
-} from '#store/galeries';
+} from '#store/galeries/actionTypes';
 
 const initialState: { [key: string]: string } = {};
 const galeriesPreviousReducer = (

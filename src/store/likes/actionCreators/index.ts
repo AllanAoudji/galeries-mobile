@@ -5,7 +5,7 @@ import {
     LIKES_GET,
     LIKES_POST,
     LIKES_RESET,
-} from '#store/likes';
+} from '#store/likes/actionTypes';
 
 export const getLike: (payload: string) => Store.Action = (payload) => ({
     meta: {},

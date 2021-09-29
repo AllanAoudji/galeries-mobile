@@ -6,7 +6,7 @@ import {
     dispatchUpdateFrameLikes,
 } from '#store/dispatchers';
 import { getFrame } from '#store/getters';
-import { LIKES_GET } from '#store/likes';
+import { LIKES_GET } from '#store/likes/actionTypes';
 
 const getLikesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

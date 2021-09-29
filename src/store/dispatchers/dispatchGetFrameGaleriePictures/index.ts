@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 
 import { END_POINT } from '#helpers/constants';
-import { apiRequest } from '#store/api';
+import { apiRequest } from '#store/api/actionCreators';
 import { GALERIE_PICTURES } from '#store/genericActionTypes';
 
 const dispatchGetFrameGaleriePictures = (

@@ -7,7 +7,7 @@ import {
     ME_RESET,
     ME_STATUS_RESET,
     ME_STATUS_UPDATE,
-} from '../actionTypes';
+} from '#store/me/actionTypes';
 
 export const deleteMe: () => Store.Action = () => ({
     meta: {},

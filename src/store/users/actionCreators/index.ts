@@ -14,7 +14,7 @@ import {
     USERS_RESET,
     USERS_STATUS_RESET,
     USERS_STATUS_UPDATE,
-} from '#store/users';
+} from '#store/users/actionTypes';
 
 export const getGalerieUsers: (galerieId: string) => Store.Action = (
     galerieId

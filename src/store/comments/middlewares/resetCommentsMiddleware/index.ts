@@ -1,11 +1,11 @@
 import { Middleware } from 'redux';
 
 import {
-    COMMENTS_RESET,
     resetCommentsById,
     resetCommentsLoadingDelete,
     resetCommentsLoadingPost,
-} from '#store/comments';
+} from '#store/comments/actionCreators';
+import { COMMENTS_RESET } from '#store/comments/actionTypes';
 
 const resetCommentsMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>

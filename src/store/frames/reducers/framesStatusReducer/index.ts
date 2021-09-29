@@ -1,5 +1,8 @@
 import { checkIfStatus } from '#store/checkers';
-import { FRAMES_STATUS_RESET, FRAMES_STATUS_UPDATE } from '#store/frames';
+import {
+    FRAMES_STATUS_RESET,
+    FRAMES_STATUS_UPDATE,
+} from '#store/frames/actionTypes';
 
 const initialState: Store.Status = 'PENDING';
 const framesStatusReducer = (state = initialState, action: Store.Action) => {

@@ -1,9 +1,9 @@
 import { Middleware } from 'redux';
 
-import { API_ERROR } from '#store/api';
+import { API_ERROR } from '#store/api/actionTypes';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import { LOGOUT } from '#store/genericActionTypes';
-import { updateLogoutStatus } from '#store/logout';
+import { updateLogoutStatus } from '#store/logout/actionCreators';
 
 const errorLogoutMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>

@@ -1,7 +1,7 @@
 import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { API_SUCCESS } from '#store/api';
+import { API_SUCCESS } from '#store/api/actionTypes';
 import {
     dispatchDeleteGalerieFrame,
     dispatchErrorNotification,
@@ -20,11 +20,11 @@ import {
     updateFramesLoadingPut,
     updateFramesPrevious,
     updateFramesStatus,
-} from '#store/frames';
-import { getFrameGaleriePictures } from '#store/galeriePictures';
+} from '#store/frames/actionCreators';
+import { getFrameGaleriePictures } from '#store/galeriePictures/actionCreators';
 import { FRAMES } from '#store/genericActionTypes';
 import { getGalerie, getFrame, getUser } from '#store/getters';
-import { getUserId } from '#store/users';
+import { getUserId } from '#store/users/actionCreators';
 
 const successDefaultMethod = (dispatch: Dispatch<Store.Action>) =>
     dispatchErrorNotification(dispatch, ERROR_MESSAGE.METHOD_NOT_FOUND);

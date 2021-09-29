@@ -1,6 +1,9 @@
-import { USERS_PREVIOUS_RESET, USERS_PREVIOUS_UPDATE } from '#store/users';
+import {
+    USERS_PREVIOUS_RESET,
+    USERS_PREVIOUS_UPDATE,
+} from '#store/users/actionTypes';
 
-const initialState: string | null = null;
+const initialState: string = '';
 const usersPreviousReducer = (state = initialState, action: Store.Action) => {
     switch (action.type) {
         case USERS_PREVIOUS_RESET:

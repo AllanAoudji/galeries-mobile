@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 
-import { updateFramesById } from '#store/frames';
+import { updateFramesById } from '#store/frames/actionCreators';
 
 const dispatchUpdateFrameComments = (
     dispatch: Dispatch<Store.Action>,

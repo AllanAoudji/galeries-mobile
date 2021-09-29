@@ -1,11 +1,11 @@
 import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { API_SUCCESS } from '#store/api';
+import { API_SUCCESS } from '#store/api/actionTypes';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import { ME } from '#store/genericActionTypes';
 import { updateMeId, updateMeStatus } from '#store/me/actionCreators';
-import { setUsersById } from '#store/users';
+import { setUsersById } from '#store/users/actionCreators';
 
 const successDefaultMethod = (
     dispatch: Dispatch<Store.Action>,

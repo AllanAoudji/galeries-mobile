@@ -5,7 +5,7 @@ import {
     LOGIN_RESET,
     LOGIN_STATUS_RESET,
     LOGIN_STATUS_UPDATE,
-} from '#store/login';
+} from '#store/login/actionTypes';
 
 export const login: (payload: {
     password: string;

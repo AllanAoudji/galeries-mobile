@@ -10,7 +10,7 @@ import {
     COMMENTS_LOADING_POST_UPDATE,
     COMMENTS_POST,
     COMMENTS_RESET,
-} from '#store/comments';
+} from '#store/comments/actionTypes';
 
 export const deleteComment: (payload: string) => Store.Action = (payload) => ({
     meta: {},

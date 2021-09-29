@@ -1,9 +1,9 @@
 import { Middleware } from 'redux';
 
 import { dispatchPostProfilePicture } from '#store/dispatchers';
-import { PROFILE_PICTURES_POST } from '#store/profilePictures/actionTypes';
-import { updateProfilePicturesLoadingPost } from '#store/profilePictures';
 import { getProfilePicturesLoadingPost } from '#store/getters';
+import { PROFILE_PICTURES_POST } from '#store/profilePictures/actionTypes';
+import { updateProfilePicturesLoadingPost } from '#store/profilePictures/actionCreators';
 
 const postProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

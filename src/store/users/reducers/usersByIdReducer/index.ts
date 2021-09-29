@@ -2,7 +2,7 @@ import {
     USERS_BY_ID_RESET,
     USERS_BY_ID_SET,
     USERS_BY_ID_UPDATE,
-} from '#store/users';
+} from '#store/users/actionTypes';
 
 const initialState: { [key: string]: Store.Models.User } = {};
 const usersByIdReducer = (state = initialState, action: Store.Action) => {

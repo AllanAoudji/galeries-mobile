@@ -1,7 +1,6 @@
 import { Middleware } from 'redux';
 
 import {
-    FRAMES_RESET,
     resetFramesAllIds,
     resetFramesById,
     resetFramesCurrent,
@@ -12,7 +11,8 @@ import {
     resetFramesLoadingPut,
     resetFramesPrevious,
     resetFramesStatus,
-} from '#store/frames';
+} from '#store/frames/actionCreators';
+import { FRAMES_RESET } from '#store/frames/actionTypes';
 
 const resetFramesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>

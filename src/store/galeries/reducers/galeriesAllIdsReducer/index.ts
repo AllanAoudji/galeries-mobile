@@ -1,4 +1,7 @@
-import { GALERIES_ALL_IDS_RESET, GALERIES_ALL_IDS_SET } from '#store/galeries';
+import {
+    GALERIES_ALL_IDS_RESET,
+    GALERIES_ALL_IDS_SET,
+} from '#store/galeries/actionTypes';
 
 const initialState: { [key: string]: string[] } = {};
 const galeriesAllIdsReducer = (state = initialState, action: Store.Action) => {

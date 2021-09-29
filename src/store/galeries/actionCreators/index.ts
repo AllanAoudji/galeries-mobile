@@ -28,7 +28,7 @@ import {
     GALERIES_RESET,
     GALERIES_STATUS_RESET,
     GALERIES_STATUS_UPDATE,
-} from '#store/galeries';
+} from '#store/galeries/actionTypes';
 
 export const deleteGalerie: (payload: string) => Store.Action = (payload) => ({
     meta: {},

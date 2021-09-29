@@ -3,7 +3,7 @@ import {
     FRAMES_BY_ID_RESET,
     FRAMES_BY_ID_SET,
     FRAMES_BY_ID_UPDATE,
-} from '#store/frames';
+} from '#store/frames/actionTypes';
 
 const initialState: { [key: string]: Store.Models.Frame } = {};
 const framesByIdReducer = (state = initialState, action: Store.Action) => {

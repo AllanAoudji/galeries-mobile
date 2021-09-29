@@ -1,7 +1,8 @@
 import { Middleware } from 'redux';
 
 import { dispatchPostGalerie } from '#store/dispatchers';
-import { GALERIES_POST, updateGaleriesLoadingPost } from '#store/galeries';
+import { GALERIES_POST } from '#store/galeries/actionTypes';
+import { updateGaleriesLoadingPost } from '#store/galeries/actionCreators';
 import { getGaleriesLoadingPost } from '#store/getters';
 
 const postGaleriesMiddleware: Middleware<{}, Store.Reducer> =

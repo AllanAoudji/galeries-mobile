@@ -1,9 +1,9 @@
 import { Middleware } from 'redux';
 
-import { PROFILE_PICTURES_DELETE } from '#store/profilePictures/actionTypes';
 import { dispatchDeleteProfilePicture } from '#store/dispatchers';
-import { updateGaleriesLoadingPut } from '#store/galeries';
+import { updateGaleriesLoadingPut } from '#store/galeries/actionCreators';
 import { getProfilePicturesLoadingDelete } from '#store/getters';
+import { PROFILE_PICTURES_DELETE } from '#store/profilePictures/actionTypes';
 
 const deleteProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

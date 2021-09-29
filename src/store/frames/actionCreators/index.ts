@@ -27,7 +27,7 @@ import {
     FRAMES_RESET,
     FRAMES_STATUS_RESET,
     FRAMES_STATUS_UPDATE,
-} from '#store/frames';
+} from '#store/frames/actionTypes';
 
 export const deleteFrame: (payload: string) => Store.Action = (payload) => ({
     meta: {},

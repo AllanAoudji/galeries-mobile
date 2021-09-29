@@ -1,13 +1,13 @@
 import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { API_SUCCESS } from '#store/api';
+import { API_SUCCESS } from '#store/api/actionTypes';
 import {
     removeCommentsById,
     setCommentsById,
     updateCommentsLoadingDelete,
     updateCommentsLoadingPost,
-} from '#store/comments';
+} from '#store/comments/actionCreators';
 import {
     dispatchDeleteFrameComment,
     dispatchErrorNotification,
@@ -15,7 +15,7 @@ import {
 } from '#store/dispatchers';
 import { COMMENTS } from '#store/genericActionTypes';
 import { getComment, getFrame, getUser } from '#store/getters';
-import { getUserId } from '#store/users';
+import { getUserId } from '#store/users/actionCreators';
 
 const successDefaultMethod = (dispatch: Dispatch<Store.Action>) =>
     dispatchErrorNotification(dispatch, ERROR_MESSAGE.METHOD_NOT_FOUND);

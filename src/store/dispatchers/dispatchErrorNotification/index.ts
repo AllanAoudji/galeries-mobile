@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { updateNotification } from '#store/notification';
+import { updateNotification } from '#store/notification/actionCreators';
 
 const dispatchErrorNotification: (
     dispatch: Dispatch<Store.Action>,

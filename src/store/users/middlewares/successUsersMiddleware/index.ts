@@ -1,21 +1,21 @@
 import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { API_SUCCESS } from '#store/api';
+import { API_SUCCESS } from '#store/api/actionTypes';
 import {
     dispatchErrorNotification,
     dispatchUpdateGalerieUsers,
 } from '#store/dispatchers';
 import { ME } from '#store/genericActionTypes';
 import { getGalerie } from '#store/getters';
+import { getUserCurrentProfilePicture } from '#store/profilePictures/actionCreators';
 import {
     setUsersAllIds,
     setUsersById,
     updateUsersEnd,
     updateUsersPrevious,
     updateUsersStatus,
-} from '#store/users';
-import { getUserCurrentProfilePicture } from '#store/profilePictures';
+} from '#store/users/actionCreators';
 
 const successDefaultMethod = (
     dispatch: Dispatch<Store.Action>,

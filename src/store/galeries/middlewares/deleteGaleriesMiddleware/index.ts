@@ -1,8 +1,8 @@
 import { Middleware } from 'redux';
 
 import { dispatchDeleteGalerie } from '#store/dispatchers';
-import { GALERIES_DELETE } from '#store/galeries';
-import { updateFramesLoadingDelete } from '#store/frames';
+import { updateGaleriesLoadingDelete } from '#store/galeries/actionCreators';
+import { GALERIES_DELETE } from '#store/galeries/actionTypes';
 import { getGaleriesLoadingDelete } from '#store/getters';
 
 const deleteGaleriesMiddleware: Middleware<{}, Store.Reducer> =
@@ -16,7 +16,7 @@ const deleteGaleriesMiddleware: Middleware<{}, Store.Reducer> =
                 typeof action.payload === 'string' &&
                 !loading.includes('LOADING')
             ) {
-                dispatch(updateFramesLoadingDelete('ERROR'));
+                dispatch(updateGaleriesLoadingDelete('LOADING'));
                 dispatchDeleteGalerie(dispatch, action.payload);
             }
         }

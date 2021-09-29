@@ -1,7 +1,8 @@
 import { Middleware } from 'redux';
 
 import { dispatchDeleteFrame } from '#store/dispatchers';
-import { FRAMES_DELETE, updateFramesLoadingDelete } from '#store/frames';
+import { updateFramesLoadingDelete } from '#store/frames/actionCreators';
+import { FRAMES_DELETE } from '#store/frames/actionTypes';
 import { getFramesLoadingDelete } from '#store/getters';
 
 const deleteFramesMiddleware: Middleware<{}, Store.Reducer> =

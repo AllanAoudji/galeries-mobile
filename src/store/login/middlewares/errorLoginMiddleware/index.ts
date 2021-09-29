@@ -1,9 +1,12 @@
 import { Middleware } from 'redux';
 
-import { API_ERROR } from '#store/api';
+import { API_ERROR } from '#store/api/actionTypes';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import { LOGIN } from '#store/genericActionTypes';
-import { updateLoginFieldsError, updateLoginStatus } from '#store/login';
+import {
+    updateLoginFieldsError,
+    updateLoginStatus,
+} from '#store/login/actionCreators';
 
 const errorLoginMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>

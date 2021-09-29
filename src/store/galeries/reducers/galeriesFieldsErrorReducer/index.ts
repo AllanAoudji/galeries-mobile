@@ -1,7 +1,7 @@
 import {
     GALERIES_FIELDS_ERROR_RESET,
     GALERIES_FIELDS_ERROR_UPDATE,
-} from '#store/galeries';
+} from '#store/galeries/actionTypes';
 
 const initialState: { descrition: string; name: string } = {
     descrition: '',

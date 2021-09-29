@@ -1,4 +1,4 @@
-import { FRAMES_END_RESET, FRAMES_END_UPDATE } from '#store/frames';
+import { FRAMES_END_RESET, FRAMES_END_UPDATE } from '#store/frames/actionTypes';
 
 const initialState: boolean = false;
 const framesEndReducer = (state = initialState, action: Store.Action) => {

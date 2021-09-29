@@ -1,7 +1,7 @@
 import {
     GALERIES_PICTURES_BY_ID_RESET,
     GALERIE_PICTURES_BY_ID_SET,
-} from '#store/galeriePictures';
+} from '#store/galeriePictures/actionTypes';
 
 const initialState: { [key: string]: Store.Models.GaleriePicture } = {};
 const galeriePicturesByIdReducer = (

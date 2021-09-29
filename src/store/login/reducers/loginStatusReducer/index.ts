@@ -1,5 +1,8 @@
 import { checkIfStatus } from '#store/checkers';
-import { LOGIN_STATUS_RESET, LOGIN_STATUS_UPDATE } from '#store/login';
+import {
+    LOGIN_STATUS_RESET,
+    LOGIN_STATUS_UPDATE,
+} from '#store/login/actionTypes';
 
 const initialState: Store.Status = 'PENDING';
 const loginStatusReducer = (state = initialState, action: Store.Action) => {

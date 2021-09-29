@@ -3,7 +3,7 @@ import {
     GALERIE_PICTURES_BY_ID_SET,
     GALERIE_PICTURES_GET,
     GALERIE_PICTURES_RESET,
-} from '#store/galeriePictures';
+} from '#store/galeriePictures/actionTypes';
 
 export const getFrameGaleriePictures: (frameId: string) => Store.Action = (
     frameId

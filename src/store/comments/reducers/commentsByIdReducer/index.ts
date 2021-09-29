@@ -2,7 +2,7 @@ import {
     COMMENTS_BY_ID_REMOVE,
     COMMENTS_BY_ID_RESET,
     COMMENTS_BY_ID_SET,
-} from '#store/comments';
+} from '#store/comments/actionTypes';
 
 const initialState: { [key: string]: Store.Models.Comment } = {};
 const commentsByIdReducer = (state = initialState, action: Store.Action) => {

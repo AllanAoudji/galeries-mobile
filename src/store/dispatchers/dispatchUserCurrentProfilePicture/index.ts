@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 
-import { updateUsersById } from '#store/users';
+import { updateUsersById } from '#store/users/actionCreators';
 
 const dispatchUserCurrentProfilePicture = (
     dispatch: Dispatch<Store.Action>,

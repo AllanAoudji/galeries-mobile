@@ -1,6 +1,7 @@
 import { Middleware } from 'redux';
 
-import { COMMENTS_POST, updateCommentsLoadingPost } from '#store/comments';
+import { COMMENTS_POST } from '#store/comments/actionTypes';
+import { updateCommentsLoadingPost } from '#store/comments/actionCreators';
 import { dispatchPostFrameComments } from '#store/dispatchers';
 import { getCommentsLoadingPost, getFrame } from '#store/getters';
 

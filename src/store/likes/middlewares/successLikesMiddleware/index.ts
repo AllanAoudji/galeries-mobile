@@ -1,15 +1,15 @@
 import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { API_SUCCESS } from '#store/api';
+import { API_SUCCESS } from '#store/api/actionTypes';
 import {
     dispatchErrorNotification,
     dispatchUpdateFrameLikes,
 } from '#store/dispatchers';
-import { updateFramesById } from '#store/frames';
+import { updateFramesById } from '#store/frames/actionCreators';
 import { getFrame, getMeId } from '#store/getters';
 import { LIKES } from '#store/genericActionTypes';
-import { removeLikesById, setLikesById } from '#store/likes';
+import { removeLikesById, setLikesById } from '#store/likes/actionCreators';
 
 const successDefaultMethod = (
     dispatch: Dispatch<Store.Action>,

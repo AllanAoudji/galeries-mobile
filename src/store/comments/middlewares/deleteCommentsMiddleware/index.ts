@@ -1,6 +1,7 @@
 import { Middleware } from 'redux';
 
-import { COMMENTS_DELETE, updateCommentsLoadingDelete } from '#store/comments';
+import { COMMENTS_DELETE } from '#store/comments/actionTypes';
+import { updateCommentsLoadingDelete } from '#store/comments/actionCreators';
 import { dispatchDeleteComment } from '#store/dispatchers';
 import { getComment, getCommentsLoadingDelete } from '#store/getters';
 

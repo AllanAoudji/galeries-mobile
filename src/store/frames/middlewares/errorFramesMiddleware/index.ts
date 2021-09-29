@@ -1,7 +1,7 @@
 import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { API_ERROR } from '#store/api';
+import { API_ERROR } from '#store/api/actionTypes';
 import {
     dispatchErrorNotification,
     dispatchUpdateGalerieFrames,
@@ -12,7 +12,7 @@ import {
     updateFramesLoadingPost,
     updateFramesLoadingPut,
     updateFramesStatus,
-} from '#store/frames';
+} from '#store/frames/actionCreators';
 import { FRAMES } from '#store/genericActionTypes';
 import { getGalerie } from '#store/getters';
 

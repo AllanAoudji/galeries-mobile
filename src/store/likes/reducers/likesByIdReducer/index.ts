@@ -2,7 +2,7 @@ import {
     LIKES_BY_ID_REMOVE,
     LIKES_BY_ID_RESET,
     LIKES_BY_ID_SET,
-} from '#store/likes';
+} from '#store/likes/actionTypes';
 
 const initialState: { [key: string]: Store.Models.Like } = {};
 const likesByIdReducer = (state = initialState, action: Store.Action) => {

@@ -1,13 +1,13 @@
 import { Middleware } from 'redux';
 
-import { API_ERROR } from '#store/api';
+import { API_ERROR } from '#store/api/actionTypes';
 import {
     dispatchErrorNotification,
     dispatchUpdateGalerieUsers,
 } from '#store/dispatchers';
 import { USERS } from '#store/genericActionTypes';
 import { getGalerie } from '#store/getters';
-import { updateUsersStatus } from '#store/users';
+import { updateUsersStatus } from '#store/users/actionCreators';
 
 const errorUsersMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

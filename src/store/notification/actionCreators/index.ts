@@ -1,4 +1,7 @@
-import { NOTIFICATION_RESET, NOTIFICATION_UPDATE } from '../actionTypes';
+import {
+    NOTIFICATION_RESET,
+    NOTIFICATION_UPDATE,
+} from '#store/notification/actionTypes';
 
 export const resetNotification: () => Store.Action = () => ({
     meta: {},

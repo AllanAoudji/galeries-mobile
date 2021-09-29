@@ -21,7 +21,7 @@ import {
     PROFILE_PICTURES_RESET,
     PROFILE_PICTURES_STATUS_RESET,
     PROFILE_PICTURES_STATUS_UPDATE,
-} from '../actionTypes';
+} from '#store/profilePictures/actionTypes';
 
 export const deleteProfilePicture: (payload: string) => Store.Action = (
     payload

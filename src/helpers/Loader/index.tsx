@@ -1,16 +1,16 @@
 import { useFonts } from 'expo-font';
 import * as React from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { SplashScreen } from '#components';
-import { getMe, selectMe, selectMeStatus } from '#store/me';
+import { getMe, selectMe } from '#store/me';
+import { selectLoginStatus } from '#store/login';
 
 const Loader: React.FC<{}> = ({ children }) => {
     const dispatch = useDispatch();
-    const me = useSelector(selectMe);
-    const meStatus = useSelector(selectMeStatus);
 
-    const [test, setTest] = React.useState<boolean>(false);
+    const me = useSelector(selectMe);
+    const loginStatus = useSelector(selectLoginStatus);
 
     const [fontsLoaded] = useFonts({
         HelveticaLtStBold: require('../../../assets/fonts/HelveticaLTStd-Bold.otf'),
@@ -20,19 +20,14 @@ const Loader: React.FC<{}> = ({ children }) => {
     });
 
     React.useEffect(() => {
-        if (test === false) {
-            setTest(true);
-            dispatch(getMe());
-        }
-    }, [me, meStatus]);
+        if (!loginStatus.includes('LOADING')) dispatch(getMe());
+    }, [me, loginStatus]);
 
-    const userLoading = React.useCallback(() => {
-        if (me) return false;
-        if (meStatus === 'ERROR' || meStatus === 'SUCCESS') return false;
-        return true;
-    }, [me, meStatus]);
-
-    if (!fontsLoaded || !userLoading) {
+    if (
+        !fontsLoaded ||
+        loginStatus === 'PENDING' ||
+        loginStatus.includes('LOADING')
+    ) {
         return <SplashScreen />;
     }
 

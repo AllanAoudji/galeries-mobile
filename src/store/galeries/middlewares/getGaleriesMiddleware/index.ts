@@ -1,7 +1,8 @@
 import { Middleware } from 'redux';
 
 import { dispatchGetGalerie, dispatchGetGaleries } from '#store/dispatchers';
-import { GALERIES_GET, updateGaleriesStatus } from '#store/galeries';
+import { updateGaleriesStatus } from '#store/galeries/actionCreators';
+import { GALERIES_GET } from '#store/galeries/actionTypes';
 import {
     getGaleriesEnd,
     getGaleriesPrevious,

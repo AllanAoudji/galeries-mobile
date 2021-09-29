@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 
 import { END_POINT } from '#helpers/constants';
-import { apiRequest } from '#store/api';
+import { apiRequest } from '#store/api/actionCreators';
 import { LIKES } from '#store/genericActionTypes';
 
 const dispatchGetFrame = (dispatch: Dispatch<Store.Action>, likeId: string) => {

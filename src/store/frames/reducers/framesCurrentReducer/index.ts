@@ -1,4 +1,7 @@
-import { FRAMES_CURRENT_RESET, FRAMES_CURRENT_UPDATE } from '#store/frames';
+import {
+    FRAMES_CURRENT_RESET,
+    FRAMES_CURRENT_UPDATE,
+} from '#store/frames/actionTypes';
 
 const initialState: string | null = null;
 const framesCurrentReducer = (state = initialState, action: Store.Action) => {

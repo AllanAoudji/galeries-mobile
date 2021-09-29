@@ -1,7 +1,7 @@
 import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { API_SUCCESS } from '#store/api';
+import { API_SUCCESS } from '#store/api/actionTypes';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import {
     removeGaleriesById,
@@ -21,7 +21,7 @@ import {
     updateGaleriesLoadingPut,
     updateGaleriesPrevious,
     updateGaleriesStatus,
-} from '#store/galeries';
+} from '#store/galeries/actionCreators';
 import { getGalerie } from '#store/getters';
 import { GALERIES } from '#store/genericActionTypes';
 

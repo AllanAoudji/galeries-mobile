@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 
-import { updateNotification } from '#store/notification';
+import { updateNotification } from '#store/notification/actionCreators';
 
 const dispatchSuccessNotification: (
     dispatch: Dispatch<Store.Action>,

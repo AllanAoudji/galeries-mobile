@@ -1,5 +1,8 @@
 import { checkIfStatus } from '#store/checkers';
-import { GALERIES_STATUS_RESET, GALERIES_STATUS_UPDATE } from '#store/galeries';
+import {
+    GALERIES_STATUS_RESET,
+    GALERIES_STATUS_UPDATE,
+} from '#store/galeries/actionTypes';
 
 const initialState: { [key: string]: Store.Status } = {};
 const galeriesStatusReducer = (state = initialState, action: Store.Action) => {

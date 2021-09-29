@@ -2,7 +2,7 @@ import {
     FRAMES_ALL_IDS_REMOVE,
     FRAMES_ALL_IDS_RESET,
     FRAMES_ALL_IDS_SET,
-} from '#store/frames';
+} from '#store/frames/actionTypes';
 
 const initialState: string[] = [];
 const framesAllIdsReducer = (state = initialState, action: Store.Action) => {

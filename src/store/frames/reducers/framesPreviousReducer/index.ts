@@ -1,6 +1,9 @@
-import { FRAMES_PREVIOUS_RESET, FRAMES_PREVIOUS_UPDATE } from '#store/frames';
+import {
+    FRAMES_PREVIOUS_RESET,
+    FRAMES_PREVIOUS_UPDATE,
+} from '#store/frames/actionTypes';
 
-const initialState: string | undefined = undefined;
+const initialState: string = '';
 const framesPreviousReducer = (state = initialState, action: Store.Action) => {
     switch (action.type) {
         case FRAMES_PREVIOUS_RESET:

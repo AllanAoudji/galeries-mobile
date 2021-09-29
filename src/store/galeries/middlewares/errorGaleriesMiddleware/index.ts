@@ -1,7 +1,7 @@
 import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { API_ERROR } from '#store/api';
+import { API_ERROR } from '#store/api/actionTypes';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import {
     updateGaleriesFieldsError,
@@ -9,7 +9,7 @@ import {
     updateGaleriesLoadingPost,
     updateGaleriesLoadingPut,
     updateGaleriesStatus,
-} from '#store/galeries';
+} from '#store/galeries/actionCreators';
 import { GALERIES } from '#store/genericActionTypes';
 
 const errorDefaultMethod = (dispatch: Dispatch<Store.Action>) =>

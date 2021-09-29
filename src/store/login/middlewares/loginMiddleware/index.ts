@@ -1,10 +1,10 @@
 import { Middleware } from 'redux';
 
+import { dispatchErrorNotification, dispatchLogin } from '#store/dispatchers';
 import { LOGIN } from '#store/genericActionTypes';
 import { getLoginStatus, getMeId, getUser } from '#store/getters';
-import { dispatchErrorNotification, dispatchLogin } from '#store/dispatchers';
-import { getMe, resetMeId } from '#store/me';
-import { updateLoginStatus } from '#store/login';
+import { getMe, resetMeId } from '#store/me/actionCreators';
+import { updateLoginStatus } from '#store/login/actionCreators';
 
 const loginMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

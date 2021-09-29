@@ -1,5 +1,8 @@
 import { LOGOUT } from '#store/genericActionTypes';
-import { LOGOUT_STATUS_RESET, LOGOUT_STATUS_UPDATE } from '#store/logout';
+import {
+    LOGOUT_STATUS_RESET,
+    LOGOUT_STATUS_UPDATE,
+} from '#store/logout/actionTypes';
 
 // eslint-disable-next-line import/prefer-default-export
 export const logout: () => Store.Action = () => ({

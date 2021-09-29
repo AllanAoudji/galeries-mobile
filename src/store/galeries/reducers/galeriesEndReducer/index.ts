@@ -1,4 +1,7 @@
-import { GALERIES_END_RESET, GALERIES_END_UPDATE } from '#store/galeries';
+import {
+    GALERIES_END_RESET,
+    GALERIES_END_UPDATE,
+} from '#store/galeries/actionTypes';
 
 const initialState: { [key: string]: boolean } = {};
 const galeriesEndReducer = (state = initialState, action: Store.Action) => {

@@ -3,11 +3,11 @@ import moment from 'moment';
 import { Middleware } from 'redux';
 
 import { ASYNC_STORAGE, ERROR_MESSAGE } from '#helpers/constants';
-import { API_SUCCESS } from '#store/api';
+import { API_SUCCESS } from '#store/api/actionTypes';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import { LOGIN } from '#store/genericActionTypes';
-import { getMe } from '#store/me';
-import { updateLoginStatus } from '#store/login';
+import { getMe } from '#store/me/actionCreators';
+import { updateLoginStatus } from '#store/login/actionCreators';
 
 const successLoginMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>

@@ -3,7 +3,7 @@ import {
     GALERIES_BY_ID_RESET,
     GALERIES_BY_ID_SET,
     GALERIES_BY_UD_UPDATE,
-} from '#store/galeries';
+} from '#store/galeries/actionTypes';
 
 const initialState: {
     [key: string]: Store.Models.Galerie;

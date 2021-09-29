@@ -1,7 +1,8 @@
 import { Middleware } from 'redux';
 
 import { dispatchPutFrame } from '#store/dispatchers';
-import { FRAMES_PUT, updateFramesLoadingPut } from '#store/frames';
+import { updateFramesLoadingPut } from '#store/frames/actionCreators';
+import { FRAMES_PUT } from '#store/frames/actionTypes';
 import { getFramesLoadingPut } from '#store/getters';
 
 const putFrameMiddleware: Middleware<{}, Store.Reducer> =

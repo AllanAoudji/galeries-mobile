@@ -2,7 +2,7 @@ import { checkIfStatus } from '#store/checkers';
 import {
     FRAMES_LOADING_DELETE_RESET,
     FRAMES_LOADING_DELETE_UPDATE,
-} from '#store/frames';
+} from '#store/frames/actionTypes';
 
 const initialState: Store.Status = 'PENDING';
 const framesLoadingDeleteReducer = (

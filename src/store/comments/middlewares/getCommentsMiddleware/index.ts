@@ -1,6 +1,6 @@
 import { Middleware } from 'redux';
 
-import { COMMENTS_GET } from '#store/comments';
+import { COMMENTS_GET } from '#store/comments/actionTypes';
 import {
     dispatchGetComment,
     dispatchGetFrameComments,

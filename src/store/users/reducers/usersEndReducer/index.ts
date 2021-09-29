@@ -1,4 +1,4 @@
-import { USERS_END_RESET, USERS_END_UPDATE } from '#store/users';
+import { USERS_END_RESET, USERS_END_UPDATE } from '#store/users/actionTypes';
 
 const initialState: boolean = false;
 const usersEndReducer = (state = initialState, action: Store.Action) => {

@@ -1,5 +1,8 @@
 import { checkIfStatus } from '#store/checkers';
-import { SIGNIN_STATUS_RESET, SIGNIN_STATUS_UPDATE } from '#store/signin';
+import {
+    SIGNIN_STATUS_RESET,
+    SIGNIN_STATUS_UPDATE,
+} from '#store/signin/actionTypes';
 
 const initialState: Store.Status = 'PENDING';
 const signinStatusReducer = (state = initialState, action: Store.Action) => {

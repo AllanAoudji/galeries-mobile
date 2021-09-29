@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 
-import { API_ERROR, API_REQUEST, API_SUCCESS } from '#store/api';
+import { API_ERROR, API_REQUEST, API_SUCCESS } from '#store/api/actionTypes';
 
 export const apiError: ({
     payload,

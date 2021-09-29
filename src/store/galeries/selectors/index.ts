@@ -19,6 +19,8 @@ export const selectCurrentGalerie = createSelector(
 );
 export const selectGaleriesFieldsError = (state: Store.Reducer) =>
     state.galeries.fieldsError;
+export const selectGaleriesFilterName = (state: Store.Reducer) =>
+    state.galeries.filterName;
 export const selectGalerie = (id: string) =>
     createSelector([selectGaleriesById], (byId) => byId[id]);
 export const selectGaleries = createSelector(

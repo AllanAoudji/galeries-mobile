@@ -1,7 +1,7 @@
 import {
     GALERIES_CURRENT_RESET,
     GALERIES_CURRENT_UPDATE,
-} from '#store/galeries';
+} from '#store/galeries/actionTypes';
 
 const initialState: string | null = null;
 const galeriesCurrentReducer = (state = initialState, action: Store.Action) => {

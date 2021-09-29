@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 
 import { END_POINT } from '#helpers/constants';
-import { apiRequest } from '#store/api';
+import { apiRequest } from '#store/api/actionCreators';
 import { LOGIN } from '#store/genericActionTypes';
 
 const dispatchLogin = (

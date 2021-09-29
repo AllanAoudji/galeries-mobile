@@ -3,7 +3,7 @@ import {
     PROFILE_PICTURES_PREVIOUS_UPDATE,
 } from '#store/profilePictures/actionTypes';
 
-const initialState: string | null = null;
+const initialState: string = '';
 const profilePicturesPreviousReducer = (
     state = initialState,
     action: Store.Action

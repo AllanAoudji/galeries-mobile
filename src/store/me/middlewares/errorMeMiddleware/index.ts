@@ -1,6 +1,6 @@
 import { Middleware } from 'redux';
 
-import { API_ERROR } from '#store/api';
+import { API_ERROR } from '#store/api/actionTypes';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import { ME } from '#store/genericActionTypes';
 import { updateMeStatus } from '#store/me/actionCreators';

@@ -4,7 +4,7 @@ import {
     FORGOT_YOUR_PASSWORD_RESET,
     FORGOT_YOUR_PASSWORD_STATUS_RESET,
     FORGOT_YOUR_PASSWORD_STATUS_UPDATE,
-} from '#store/forgotYourPassword';
+} from '#store/forgotYourPassword/actionTypes';
 import { FORGOT_YOUR_PASSWORD } from '#store/genericActionTypes';
 
 export const forgotYourPassword: (payload: { email: string }) => Store.Action =

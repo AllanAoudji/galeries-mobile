@@ -3,7 +3,8 @@ import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
 import request from '#helpers/request';
-import { API_REQUEST, apiSuccess, apiError } from '#store/api';
+import { apiSuccess, apiError } from '#store/api/actionCreators';
+import { API_REQUEST } from '#store/api/actionTypes';
 
 const apiRequestSuccessMiddleware = (
     response: AxiosResponse,

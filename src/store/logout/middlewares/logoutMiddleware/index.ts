@@ -1,9 +1,9 @@
 import { Middleware } from 'redux';
 
-import { LOGOUT } from '#store/genericActionTypes';
 import { dispatchLogout } from '#store/dispatchers';
+import { LOGOUT } from '#store/genericActionTypes';
 import { getLogoutStatus } from '#store/getters';
-import { updateLogoutStatus } from '#store/logout';
+import { updateLogoutStatus } from '#store/logout/actionCreators';
 
 const logoutMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

@@ -1,6 +1,7 @@
 import { Middleware } from 'redux';
 
-import { LIKES_RESET, resetLikesById } from '#store/likes';
+import { resetLikesById } from '#store/likes/actionCreators';
+import { LIKES_RESET } from '#store/likes/actionTypes';
 
 const resetLikesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>

@@ -6,7 +6,7 @@ import {
     dispatchUpdateFrameGaleriePictures,
     dispatchUpdateGalerieCoverPicture,
 } from '#store/dispatchers';
-import { GALERIE_PICTURES_GET } from '#store/galeriePictures';
+import { GALERIE_PICTURES_GET } from '#store/galeriePictures/actionTypes';
 import { getFrame, getGalerie } from '#store/getters';
 
 const getGaleriePicturesMiddleware: Middleware<{}, Store.Reducer> =

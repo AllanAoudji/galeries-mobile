@@ -195,7 +195,7 @@ declare global {
                     post: Store.Status;
                     put: Store.Status;
                 };
-                previous?: string;
+                previous: string;
                 status: Store.Status;
             };
             galeries: {
@@ -242,7 +242,7 @@ declare global {
                     delete: Store.Status;
                     post: Store.Status;
                 };
-                previous: string | null;
+                previous: string;
                 status: Store.Status;
             };
             notification: Store.Models.Notification | null;
@@ -261,7 +261,7 @@ declare global {
                 byId: { [key: string]: Store.Models.User };
                 current: string | null;
                 end: boolean;
-                previous: string | null;
+                previous: string;
                 status: Store.Status;
             };
         };

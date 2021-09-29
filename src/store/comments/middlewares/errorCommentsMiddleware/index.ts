@@ -1,7 +1,7 @@
 import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { API_ERROR } from '#store/api';
+import { API_ERROR } from '#store/api/actionTypes';
 import {
     dispatchErrorNotification,
     dispatchUpdateFrameComments,
@@ -11,7 +11,7 @@ import { getFrame } from '#store/getters';
 import {
     updateCommentsLoadingDelete,
     updateCommentsLoadingPost,
-} from '#store/comments';
+} from '#store/comments/actionCreators';
 
 const errorDefaultMethod = (dispatch: Dispatch<Store.Action>) =>
     dispatchErrorNotification(dispatch, ERROR_MESSAGE.METHOD_NOT_FOUND);

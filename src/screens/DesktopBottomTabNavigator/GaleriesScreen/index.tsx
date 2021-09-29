@@ -16,11 +16,12 @@ import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 
 import { Container, Header, SearchBarContainer } from './styles';
-import { selectFilterGaleriesName, setUiFilterGaleriesName } from '#store/ui';
 import {
     getGaleries,
     selectGaleries,
+    selectGaleriesFilterName,
     selectGaleriesNameStatus,
+    updateGaleriesFilterName,
 } from '#store/galeries';
 
 const renderItem = ({ item }: ListRenderItemInfo<Store.Models.Galerie>) => (
@@ -30,7 +31,7 @@ const renderItem = ({ item }: ListRenderItemInfo<Store.Models.Galerie>) => (
 const GaleriesScreen = () => {
     const dispatch = useDispatch();
 
-    const filterGaleriesName = useSelector(selectFilterGaleriesName);
+    const filterGaleriesName = useSelector(selectGaleriesFilterName);
     const galeries = useSelector(selectGaleries);
     const galeriesNameStatus = useSelector(selectGaleriesNameStatus);
 
@@ -56,7 +57,7 @@ const GaleriesScreen = () => {
         []
     );
     const handleChangeText = React.useCallback((e: string) => {
-        dispatch(setUiFilterGaleriesName(e.trim()));
+        dispatch(updateGaleriesFilterName(e.trim()));
     }, []);
     const handleFocusSearchBar = React.useCallback(() => {
         translateY.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(200));

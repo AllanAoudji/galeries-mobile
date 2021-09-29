@@ -1,7 +1,5 @@
 import { Middleware } from 'redux';
 
-import { PROFILE_PICTURES_GET } from '#store/profilePictures/actionTypes';
-import { getMe, getUser } from '#store/getters';
 import {
     dispatchGetMeCurrentProfilePicture,
     dispatchGetprofilePicture,
@@ -9,6 +7,8 @@ import {
     dispatchGetUserCurrentProfilePicture,
     dispatchUserCurrentProfilePicture,
 } from '#store/dispatchers';
+import { getMe, getUser } from '#store/getters';
+import { PROFILE_PICTURES_GET } from '#store/profilePictures/actionTypes';
 
 const getProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

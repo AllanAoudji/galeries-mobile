@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { updateGaleriesById } from '#store/galeries';
+import { updateGaleriesById } from '#store/galeries/actionCreators';
 
 const dispatchUpdateGalerieCoverPicture = (
     dispatch: Dispatch<Store.Action>,

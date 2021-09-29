@@ -1,4 +1,7 @@
-import { USERS_CURRENT_RESET, USERS_CURRENT_UPDATE } from '#store/users';
+import {
+    USERS_CURRENT_RESET,
+    USERS_CURRENT_UPDATE,
+} from '#store/users/actionTypes';
 
 const initialState: string | null = null;
 const usersCurrentReducer = (state = initialState, action: Store.Action) => {

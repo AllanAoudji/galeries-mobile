@@ -1,7 +1,7 @@
 import {
     FRAMES_FIELDS_ERROR_RESET,
     FRAMES_FIELDS_ERROR_UPDATE,
-} from '#store/frames';
+} from '#store/frames/actionTypes';
 
 const initialState: { description: string } = { description: '' };
 const framesFieldsErrorReducer = (

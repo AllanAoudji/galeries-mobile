@@ -5,7 +5,7 @@ import {
     SIGNIN_RESET,
     SIGNIN_STATUS_RESET,
     SIGNIN_STATUS_UPDATE,
-} from '#store/signin';
+} from '#store/signin/actionTypes';
 
 export const signin: (payload: {
     userName: string;

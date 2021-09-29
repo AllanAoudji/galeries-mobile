@@ -6,7 +6,8 @@ import {
     dispatchGetGalerieFrames,
     dispatchUpdateGalerieFrames,
 } from '#store/dispatchers';
-import { FRAMES_GET, updateFramesStatus } from '#store/frames';
+import { updateFramesStatus } from '#store/frames/actionCreators';
+import { FRAMES_GET } from '#store/frames/actionTypes';
 import {
     getFramesEnd,
     getFramesPrevious,

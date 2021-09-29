@@ -13,7 +13,8 @@ import {
     getUsersPrevious,
     getUsersStatus,
 } from '#store/getters';
-import { USERS_GET, updateUsersStatus } from '#store/users';
+import { updateUsersStatus } from '#store/users/actionCreators';
+import { USERS_GET } from '#store/users/actionTypes';
 
 const getUsersMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

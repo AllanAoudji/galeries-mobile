@@ -1,13 +1,13 @@
 import { Dispatch, Middleware } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import { API_SUCCESS } from '#store/api';
+import { API_SUCCESS } from '#store/api/actionTypes';
 import {
     dispatchErrorNotification,
     dispatchUpdateFrameGaleriePictures,
     dispatchUpdateGalerieCoverPicture,
 } from '#store/dispatchers';
-import { setGaleriePicturesById } from '#store/galeriePictures';
+import { setGaleriePicturesById } from '#store/galeriePictures/actionCreators';
 import { GALERIE_PICTURES } from '#store/genericActionTypes';
 import { getFrame, getGalerie } from '#store/getters';
 

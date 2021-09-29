@@ -1,7 +1,7 @@
 import {
     FORGOT_YOUR_PASSWORD_FIELDS_ERROR_RESET,
     FORGOT_YOUR_PASSWORD_FIELDS_ERROR_UPDATE,
-} from '#store/forgotYourPassword';
+} from '#store/forgotYourPassword/actionTypes';
 
 const initialState: { email: string } = { email: '' };
 const forgotYourPasswordFieldsErrorReducer = (
