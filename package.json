@@ -19,6 +19,7 @@
     "axios": "^0.21.1",
     "expo": "~42.0.1",
     "expo-camera": "~11.2.2",
+    "expo-file-system": "~11.1.3",
     "expo-font": "~9.2.1",
     "expo-image-manipulator": "~9.2.2",
     "expo-linear-gradient": "~9.2.0",

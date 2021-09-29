@@ -36,9 +36,9 @@ const Frames = ({ frames, paddingTop, scrollHandler }: Props) => {
                 paddingTop,
             }}
             data={frames}
-            initialNumToRender={3}
+            initialNumToRender={4}
             keyExtractor={keyExtractor}
-            maxToRenderPerBatch={3}
+            maxToRenderPerBatch={4}
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.4}
             onScroll={scrollHandler}
@@ -46,7 +46,7 @@ const Frames = ({ frames, paddingTop, scrollHandler }: Props) => {
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}
-            windowSize={41}
+            windowSize={5}
         />
     );
 };
