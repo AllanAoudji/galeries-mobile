@@ -1,59 +1,62 @@
 import * as React from 'react';
 
-import { ListRenderItemInfo } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-    AnimatedFlatList,
     BottomLoader,
     DefaultHeader,
     EmptyMessage,
-    FrameCard,
     FullScreenLoader,
 } from '#components';
-import { useFetchFrames } from '#hooks';
 
-import { Container } from './styles';
+import { Container, Header } from './styles';
+import { getFrames, selectFrames, selectFramesStatus } from '#store/frames';
 
-const renderItem = ({
-    item,
-}: ListRenderItemInfo<Store.Models.FramePopulated>) => (
-    <FrameCard
-        onPressComments={() => {}}
-        onPressLikes={() => {}}
-        frame={item}
-    />
-);
+import Frames from './Frames';
+import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 const HomeScreen = () => {
-    const { fetching, fetchNextFrames, frames } = useFetchFrames();
+    const dispatch = useDispatch();
 
-    const keyExtractor = React.useCallback(
-        (data: Store.Models.Frame) => data.id,
-        []
+    const frames = useSelector(selectFrames);
+    const framesStatus = useSelector(selectFramesStatus);
+
+    const { onLayout, size } = useComponentSize();
+    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
+        GLOBAL_STYLE.HEADER_TAB_HEIGHT
     );
+
+    const hasFrames = React.useMemo(() => frames.length > 0, [frames]);
+    const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
+    const showBottomLoader = React.useMemo(
+        () => framesStatus === 'LOADING',
+        [framesStatus]
+    );
+    const showFullScreenLoader = React.useMemo(
+        () => framesStatus === 'PENDING' || framesStatus === 'INITIAL_LOADING',
+        [framesStatus]
+    );
+
+    React.useEffect(() => {
+        if (framesStatus === 'PENDING') dispatch(getFrames());
+    }, [framesStatus]);
 
     return (
         <Container>
-            <DefaultHeader />
-            {frames && (
-                <>
-                    {frames.length > 0 ? (
-                        <AnimatedFlatList
-                            data={frames}
-                            keyExtractor={keyExtractor}
-                            maxToRenderPerBatch={10}
-                            onEndReached={fetchNextFrames}
-                            onEndReachedThreshold={0.2}
-                            renderItem={renderItem}
-                            scrollEventThrottle={4}
-                            showsVerticalScrollIndicator={false}
-                        />
-                    ) : (
-                        <EmptyMessage text="no frames" />
-                    )}
-                </>
+            <Header onLayout={onLayout} style={containerStyle}>
+                <DefaultHeader />
+            </Header>
+            {hasFrames && !!paddingTop ? (
+                <Frames
+                    frames={frames}
+                    paddingTop={paddingTop}
+                    scrollHandler={scrollHandler}
+                />
+            ) : (
+                <EmptyMessage text="no frames" />
             )}
-            <FullScreenLoader show={!frames} />
-            <BottomLoader show={fetching} bottom="huge" />
+            <FullScreenLoader show={showFullScreenLoader} />
+            <BottomLoader show={showBottomLoader} bottom="huge" />
         </Container>
     );
 };

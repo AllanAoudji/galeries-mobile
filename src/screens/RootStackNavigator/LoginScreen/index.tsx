@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import * as React from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
 import {
     CustomButton,
     CustomTextInput,
@@ -9,11 +10,16 @@ import {
     Typography,
 } from '#components';
 import { loginSchema } from '#helpers/schemas';
-import { usePostLogin } from '#hooks';
 
 import FooterNavigation from '../FooterNavigation';
 
 import { ForgotYourPasswordContainer } from './styles';
+import {
+    login,
+    selectLoginFieldsError,
+    selectLoginStatus,
+    updateLoginFieldsError,
+} from '#store/login';
 
 const initialValues = {
     password: '',
@@ -25,12 +31,16 @@ type Props = {
 };
 
 const LoginScreen = ({ navigation }: Props) => {
-    const { loading, login, resetServerErrorField, serverErrors } =
-        usePostLogin();
+    const dispatch = useDispatch();
+
+    const loading = useSelector(selectLoginStatus);
+    const loginFieldsError = useSelector(selectLoginFieldsError);
 
     const formik = useFormik({
         initialValues,
-        onSubmit: (values) => login(values),
+        onSubmit: (values) => {
+            dispatch(login(values));
+        },
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: loginSchema,
@@ -41,33 +51,42 @@ const LoginScreen = ({ navigation }: Props) => {
             formik.submitCount > 0 &&
             (!!formik.errors.password || !!formik.errors.userNameOrEmail);
         const serverHasError =
-            !!serverErrors.password || !!serverErrors.userNameOrEmail;
+            !!loginFieldsError.password || !!loginFieldsError.userNameOrEmail;
         return clientHasError || serverHasError;
-    }, [formik.submitCount, formik.errors, serverErrors]);
+    }, [formik.submitCount, formik.errors, loginFieldsError]);
     const passwordError = React.useMemo(
-        () => formik.errors.password || serverErrors.password,
-        [formik.errors.password, serverErrors.password]
+        () => formik.errors.password || loginFieldsError.password,
+        [formik.errors.password, loginFieldsError.password]
     );
     const userNameOrEmailError = React.useMemo(
-        () => formik.errors.userNameOrEmail || serverErrors.userNameOrEmail,
-        [formik.errors.userNameOrEmail, serverErrors.userNameOrEmail]
+        () => formik.errors.userNameOrEmail || loginFieldsError.userNameOrEmail,
+        [formik.errors.userNameOrEmail, loginFieldsError.userNameOrEmail]
     );
 
-    const handleChangePasswordText = React.useCallback((e: string) => {
-        resetServerErrorField('password');
-        formik.setFieldError('password', '');
-        formik.setFieldValue('password', e);
-    }, []);
-    const handleChangeUserNameOrEmailText = React.useCallback((e: string) => {
-        resetServerErrorField('userNameOrEmail');
-        formik.setFieldError('userNameOrEmail', '');
-        formik.setFieldValue('userNameOrEmail', e);
-    }, []);
+    const handleChangePasswordText = React.useCallback(
+        (e: string) => {
+            if (loginFieldsError.password !== '')
+                dispatch(updateLoginFieldsError({ password: '' }));
+            formik.setFieldError('password', '');
+            formik.setFieldValue('password', e);
+        },
+        [loginFieldsError.password]
+    );
+    const handleChangeUserNameOrEmailText = React.useCallback(
+        (e: string) => {
+            if (loginFieldsError.userNameOrEmail !== '')
+                dispatch(updateLoginFieldsError({ userNameOrEmail: '' }));
+            formik.setFieldError('userNameOrEmail', '');
+            formik.setFieldValue('userNameOrEmail', e);
+        },
+        [loginFieldsError.userNameOrEmail]
+    );
     const handlePressForgotYourPassword = React.useCallback(() => {
-        if (!loading) navigation.navigate('ForgotYourPassword');
+        if (!loading.includes('LOADING'))
+            navigation.navigate('ForgotYourPassword');
     }, [loading, navigation]);
     const handlePressSignin = React.useCallback(() => {
-        if (!loading) navigation.navigate('Signin');
+        if (!loading.includes('LOADING')) navigation.navigate('Signin');
     }, [loading, navigation]);
 
     return (
@@ -76,7 +95,7 @@ const LoginScreen = ({ navigation }: Props) => {
             <CustomTextInput
                 error={userNameOrEmailError}
                 label="email or user name"
-                loading={loading}
+                loading={loading.includes('LOADING')}
                 onBlur={formik.handleBlur('userNameOrEmail')}
                 onChangeText={handleChangeUserNameOrEmailText}
                 touched={formik.touched.userNameOrEmail || false}
@@ -85,7 +104,7 @@ const LoginScreen = ({ navigation }: Props) => {
             <CustomTextInput
                 error={passwordError}
                 label="password"
-                loading={loading}
+                loading={loading.includes('LOADING')}
                 onBlur={formik.handleBlur('password')}
                 onChangeText={handleChangePasswordText}
                 secureTextEntry
@@ -94,7 +113,7 @@ const LoginScreen = ({ navigation }: Props) => {
             />
             <CustomButton
                 disable={disableButton}
-                loading={loading}
+                loading={loading.includes('LOADING')}
                 mt="smallest"
                 onPress={formik.handleSubmit}
                 title="log-in"

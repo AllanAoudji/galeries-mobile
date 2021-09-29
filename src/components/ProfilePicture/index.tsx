@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Image } from 'react-native';
-
-import { ProfilePicturesFetcherContext } from '#contexts/ProfilePicturesFetcherContext';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    getUserCurrentProfilePicture,
+    selectUserCurrentProfilePicture,
+    selectUserCurrentProfilePictureStatus,
+} from '#store/profilePictures';
 
 import DefaultProfilePicture from '../../../assets/images/PP.jpg';
 
@@ -14,14 +18,23 @@ type Props = {
     mr?: keyof Style.Spacings;
     mt?: keyof Style.Spacings;
     size?: Style.Variant.ProfilePicture;
-    user?: Store.Models.UserPopulated;
+    user?: Store.Models.User;
+};
+type ProfilePictureWithUserProps = {
+    border?: boolean;
+    mb?: keyof Style.Spacings;
+    ml?: keyof Style.Spacings;
+    mr?: keyof Style.Spacings;
+    mt?: keyof Style.Spacings;
+    size?: Style.Variant.ProfilePicture;
+    user: Store.Models.User;
 };
 
 const DEFAULT_PROFILE_PICTURE = Image.resolveAssetSource(
     DefaultProfilePicture
 ).uri;
 
-const ProfilePicture = ({
+const ProfilePictureWithUser = ({
     border = false,
     mb,
     ml,
@@ -29,18 +42,31 @@ const ProfilePicture = ({
     mt,
     size = 'normal',
     user,
-}: Props) => {
-    const { fetchProfilePicture } = React.useContext(
-        ProfilePicturesFetcherContext
+}: ProfilePictureWithUserProps) => {
+    const dispatch = useDispatch();
+    const selectCurrentProfilePicture = React.useMemo(
+        () => selectUserCurrentProfilePicture(user.id),
+        [user]
     );
-
+    const currentProfilePicture = useSelector(selectCurrentProfilePicture);
+    const selectCurrentProfilepictureStatus = React.useCallback(
+        () => selectUserCurrentProfilePictureStatus(user.id),
+        [user]
+    );
+    const currentProfilePictureStatus = useSelector(
+        selectCurrentProfilepictureStatus()
+    );
     const [uri, setUri] = React.useState<string>(DEFAULT_PROFILE_PICTURE);
 
-    React.useEffect(() => fetchProfilePicture(user), []);
+    React.useEffect(() => {
+        if (currentProfilePictureStatus === 'PENDING')
+            dispatch(getUserCurrentProfilePicture(user.id));
+    }, [currentProfilePictureStatus, user]);
+
     React.useEffect(() => {
         if (user && uri === DEFAULT_PROFILE_PICTURE) {
-            if (user.currentProfilePicture)
-                setUri(user.currentProfilePicture.cropedImage.signedUrl);
+            if (currentProfilePicture)
+                setUri(currentProfilePicture.cropedImage.signedUrl);
             else if (user.defaultProfilePicture)
                 setUri(user.defaultProfilePicture);
             else setUri(DEFAULT_PROFILE_PICTURE);
@@ -57,6 +83,30 @@ const ProfilePicture = ({
                 <ImageStyled source={{ uri }} />
             </InnerContainer>
         </Container>
+    );
+};
+
+const ProfilePicture = ({
+    border = false,
+    mb,
+    ml,
+    mr,
+    mt,
+    size = 'normal',
+    user,
+}: Props) => {
+    if (!user) return null;
+
+    return (
+        <ProfilePictureWithUser
+            user={user}
+            border={border}
+            mb={mb}
+            ml={ml}
+            mr={mr}
+            mt={mt}
+            size={size}
+        />
     );
 };
 

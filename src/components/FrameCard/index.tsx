@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 
-import { usePostLike, useFetchGaleriePictures } from '#hooks';
+import { postLike } from '#store/likes';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -9,30 +10,30 @@ import Slider from './Slider';
 import { Container } from './styles';
 
 type Props = {
-    frame: Store.Models.FramePopulated;
+    frame: Store.Models.Frame;
     onPressComments: (id: string) => void;
     onPressLikes: (id: string) => void;
 };
 
 const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
-    const { like } = usePostLike();
-    const { galeriePictures } = useFetchGaleriePictures(frame.id);
+    const dispatch = useDispatch();
 
     const handlePressComments = React.useCallback(
         () => onPressComments(frame.id),
         [frame]
     );
-    const handlePressLike = React.useCallback(() => {
-        like(frame);
-    }, [frame]);
+    const handlePressLike = React.useCallback(
+        () => dispatch(postLike(frame.id)),
+        [frame]
+    );
     const handlePressLikes = React.useCallback(() => {
         if (+frame.numOfLikes > 0) onPressLikes(frame.id);
     }, [frame, onPressLikes]);
 
     return (
         <Container>
-            <Header user={frame.user} />
-            <Slider galeriePictures={galeriePictures} />
+            <Header userId={frame.userId} />
+            <Slider frameId={frame.id} />
             <Footer
                 createdAt={frame.createdAt}
                 description={frame.description}
@@ -47,4 +48,4 @@ const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
     );
 };
 
-export default FrameCard;
+export default React.memo(FrameCard);

@@ -51,7 +51,7 @@ const Footer = ({
             setDescriptionIsCroped(true);
             setCropedDescription(`${description.substring(0, 40)}... `);
         }
-    }, []);
+    }, [description]);
 
     return (
         <Container>

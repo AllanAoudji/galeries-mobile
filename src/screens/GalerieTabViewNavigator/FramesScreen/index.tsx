@@ -5,7 +5,7 @@ import {
     NativeScrollEvent,
     NativeSyntheticEvent,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
     AddButton,
@@ -17,8 +17,13 @@ import {
 } from '#components';
 import { GalerieTabbarScreenContainer } from '#components/Screen';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { useFetchGalerieFrames } from '#hooks';
-import { setCurrentFrameId } from '#store/actions';
+import {
+    getGalerieFrames,
+    selectCurrentGalerieFrame,
+    selectCurrentGalerieFrameStatus,
+    updateFramesCurrent,
+} from '#store/frames';
+import { selectCurrentGalerie } from '#store/galeries';
 
 type Props = {
     handleNavigateToCreateGalerieScreen: () => void;
@@ -32,25 +37,38 @@ const FramesScreen = ({
     scrollHandler,
 }: Props) => {
     const dispatch = useDispatch();
-    const { currentGalerieFrames, fetchNextGalerieFrames, fetching } =
-        useFetchGalerieFrames();
+
+    const currentGalerie = useSelector(selectCurrentGalerie);
+    const currentGalerieFrames = useSelector(selectCurrentGalerieFrame);
+    const currentGalerieFramesStatus = useSelector(
+        selectCurrentGalerieFrameStatus
+    );
+
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
 
+    const handleEndReach = React.useCallback(() => {
+        if (
+            currentGalerie &&
+            (currentGalerieFramesStatus === 'ERROR' ||
+                currentGalerieFramesStatus === 'SUCCESS')
+        )
+            dispatch(getGalerieFrames(currentGalerie.id));
+    }, [currentGalerie, currentGalerieFramesStatus]);
     const keyExtractor = React.useCallback(
         (data: Store.Models.Frame) => data.id,
         []
     );
     const onPressComments = React.useCallback(
         (id: string) => {
-            dispatch(setCurrentFrameId(id));
+            dispatch(updateFramesCurrent(id));
             navigation.navigate('Comments');
         },
         [navigation]
     );
     const onPressLikes = React.useCallback(
         (id: string) => {
-            dispatch(setCurrentFrameId(id));
+            dispatch(updateFramesCurrent(id));
             navigation.navigate('Likes');
         },
         [navigation]
@@ -79,7 +97,7 @@ const FramesScreen = ({
                             data={currentGalerieFrames}
                             keyExtractor={keyExtractor}
                             maxToRenderPerBatch={4}
-                            onEndReached={fetchNextGalerieFrames}
+                            onEndReached={handleEndReach}
                             onEndReachedThreshold={0.2}
                             onScroll={scrollHandler}
                             removeClippedSubviews={true}
@@ -100,8 +118,16 @@ const FramesScreen = ({
                     />
                 </>
             )}
-            <FullScreenLoader show={!currentGalerieFrames} />
-            <BottomLoader show={fetching} bottom="huge" />
+            <FullScreenLoader
+                show={
+                    currentGalerieFramesStatus === 'PENDING' ||
+                    currentGalerieFramesStatus === 'INITIAL_LOADING'
+                }
+            />
+            <BottomLoader
+                show={currentGalerieFramesStatus === 'LOADING'}
+                bottom="huge"
+            />
         </GalerieTabbarScreenContainer>
     );
 };

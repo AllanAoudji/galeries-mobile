@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import CustomButton from '#components/CustomButton';
 import Logo from '#components/Logo';
 import Typography from '#components/Typography';
-import { fetchLogout } from '#store/actions';
+import { logout } from '#store/logout';
 
 import NavigationButton from './NavigationButton';
 import { Container, LogoContainer } from './styles';
@@ -50,7 +50,7 @@ const DrawerContent = ({
         [navigation]
     );
     const handlePressLogout = React.useCallback(
-        () => dispatch(fetchLogout()),
+        () => dispatch(logout()),
         [navigation]
     );
     const handlePressModeration = React.useCallback(

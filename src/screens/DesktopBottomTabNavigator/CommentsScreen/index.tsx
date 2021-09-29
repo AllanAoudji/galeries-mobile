@@ -8,7 +8,7 @@ import {
     NativeSyntheticEvent,
     TextInputContentSizeChangeEventData,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import {
@@ -22,13 +22,7 @@ import {
 } from '#components';
 import { FIELD_REQUIREMENT, GLOBAL_STYLE } from '#helpers/constants';
 import { createCommentSchema } from '#helpers/schemas';
-import {
-    useComponentSize,
-    useFetchComments,
-    useHideHeaderOnScroll,
-    usePostComment,
-} from '#hooks';
-import { currentFrameSelector } from '#store/selectors';
+import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 
 import {
     Container,
@@ -37,6 +31,14 @@ import {
     PostButton,
     TextInputStyled,
 } from './styles';
+import { selectCurrentFrame } from '#store/frames';
+import {
+    getFrameComments,
+    postComment,
+    selectCommentsLoadingPost,
+    selectCurrentFrameComments,
+    selectCurrentFrameCommentsStatus,
+} from '#store/comments';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CommentsNavigationProp;
@@ -58,13 +60,15 @@ const renderItem = ({
 >) => <CommentCard comment={item} />;
 
 const CommentScreen = ({ navigation }: Props) => {
+    const dispatch = useDispatch();
     const theme = useTheme();
 
-    const { currentFrameComments, fetching, fetchNextFrameComments } =
-        useFetchComments();
-    const { loading, postComment } = usePostComment();
-
-    const currentFrame = useSelector(currentFrameSelector);
+    const currentFrameComments = useSelector(selectCurrentFrameComments);
+    const currentFrameCommentsStatus = useSelector(
+        selectCurrentFrameCommentsStatus
+    );
+    const currentFrame = useSelector(selectCurrentFrame);
+    const loading = useSelector(selectCommentsLoadingPost);
 
     const { onLayout: headerOnLayout, size: headerSize } = useComponentSize();
     const { onLayout: footerOnLayout, size: footerSize } = useComponentSize();
@@ -78,8 +82,7 @@ const CommentScreen = ({ navigation }: Props) => {
 
     const formik = useFormik({
         onSubmit: (values) => {
-            if (currentFrame)
-                postComment(values, currentFrame, successCallback);
+            if (currentFrame) dispatch(postComment(values, currentFrame.id));
         },
         initialValues,
         validateOnBlur: false,
@@ -116,12 +119,24 @@ const CommentScreen = ({ navigation }: Props) => {
         []
     );
     const handlePress = React.useCallback(() => {
-        if (!loading && !disableButton && formik.values.body !== '') {
+        if (
+            !loading.includes('LOADING') &&
+            !disableButton &&
+            formik.values.body !== ''
+        ) {
             formik.handleSubmit();
         }
     }, [disableButton, loading, formik.values.body]);
+    const handleReachEnd = React.useCallback(() => {
+        if (
+            currentFrame &&
+            (currentFrameCommentsStatus === 'ERROR' ||
+                currentFrameCommentsStatus === 'SUCCESS')
+        )
+            dispatch(getFrameComments(currentFrame.id));
+    }, [currentFrame, currentFrameCommentsStatus]);
     const onPressReturn = React.useCallback(() => {
-        if (!loading) {
+        if (!loading.includes('LOADING')) {
             if (navigation.canGoBack()) navigation.goBack();
             else navigation.navigate('Home');
         }
@@ -135,6 +150,7 @@ const CommentScreen = ({ navigation }: Props) => {
         if (flatListRef.current)
             flatListRef.current.scrollToOffset({ offset: 0 });
     }, []);
+    // TODO: callback when success.
     const successCallback = React.useCallback(() => {
         scrollToTop();
         setTextInputHeight(0);
@@ -147,6 +163,14 @@ const CommentScreen = ({ navigation }: Props) => {
             else navigation.navigate('Home');
         }
     }, [currentFrame, navigation]);
+    React.useEffect(() => {
+        if (loading === 'SUCCESS') successCallback();
+    }, [loading]);
+
+    React.useEffect(() => {
+        if (currentFrame && currentFrameCommentsStatus === 'PENDING')
+            dispatch(getFrameComments(currentFrame.id));
+    }, [currentFrame, currentFrameCommentsStatus]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -179,7 +203,7 @@ const CommentScreen = ({ navigation }: Props) => {
                             keyExtractor={keyExtractor}
                             maxToRenderPerBatch={15}
                             onScroll={scrollHandler}
-                            onEndReached={fetchNextFrameComments}
+                            onEndReached={handleReachEnd}
                             onEndReachedThreshold={0.2}
                             onScrollBeginDrag={handleScrollBeginDrag}
                             ref={flatListRef}
@@ -195,7 +219,7 @@ const CommentScreen = ({ navigation }: Props) => {
                         <TextInputStyled
                             editable={!loading}
                             height={height}
-                            loading={loading}
+                            loading={loading.includes('LOADING')}
                             maxLength={FIELD_REQUIREMENT.COMMENT_MAX_LENGTH}
                             multiline
                             onChangeText={handleChangeBodyText}
@@ -212,8 +236,16 @@ const CommentScreen = ({ navigation }: Props) => {
                     </FormContainer>
                 </>
             )}
-            <FullScreenLoader show={!currentFrameComments} />
-            <BottomLoader show={fetching} bottom="huge" />
+            <FullScreenLoader
+                show={
+                    currentFrameCommentsStatus === 'PENDING' ||
+                    currentFrameCommentsStatus === 'INITIAL_LOADING'
+                }
+            />
+            <BottomLoader
+                show={currentFrameCommentsStatus === 'LOADING'}
+                bottom="huge"
+            />
         </Container>
     );
 };

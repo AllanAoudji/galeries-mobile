@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Typography from '#components/Typography';
 import { CLOSE_NOTIFICATION_DELAY } from '#helpers/constants';
 import normalizeError from '#helpers/normalizeError';
-import { resetNotification } from '#store/actions';
-import { notificationSelector } from '#store/selectors';
+import { resetNotification, selectNotification } from '#store/notification';
 
 import { Button, Container, InnerContainer } from './styles';
 
@@ -13,7 +12,7 @@ import { Button, Container, InnerContainer } from './styles';
 // Need animation
 const Notification = () => {
     const dispatch = useDispatch();
-    const notification = useSelector(notificationSelector);
+    const notification = useSelector(selectNotification);
 
     const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 

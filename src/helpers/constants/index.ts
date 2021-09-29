@@ -51,20 +51,33 @@ export const DRAG_AND_DROP_UTILS = {
 };
 
 export const END_POINT = {
-    COMMENTS: (id: string) => `/frames/${id}/comments/`,
+    GALERIE_PICTURES: '/galeriePictures',
+    COVER_PICTURE: '/coverPicture',
+    USERS: '/users',
+    ME: '/me',
+    CURRENT_PROFILE_PICTURE: '/currentProfilePicture',
+    PROFILE_PICTURES: '/profilePictures',
+    Me: '/me',
+    LIKE_ID: (id: string) => `/likes/${id}/`,
+    COMMENTS: '/comments/',
+    COMMENT_ID: (id: string) => `/comments/${id}/`,
+    FRAME_COMMENTS: (id: string) => `/frames/${id}/comments/`,
     FORGOT_PASSWORD: '/users/password/',
-    FRAMES: `/frames/`,
+    FRAMES: '/frames/',
+    FRAME: (id: string) => `/frames/${id}/`,
     FRAMES_GALERIE_PICTURES: (id: string) => `/frames/${id}/galeriePictures/`,
     GALERIE: (id: string) => `/galeries/${id}/`,
     GALERIE_COVER_PICTURE: (id: string) => `/galeries/${id}/coverPicture/`,
     GALERIE_FRAMES: (id: string) => `/galeries/${id}/frames/`,
     GALERIE_USERS: (id: string) => `/galeries/${id}/users/`,
     GALERIES: '/galeries/',
+    GET_GALERIE_USERS: (id: string) => `/galeries/${id}/users/`,
     GET_ME: '/users/me/',
     GET_ME_CURRENT_PROFILE_PICTURE: '/users/me/currentProfilePicture',
     GET_USER_CURRENT_PROFILE_PICTURE: (id: string) =>
         `/users/${id}/currentProfilePicture`,
-    LIKES: (id: string) => `/frames/${id}/likes/`,
+    GET_USER_ID: (id: string) => `/users/${id}/`,
+    LIKES: '/likes',
     LOGIN: '/users/login/',
     LOGOUT: '/users/logout/',
     REFRESH_TOKEN: '/users/refreshToken/',
@@ -83,6 +96,7 @@ export const ERROR_MESSAGE = {
     FIELD_SHOULD_BE_A_PASSWORD:
         'need at least on lowercase, one uppercase, one number and one special char',
     FIELD_SHOULD_MATCH: (type: 'password') => `must match ${type}`,
+    METHOD_NOT_FOUND: 'Method not found',
     USER_SHOULD_NOT_BE_AUTHENTICATED: 'you are already authenticated',
 };
 

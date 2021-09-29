@@ -19,7 +19,6 @@ import { Pictogram } from '#components';
 import clamp from '#helpers/clamp';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize } from '#hooks';
-import { currentGalerieSelector } from '#store/selectors';
 
 import FramesScreen from './FramesScreen';
 import Header from './Header';
@@ -31,7 +30,7 @@ import {
     AbsoluteTopContainer,
     Container,
 } from './styles';
-import { resetCurrentGalerieId } from '#store/actions';
+import { selectCurrentGalerie, updateGaleriesCurrent } from '#store/galeries';
 
 const routes = [
     {
@@ -57,7 +56,7 @@ const GalerieTabViewNavigator = () => {
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
 
-    const galerie = useSelector(currentGalerieSelector);
+    const galerie = useSelector(selectCurrentGalerie);
 
     const { onLayout: onLayoutContainer, size: sizeContainer } =
         useComponentSize();
@@ -103,7 +102,7 @@ const GalerieTabViewNavigator = () => {
     }, [navigation]);
     const onPressBack = React.useCallback(() => {
         setReset(true);
-        dispatch(resetCurrentGalerieId());
+        dispatch(updateGaleriesCurrent(null));
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
     }, [navigation]);

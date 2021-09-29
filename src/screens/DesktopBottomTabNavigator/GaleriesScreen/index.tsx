@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Keyboard, ListRenderItemInfo } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { withTiming } from 'react-native-reanimated';
 
 import {
@@ -13,14 +13,16 @@ import {
     SearchBar,
 } from '#components';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
-import {
-    useComponentSize,
-    useFetchGaleries,
-    useHideHeaderOnScroll,
-} from '#hooks';
-import { setGaleriesNameFilter } from '#store/actions';
+import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 
 import { Container, Header, SearchBarContainer } from './styles';
+import {
+    getGaleries,
+    selectGaleries,
+    selectGaleriesFilterName,
+    selectGaleriesNameStatus,
+    updateGaleriesFilterName,
+} from '#store/galeries';
 
 const renderItem = ({ item }: ListRenderItemInfo<Store.Models.Galerie>) => (
     <GalerieCard galerie={item} />
@@ -29,15 +31,16 @@ const renderItem = ({ item }: ListRenderItemInfo<Store.Models.Galerie>) => (
 const GaleriesScreen = () => {
     const dispatch = useDispatch();
 
-    const { fetchNextGaleries, fetching, filtersGaleriesName, galeries } =
-        useFetchGaleries();
+    const filterGaleriesName = useSelector(selectGaleriesFilterName);
+    const galeries = useSelector(selectGaleries);
+    const galeriesNameStatus = useSelector(selectGaleriesNameStatus);
 
     const { onLayout, size } = useComponentSize();
     const { containerStyle, headerStyle, scrollHandler, translateY } =
         useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT, true);
 
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
-    const [value, setValue] = React.useState<string>(filtersGaleriesName);
+    const [value, setValue] = React.useState<string>(filterGaleriesName);
     const [show, setShow] = React.useState<boolean>(true);
 
     const paddingTop = React.useMemo(
@@ -54,11 +57,15 @@ const GaleriesScreen = () => {
         []
     );
     const handleChangeText = React.useCallback((e: string) => {
-        dispatch(setGaleriesNameFilter(e.trim()));
+        dispatch(updateGaleriesFilterName(e.trim()));
     }, []);
     const handleFocusSearchBar = React.useCallback(() => {
         translateY.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(200));
     }, []);
+    const handleReachEnd = React.useCallback(() => {
+        if (galeriesNameStatus === 'ERROR' || galeriesNameStatus === 'SUCCESS')
+            dispatch(getGaleries());
+    }, [galeriesNameStatus]);
     const handleScrollBeginDrag = React.useCallback(
         () => Keyboard.dismiss(),
         []
@@ -107,7 +114,7 @@ const GaleriesScreen = () => {
                     keyExtractor={keyExtractor}
                     keyboardShouldPersistTaps="handled"
                     maxToRenderPerBatch={4}
-                    onEndReached={fetchNextGaleries}
+                    onEndReached={handleReachEnd}
                     onEndReachedThreshold={0.2}
                     onScroll={scrollHandler}
                     onScrollBeginDrag={handleScrollBeginDrag}
@@ -119,8 +126,16 @@ const GaleriesScreen = () => {
             ) : (
                 <EmptyMessage pt={paddingTop} text="No galerie found" />
             )}
-            <FullScreenLoader show={show} />
-            <BottomLoader show={fetching} bottom="huge" />
+            <FullScreenLoader
+                show={
+                    galeriesNameStatus === 'PENDING' ||
+                    galeriesNameStatus === 'INITIAL_LOADING'
+                }
+            />
+            <BottomLoader
+                show={galeriesNameStatus === 'LOADING'}
+                bottom="huge"
+            />
         </Container>
     );
 };

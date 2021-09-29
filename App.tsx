@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 
 import { Notification } from '#components';
 import { BottomSheetProvider } from '#contexts/BottomSheetContext';
-import { ProfilePicturesFetcherProvider } from '#contexts/ProfilePicturesFetcherContext';
 import ThemeProvider from '#contexts/ThemeContext';
 import Loader from '#helpers/Loader';
 import RootStackNavigator from '#screens/RootStackNavigator';
@@ -19,13 +18,11 @@ export default function App() {
             <Provider store={store}>
                 <Loader>
                     <NavigationContainer>
-                        <ProfilePicturesFetcherProvider>
-                            <BottomSheetProvider>
-                                <RootStackNavigator />
-                                <Notification />
-                                <StatusBar style="auto" />
-                            </BottomSheetProvider>
-                        </ProfilePicturesFetcherProvider>
+                        <BottomSheetProvider>
+                            <RootStackNavigator />
+                            <Notification />
+                            <StatusBar style="auto" />
+                        </BottomSheetProvider>
                     </NavigationContainer>
                 </Loader>
             </Provider>
