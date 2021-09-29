@@ -1,9 +1,11 @@
 import { Dispatch } from 'redux';
 
 import { updateGaleriesById } from '#store/galeries/actionCreators';
+import { combineFramesAllIds } from '#store/combineFrames';
 
 const dispatchUpdateGalerieFrames = (
     dispatch: Dispatch<Store.Action>,
+    getState: () => Store.Reducer,
     galerie: Store.Models.Galerie,
     frames: {
         allIds?: string[];
@@ -12,14 +14,13 @@ const dispatchUpdateGalerieFrames = (
         status?: Store.Status;
     }
 ) => {
+    const oldAllIds = galerie.frames ? galerie.frames.allIds : [];
+    const newAllIds = frames.allIds || [];
     dispatch(
         updateGaleriesById({
             ...galerie,
             frames: {
-                allIds: [
-                    ...(galerie.frames ? galerie.frames.allIds : []),
-                    ...(frames.allIds || []),
-                ],
+                allIds: combineFramesAllIds(getState, oldAllIds, newAllIds),
                 end:
                     frames.end || (galerie.frames ? galerie.frames.end : false),
                 previous:

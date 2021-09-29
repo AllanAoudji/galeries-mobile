@@ -23,8 +23,9 @@ import {
 } from '#store/frames/actionCreators';
 import { getFrameGaleriePictures } from '#store/galeriePictures/actionCreators';
 import { FRAMES } from '#store/genericActionTypes';
-import { getGalerie, getFrame, getUser } from '#store/getters';
+import { getGalerie, getFrame, getUser, getFramesAllIds } from '#store/getters';
 import { getUserId } from '#store/users/actionCreators';
+import { combineFramesAllIds } from '#store/combineFrames';
 
 const successDefaultMethod = (dispatch: Dispatch<Store.Action>) =>
     dispatchErrorNotification(dispatch, ERROR_MESSAGE.METHOD_NOT_FOUND);
@@ -79,14 +80,23 @@ const successGetFrames = (
             if (galerieId) {
                 const galerie = getGalerie(getState, galerieId);
                 if (galerie)
-                    dispatchUpdateGalerieFrames(dispatch, galerie, {
+                    dispatchUpdateGalerieFrames(dispatch, getState, galerie, {
                         allIds,
                         end: allIds.length < 20,
                         status: 'SUCCESS',
                         previous,
                     });
             } else {
-                dispatch(setFramesAllIds(allIds));
+                console.log('set frames');
+                dispatch(
+                    setFramesAllIds(
+                        combineFramesAllIds(
+                            getState,
+                            getFramesAllIds(getState),
+                            allIds
+                        )
+                    )
+                );
                 dispatch(updateFramesEnd(allIds.length < 20));
                 dispatch(updateFramesPrevious(previous));
                 dispatch(updateFramesStatus('SUCCESS'));
@@ -117,11 +127,20 @@ const successPostFrames = (
             if (galerieId) {
                 const galerie = getGalerie(getState, galerieId);
                 if (galerie) {
-                    dispatchUpdateGalerieFrames(dispatch, galerie, {
+                    dispatchUpdateGalerieFrames(dispatch, getState, galerie, {
                         allIds,
                     });
                 }
-            } else dispatch(setFramesAllIds(allIds));
+            } else
+                dispatch(
+                    setFramesAllIds(
+                        combineFramesAllIds(
+                            getState,
+                            getFramesAllIds(getState),
+                            allIds
+                        )
+                    )
+                );
         }
         dispatch(updateFramesLoadingPost('SUCCESS'));
     }

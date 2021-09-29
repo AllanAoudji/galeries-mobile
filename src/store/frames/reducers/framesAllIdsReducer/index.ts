@@ -1,3 +1,4 @@
+import { checkIfAllIds } from '#store/checkers';
 import {
     FRAMES_ALL_IDS_REMOVE,
     FRAMES_ALL_IDS_RESET,
@@ -14,8 +15,7 @@ const framesAllIdsReducer = (state = initialState, action: Store.Action) => {
         case FRAMES_ALL_IDS_RESET:
             return initialState;
         case FRAMES_ALL_IDS_SET:
-            if (Array.isArray(action.payload))
-                return [...state, ...action.payload];
+            if (checkIfAllIds(action.payload)) return action.payload;
             return state;
         default:
             return state;

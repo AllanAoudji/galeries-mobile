@@ -3,14 +3,13 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SplashScreen } from '#components';
-import { getMe, selectMe } from '#store/me';
-import { selectLoginStatus } from '#store/login';
+import { getMe, selectMe, selectMeStatus } from '#store/me';
 
 const Loader: React.FC<{}> = ({ children }) => {
     const dispatch = useDispatch();
 
     const me = useSelector(selectMe);
-    const loginStatus = useSelector(selectLoginStatus);
+    const meStatus = useSelector(selectMeStatus);
 
     const [fontsLoaded] = useFonts({
         HelveticaLtStBold: require('../../../assets/fonts/HelveticaLTStd-Bold.otf'),
@@ -20,13 +19,13 @@ const Loader: React.FC<{}> = ({ children }) => {
     });
 
     React.useEffect(() => {
-        if (!loginStatus.includes('LOADING')) dispatch(getMe());
-    }, [me, loginStatus]);
+        if (meStatus === 'PENDING') dispatch(getMe());
+    }, [me, meStatus]);
 
     if (
         !fontsLoaded ||
-        loginStatus === 'PENDING' ||
-        loginStatus.includes('LOADING')
+        meStatus === 'PENDING' ||
+        meStatus.includes('LOADING')
     ) {
         return <SplashScreen />;
     }

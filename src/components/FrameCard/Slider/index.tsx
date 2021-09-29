@@ -49,7 +49,7 @@ const Slider = ({ frameId }: Props) => {
     return (
         <>
             <LinearGradiantStyled size={dimension.width}>
-                {/* {galeriePictures ? (
+                {galeriePictures ? (
                     <ScrollView
                         decelerationRate="fast"
                         disableIntervalMomentum={true}
@@ -65,14 +65,14 @@ const Slider = ({ frameId }: Props) => {
                             />
                         ))}
                     </ScrollView>
-                ) : ( */}
-                <ActivityIndicatorContainer>
-                    <ActivityIndicator
-                        color={theme.colors.primary}
-                        style={{ transform: [{ scale: 2 }] }}
-                    />
-                </ActivityIndicatorContainer>
-                {/* )} */}
+                ) : (
+                    <ActivityIndicatorContainer>
+                        <ActivityIndicator
+                            color={theme.colors.primary}
+                            style={{ transform: [{ scale: 2 }] }}
+                        />
+                    </ActivityIndicatorContainer>
+                )}
             </LinearGradiantStyled>
             <DotsContainer>
                 {galeriePictures &&

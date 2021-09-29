@@ -6,6 +6,10 @@ export const getCommentsLoadingPost = (getState: () => Store.Reducer) =>
     getState().comments.loading.post;
 export const getFrame = (getState: () => Store.Reducer, frameId: string) =>
     getState().frames.byId[frameId];
+export const getFramesAllIds = (getState: () => Store.Reducer) =>
+    getState().frames.allIds;
+export const getFramesById = (getState: () => Store.Reducer) =>
+    getState().frames.byId;
 export const getFramesEnd = (getState: () => Store.Reducer) =>
     getState().frames.end;
 export const getFramesLoadingDelete = (getState: () => Store.Reducer) =>

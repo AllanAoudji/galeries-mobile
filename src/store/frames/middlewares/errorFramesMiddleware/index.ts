@@ -36,7 +36,7 @@ const errorGetMethod = (
     if (galerieId) {
         const galerie = getGalerie(getState, galerieId);
         if (galerie)
-            dispatchUpdateGalerieFrames(dispatch, galerie, {
+            dispatchUpdateGalerieFrames(dispatch, getState, galerie, {
                 status: 'ERROR',
             });
     } else dispatch(updateFramesStatus('ERROR'));

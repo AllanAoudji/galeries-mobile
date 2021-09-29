@@ -38,7 +38,7 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
                     const previous = galerie.users
                         ? galerie.users.previous
                         : undefined;
-                    dispatchUpdateGalerieFrames(dispatch, galerie, {
+                    dispatchUpdateGalerieFrames(dispatch, getState, galerie, {
                         status: newStatus,
                     });
                     dispatchGetGalerieFrames(dispatch, galerieId, previous);
@@ -50,6 +50,7 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
                     const newStatus: Store.Status =
                         status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';
                     const previous = getFramesPrevious(getState);
+                    console.log('get Frames');
                     dispatch(updateFramesStatus(newStatus));
                     dispatchGetFrames(dispatch, previous);
                 }
