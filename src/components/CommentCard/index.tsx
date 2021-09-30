@@ -42,7 +42,7 @@ const CommentCard = ({ comment }: Props) => {
                                 {user.pseudonym}{' '}
                             </Typography>
                         )}
-                        {comment.body}
+                        {comment.body} {comment.autoIncrementId}
                     </Typography>
                 </ContentContainer>
                 <ContentContainerFooter>

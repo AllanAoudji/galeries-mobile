@@ -3,10 +3,12 @@ import { Middleware } from 'redux';
 import { COMMENTS_GET } from '#store/comments/actionTypes';
 import {
     dispatchGetComment,
+    dispatchGetCommentComments,
     dispatchGetFrameComments,
+    dispatchUpdateCommentComments,
     dispatchUpdateFrameComments,
 } from '#store/dispatchers';
-import { getFrame } from '#store/getters';
+import { getComment, getFrame } from '#store/getters';
 
 const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -19,8 +21,11 @@ const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
         const frameId = action.meta.query
             ? action.meta.query.frameId
             : undefined;
+        const commentId = action.meta.query
+            ? action.meta.query.commentId
+            : undefined;
 
-        if (typeof frameId === 'string') {
+        if (frameId) {
             const frame = getFrame(getState, frameId);
             if (!frame) return;
 
@@ -36,6 +41,25 @@ const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
                 status: newStatus,
             });
             dispatchGetFrameComments(dispatch, frameId, previous);
+        } else if (commentId) {
+            const comment = getComment(getState, commentId);
+            if (!comment) return;
+
+            const end = comment.comments ? comment.comments.end : false;
+            const status = comment.comments
+                ? comment.comments.status
+                : 'PENDING';
+
+            if (end || status.includes('LOADING')) return;
+
+            const previous = comment.comments
+                ? comment.comments.previous
+                : undefined;
+
+            dispatchUpdateCommentComments(dispatch, comment, {
+                status: 'LOADING',
+            });
+            dispatchGetCommentComments(dispatch, commentId, previous);
         } else if (typeof action.payload === 'string')
             dispatchGetComment(dispatch, action.payload);
     };

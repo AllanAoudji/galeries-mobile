@@ -7,6 +7,7 @@ export { default as dispatchDeleteProfilePicture } from './dispatchDeleteProfile
 export { default as dispatchErrorNotification } from './dispatchErrorNotification';
 export { default as dispatchGetComment } from './dispatchGetComment';
 export { default as dispatchGetFrame } from './dispatchGetFrame';
+export { default as dispatchGetCommentComments } from './dispatchGetCommentComments';
 export { default as dispatchGetFrameComments } from './dispatchGetFrameComments';
 export { default as dispatchGetFrameGaleriePictures } from './dispatchGetFrameGaleriePictures';
 export { default as dispatchGetFrameLikes } from './dispatchGetFrameLikes';
@@ -34,6 +35,7 @@ export { default as dispatchPostLike } from './dispatchPostLike';
 export { default as dispatchPutFrame } from './dispatchPutFrame';
 export { default as dispatchPutGalerie } from './dispatchPutGalerie';
 export { default as dispatchSuccessNotification } from './dispatchSuccessNotification';
+export { default as dispatchUpdateCommentComments } from './dispatchUpdateCommentComments';
 export { default as dispatchUpdateFrameComments } from './dispatchUpdateFrameComments';
 export { default as dispatchUpdateFrameLikes } from './dispatchUpdateFrameLikes';
 export { default as dispatchUpdateFrameGaleriePictures } from './dispatchUpdateFrameGaleriePictures';

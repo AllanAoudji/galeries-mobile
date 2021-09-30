@@ -277,10 +277,10 @@ declare global {
             type Comment = {
                 autoIncrementId: string;
                 body: string;
-                comments: {
-                    allIds?: string[];
+                comments?: {
+                    allIds: string[];
                     end: boolean;
-                    previousComment?: string;
+                    previous?: string;
                     status: Store.Status;
                 };
                 createdAt: string;

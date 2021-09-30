@@ -2,6 +2,7 @@ import {
     COMMENTS_BY_ID_REMOVE,
     COMMENTS_BY_ID_RESET,
     COMMENTS_BY_ID_SET,
+    COMMENTS_BY_ID_UPDATE,
     COMMENTS_CURRENT_RESET,
     COMMENTS_CURRENT_UPDATE,
     COMMENTS_DELETE,
@@ -24,6 +25,13 @@ export const getComment: (payload: string) => Store.Action = (payload) => ({
     payload,
     type: COMMENTS_GET,
 });
+export const getCommentComments: (commentId: string) => Store.Action = (
+    commentId
+) => ({
+    meta: { query: { commentId } },
+    payload: {},
+    type: COMMENTS_GET,
+});
 export const getFrameComments: (frameId: string) => Store.Action = (
     frameId
 ) => ({
@@ -36,6 +44,14 @@ export const postComment: (
     frameId: string
 ) => Store.Action = (payload, frameId) => ({
     meta: { query: { frameId } },
+    payload,
+    type: COMMENTS_POST,
+});
+export const postCommentComment: (
+    payload: { body: string },
+    commentId: string
+) => Store.Action = (payload, commentId) => ({
+    meta: { query: { commentId } },
     payload,
     type: COMMENTS_POST,
 });
@@ -77,6 +93,13 @@ export const setCommentsById: (payload: {
     meta: {},
     payload,
     type: COMMENTS_BY_ID_SET,
+});
+export const updateCommentsById: (
+    payload: Store.Models.Comment
+) => Store.Action = (payload) => ({
+    meta: {},
+    payload,
+    type: COMMENTS_BY_ID_UPDATE,
 });
 export const updateCommentsCurrent: (payload: string) => Store.Action = (
     payload

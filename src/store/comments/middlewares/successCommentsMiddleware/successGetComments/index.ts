@@ -1,8 +1,11 @@
 import { Dispatch } from 'redux';
 
 import { setCommentsById } from '#store/comments/actionCreators';
-import { dispatchUpdateFrameComments } from '#store/dispatchers';
-import { getFrame, getUser } from '#store/getters';
+import {
+    dispatchUpdateCommentComments,
+    dispatchUpdateFrameComments,
+} from '#store/dispatchers';
+import { getComment, getFrame, getUser } from '#store/getters';
 import { getUserId } from '#store/users';
 import { combineCommentsAllIds } from '#store/combineAllIds';
 
@@ -14,9 +17,11 @@ const successGetComments = (
     const allIds: string[] = [];
     const byId: { [key: string]: Store.Models.Comment } = {};
     const frameId = action.meta.query ? action.meta.query.frameId : undefined;
-    if (!frameId) return;
-    const frame = getFrame(getState, frameId);
-    if (!frame) return;
+    const commentId = action.meta.query
+        ? action.meta.query.commentId
+        : undefined;
+
+    if (!frameId && !commentId) return;
 
     if (
         typeof action.payload !== 'object' ||
@@ -24,9 +29,19 @@ const successGetComments = (
         (typeof action.payload.data.comment !== 'object' &&
             !Array.isArray(action.payload.data.comments))
     ) {
-        dispatchUpdateFrameComments(dispatch, frame, {
-            status: 'ERROR',
-        });
+        if (frameId) {
+            const frame = getFrame(getState, frameId);
+            if (!frame) return;
+            dispatchUpdateFrameComments(dispatch, frame, {
+                status: 'ERROR',
+            });
+        } else if (commentId) {
+            const comment = getComment(getState, commentId);
+            if (!comment) return;
+            dispatchUpdateCommentComments(dispatch, comment, {
+                status: 'ERROR',
+            });
+        }
         return;
     }
 
@@ -42,24 +57,61 @@ const successGetComments = (
     }
 
     if (!allIds.length) {
-        dispatchUpdateFrameComments(dispatch, frame, {
-            status: 'ERROR',
-        });
+        if (frameId) {
+            const frame = getFrame(getState, frameId);
+            if (!frame) return;
+            dispatchUpdateFrameComments(dispatch, frame, {
+                status: 'ERROR',
+            });
+        } else if (commentId) {
+            const storedComment = getComment(getState, commentId);
+            if (!storedComment) return;
+            dispatchUpdateCommentComments(dispatch, storedComment, {
+                status: 'ERROR',
+            });
+        }
         return;
     }
 
-    const oldAllIds = frame.comments ? frame.comments.allIds : [];
-    const newAllIds = combineCommentsAllIds(getState, oldAllIds, allIds);
-    const previousCommentId = allIds[allIds.length - 1];
-    const previous = byId[previousCommentId].autoIncrementId;
-
     dispatch(setCommentsById(byId));
-    dispatchUpdateFrameComments(dispatch, frame, {
-        allIds: newAllIds,
-        end: allIds.length < 20,
-        previous,
-        status: 'SUCCESS',
-    });
+
+    if (frameId) {
+        const frame = getFrame(getState, frameId);
+        if (!frame) return;
+
+        const oldAllIds = frame.comments ? frame.comments.allIds : [];
+        const newAllIds = combineCommentsAllIds(getState, oldAllIds, allIds);
+        const previousCommentId = allIds[allIds.length - 1];
+        let previous: string | undefined;
+        if (previousCommentId)
+            previous = byId[previousCommentId].autoIncrementId;
+
+        dispatchUpdateFrameComments(dispatch, frame, {
+            allIds: newAllIds,
+            end: allIds.length < 20,
+            previous,
+            status: 'SUCCESS',
+        });
+    } else if (commentId) {
+        const storedComment = getComment(getState, commentId);
+        if (!storedComment) return;
+
+        const oldAllIds = storedComment.comments
+            ? storedComment.comments.allIds
+            : [];
+        const newAllIds = combineCommentsAllIds(getState, oldAllIds, allIds);
+        const previousCommentId = allIds[allIds.length - 1];
+        let previous: string | undefined;
+        if (previousCommentId)
+            previous = byId[previousCommentId].autoIncrementId;
+
+        dispatchUpdateCommentComments(dispatch, comment, {
+            allIds: newAllIds,
+            end: allIds.length < 20,
+            previous,
+            status: 'SUCCESS',
+        });
+    }
 
     allIds.forEach((id) => {
         const user = getUser(getState, byId[id].userId);

@@ -4,9 +4,9 @@ import { END_POINT } from '#helpers/constants';
 import { apiRequest } from '#store/api/actionCreators';
 import { COMMENTS } from '#store/genericActionTypes';
 
-const dispatchGetFrameComments = (
+const dispatchGetCommentComments = (
     dispatch: Dispatch<Store.Action>,
-    frameId: string,
+    commentId: string,
     previous?: string
 ) => {
     let query = '?';
@@ -16,13 +16,13 @@ const dispatchGetFrameComments = (
         apiRequest({
             meta: {
                 entity: COMMENTS,
-                query: { frameId },
+                query: { commentId },
                 method: 'GET',
-                url: `${END_POINT.FRAMES}/${frameId}${END_POINT.COMMENTS}${query}`,
+                url: `${END_POINT.COMMENTS}/${commentId}${END_POINT.COMMENTS}${query}`,
             },
             payload: {},
         })
     );
 };
 
-export default dispatchGetFrameComments;
+export default dispatchGetCommentComments;
