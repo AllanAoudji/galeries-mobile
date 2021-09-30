@@ -6,13 +6,17 @@ import {
     NativeSyntheticEvent,
     TextInputContentSizeChangeEventData,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components';
 
 import { Typography } from '#components';
 import { FIELD_REQUIREMENT } from '#helpers/constants';
 import { createCommentSchema } from '#helpers/schemas';
-import { postComment } from '#store/comments';
+import {
+    postComment,
+    postCommentComment,
+    selectCommentCurrent,
+} from '#store/comments';
 
 import CurrentComment from './CurrentComment';
 
@@ -39,9 +43,14 @@ const Form = ({ frameId, loading, onLayout, onSuccess }: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
+    const commentCurrent = useSelector(selectCommentCurrent);
+
     const formik = useFormik({
         onSubmit: (values) => {
-            if (frameId) dispatch(postComment(values, frameId));
+            if (frameId) {
+                if (!commentCurrent) dispatch(postComment(values, frameId));
+                else dispatch(postCommentComment(values, commentCurrent));
+            }
         },
         initialValues,
         validateOnBlur: false,

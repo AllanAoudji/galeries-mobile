@@ -45,7 +45,8 @@ const User = ({ userId }: UserProps) => {
     return (
         <Container onPress={handlePress}>
             <TypographyContainer>
-                <Typography>Answer to {user.pseudonym}</Typography>
+                <Typography fontFamily="light">Answer to </Typography>
+                <Typography fontFamily="bold">{user.pseudonym}</Typography>
             </TypographyContainer>
             <Pictogram
                 size="small"

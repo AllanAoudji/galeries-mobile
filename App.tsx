@@ -40,4 +40,5 @@ export default function App() {
 // return byId(state.ui.galerieIdSelector)
 // so no need route.params.id
 
-// Do not store GaleriePicture on store.
+// post comment comment return sequelize error
+// comment.numOfComment === {} when get Comments

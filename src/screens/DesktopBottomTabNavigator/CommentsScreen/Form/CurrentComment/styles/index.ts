@@ -9,6 +9,7 @@ const Container = styled.Pressable`
 `;
 const TypographyContainer = styled.View`
     opacity: 0.6;
+    flex-direction: row;
 `;
 
 export { Container, TypographyContainer };
