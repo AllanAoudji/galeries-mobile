@@ -74,7 +74,7 @@ const FramesScreen = ({
         [navigation]
     );
     const renderItem = React.useCallback(
-        ({ item }: ListRenderItemInfo<Store.Models.FramePopulated>) => (
+        ({ item }: ListRenderItemInfo<Store.Models.Frame>) => (
             <FrameCard
                 frame={item}
                 onPressComments={onPressComments}

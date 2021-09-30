@@ -27,7 +27,7 @@ const reducers = combineReducers({
     frames: framesReducer,
     galeries: galeriesReducer,
     galeriePictures: galeriePicturesReducer,
-    like: likesReducers,
+    likes: likesReducers,
     login: loginReducer,
     logout: logoutReducer,
     me: meReducer,

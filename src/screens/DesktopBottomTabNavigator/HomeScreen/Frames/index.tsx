@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { ListRenderItemInfo } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { AnimatedFlatList, FrameCard } from '#components';
-import { getFrames, selectFrame } from '#store/frames';
 import { GLOBAL_STYLE } from '#helpers/constants';
+import { AnimatedFlatList } from '#components';
+import { getFrames } from '#store/frames';
+
+import RenderItem from './RenderItem';
 
 type Props = {
     frames: string[];
@@ -12,22 +14,9 @@ type Props = {
     scrollHandler: any;
 };
 
-const RenderItem = React.memo(({ item }: { item: string }) => {
-    const frameSelector = React.useMemo(() => selectFrame(item), [item]);
-    const frame = useSelector(frameSelector);
-
-    return (
-        <FrameCard
-            frame={frame}
-            onPressComments={() => {}}
-            onPressLikes={() => {}}
-        />
-    );
-});
-
-const renderItem = ({ item }: ListRenderItemInfo<string>) => {
-    return <RenderItem item={item} />;
-};
+const renderItem = ({ item }: ListRenderItemInfo<string>) => (
+    <RenderItem item={item} />
+);
 
 const Frames = ({ frames, paddingTop, scrollHandler }: Props) => {
     const disaptch = useDispatch();
