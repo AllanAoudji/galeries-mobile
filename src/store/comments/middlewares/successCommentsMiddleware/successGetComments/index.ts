@@ -4,6 +4,7 @@ import { setCommentsById } from '#store/comments/actionCreators';
 import { dispatchUpdateFrameComments } from '#store/dispatchers';
 import { getFrame, getUser } from '#store/getters';
 import { getUserId } from '#store/users';
+import { combineCommentsAllIds } from '#store/combineAllIds';
 
 const successGetComments = (
     dispatch: Dispatch<Store.Action>,
@@ -47,12 +48,14 @@ const successGetComments = (
         return;
     }
 
+    const oldAllIds = frame.comments ? frame.comments.allIds : [];
+    const newAllIds = combineCommentsAllIds(getState, oldAllIds, allIds);
     const previousCommentId = allIds[allIds.length - 1];
     const previous = byId[previousCommentId].autoIncrementId;
 
     dispatch(setCommentsById(byId));
     dispatchUpdateFrameComments(dispatch, frame, {
-        allIds,
+        allIds: newAllIds,
         end: allIds.length < 20,
         previous,
         status: 'SUCCESS',

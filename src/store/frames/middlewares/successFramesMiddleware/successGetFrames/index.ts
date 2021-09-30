@@ -7,7 +7,7 @@ import {
     updateFramesPrevious,
     updateFramesStatus,
 } from '#store/frames/actionCreators';
-import { combineFramesAllIds } from '#store/combineFrames';
+import { combineFramesAllIds } from '#store/combineAllIds';
 import { dispatchUpdateGalerieFrames } from '#store/dispatchers';
 import { getFrameGaleriePictures } from '#store/galeriePictures/actionCreators';
 import {

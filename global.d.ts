@@ -173,6 +173,7 @@ declare global {
         type Reducer = {
             comments: {
                 byId: { [key: string]: Store.Models.Comment };
+                current: string | null;
                 loading: {
                     delete: Store.Status;
                     post: Store.Status;
@@ -475,6 +476,7 @@ declare global {
             | 'plus'
             | 'profile-fill'
             | 'profile-stroke'
+            | 'quit'
             | 'search'
             | 'settings-fill'
             | 'settings-stroke'

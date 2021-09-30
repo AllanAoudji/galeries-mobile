@@ -21,9 +21,7 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
 const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
     const disaptch = useDispatch();
 
-    const handleEndReach = React.useCallback(() => {
-        disaptch(getFrames());
-    }, []);
+    const handleEndReach = React.useCallback(() => disaptch(getFrames()), []);
     const keyExtractor = React.useCallback((data: string) => data, []);
 
     return (

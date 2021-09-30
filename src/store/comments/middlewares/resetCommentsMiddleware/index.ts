@@ -2,6 +2,7 @@ import { Middleware } from 'redux';
 
 import {
     resetCommentsById,
+    resetCommentsCurrent,
     resetCommentsLoadingDelete,
     resetCommentsLoadingPost,
 } from '#store/comments/actionCreators';
@@ -12,11 +13,13 @@ const resetCommentsMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === COMMENTS_RESET) {
-            dispatch(resetCommentsById());
-            dispatch(resetCommentsLoadingDelete());
-            dispatch(resetCommentsLoadingPost());
-        }
+
+        if (action.type !== COMMENTS_RESET) return;
+
+        dispatch(resetCommentsById());
+        dispatch(resetCommentsCurrent());
+        dispatch(resetCommentsLoadingDelete());
+        dispatch(resetCommentsLoadingPost());
     };
 
 export default resetCommentsMiddleware;

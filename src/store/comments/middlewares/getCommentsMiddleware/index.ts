@@ -13,34 +13,31 @@ const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === COMMENTS_GET) {
-            const frameId = action.meta.query
-                ? action.meta.query.frameId
-                : undefined;
-            if (typeof frameId === 'string') {
-                const frame = getFrame(getState, frameId);
-                if (frame) {
-                    const end = frame.comments ? frame.comments.end : false;
-                    const status = frame.comments
-                        ? frame.comments.status
-                        : 'PENDING';
-                    if (!end && !status.includes('LOADING')) {
-                        const previous = frame.comments
-                            ? frame.comments.previous
-                            : '';
-                        const newStatus =
-                            status === 'PENDING'
-                                ? 'INITIAL_LOADING'
-                                : 'LOADING';
-                        dispatchUpdateFrameComments(dispatch, frame, {
-                            status: newStatus,
-                        });
-                        dispatchGetFrameComments(dispatch, frameId, previous);
-                    }
-                }
-            } else if (typeof action.payload === 'string')
-                dispatchGetComment(dispatch, action.payload);
-        }
+
+        if (action.type !== COMMENTS_GET) return;
+
+        const frameId = action.meta.query
+            ? action.meta.query.frameId
+            : undefined;
+
+        if (typeof frameId === 'string') {
+            const frame = getFrame(getState, frameId);
+            if (!frame) return;
+
+            const end = frame.comments ? frame.comments.end : false;
+            const status = frame.comments ? frame.comments.status : 'PENDING';
+            if (end || status.includes('LOADING')) return;
+
+            const previous = frame.comments ? frame.comments.previous : '';
+            const newStatus =
+                status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';
+
+            dispatchUpdateFrameComments(dispatch, frame, {
+                status: newStatus,
+            });
+            dispatchGetFrameComments(dispatch, frameId, previous);
+        } else if (typeof action.payload === 'string')
+            dispatchGetComment(dispatch, action.payload);
     };
 
 export default getCommentsMiddleware;

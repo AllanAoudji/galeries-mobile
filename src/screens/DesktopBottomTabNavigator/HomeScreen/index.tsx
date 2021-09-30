@@ -30,14 +30,14 @@ const HomeScreen = () => {
         GLOBAL_STYLE.HEADER_TAB_HEIGHT
     );
 
-    const hasFrames = React.useMemo(
-        () => framesAllIds.length > 0,
-        [framesAllIds]
-    );
     const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
     const showBottomLoader = React.useMemo(
         () => framesStatus === 'LOADING',
         [framesStatus]
+    );
+    const showFrames = React.useMemo(
+        () => framesAllIds.length > 0 && !!paddingTop,
+        [framesAllIds, paddingTop]
     );
     const showFullScreenLoader = React.useMemo(
         () => framesStatus === 'PENDING' || framesStatus === 'INITIAL_LOADING',
@@ -53,7 +53,7 @@ const HomeScreen = () => {
             <Header onLayout={onLayout} style={containerStyle}>
                 <DefaultHeader />
             </Header>
-            {hasFrames && !!paddingTop ? (
+            {showFrames ? (
                 <Frames
                     allIds={framesAllIds}
                     paddingTop={paddingTop}

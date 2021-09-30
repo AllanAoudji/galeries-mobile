@@ -1,8 +1,8 @@
 import moment from 'moment';
 import * as React from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 
@@ -13,14 +13,23 @@ import {
     TimeContainer,
 } from './styles';
 import { selectUserId } from '#store/users';
+import { updateCommentsCurrent } from '#store/comments';
 
 type Props = {
     comment: Store.Models.Comment;
 };
 
 const CommentCard = ({ comment }: Props) => {
-    const selectUser = React.useMemo(() => selectUserId(comment.id), [comment]);
+    const dispatch = useDispatch();
+    const selectUser = React.useMemo(
+        () => selectUserId(comment.userId),
+        [comment]
+    );
     const user = useSelector(selectUser);
+
+    const handlePress = React.useCallback(() => {
+        dispatch(updateCommentsCurrent(comment.id));
+    }, [comment]);
 
     return (
         <Container>
@@ -42,9 +51,15 @@ const CommentCard = ({ comment }: Props) => {
                             {moment(comment.createdAt).fromNow()}
                         </Typography>
                     </TimeContainer>
-                    <Typography color="primary" fontFamily="bold" fontSize={12}>
-                        Reply
-                    </Typography>
+                    <Pressable onPress={handlePress}>
+                        <Typography
+                            color="primary"
+                            fontFamily="bold"
+                            fontSize={12}
+                        >
+                            Reply
+                        </Typography>
+                    </Pressable>
                 </ContentContainerFooter>
             </View>
         </Container>

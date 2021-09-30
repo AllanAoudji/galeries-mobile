@@ -2,6 +2,8 @@ import {
     COMMENTS_BY_ID_REMOVE,
     COMMENTS_BY_ID_RESET,
     COMMENTS_BY_ID_SET,
+    COMMENTS_CURRENT_RESET,
+    COMMENTS_CURRENT_UPDATE,
     COMMENTS_DELETE,
     COMMENTS_GET,
     COMMENTS_LOADING_DELETE_RESET,
@@ -64,12 +66,24 @@ export const resetCommentsById: () => Store.Action = () => ({
     payload: {},
     type: COMMENTS_BY_ID_RESET,
 });
+export const resetCommentsCurrent: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: COMMENTS_CURRENT_RESET,
+});
 export const setCommentsById: (payload: {
     [key: string]: Store.Models.Comment;
 }) => Store.Action = (payload) => ({
     meta: {},
     payload,
     type: COMMENTS_BY_ID_SET,
+});
+export const updateCommentsCurrent: (payload: string) => Store.Action = (
+    payload
+) => ({
+    meta: {},
+    payload,
+    type: COMMENTS_CURRENT_UPDATE,
 });
 export const updateCommentsLoadingDelete: (
     payload: Store.Status

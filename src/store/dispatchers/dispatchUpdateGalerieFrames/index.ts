@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 
 import { updateGaleriesById } from '#store/galeries/actionCreators';
-import { combineFramesAllIds } from '#store/combineFrames';
+import { combineFramesAllIds } from '#store/combineAllIds';
 
 const dispatchUpdateGalerieFrames = (
     dispatch: Dispatch<Store.Action>,

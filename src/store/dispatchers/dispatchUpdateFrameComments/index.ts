@@ -16,10 +16,9 @@ const dispatchUpdateFrameComments = (
         updateFramesById({
             ...frame,
             comments: {
-                allIds: [
-                    ...(frame.comments ? frame.comments.allIds : []),
-                    ...(comments.allIds || []),
-                ],
+                allIds:
+                    comments.allIds ||
+                    (frame.comments ? frame.comments.allIds : []),
                 end:
                     comments.end ||
                     (frame.comments ? frame.comments.end : false),

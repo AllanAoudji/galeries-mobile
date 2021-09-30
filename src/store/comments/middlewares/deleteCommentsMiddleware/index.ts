@@ -10,23 +10,16 @@ const deleteCommentsMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === COMMENTS_DELETE) {
-            const loading = getCommentsLoadingDelete(getState);
-            if (
-                typeof action.payload === 'string' &&
-                !loading.includes('LOADING')
-            ) {
-                const comment = getComment(getState, action.payload);
-                if (comment) {
-                    dispatch(updateCommentsLoadingDelete('LOADING'));
-                    dispatchDeleteComment(
-                        dispatch,
-                        comment.frameId,
-                        action.payload
-                    );
-                }
-            }
-        }
+
+        if (action.type !== COMMENTS_DELETE) return;
+        const loading = getCommentsLoadingDelete(getState);
+        if (typeof action.payload !== 'string' || loading.includes('LOADING'))
+            return;
+        const comment = getComment(getState, action.payload);
+        if (!comment) return;
+
+        dispatch(updateCommentsLoadingDelete('LOADING'));
+        dispatchDeleteComment(dispatch, comment.frameId, action.payload);
     };
 
 export default deleteCommentsMiddleware;

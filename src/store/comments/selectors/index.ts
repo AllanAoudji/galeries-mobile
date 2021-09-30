@@ -13,6 +13,8 @@ export const selectCommentsLoadingDelete = (state: Store.Reducer) =>
     state.comments.loading.delete;
 export const selectCommentsLoadingPost = (state: Store.Reducer) =>
     state.comments.loading.post;
+export const selectCommentCurrent = (state: Store.Reducer) =>
+    state.comments.current;
 export const selectCurrentFrameCommentsAllId = createSelector(
     [selectFramesCurrent, selectFramesById],
     (framesCurrent, framesById) => {
