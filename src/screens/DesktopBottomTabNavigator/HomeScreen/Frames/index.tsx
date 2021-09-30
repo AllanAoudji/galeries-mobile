@@ -9,7 +9,7 @@ import { getFrames } from '#store/frames';
 import RenderItem from './RenderItem';
 
 type Props = {
-    frames: string[];
+    allIds: string[];
     paddingTop: number;
     scrollHandler: any;
 };
@@ -18,7 +18,7 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Frames = ({ frames, paddingTop, scrollHandler }: Props) => {
+const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
     const disaptch = useDispatch();
 
     const handleEndReach = React.useCallback(() => {
@@ -32,7 +32,7 @@ const Frames = ({ frames, paddingTop, scrollHandler }: Props) => {
                 paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
                 paddingTop,
             }}
-            data={frames}
+            data={allIds}
             initialNumToRender={10}
             keyExtractor={keyExtractor}
             maxToRenderPerBatch={10}

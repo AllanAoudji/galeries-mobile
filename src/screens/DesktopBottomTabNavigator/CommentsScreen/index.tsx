@@ -49,25 +49,19 @@ const initialValues = {
     body: '',
 };
 
-const renderItem = ({
-    item,
-}: ListRenderItemInfo<
-    Store.Models.Comment & {
-        user: Store.Models.User & {
-            currentProfilePicture: Store.Models.ProfilePicture;
-        };
-    }
->) => <CommentCard comment={item} />;
+const renderItem = ({ item }: ListRenderItemInfo<Store.Models.Comment>) => (
+    <CommentCard comment={item} />
+);
 
 const CommentScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
+    const currentFrame = useSelector(selectCurrentFrame);
     const currentFrameComments = useSelector(selectCurrentFrameComments);
     const currentFrameCommentsStatus = useSelector(
         selectCurrentFrameCommentsStatus
     );
-    const currentFrame = useSelector(selectCurrentFrame);
     const loading = useSelector(selectCommentsLoadingPost);
 
     const { onLayout: headerOnLayout, size: headerSize } = useComponentSize();
@@ -120,6 +114,7 @@ const CommentScreen = ({ navigation }: Props) => {
     );
     const handlePress = React.useCallback(() => {
         if (
+            loading &&
             !loading.includes('LOADING') &&
             !disableButton &&
             formik.values.body !== ''
@@ -136,7 +131,7 @@ const CommentScreen = ({ navigation }: Props) => {
             dispatch(getFrameComments(currentFrame.id));
     }, [currentFrame, currentFrameCommentsStatus]);
     const onPressReturn = React.useCallback(() => {
-        if (!loading.includes('LOADING')) {
+        if (loading && !loading.includes('LOADING')) {
             if (navigation.canGoBack()) navigation.goBack();
             else navigation.navigate('Home');
         }
@@ -166,7 +161,6 @@ const CommentScreen = ({ navigation }: Props) => {
     React.useEffect(() => {
         if (loading === 'SUCCESS') successCallback();
     }, [loading]);
-
     React.useEffect(() => {
         if (currentFrame && currentFrameCommentsStatus === 'PENDING')
             dispatch(getFrameComments(currentFrame.id));
@@ -219,7 +213,7 @@ const CommentScreen = ({ navigation }: Props) => {
                         <TextInputStyled
                             editable={!loading}
                             height={height}
-                            loading={loading.includes('LOADING')}
+                            loading={!!loading && loading.includes('LOADING')}
                             maxLength={FIELD_REQUIREMENT.COMMENT_MAX_LENGTH}
                             multiline
                             onChangeText={handleChangeBodyText}

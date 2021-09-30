@@ -20,11 +20,11 @@ const RenderItem = ({ item }: Props) => {
     const handlePresscomments = React.useCallback(() => {
         dispatch(updateFramesCurrent(item));
         navigation.navigate('Comments');
-    }, [navigation]);
+    }, []);
     const handlePressLikes = React.useCallback(() => {
         dispatch(updateFramesCurrent(item));
         navigation.navigate('Likes');
-    }, [navigation]);
+    }, []);
 
     return (
         <FrameCard
@@ -35,4 +35,4 @@ const RenderItem = ({ item }: Props) => {
     );
 };
 
-export default RenderItem;
+export default React.memo(RenderItem);

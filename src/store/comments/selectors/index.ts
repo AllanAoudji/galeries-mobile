@@ -13,6 +13,15 @@ export const selectCommentsLoadingDelete = (state: Store.Reducer) =>
     state.comments.loading.delete;
 export const selectCommentsLoadingPost = (state: Store.Reducer) =>
     state.comments.loading.post;
+export const selectCurrentFrameCommentsAllId = createSelector(
+    [selectFramesCurrent, selectFramesById],
+    (framesCurrent, framesById) => {
+        if (!framesCurrent) return undefined;
+        const frame = framesById[framesCurrent];
+        if (!frame || !frame.comments) return undefined;
+        return frame.comments.allIds;
+    }
+);
 export const selectCurrentFrameComments = createSelector(
     [selectCommentsById, selectFramesCurrent, selectFramesById],
     (commentsById, framesCurrent, framesById) => {
@@ -30,7 +39,7 @@ export const selectCurrentFrameCommentsStatus = createSelector(
     (framesById, framesCurrent) => {
         if (!framesCurrent) return undefined;
         const frame = framesById[framesCurrent];
-        if (!frame || !frame.comments) return undefined;
+        if (!frame || !frame.comments) return 'PENDING';
         return frame.comments.status;
     }
 );

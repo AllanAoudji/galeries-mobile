@@ -22,7 +22,7 @@ import { GLOBAL_STYLE } from '#helpers/constants';
 const HomeScreen = () => {
     const dispatch = useDispatch();
 
-    const frames = useSelector(selectFramesAllIds);
+    const framesAllIds = useSelector(selectFramesAllIds);
     const framesStatus = useSelector(selectFramesStatus);
 
     const { onLayout, size } = useComponentSize();
@@ -30,7 +30,10 @@ const HomeScreen = () => {
         GLOBAL_STYLE.HEADER_TAB_HEIGHT
     );
 
-    const hasFrames = React.useMemo(() => frames.length > 0, [frames]);
+    const hasFrames = React.useMemo(
+        () => framesAllIds.length > 0,
+        [framesAllIds]
+    );
     const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
     const showBottomLoader = React.useMemo(
         () => framesStatus === 'LOADING',
@@ -52,7 +55,7 @@ const HomeScreen = () => {
             </Header>
             {hasFrames && !!paddingTop ? (
                 <Frames
-                    frames={frames}
+                    allIds={framesAllIds}
                     paddingTop={paddingTop}
                     scrollHandler={scrollHandler}
                 />

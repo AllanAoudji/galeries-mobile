@@ -20,7 +20,7 @@ const commentsByIdReducer = (state = initialState, action: Store.Action) => {
             if (typeof action.payload === 'object')
                 return {
                     ...state,
-                    [action.payload.id]: action.payload,
+                    ...action.payload,
                 };
             return state;
         default:
