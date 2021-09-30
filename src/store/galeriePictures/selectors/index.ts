@@ -5,6 +5,11 @@ const selectGaleriesById = (state: Store.Reducer) => state.galeries.byId;
 const selectGaleriePicturesById = (state: Store.Reducer) =>
     state.galeriePictures.byId;
 
+export const selectGaleriePicture = (galeriePictureId: string) =>
+    createSelector(
+        [selectGaleriePicturesById],
+        (galeriePicturesById) => galeriePicturesById[galeriePictureId]
+    );
 export const selectFrameGaleriePictures = (frameId: string) =>
     createSelector(
         [selectFramesById, selectGaleriePicturesById],

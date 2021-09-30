@@ -13,21 +13,24 @@ const postFramesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === FRAMES_POST) {
-            const loading = getFramesLoadingPost(getState);
-            const galerieId = action.meta.query
-                ? action.meta.query.galerieId
-                : undefined;
-            if (
-                action.payload instanceof FormData &&
-                galerieId &&
-                !loading.includes('LOADING')
-            ) {
-                dispatch(updateFramesLoadingPost('LOADING'));
-                dispatch(resetFramesFieldsError());
-                dispatchPostFrame(dispatch, galerieId, action.payload);
-            }
-        }
+
+        if (action.type !== FRAMES_POST) return;
+
+        const loading = getFramesLoadingPost(getState);
+        const galerieId = action.meta.query
+            ? action.meta.query.galerieId
+            : undefined;
+
+        if (
+            !(action.payload instanceof FormData) ||
+            !galerieId ||
+            loading.includes('LOADING')
+        )
+            return;
+
+        dispatch(updateFramesLoadingPost('LOADING'));
+        dispatch(resetFramesFieldsError());
+        dispatchPostFrame(dispatch, galerieId, action.payload);
     };
 
 export default postFramesMiddleware;

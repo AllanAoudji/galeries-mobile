@@ -8,8 +8,10 @@ const resetGaleriePicturesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === GALERIE_PICTURES_RESET)
-            dispatch(resetGaleriePicturesById());
+
+        if (action.type !== GALERIE_PICTURES_RESET) return;
+
+        dispatch(resetGaleriePicturesById());
     };
 
 export default resetGaleriePicturesMiddleware;

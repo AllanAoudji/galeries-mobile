@@ -38,19 +38,20 @@ const apiRequestMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>
     (next) =>
     (action: Store.Action) => {
-        if (action.type.includes(API_REQUEST))
+        if (action.type.includes(API_REQUEST)) {
             if (action.meta.entity && action.meta.method && action.meta.url)
                 request({
                     body: action.payload,
                     method: action.meta.method,
                     url: action.meta.url,
                 })
-                    .then((res) =>
-                        apiRequestSuccessMiddleware(res, dispatch, action)
-                    )
-                    .catch((err: AxiosError) =>
-                        apiRequestErrorMiddleware(err, dispatch, action)
-                    );
+                    .then((res) => {
+                        apiRequestSuccessMiddleware(res, dispatch, action);
+                    })
+                    .catch((err: AxiosError) => {
+                        apiRequestErrorMiddleware(err, dispatch, action);
+                    });
+        }
         return next(action);
     };
 

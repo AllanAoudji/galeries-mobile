@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { Image } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    getUserCurrentProfilePicture,
-    selectUserCurrentProfilePicture,
-    selectUserCurrentProfilePictureStatus,
-} from '#store/profilePictures';
+import { useSelector } from 'react-redux';
+
+import { selectUserCurrentProfilePicture } from '#store/profilePictures';
 
 import DefaultProfilePicture from '../../../assets/images/PP.jpg';
 
@@ -43,35 +40,17 @@ const ProfilePictureWithUser = ({
     size = 'normal',
     user,
 }: ProfilePictureWithUserProps) => {
-    const dispatch = useDispatch();
     const selectCurrentProfilePicture = React.useMemo(
         () => selectUserCurrentProfilePicture(user.id),
         [user]
     );
     const currentProfilePicture = useSelector(selectCurrentProfilePicture);
-    const selectCurrentProfilepictureStatus = React.useCallback(
-        () => selectUserCurrentProfilePictureStatus(user.id),
-        [user]
-    );
-    const currentProfilePictureStatus = useSelector(
-        selectCurrentProfilepictureStatus()
-    );
-    const [uri, setUri] = React.useState<string>(DEFAULT_PROFILE_PICTURE);
 
-    React.useEffect(() => {
-        if (currentProfilePictureStatus === 'PENDING')
-            dispatch(getUserCurrentProfilePicture(user.id));
-    }, [currentProfilePictureStatus, user]);
-
-    React.useEffect(() => {
-        if (user && uri === DEFAULT_PROFILE_PICTURE) {
-            if (currentProfilePicture)
-                setUri(currentProfilePicture.cropedImage.signedUrl);
-            else if (user.defaultProfilePicture)
-                setUri(user.defaultProfilePicture);
-            else setUri(DEFAULT_PROFILE_PICTURE);
-        } else setUri(DEFAULT_PROFILE_PICTURE);
-    }, [user, uri]);
+    const uri = React.useMemo(() => {
+        if (currentProfilePicture)
+            return currentProfilePicture.cropedImage.cachedSignedUrl;
+        return DEFAULT_PROFILE_PICTURE;
+    }, [currentProfilePicture]);
 
     return (
         <Container border={border} mb={mb} ml={ml} mr={mr} mt={mt} size={size}>
@@ -95,7 +74,21 @@ const ProfilePicture = ({
     size = 'normal',
     user,
 }: Props) => {
-    if (!user) return null;
+    if (!user)
+        return (
+            <Container
+                border={border}
+                mb={mb}
+                ml={ml}
+                mr={mr}
+                mt={mt}
+                size={size}
+            >
+                <InnerContainer border containerBorder={border} size={size}>
+                    <ImageStyled source={{ uri: DEFAULT_PROFILE_PICTURE }} />
+                </InnerContainer>
+            </Container>
+        );
 
     return (
         <ProfilePictureWithUser

@@ -33,7 +33,7 @@ const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
     return (
         <Container>
             <Header userId={frame.userId} />
-            <Slider frameId={frame.id} />
+            <Slider galeriePictures={frame.galeriePictures} />
             <Footer
                 createdAt={frame.createdAt}
                 description={frame.description}
@@ -48,4 +48,4 @@ const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
     );
 };
 
-export default React.memo(FrameCard);
+export default FrameCard;

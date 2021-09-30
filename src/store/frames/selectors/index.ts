@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 
-const selectFramesAllIds = (state: Store.Reducer) => state.frames.allIds;
 const selectFramesById = (state: Store.Reducer) => state.frames.byId;
 const selectFramesCurrent = (state: Store.Reducer) => state.frames.current;
 const selectGaleriesById = (state: Store.Reducer) => state.galeries.byId;
@@ -34,6 +33,7 @@ export const selectCurrentGalerieFrameStatus = createSelector(
         return galerie.frames.status;
     }
 );
+export const selectFramesAllIds = (state: Store.Reducer) => state.frames.allIds;
 export const selectFrame = (id: string) =>
     createSelector([selectFramesById], (frameById) => frameById[id]);
 export const selectFrames = createSelector(

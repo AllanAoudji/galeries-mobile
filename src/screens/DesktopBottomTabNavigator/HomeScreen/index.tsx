@@ -9,7 +9,11 @@ import {
 } from '#components';
 
 import { Container, Header } from './styles';
-import { getFrames, selectFrames, selectFramesStatus } from '#store/frames';
+import {
+    getFrames,
+    selectFramesAllIds,
+    selectFramesStatus,
+} from '#store/frames';
 
 import Frames from './Frames';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
@@ -18,7 +22,7 @@ import { GLOBAL_STYLE } from '#helpers/constants';
 const HomeScreen = () => {
     const dispatch = useDispatch();
 
-    const frames = useSelector(selectFrames);
+    const frames = useSelector(selectFramesAllIds);
     const framesStatus = useSelector(selectFramesStatus);
 
     const { onLayout, size } = useComponentSize();

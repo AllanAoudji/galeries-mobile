@@ -19,7 +19,7 @@ const Header = ({ userId }: Props) => {
     return (
         <Container>
             <InfoContainer>
-                {user && <ProfilePicture mr="smallest" user={user} />}
+                <ProfilePicture mr="smallest" user={user} />
                 <Typography>posted by </Typography>
                 <Typography fontFamily="bold">
                     {user ? user.pseudonym : 'username'}
@@ -38,4 +38,4 @@ const Header = ({ userId }: Props) => {
     );
 };
 
-export default React.memo(Header);
+export default Header;

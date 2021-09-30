@@ -10,16 +10,17 @@ const postProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === PROFILE_PICTURES_POST) {
-            const loading = getProfilePicturesLoadingPost(getState);
-            if (
-                action.payload instanceof FormData &&
-                !loading.includes('LOADING')
-            ) {
-                dispatch(updateProfilePicturesLoadingPost('LOADING'));
-                dispatchPostProfilePicture(dispatch, action.payload);
-            }
-        }
+
+        if (action.type !== PROFILE_PICTURES_POST) return;
+        const loading = getProfilePicturesLoadingPost(getState);
+        if (
+            !(action.payload instanceof FormData) ||
+            loading.includes('LOADING')
+        )
+            return;
+
+        dispatch(updateProfilePicturesLoadingPost('LOADING'));
+        dispatchPostProfilePicture(dispatch, action.payload);
     };
 
 export default postProfilePicturesMiddleware;

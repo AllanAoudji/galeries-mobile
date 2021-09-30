@@ -103,4 +103,4 @@ const GalerieTabbarNavigator = ({
     );
 };
 
-export default React.memo(GalerieTabbarNavigator);
+export default GalerieTabbarNavigator;

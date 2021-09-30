@@ -17,16 +17,16 @@ const resetProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === PROFILE_PICTURES_RESET) {
-            dispatch(resetProfilePicturesAllId());
-            dispatch(resetProfilePicturesById());
-            dispatch(resetProfilePicturesCurrent());
-            dispatch(resetProfilePicturesEnd());
-            dispatch(resetProfilePicturesLoadingDelete());
-            dispatch(resetProfilePicturesLoadingPost());
-            dispatch(resetProfilePicturesPrevious());
-            dispatch(resetProfilePicturesStatus());
-        }
+        if (action.type !== PROFILE_PICTURES_RESET) return;
+
+        dispatch(resetProfilePicturesAllId());
+        dispatch(resetProfilePicturesById());
+        dispatch(resetProfilePicturesCurrent());
+        dispatch(resetProfilePicturesEnd());
+        dispatch(resetProfilePicturesLoadingDelete());
+        dispatch(resetProfilePicturesLoadingPost());
+        dispatch(resetProfilePicturesPrevious());
+        dispatch(resetProfilePicturesStatus());
     };
 
 export default resetProfilePicturesMiddleware;

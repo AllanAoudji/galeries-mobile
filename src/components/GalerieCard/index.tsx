@@ -135,4 +135,4 @@ const GalerieModal = ({ galerie }: Props) => {
     );
 };
 
-export default React.memo(GalerieModal);
+export default GalerieModal;

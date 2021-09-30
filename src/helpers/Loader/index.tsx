@@ -1,3 +1,4 @@
+import { useAssets } from 'expo-asset';
 import { useFonts } from 'expo-font';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +12,8 @@ const Loader: React.FC<{}> = ({ children }) => {
     const me = useSelector(selectMe);
     const meStatus = useSelector(selectMeStatus);
 
+    const [assets] = useAssets([require('../../../assets/images/PP.jpg')]);
+
     const [fontsLoaded] = useFonts({
         HelveticaLtStBold: require('../../../assets/fonts/HelveticaLTStd-Bold.otf'),
         HelveticaLtStLight: require('../../../assets/fonts/HelveticaLTStd-Light.otf'),
@@ -23,6 +26,7 @@ const Loader: React.FC<{}> = ({ children }) => {
     }, [me, meStatus]);
 
     if (
+        !assets ||
         !fontsLoaded ||
         meStatus === 'PENDING' ||
         meStatus.includes('LOADING')
