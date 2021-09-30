@@ -10,16 +10,14 @@ const deleteProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === PROFILE_PICTURES_DELETE) {
-            const loading = getProfilePicturesLoadingDelete(getState);
-            if (
-                typeof action.payload === 'string' &&
-                !loading.includes('LOADING')
-            ) {
-                dispatch(updateGaleriesLoadingPut('LOADING'));
-                dispatchDeleteProfilePicture(dispatch, action.payload);
-            }
-        }
+
+        if (action.type !== PROFILE_PICTURES_DELETE) return;
+        const loading = getProfilePicturesLoadingDelete(getState);
+        if (typeof action.payload !== 'string' || loading.includes('LOADING'))
+            return;
+
+        dispatch(updateGaleriesLoadingPut('LOADING'));
+        dispatchDeleteProfilePicture(dispatch, action.payload);
     };
 
 export default deleteProfilePicturesMiddleware;

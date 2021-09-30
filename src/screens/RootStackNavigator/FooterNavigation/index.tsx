@@ -22,4 +22,4 @@ const FooterNavigation = ({ onPress, title }: Props) => {
     );
 };
 
-export default React.memo(FooterNavigation);
+export default FooterNavigation;

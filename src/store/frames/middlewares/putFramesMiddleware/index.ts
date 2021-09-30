@@ -10,21 +10,24 @@ const putFrameMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === FRAMES_PUT) {
-            const frameId = action.meta.query
-                ? action.meta.query.frameId
-                : undefined;
-            const loading = getFramesLoadingPut(getState);
-            if (
-                typeof action.payload.description === 'string' &&
-                typeof action.payload.id === 'string' &&
-                frameId &&
-                !loading.includes('LOADING')
-            ) {
-                dispatch(updateFramesLoadingPut('LOADING'));
-                dispatchPutFrame(dispatch, frameId, action.payload);
-            }
-        }
+
+        if (action.type !== FRAMES_PUT) return;
+
+        const frameId = action.meta.query
+            ? action.meta.query.frameId
+            : undefined;
+        const loading = getFramesLoadingPut(getState);
+
+        if (
+            typeof action.payload !== 'object' ||
+            typeof action.payload.description !== 'string' ||
+            !frameId ||
+            loading.includes('LOADING')
+        )
+            return;
+
+        dispatch(updateFramesLoadingPut('LOADING'));
+        dispatchPutFrame(dispatch, frameId, action.payload);
     };
 
 export default putFrameMiddleware;

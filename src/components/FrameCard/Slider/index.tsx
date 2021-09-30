@@ -6,10 +6,7 @@ import {
     useWindowDimensions,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
 import { useTheme } from 'styled-components';
-
-import { selectFrameGaleriePictures } from '#store/galeriePictures';
 
 import Image from './Image';
 
@@ -21,18 +18,31 @@ import {
 } from './styles';
 
 type Props = {
-    frameId: string;
+    galeriePictures?: {
+        allIds: string[];
+        status: Store.Status;
+    };
+};
+type DotsProps = {
+    allIds: string[];
+    currentIndex: number;
 };
 
-const Slider = ({ frameId }: Props) => {
+const Dots = ({ allIds, currentIndex }: DotsProps) => {
+    if (allIds.length <= 1) return null;
+
+    return (
+        <>
+            {allIds.map((_, index) => (
+                <Dot current={currentIndex === index} key={index} />
+            ))}
+        </>
+    );
+};
+
+const Slider = ({ galeriePictures }: Props) => {
     const dimension = useWindowDimensions();
     const theme = useTheme();
-
-    const selectGaleriePictures = React.useMemo(
-        () => selectFrameGaleriePictures(frameId),
-        [frameId]
-    );
-    const galeriePictures = useSelector(selectGaleriePictures);
 
     const [currentIndex, setCurrentIndex] = React.useState<number>(0);
 
@@ -46,10 +56,18 @@ const Slider = ({ frameId }: Props) => {
         [currentIndex]
     );
 
+    const galeriePicturesAreLoading = React.useMemo(
+        () =>
+            galeriePictures &&
+            (galeriePictures.status === 'PENDING' ||
+                galeriePictures.status.includes('LOADING')),
+        [galeriePictures]
+    );
+
     return (
         <>
             <LinearGradiantStyled size={dimension.width}>
-                {galeriePictures ? (
+                {galeriePictures && !galeriePicturesAreLoading ? (
                     <ScrollView
                         decelerationRate="fast"
                         disableIntervalMomentum={true}
@@ -58,11 +76,8 @@ const Slider = ({ frameId }: Props) => {
                         overScrollMode="never"
                         snapToInterval={dimension.width}
                     >
-                        {galeriePictures.map((galeriePicture) => (
-                            <Image
-                                galeriePicture={galeriePicture}
-                                key={galeriePicture.id}
-                            />
+                        {galeriePictures.allIds.map((id) => (
+                            <Image galeriePictureId={id} key={id} />
                         ))}
                     </ScrollView>
                 ) : (
@@ -75,17 +90,15 @@ const Slider = ({ frameId }: Props) => {
                 )}
             </LinearGradiantStyled>
             <DotsContainer>
-                {galeriePictures &&
-                    galeriePictures.length > 1 &&
-                    galeriePictures.map((galeriePicture, index) => (
-                        <Dot
-                            current={currentIndex === index}
-                            key={galeriePicture.id}
-                        />
-                    ))}
+                {!!galeriePictures && (
+                    <Dots
+                        allIds={galeriePictures.allIds}
+                        currentIndex={currentIndex}
+                    />
+                )}
             </DotsContainer>
         </>
     );
 };
 
-export default React.memo(Slider);
+export default Slider;

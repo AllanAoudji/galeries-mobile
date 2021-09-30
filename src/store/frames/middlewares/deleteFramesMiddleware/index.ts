@@ -10,16 +10,14 @@ const deleteFramesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === FRAMES_DELETE) {
-            const loading = getFramesLoadingDelete(getState);
-            if (
-                typeof action.payload === 'string' &&
-                !loading.includes('LOADING')
-            ) {
-                dispatch(updateFramesLoadingDelete('LOADING'));
-                dispatchDeleteFrame(dispatch, action.payload);
-            }
-        }
+
+        if (action.type !== FRAMES_DELETE) return;
+        const loading = getFramesLoadingDelete(getState);
+        if (typeof action.payload !== 'string' || loading.includes('LOADING'))
+            return;
+
+        dispatch(updateFramesLoadingDelete('LOADING'));
+        dispatchDeleteFrame(dispatch, action.payload);
     };
 
 export default deleteFramesMiddleware;

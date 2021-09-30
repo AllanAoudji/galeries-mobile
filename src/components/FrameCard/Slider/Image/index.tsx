@@ -1,24 +1,26 @@
 import * as React from 'react';
-
-import { useWindowDimensions } from 'react-native';
-import CachedImage from '#components/CachedImage';
+import { useSelector } from 'react-redux';
+import { selectGaleriePicture } from '#store/galeriePictures';
 
 import Container from './Container';
 
+import { ImageStyled } from './styled';
+
 type Props = {
-    galeriePicture: Store.Models.GaleriePicture;
+    galeriePictureId: string;
 };
 
-const Image = ({ galeriePicture }: Props) => {
-    const dimensions = useWindowDimensions();
+const Image = ({ galeriePictureId }: Props) => {
+    const galeriePictureSelector = React.useMemo(
+        () => selectGaleriePicture(galeriePictureId),
+        [galeriePictureId]
+    );
+    const galeriePicture = useSelector(galeriePictureSelector);
 
     return (
         <Container colors={galeriePicture.pendingHexes}>
-            <CachedImage
-                height={dimensions.width}
-                id={galeriePicture.cropedImage.id}
-                uri={galeriePicture.cropedImage.signedUrl}
-                width={dimensions.width}
+            <ImageStyled
+                source={{ uri: galeriePicture.cropedImage.cachedSignedUrl }}
             />
         </Container>
     );

@@ -42,4 +42,4 @@ const Item = ({ uri }: Props) => {
     );
 };
 
-export default React.memo(Item);
+export default Item;

@@ -15,40 +15,37 @@ const getProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === PROFILE_PICTURES_GET) {
-            const userId = action.meta.query
-                ? action.meta.query.userId
-                : undefined;
-            if (userId === 'me') {
-                const me = getMe(getState);
-                if (me) {
-                    const status = me.currentProfilePicture
-                        ? me.currentProfilePicture.status
-                        : 'PENDING';
-                    if (status === 'PENDING') {
-                        dispatchUserCurrentProfilePicture(dispatch, me, {
-                            status: 'PENDING',
-                        });
-                        dispatchGetMeCurrentProfilePicture(dispatch);
-                    }
-                }
-            } else if (userId) {
-                const user = getUser(getState, userId);
-                if (user) {
-                    const status = user.currentProfilePicture
-                        ? user.currentProfilePicture.status
-                        : 'PENDING';
-                    if (status === 'PENDING') {
-                        dispatchUserCurrentProfilePicture(dispatch, user, {
-                            status: 'PENDING',
-                        });
-                        dispatchGetUserCurrentProfilePicture(dispatch, userId);
-                    }
-                }
-            } else if (typeof action.payload === 'string')
-                dispatchGetprofilePicture(dispatch, action.payload);
-            else dispatchGetProfilePictures(dispatch);
-        }
+        if (action.type !== PROFILE_PICTURES_GET) return;
+
+        const userId = action.meta.query ? action.meta.query.userId : undefined;
+
+        if (userId === 'me') {
+            const me = getMe(getState);
+            if (!me) return;
+            const status = me.currentProfilePicture
+                ? me.currentProfilePicture.status
+                : 'PENDING';
+            if (status !== 'PENDING') return;
+
+            dispatchUserCurrentProfilePicture(dispatch, me, {
+                status: 'LOADING',
+            });
+            dispatchGetMeCurrentProfilePicture(dispatch);
+        } else if (userId) {
+            const user = getUser(getState, userId);
+            if (!user) return;
+            const status = user.currentProfilePicture
+                ? user.currentProfilePicture.status
+                : 'PENDING';
+            if (status !== 'PENDING') return;
+
+            dispatchUserCurrentProfilePicture(dispatch, user, {
+                status: 'LOADING',
+            });
+            dispatchGetUserCurrentProfilePicture(dispatch, userId);
+        } else if (typeof action.payload === 'string')
+            dispatchGetprofilePicture(dispatch, action.payload);
+        else dispatchGetProfilePictures(dispatch);
     };
 
 export default getProfilePicturesMiddleware;

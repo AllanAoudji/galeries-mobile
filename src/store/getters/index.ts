@@ -24,6 +24,14 @@ export const getFramesStatus = (getState: () => Store.Reducer) =>
     getState().frames.status;
 export const getGalerie = (getState: () => Store.Reducer, galerieId: string) =>
     getState().galeries.byId[galerieId];
+export const getGalerieFramesAllIds = (
+    getState: () => Store.Reducer,
+    galerieId: string
+) => {
+    const galerie = getState().galeries.byId[galerieId];
+    if (!galerie || !galerie.frames) return undefined;
+    return galerie.frames.allIds;
+};
 export const getGaleriesEnd = (getState: () => Store.Reducer, name: string) =>
     getState().galeries.end[name];
 export const getGaleriesLoadingDelete = (getState: () => Store.Reducer) =>

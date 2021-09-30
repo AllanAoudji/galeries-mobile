@@ -349,14 +349,22 @@ declare global {
             };
             type GaleriePicture = {
                 createdAt: string;
-                cropedImage: Image;
+                cropedImage: Image & { cachedSignedUrl: string };
                 current: boolean;
                 frameId: string;
                 id: string;
                 index: string;
-                originalImage: string;
+                originalImage: Image & { cachedSignedUrl: string };
                 pendingHexes: string;
                 updatedAt: string;
+            };
+            type Image = {
+                id: string;
+                format: string;
+                height: number;
+                signedUrl: string;
+                size: number;
+                width: number;
             };
             type Like = {
                 autoIncrementId: string;
@@ -367,14 +375,6 @@ declare global {
                 userId: string;
             };
             type LikePopulated = Like & { user: UserPopulated };
-            type Image = {
-                id: string;
-                format: string;
-                height: number;
-                signedUrl: string;
-                size: number;
-                width: number;
-            };
             type Notification = {
                 status: 'error' | 'success';
                 text: string;
@@ -382,12 +382,12 @@ declare global {
             type ProfilePicture = {
                 autoIncrementId: string;
                 createdAt: string;
-                cropedImage: Image;
+                cropedImage: Image & { cachedSignedUrl: string };
                 current: boolean;
                 frameId: string;
                 id: string;
                 index: string;
-                originalImage: string;
+                originalImage: Image & { cachedSignedUrl: string };
                 pendingHexes: string;
                 updatedAt: string;
             };

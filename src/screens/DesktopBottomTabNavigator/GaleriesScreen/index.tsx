@@ -140,4 +140,4 @@ const GaleriesScreen = () => {
     );
 };
 
-export default React.memo(GaleriesScreen, () => true);
+export default GaleriesScreen;
