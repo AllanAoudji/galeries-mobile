@@ -5,7 +5,7 @@ const BodyContainer = styled.View`
 `;
 const Container = styled.View`
     flex-direction: row;
-    margin: 3px 0 12px;
+    margin: 5px 0 8px;
 `;
 const ContentContainer = styled.View`
     flex-direction: row;
@@ -13,6 +13,7 @@ const ContentContainer = styled.View`
 `;
 const TimeContainer = styled.View`
     opacity: 0.8;
+    padding-top: 4px;
 `;
 
 export { BodyContainer, Container, ContentContainer, TimeContainer };

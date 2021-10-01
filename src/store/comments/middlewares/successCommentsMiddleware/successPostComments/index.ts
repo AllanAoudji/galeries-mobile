@@ -90,7 +90,7 @@ const successPostComments = (
                         end: numOfComments <= newAllIds.length,
                         status: storedComment.comments
                             ? storedComment.comments.status
-                            : 'SUCCESS',
+                            : 'PENDING',
                         previous: storedComment.comments
                             ? storedComment.comments.previous
                             : comment.id,

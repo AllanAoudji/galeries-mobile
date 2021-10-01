@@ -3,8 +3,8 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import ProfilePicture from '#components/ProfilePicture';
-import { selectUserId } from '#store/users';
 import Typography from '#components/Typography';
+import { selectUserId } from '#store/users';
 
 import {
     BodyContainer,

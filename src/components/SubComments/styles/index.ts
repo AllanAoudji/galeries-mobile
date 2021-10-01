@@ -7,6 +7,7 @@ const LoadMoreContainer = styled.Pressable`
     align-items: center;
     flex-direction: row;
     margin-left: 45px;
+    opacity: 0.7;
 `;
 const Separator = styled.View`
     background-color: ${({ theme }) => theme.colors.primary};

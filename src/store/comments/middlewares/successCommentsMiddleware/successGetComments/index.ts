@@ -56,23 +56,6 @@ const successGetComments = (
         byId[comment.id] = comment;
     }
 
-    if (!allIds.length) {
-        if (frameId) {
-            const frame = getFrame(getState, frameId);
-            if (!frame) return;
-            dispatchUpdateFrameComments(dispatch, frame, {
-                status: 'ERROR',
-            });
-        } else if (commentId) {
-            const storedComment = getComment(getState, commentId);
-            if (!storedComment) return;
-            dispatchUpdateCommentComments(dispatch, storedComment, {
-                status: 'ERROR',
-            });
-        }
-        return;
-    }
-
     dispatch(setCommentsById(byId));
 
     if (frameId) {
@@ -107,7 +90,7 @@ const successGetComments = (
 
         dispatchUpdateCommentComments(dispatch, storedComment, {
             allIds: newAllIds,
-            end: allIds.length < 20,
+            end: allIds.length < 10,
             previous,
             status: 'SUCCESS',
         });

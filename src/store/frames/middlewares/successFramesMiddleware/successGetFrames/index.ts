@@ -38,8 +38,6 @@ const successGetFrames = (
         byId[frame.id] = frame;
     }
 
-    if (!allIds.length) return;
-
     dispatch(setFramesById(byId));
 
     const galerieId = action.meta.query

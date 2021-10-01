@@ -15,6 +15,7 @@ const postCommentMiddleware: Middleware<{}, Store.Reducer> =
         next(action);
 
         if (action.type !== COMMENTS_POST) return;
+
         const loading = getCommentsLoadingPost(getState);
         const frameId = action.meta.query
             ? action.meta.query.frameId

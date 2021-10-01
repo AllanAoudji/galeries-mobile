@@ -44,7 +44,7 @@ const CommentCard = ({ comment }: Props) => {
             setShowComments(true);
             dispatch(getCommentComments(comment.id));
         } else if (!showComments) {
-            if (comment.numOfComments > comment.comments?.allIds.length) {
+            if (comment.comments.status === 'PENDING') {
                 dispatch(getCommentComments(comment.id));
             }
             setShowComments(true);
@@ -107,6 +107,7 @@ const CommentCard = ({ comment }: Props) => {
                     {!!comment.comments && showComments && (
                         <SubComments
                             allIds={comment.comments.allIds}
+                            commentId={comment.id}
                             end={comment.comments.end}
                         />
                     )}
