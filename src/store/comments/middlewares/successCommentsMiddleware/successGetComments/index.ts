@@ -105,7 +105,7 @@ const successGetComments = (
         if (previousCommentId)
             previous = byId[previousCommentId].autoIncrementId;
 
-        dispatchUpdateCommentComments(dispatch, comment, {
+        dispatchUpdateCommentComments(dispatch, storedComment, {
             allIds: newAllIds,
             end: allIds.length < 20,
             previous,
