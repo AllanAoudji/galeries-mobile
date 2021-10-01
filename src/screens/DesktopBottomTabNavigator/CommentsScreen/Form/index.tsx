@@ -58,6 +58,9 @@ const Form = ({ frameId, loading, onLayout, onSuccess }: Props) => {
         validationSchema: createCommentSchema,
     });
 
+    const [currentComment, setCurrentComment] = React.useState<string | null>(
+        commentCurrent
+    );
     const [textInputHeight, setTextInputHeight] = React.useState<number>(0);
 
     const disableButton = React.useMemo(() => {
@@ -100,6 +103,12 @@ const Form = ({ frameId, loading, onLayout, onSuccess }: Props) => {
     React.useEffect(() => {
         if (loading === 'SUCCESS') successCallback();
     }, [loading]);
+    React.useEffect(() => {
+        if (commentCurrent !== currentComment) {
+            formik.resetForm();
+            setCurrentComment(commentCurrent);
+        }
+    }, [commentCurrent]);
 
     useFocusEffect(
         React.useCallback(() => {
