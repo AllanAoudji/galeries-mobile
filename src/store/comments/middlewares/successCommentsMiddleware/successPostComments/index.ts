@@ -51,6 +51,8 @@ const successPostComments = (
             comment.id,
         ]);
 
+        console.log(newAllIds);
+
         dispatchUpdateFrameComments(dispatch, frame, {
             allIds: newAllIds,
         });

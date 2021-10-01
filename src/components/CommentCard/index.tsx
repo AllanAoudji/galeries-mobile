@@ -44,7 +44,7 @@ const CommentCard = ({ comment }: Props) => {
                                 {user.pseudonym}{' '}
                             </Typography>
                         )}
-                        {comment.body}
+                        {comment.body} {comment.id}
                     </Typography>
                 </ContentContainer>
                 <ContentContainerFooter>
