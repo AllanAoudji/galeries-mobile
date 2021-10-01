@@ -16,6 +16,7 @@ import { selectCurrentFrame } from '#store/frames';
 import {
     getFrameComments,
     resetCommentsCurrent,
+    selectCommentCurrent,
     selectCommentsLoadingPost,
     selectCurrentFrameCommentsAllId,
     selectCurrentFrameCommentsStatus,
@@ -33,6 +34,7 @@ const CommentScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
     const commentsAllIds = useSelector(selectCurrentFrameCommentsAllId);
+    const currentComment = useSelector(selectCommentCurrent);
     const currentFrame = useSelector(selectCurrentFrame);
     const currentFrameCommentsStatus = useSelector(
         selectCurrentFrameCommentsStatus
@@ -83,9 +85,9 @@ const CommentScreen = ({ navigation }: Props) => {
         }
     }, [loading, navigation]);
     const scrollToTop = React.useCallback(() => {
-        if (flatListRef.current)
+        if (flatListRef.current && !currentComment)
             flatListRef.current.scrollToOffset({ offset: 0 });
-    }, []);
+    }, [currentComment]);
     const handleSuccess = React.useCallback(() => scrollToTop(), [scrollToTop]);
 
     React.useEffect(() => {

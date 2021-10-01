@@ -32,6 +32,9 @@ const CommentCard = ({ comment }: Props) => {
     const user = useSelector(selectUser);
 
     const [showComments, setShowComments] = React.useState<boolean>(false);
+    const [numOfComments, setNumOfComments] = React.useState<number>(
+        comment.comments ? comment.comments.allIds.length : 0
+    );
 
     const handlePressReply = React.useCallback(() => {
         dispatch(updateCommentsCurrent(comment.id));
@@ -55,6 +58,15 @@ const CommentCard = ({ comment }: Props) => {
         () => (topLevel ? 'normal' : 'small'),
         [topLevel]
     );
+
+    React.useEffect(() => {
+        if (
+            comment.comments &&
+            comment.comments.allIds.length > numOfComments &&
+            !showComments
+        )
+            setShowComments(true);
+    }, [comment]);
 
     return (
         <Container topLevel={topLevel}>
