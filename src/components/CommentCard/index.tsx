@@ -10,6 +10,7 @@ import { selectUserId } from '#store/users';
 import { getCommentComments, updateCommentsCurrent } from '#store/comments';
 
 import {
+    BodyContainer,
     Container,
     ContentContainer,
     ContentContainerFooter,
@@ -43,8 +44,15 @@ const CommentCard = ({ comment }: Props) => {
         if (!comment.comments) {
             setShowComments(true);
             dispatch(getCommentComments(comment.id));
-        } else setShowComments((prevState) => !prevState);
-    }, [comment]);
+        } else if (!showComments) {
+            if (comment.numOfComments > comment.comments?.allIds.length) {
+                dispatch(getCommentComments(comment.id));
+            }
+            setShowComments(true);
+        } else {
+            setShowComments(false);
+        }
+    }, [comment, numOfComments, showComments]);
 
     const commentFetcherText = React.useMemo(() => {
         if (!showComments || !comment.comments)
@@ -77,7 +85,7 @@ const CommentCard = ({ comment }: Props) => {
                 user={user}
                 size={profilePictureSize}
             />
-            <View>
+            <BodyContainer>
                 <ContentContainer>
                     <Typography>
                         {!!user && (
@@ -122,7 +130,7 @@ const CommentCard = ({ comment }: Props) => {
                         />
                     )}
                 </View>
-            </View>
+            </BodyContainer>
         </Container>
     );
 };

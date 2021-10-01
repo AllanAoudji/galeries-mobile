@@ -4,6 +4,9 @@ type ContainerProps = {
     topLevel: boolean;
 };
 
+const BodyContainer = styled.View`
+    flex: 1;
+`;
 const Container = styled.View<ContainerProps>`
     flex-direction: row;
     margin: ${({ theme, topLevel }) =>
@@ -11,6 +14,7 @@ const Container = styled.View<ContainerProps>`
 `;
 const ContentContainer = styled.View`
     flex-direction: row;
+    width: 100%;
 `;
 const ContentContainerFooter = styled.View`
     flex-direction: row;
@@ -35,6 +39,7 @@ const ViewContainer = styled.Pressable`
 `;
 
 export {
+    BodyContainer,
     Container,
     ContentContainer,
     ContentContainerFooter,
