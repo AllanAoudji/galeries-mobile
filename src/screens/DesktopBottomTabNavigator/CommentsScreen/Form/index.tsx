@@ -15,6 +15,7 @@ import { createCommentSchema } from '#helpers/schemas';
 import {
     postComment,
     postCommentComment,
+    resetCommentsCurrent,
     selectCommentCurrent,
 } from '#store/comments';
 
@@ -98,6 +99,7 @@ const Form = ({ frameId, loading, onLayout, onSuccess }: Props) => {
         onSuccess();
         setTextInputHeight(0);
         formik.setValues(formik.initialValues);
+        dispatch(resetCommentsCurrent());
     }, [onSuccess]);
 
     React.useEffect(() => {
