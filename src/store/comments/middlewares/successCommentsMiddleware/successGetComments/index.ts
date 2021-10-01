@@ -49,8 +49,6 @@ const successGetComments = (
     if (comments && Array.isArray(comments))
         comments.forEach((c) => {
             allIds.push(c.id);
-            console.log(c);
-            console.log('typeof numofcomments', c.numOfComments);
             byId[c.id] = c;
         });
     else if (comment && typeof comment === 'object') {

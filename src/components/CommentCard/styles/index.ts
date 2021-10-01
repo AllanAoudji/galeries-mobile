@@ -7,14 +7,26 @@ const Container = styled.View`
 `;
 const ContentContainer = styled.View`
     flex-direction: row;
-    margin-bottom: 4px;
 `;
 const ContentContainerFooter = styled.View`
     flex-direction: row;
+    align-items: center;
+`;
+const ReplyContainer = styled.Pressable`
+    padding: ${({ theme }) => `5px ${theme.spacings.smallest}`};
 `;
 const TimeContainer = styled.View`
     opacity: 0.8;
-    padding-right: ${({ theme }) => theme.spacings.smallest};
+`;
+const ViewContainer = styled.Pressable`
+    padding-top: 5px;
 `;
 
-export { Container, ContentContainer, ContentContainerFooter, TimeContainer };
+export {
+    Container,
+    ContentContainer,
+    ContentContainerFooter,
+    ReplyContainer,
+    TimeContainer,
+    ViewContainer,
+};

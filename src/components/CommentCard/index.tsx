@@ -1,6 +1,6 @@
 import moment from 'moment';
 import * as React from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import ProfilePicture from '#components/ProfilePicture';
@@ -10,7 +10,9 @@ import {
     Container,
     ContentContainer,
     ContentContainerFooter,
+    ReplyContainer,
     TimeContainer,
+    ViewContainer,
 } from './styles';
 import { selectUserId } from '#store/users';
 import { updateCommentsCurrent } from '#store/comments';
@@ -51,7 +53,7 @@ const CommentCard = ({ comment }: Props) => {
                             {moment(comment.createdAt).fromNow()}
                         </Typography>
                     </TimeContainer>
-                    <Pressable onPress={handlePress}>
+                    <ReplyContainer onPress={handlePress}>
                         <Typography
                             color="primary"
                             fontFamily="bold"
@@ -59,8 +61,15 @@ const CommentCard = ({ comment }: Props) => {
                         >
                             Reply
                         </Typography>
-                    </Pressable>
+                    </ReplyContainer>
                 </ContentContainerFooter>
+                {comment.numOfComments > 0 && (
+                    <ViewContainer>
+                        <Typography color="primary">
+                            View {comment.numOfComments} replies
+                        </Typography>
+                    </ViewContainer>
+                )}
             </View>
         </Container>
     );

@@ -45,13 +45,12 @@ const apiRequestMiddleware: Middleware<{}, Store.Reducer> =
                     method: action.meta.method,
                     url: action.meta.url,
                 })
-                    .then((res) => {
-                        apiRequestSuccessMiddleware(res, dispatch, action);
-                    })
-                    .catch((err: AxiosError) => {
-                        console.log(err.response?.data);
-                        apiRequestErrorMiddleware(err, dispatch, action);
-                    });
+                    .then((res) =>
+                        apiRequestSuccessMiddleware(res, dispatch, action)
+                    )
+                    .catch((err: AxiosError) =>
+                        apiRequestErrorMiddleware(err, dispatch, action)
+                    );
         }
         return next(action);
     };
