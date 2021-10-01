@@ -7,7 +7,7 @@ type ContainerProps = {
 const Container = styled.View<ContainerProps>`
     flex-direction: row;
     margin: ${({ theme, topLevel }) =>
-        `0 ${theme.spacings.small} ${topLevel ? '25px' : '15px'} 0`};
+        `${topLevel ? '25px' : '10px'} ${theme.spacings.small} 0 0`};
 `;
 const ContentContainer = styled.View`
     flex-direction: row;
@@ -22,8 +22,8 @@ const ReplyContainer = styled.Pressable`
 const Separator = styled.View`
     background-color: ${({ theme }) => theme.colors.primary};
     height: 1px;
-    margin-right: ${({ theme }) => theme.spacings.smallest};
-    width: 35px;
+    margin-right: 8px;
+    width: 26px;
 `;
 const TimeContainer = styled.View`
     opacity: 0.8;
@@ -31,7 +31,7 @@ const TimeContainer = styled.View`
 const ViewContainer = styled.Pressable`
     align-items: center;
     flex-direction: row;
-    padding: 5px 0;
+    padding-top: 4px;
 `;
 
 export {

@@ -4,11 +4,11 @@ import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ProfilePicture from '#components/ProfilePicture';
+import SubComments from '#components/SubComments';
 import Typography from '#components/Typography';
 import { selectUserId } from '#store/users';
 import { getCommentComments, updateCommentsCurrent } from '#store/comments';
 
-import SubComments from './SubComments';
 import {
     Container,
     ContentContainer,
