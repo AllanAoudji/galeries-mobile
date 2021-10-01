@@ -64,8 +64,10 @@ const CommentCard = ({ comment }: Props) => {
             comment.comments &&
             comment.comments.allIds.length > numOfComments &&
             !showComments
-        )
+        ) {
+            setNumOfComments(comment.comments.allIds.length);
             setShowComments(true);
+        }
     }, [comment]);
 
     return (

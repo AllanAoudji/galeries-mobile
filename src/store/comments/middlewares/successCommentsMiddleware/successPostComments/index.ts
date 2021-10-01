@@ -2,12 +2,10 @@ import { Dispatch } from 'redux';
 
 import {
     setCommentsById,
+    updateCommentsById,
     updateCommentsLoadingPost,
 } from '#store/comments/actionCreators';
-import {
-    dispatchUpdateCommentComments,
-    dispatchUpdateFrameComments,
-} from '#store/dispatchers';
+import { updateFramesById } from '#store/frames/actionCreators';
 import { getComment, getFrame } from '#store/getters';
 import { combineCommentsAllIds } from '#store/combineAllIds';
 
@@ -25,7 +23,7 @@ const successPostComments = (
         return;
     }
 
-    const { comment } = action.payload.data;
+    const { comment, numOfComments } = action.payload.data;
     const commentId = action.meta.query
         ? action.meta.query.commentId
         : undefined;
@@ -51,9 +49,23 @@ const successPostComments = (
             comment.id,
         ]);
 
-        dispatchUpdateFrameComments(dispatch, frame, {
-            allIds: newAllIds,
-        });
+        if (typeof numOfComments === 'number')
+            dispatch(
+                updateFramesById({
+                    ...frame,
+                    numOfComments,
+                    comments: {
+                        allIds: newAllIds,
+                        end: frame.comments ? frame.comments.end : false,
+                        status: frame.comments
+                            ? frame.comments.status
+                            : 'PENDING',
+                        previous: frame.comments
+                            ? frame.comments.previous
+                            : comment.id,
+                    },
+                })
+            );
     } else if (commentId) {
         const storedComment = getComment(getState, commentId);
         if (!storedComment) {
@@ -68,9 +80,23 @@ const successPostComments = (
             comment.id,
         ]);
 
-        dispatchUpdateCommentComments(dispatch, storedComment, {
-            allIds: newAllIds,
-        });
+        if (typeof numOfComments === 'number')
+            dispatch(
+                updateCommentsById({
+                    ...storedComment,
+                    numOfComments,
+                    comments: {
+                        allIds: newAllIds,
+                        end: numOfComments <= newAllIds.length,
+                        status: storedComment.comments
+                            ? storedComment.comments.status
+                            : 'SUCCESS',
+                        previous: storedComment.comments
+                            ? storedComment.comments.previous
+                            : comment.id,
+                    },
+                })
+            );
     }
     dispatch(updateCommentsLoadingPost('SUCCESS'));
 };

@@ -315,7 +315,7 @@ declare global {
                     status: Store.Status;
                 };
                 liked: boolean;
-                numOfComments: string;
+                numOfComments: number;
                 numOfLikes: string;
                 updatedAt: string;
                 userId: string;
