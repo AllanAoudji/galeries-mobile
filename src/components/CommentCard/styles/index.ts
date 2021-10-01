@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 const BodyContainer = styled.View`
     flex: 1;
 `;
-const Container = styled.View`
+const Container = styled.Pressable`
     flex-direction: row;
     margin: ${({ theme }) =>
         `0 ${theme.spacings.small} ${theme.spacings.smallest}`};
@@ -14,8 +14,9 @@ const ContentContainer = styled.View`
 `;
 const ContentContainerFooter = styled.Pressable`
     flex-direction: row;
+    align-self: flex-start;
     align-items: center;
-    padding: 4px 0 2px;
+    padding: ${({ theme }) => ` 4px ${theme.spacings.smallest} 2px 0`};
 `;
 const ReplyContainer = styled.Pressable``;
 const Separator = styled.View`
@@ -30,9 +31,10 @@ const TimeContainer = styled.View`
 `;
 const ViewContainer = styled.Pressable`
     align-items: center;
+    align-self: flex-start;
     flex-direction: row;
     opacity: 0.7;
-    padding-top: 3px;
+    padding: ${({ theme }) => `3px ${theme.spacings.smallest} 0 0`};
 `;
 
 export {

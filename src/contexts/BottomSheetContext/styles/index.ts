@@ -1,24 +1,29 @@
-import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
-
-type ContainerProps = {
-    height: number;
-};
-type OverlayProps = {
-    height: number;
-};
+import Animated from 'react-native-reanimated';
 
 const BORDER_RADIUS = '18px';
 
-const Container = styled(Animated.View)<ContainerProps>`
-    bottom: 0;
-    height: ${({ height }) => `${height}px`};
-    justify-content: flex-end;
-    left: 0;
+type BottomSheetContainerProps = {
+    height: number;
+};
+
+const BottomSheetContainer = styled(Animated.View)<BottomSheetContainerProps>`
     position: absolute;
     right: 0;
-    z-index: 1;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+    height: ${({ height }) => `${height}px`};
 `;
+const Container = styled(Animated.View)`
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+`;
+
 const Handle = styled.View`
     background-color: ${({ theme }) => theme.colors['secondary-dark']};
     border-radius: 100px;
@@ -36,24 +41,11 @@ const InnerContainer = styled.View`
     padding: ${({ theme }) =>
         `${theme.spacings.smallest} ${theme.spacings.small} ${theme.spacings.small}`};
 `;
-const Overlay = styled(Animated.View)<OverlayProps>`
-    bottom: 0;
-    display: none;
-    height: ${({ height }) => `${height}px`};
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-`;
-const PressableOutside = styled.Pressable`
-    flex: 1;
-`;
-
+// eslint-disable-next-line import/prefer-default-export
 export {
+    BottomSheetContainer,
     Container,
+    InnerContainer,
     Handle,
     HandleContainer,
-    InnerContainer,
-    Overlay,
-    PressableOutside,
 };

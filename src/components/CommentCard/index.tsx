@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProfilePicture from '#components/ProfilePicture';
 import SubComments from '#components/SubComments';
 import Typography from '#components/Typography';
-import { selectUserId } from '#store/users';
 import { getCommentComments, updateCommentsCurrent } from '#store/comments';
+import { selectUserId } from '#store/users';
 
 import {
     BodyContainer,
@@ -21,9 +21,10 @@ import {
 
 type Props = {
     comment: Store.Models.Comment;
+    onPress: (user: Store.Models.User) => void;
 };
 
-const CommentCard = ({ comment }: Props) => {
+const CommentCard = ({ comment, onPress }: Props) => {
     const dispatch = useDispatch();
     const selectUser = React.useMemo(
         () => selectUserId(comment.userId),
@@ -71,8 +72,10 @@ const CommentCard = ({ comment }: Props) => {
         }
     }, [comment]);
 
+    const handlePress = React.useCallback(() => onPress(user), [user]);
+
     return (
-        <Container>
+        <Container onPress={handlePress}>
             <ProfilePicture mr="smallest" user={user} />
             <BodyContainer>
                 <ContentContainer>
@@ -117,4 +120,4 @@ const CommentCard = ({ comment }: Props) => {
     );
 };
 
-export default CommentCard;
+export default React.memo(CommentCard);

@@ -68,8 +68,11 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
 
     const handleCreateGaleriePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
-        else closeBottomSheet(() => navigation.navigate('CreateGalerie'));
-    }, [navigation, keyboardShown]);
+        else {
+            closeBottomSheet();
+            navigation.navigate('CreateGalerie');
+        }
+    }, [keyboardShown]);
     const handleGaleriesPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Galeries');
@@ -83,13 +86,14 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         else navigation.navigate('Notifications');
     }, [navigation, keyboardShown]);
     const handleProfilePress = React.useCallback(() => {
+        console.log('press');
         if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Profile');
     }, [navigation, keyboardShown]);
     const handleAddSubscribePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else
-            openBottomSheet(() => (
+            openBottomSheet(
                 <>
                     <BottomSheetButton
                         onPress={handleCreateGaleriePress}
@@ -97,7 +101,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
                     />
                     <BottomSheetButton title="Subscribe to a galerie" />
                 </>
-            ))();
+            );
     }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
 
     // TODO: Bug here when reload
@@ -157,4 +161,4 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     );
 };
 
-export default TabBar;
+export default React.memo(TabBar);

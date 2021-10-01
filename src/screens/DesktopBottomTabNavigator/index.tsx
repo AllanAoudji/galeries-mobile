@@ -1,4 +1,7 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+    BottomTabBarProps,
+    createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import { DefaultHeader } from '#components';
 
@@ -15,12 +18,12 @@ import TabBar from './TabBar';
 
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 
+const tabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
 const DesktopBottomTabNavigator = () => {
     const createGalerieScreenHeader = React.useCallback(
         () => <DefaultHeader title="createGalerie" variant="secondary" />,
         []
     );
-    const tabBar = React.useCallback((props) => <TabBar {...props} />, []);
 
     return (
         <Tab.Navigator
