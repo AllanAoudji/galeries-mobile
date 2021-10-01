@@ -6,7 +6,6 @@ import { AnimatedFlatList } from '#components';
 import { getFrameComments } from '#store/comments';
 
 import RenderItem from './RenderItem';
-import { Container } from './styles';
 
 type CommentsProps = {
     allIds?: string[];
@@ -48,8 +47,8 @@ const CommentsList = ({
     return (
         <AnimatedFlatList
             contentContainerStyle={{
-                paddingBottom,
-                paddingTop,
+                paddingBottom: paddingBottom + 15,
+                paddingTop: paddingTop + 30,
             }}
             data={allIds}
             initialNumToRender={15}
@@ -78,16 +77,14 @@ const Comments = ({
     if (!allIds || !frameId) return null;
 
     return (
-        <Container>
-            <CommentsList
-                allIds={allIds}
-                flatListRef={flatListRef}
-                frameId={frameId}
-                paddingBottom={paddingBottom}
-                paddingTop={paddingTop}
-                scrollHandler={scrollHandler}
-            />
-        </Container>
+        <CommentsList
+            allIds={allIds}
+            flatListRef={flatListRef}
+            frameId={frameId}
+            paddingBottom={paddingBottom}
+            paddingTop={paddingTop}
+            scrollHandler={scrollHandler}
+        />
     );
 };
 

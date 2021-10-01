@@ -20,7 +20,7 @@ type Props = {
     handlePressLike: () => void;
     handlePressLikes: () => void;
     liked: boolean;
-    numOfComments: string;
+    numOfComments: number;
     numOfLikes: string;
 };
 

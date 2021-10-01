@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import CommentCard from '#components/CommentCard';
+import SubCommentCard from '#components/SubCommentCard';
 import { selectComment } from '#store/comments';
 
 type Props = {
@@ -14,7 +14,7 @@ const RenderItem = ({ item }: Props) => {
 
     if (!comment) return null;
 
-    return <CommentCard comment={comment} />;
+    return <SubCommentCard comment={comment} />;
 };
 
 export default React.memo(RenderItem);

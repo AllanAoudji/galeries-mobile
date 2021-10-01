@@ -14,7 +14,6 @@ import {
     Container,
     ContentContainer,
     ContentContainerFooter,
-    ReplyContainer,
     Separator,
     TimeContainer,
     ViewContainer,
@@ -61,12 +60,6 @@ const CommentCard = ({ comment }: Props) => {
         return 'hide comments';
     }, [comment, showComments]);
 
-    const topLevel = React.useMemo(() => comment.level < 1, [comment]);
-    const profilePictureSize = React.useMemo(
-        () => (topLevel ? 'normal' : 'small'),
-        [topLevel]
-    );
-
     React.useEffect(() => {
         if (
             comment.comments &&
@@ -79,12 +72,8 @@ const CommentCard = ({ comment }: Props) => {
     }, [comment]);
 
     return (
-        <Container topLevel={topLevel}>
-            <ProfilePicture
-                mr="smallest"
-                user={user}
-                size={profilePictureSize}
-            />
+        <Container>
+            <ProfilePicture mr="smallest" user={user} />
             <BodyContainer>
                 <ContentContainer>
                     <Typography>
@@ -96,28 +85,20 @@ const CommentCard = ({ comment }: Props) => {
                         {comment.body}
                     </Typography>
                 </ContentContainer>
-                <ContentContainerFooter>
+                <ContentContainerFooter onPress={handlePressReply}>
                     <TimeContainer>
                         <Typography fontFamily="light" fontSize={12}>
                             {moment(comment.createdAt).fromNow()}
                         </Typography>
                     </TimeContainer>
-                    {topLevel && (
-                        <ReplyContainer onPress={handlePressReply}>
-                            <Typography
-                                color="primary"
-                                fontFamily="bold"
-                                fontSize={12}
-                            >
-                                Reply
-                            </Typography>
-                        </ReplyContainer>
-                    )}
+                    <Typography color="primary" fontFamily="bold" fontSize={12}>
+                        Reply
+                    </Typography>
                 </ContentContainerFooter>
                 {comment.numOfComments > 0 && (
                     <ViewContainer onPress={handlePressView}>
                         <Separator />
-                        <Typography color="primary">
+                        <Typography fontSize={12} color="primary">
                             {commentFetcherText}
                         </Typography>
                     </ViewContainer>
