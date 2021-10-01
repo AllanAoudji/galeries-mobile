@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FlatList, Keyboard, ListRenderItemInfo } from 'react-native';
+import { FlatList, ListRenderItemInfo } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { AnimatedFlatList } from '#components';
@@ -43,10 +43,6 @@ const CommentsList = ({
         () => dispatch(getFrameComments(frameId)),
         []
     );
-    const handleScrollBeginDrag = React.useCallback(
-        () => Keyboard.dismiss(),
-        []
-    );
     const keyExtractor = React.useCallback((data: string) => data, []);
 
     return (
@@ -62,7 +58,6 @@ const CommentsList = ({
             onScroll={scrollHandler}
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
-            onScrollBeginDrag={handleScrollBeginDrag}
             ref={flatListRef}
             removeClippedSubviews
             renderItem={renderItem}
