@@ -11,6 +11,7 @@ const Container = styled(Animated.View)`
     position: absolute;
     width: 100%;
     z-index: 1;
+    bottom: 0;
 `;
 const IconContainer = styled.Pressable`
     align-items: center;

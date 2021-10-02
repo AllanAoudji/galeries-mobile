@@ -36,6 +36,8 @@ const reducers = combineReducers({
     users: usersReducer,
 });
 
+// GaleriePictures AllIds should by { [frameId: string]: string[] }
+
 export default createStore(
     reducers,
     composeWithDevTools(

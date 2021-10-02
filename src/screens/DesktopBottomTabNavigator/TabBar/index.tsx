@@ -98,7 +98,10 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
                         onPress={handleCreateGaleriePress}
                         title="create a new galerie"
                     />
-                    <BottomSheetButton title="Subscribe to a galerie" />
+                    <BottomSheetButton
+                        onPress={() => {}}
+                        title="Subscribe to a galerie"
+                    />
                 </>
             );
     }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
