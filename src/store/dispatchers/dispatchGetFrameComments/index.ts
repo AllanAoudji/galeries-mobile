@@ -9,7 +9,9 @@ const dispatchGetFrameComments = (
     frameId: string,
     previous?: string
 ) => {
-    const query = previous ? `?previous=${previous}` : '';
+    let query = '?';
+    if (previous) query = `${query}previous=${previous}`;
+
     dispatch(
         apiRequest({
             meta: {

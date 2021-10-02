@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 
+import { enableScreens } from 'react-native-screens';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
@@ -13,6 +14,8 @@ import RootStackNavigator from '#screens/RootStackNavigator';
 import store from '#store';
 
 export default function App() {
+    enableScreens();
+
     return (
         <ThemeProvider>
             <Provider store={store}>
@@ -40,4 +43,5 @@ export default function App() {
 // return byId(state.ui.galerieIdSelector)
 // so no need route.params.id
 
-// Do not store GaleriePicture on store.
+// post comment comment return sequelize error
+// comment.numOfComment === {} when get Comments

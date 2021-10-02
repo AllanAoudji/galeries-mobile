@@ -30,7 +30,7 @@ const getGaleriePicturesMiddleware: Middleware<{}, Store.Reducer> =
             const galeriePicturesStatus = frame.galeriePictures
                 ? frame.galeriePictures.status
                 : 'PENDING';
-            if (galeriePicturesStatus.includes('LOADING')) return;
+            if (galeriePicturesStatus !== 'PENDING') return;
 
             dispatchUpdateFrameGaleriePictures(dispatch, frame, {
                 status: 'LOADING',

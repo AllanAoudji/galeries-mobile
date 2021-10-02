@@ -68,36 +68,42 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
 
     const handleCreateGaleriePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
-        else closeBottomSheet(() => navigation.navigate('CreateGalerie'));
-    }, [navigation, keyboardShown]);
+        else {
+            closeBottomSheet();
+            navigation.navigate('CreateGalerie');
+        }
+    }, [keyboardShown]);
     const handleGaleriesPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Galeries');
-    }, [navigation, keyboardShown]);
+    }, [keyboardShown]);
     const handleHomePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Home');
-    }, [navigation, keyboardShown]);
+    }, [keyboardShown]);
     const handleNotificationsPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Notifications');
-    }, [navigation, keyboardShown]);
+    }, [keyboardShown]);
     const handleProfilePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else navigation.navigate('Profile');
-    }, [navigation, keyboardShown]);
+    }, [keyboardShown]);
     const handleAddSubscribePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else
-            openBottomSheet(() => (
+            openBottomSheet(
                 <>
                     <BottomSheetButton
                         onPress={handleCreateGaleriePress}
                         title="create a new galerie"
                     />
-                    <BottomSheetButton title="Subscribe to a galerie" />
+                    <BottomSheetButton
+                        onPress={() => {}}
+                        title="Subscribe to a galerie"
+                    />
                 </>
-            ))();
+            );
     }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
 
     // TODO: Bug here when reload
@@ -157,4 +163,4 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     );
 };
 
-export default TabBar;
+export default React.memo(TabBar);

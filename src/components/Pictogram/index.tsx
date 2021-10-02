@@ -29,6 +29,7 @@ import OptionVertical from './OptionVertical';
 import Plus from './Plus';
 import ProfileFill from './ProfileFill';
 import ProfileStroke from './ProfileStroke';
+import Quit from './Quit';
 import Search from './Search';
 import SettingsFill from './SettingsFill';
 import SettingsStroke from './SettingsStroke';
@@ -91,6 +92,7 @@ const variants = {
     plus: Plus,
     'profile-fill': ProfileFill,
     'profile-stroke': ProfileStroke,
+    quit: Quit,
     search: Search,
     'settings-fill': SettingsFill,
     'settings-stroke': SettingsStroke,

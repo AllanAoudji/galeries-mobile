@@ -7,7 +7,7 @@ import {
     updateFramesLoadingPost,
 } from '#store/frames/actionCreators';
 import { getGalerie, getGalerieFramesAllIds } from '#store/getters';
-import { combineFramesAllIds } from '#store/combineFrames';
+import { combineFramesAllIds } from '#store/combineAllIds';
 import { setGaleriePicturesById } from '#store/galeriePictures';
 
 const successPostFrames = async (

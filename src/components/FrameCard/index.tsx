@@ -1,51 +1,42 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 
-import { postLike } from '#store/likes';
+import { View } from 'react-native';
 
 import Footer from './Footer';
 import Header from './Header';
 import Slider from './Slider';
 
-import { Container } from './styles';
+// import { Container } from './styles';
 
 type Props = {
     frame: Store.Models.Frame;
-    onPressComments: (id: string) => void;
-    onPressLikes: (id: string) => void;
+    onPressComments: () => void;
+    onPressLikes: () => void;
+    onPressLike: () => void;
 };
 
-const FrameCard = ({ frame, onPressComments, onPressLikes }: Props) => {
-    const dispatch = useDispatch();
-
-    const handlePressComments = React.useCallback(
-        () => onPressComments(frame.id),
-        [frame]
-    );
-    const handlePressLike = React.useCallback(
-        () => dispatch(postLike(frame.id)),
-        [frame]
-    );
-    const handlePressLikes = React.useCallback(() => {
-        if (+frame.numOfLikes > 0) onPressLikes(frame.id);
-    }, [frame, onPressLikes]);
-
+const FrameCard = ({
+    frame,
+    onPressComments,
+    onPressLikes,
+    onPressLike,
+}: Props) => {
     return (
-        <Container>
+        <View>
             <Header userId={frame.userId} />
             <Slider galeriePictures={frame.galeriePictures} />
             <Footer
                 createdAt={frame.createdAt}
                 description={frame.description}
-                handlePressComments={handlePressComments}
-                handlePressLike={handlePressLike}
-                handlePressLikes={handlePressLikes}
+                handlePressComments={onPressComments}
+                handlePressLike={onPressLike}
+                handlePressLikes={onPressLikes}
                 liked={frame.liked}
                 numOfComments={frame.numOfComments}
                 numOfLikes={frame.numOfLikes}
             />
-        </Container>
+        </View>
     );
 };
 
-export default FrameCard;
+export default React.memo(FrameCard);

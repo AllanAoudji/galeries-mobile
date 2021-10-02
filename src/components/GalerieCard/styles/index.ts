@@ -8,8 +8,6 @@ type DefaultCoverPictureProps = {
     size: number;
 };
 
-const USER_CONTAINER_SIZE = 34;
-
 const Container = styled(Animated.View)`
     height: ${() => `${GLOBAL_STYLE.GALERIE_MODAL_HEIGHT}px`};
 `;

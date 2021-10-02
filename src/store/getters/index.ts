@@ -1,5 +1,7 @@
 export const getComment = (getState: () => Store.Reducer, commentId: string) =>
     getState().comments.byId[commentId];
+export const getCommentsById = (getState: () => Store.Reducer) =>
+    getState().comments.byId;
 export const getCommentsLoadingDelete = (getState: () => Store.Reducer) =>
     getState().comments.loading.delete;
 export const getCommentsLoadingPost = (getState: () => Store.Reducer) =>

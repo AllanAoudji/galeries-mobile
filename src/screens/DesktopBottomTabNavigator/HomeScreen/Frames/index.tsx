@@ -9,7 +9,7 @@ import { getFrames } from '#store/frames';
 import RenderItem from './RenderItem';
 
 type Props = {
-    frames: string[];
+    allIds: string[];
     paddingTop: number;
     scrollHandler: any;
 };
@@ -18,12 +18,10 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Frames = ({ frames, paddingTop, scrollHandler }: Props) => {
+const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
     const disaptch = useDispatch();
 
-    const handleEndReach = React.useCallback(() => {
-        disaptch(getFrames());
-    }, []);
+    const handleEndReach = React.useCallback(() => disaptch(getFrames()), []);
     const keyExtractor = React.useCallback((data: string) => data, []);
 
     return (
@@ -32,14 +30,13 @@ const Frames = ({ frames, paddingTop, scrollHandler }: Props) => {
                 paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
                 paddingTop,
             }}
-            data={frames}
+            data={allIds}
             initialNumToRender={10}
             keyExtractor={keyExtractor}
             maxToRenderPerBatch={10}
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
-            removeClippedSubviews
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}

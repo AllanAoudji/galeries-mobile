@@ -35,7 +35,9 @@ export const selectCurrentGalerieFrameStatus = createSelector(
 );
 export const selectFramesAllIds = (state: Store.Reducer) => state.frames.allIds;
 export const selectFrame = (id: string) =>
-    createSelector([selectFramesById], (frameById) => frameById[id]);
+    createSelector([selectFramesById], (frameById) => {
+        return frameById[id];
+    });
 export const selectFrames = createSelector(
     [selectFramesAllIds, selectFramesById],
     (framesAllIds, framesById) =>

@@ -8,7 +8,7 @@ type Props = {
     backgroundColor?: keyof Style.Colors;
     bottom?: keyof Style.Spacings;
     color?: keyof Style.Colors;
-    onPress?: () => void;
+    onPress: () => void;
     right?: keyof Style.Spacings;
 };
 
@@ -19,15 +19,11 @@ const AddButton = ({
     onPress,
     right,
 }: Props) => {
-    const handlePress = React.useCallback(() => {
-        if (onPress) onPress();
-    }, [onPress]);
-
     return (
         <Container
             bottom={bottom}
             color={backgroundColor}
-            onPress={handlePress}
+            onPress={onPress}
             right={right}
         >
             <Pictogram color={color} variant="plus" />

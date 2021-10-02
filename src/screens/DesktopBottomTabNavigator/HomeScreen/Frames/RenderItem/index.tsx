@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { FrameCard } from '#components';
 import { selectFrame, updateFramesCurrent } from '#store/frames';
+import { postLike } from '#store/likes';
 
 type Props = {
     item: string;
@@ -17,22 +18,29 @@ const RenderItem = ({ item }: Props) => {
     const frameSelector = React.useMemo(() => selectFrame(item), [item]);
     const frame = useSelector(frameSelector);
 
-    const handlePresscomments = React.useCallback(() => {
+    const handlePressComments = React.useCallback(() => {
         dispatch(updateFramesCurrent(item));
         navigation.navigate('Comments');
-    }, [navigation]);
+    }, [item]);
+    const handlePressLike = React.useCallback(
+        () => dispatch(postLike(frame.id)),
+        [frame]
+    );
     const handlePressLikes = React.useCallback(() => {
-        dispatch(updateFramesCurrent(item));
-        navigation.navigate('Likes');
-    }, [navigation]);
+        if (+frame.numOfLikes > 0) {
+            dispatch(updateFramesCurrent(item));
+            navigation.navigate('Likes');
+        }
+    }, [frame]);
 
     return (
         <FrameCard
             frame={frame}
-            onPressComments={handlePresscomments}
+            onPressComments={handlePressComments}
             onPressLikes={handlePressLikes}
+            onPressLike={handlePressLike}
         />
     );
 };
 
-export default RenderItem;
+export default React.memo(RenderItem);

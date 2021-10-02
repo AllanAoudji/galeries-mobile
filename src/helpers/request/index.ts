@@ -1,6 +1,7 @@
 import axios, { Method } from 'axios';
 
-import { API } from '#helpers/constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API, ASYNC_STORAGE } from '#helpers/constants';
 import refreshToken from '#helpers/refreshToken';
 
 export default async ({
@@ -19,7 +20,8 @@ export default async ({
     let token: string | null = null;
 
     try {
-        token = await refreshToken();
+        // token = await refreshToken();
+        token = await AsyncStorage.getItem(ASYNC_STORAGE.AUTH_TOKEN_TOKEN);
     } catch (err) {
         throw new Error(err);
     }

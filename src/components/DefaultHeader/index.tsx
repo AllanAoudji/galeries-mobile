@@ -22,20 +22,12 @@ const DefaultHeader = ({
 }: Props & ViewProps) => {
     const navigation = useNavigation();
 
-    const isArrow = React.useMemo(
-        () => variant === 'secondary' && navigation.canGoBack(),
-        [navigation, variant]
-    );
-    const topLeftPictogramVariant = React.useMemo(
-        () => (isArrow ? 'arrow-left' : 'hamburger-menu'),
-        [isArrow]
-    );
     const handlePressPictogram = React.useCallback(() => {
-        if (isArrow) {
+        if (variant === 'secondary' && navigation.canGoBack()) {
             if (onPress) onPress();
             else navigation.goBack();
         } else navigation.dispatch(DrawerActions.openDrawer());
-    }, [isArrow, navigation]);
+    }, [variant]);
 
     return (
         <Container paddingTop={StatusBar.currentHeight} {...rest}>
@@ -45,7 +37,11 @@ const DefaultHeader = ({
                 onPress={handlePressPictogram}
                 pl="small"
                 pr="small"
-                variant={topLeftPictogramVariant}
+                variant={
+                    variant === 'secondary' && navigation.canGoBack()
+                        ? 'arrow-left'
+                        : 'hamburger-menu'
+                }
             />
             {!!title && (
                 <Typography color="primary" fontFamily="light" fontSize={24}>
