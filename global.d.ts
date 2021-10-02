@@ -316,7 +316,7 @@ declare global {
                 };
                 liked: boolean;
                 numOfComments: number;
-                numOfLikes: string;
+                numOfLikes: number;
                 updatedAt: string;
                 userId: string;
             };

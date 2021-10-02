@@ -3,6 +3,7 @@ import {
     createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
+import { View } from 'react-native';
 import { DefaultHeader } from '#components';
 
 import CommentScreen from './CommentsScreen';
@@ -19,11 +20,11 @@ import TabBar from './TabBar';
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 
 const tabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
+const createGalerieScreenHeader = () => (
+    <DefaultHeader title="createGalerie" variant="secondary" />
+);
 const DesktopBottomTabNavigator = () => {
-    const createGalerieScreenHeader = React.useCallback(
-        () => <DefaultHeader title="createGalerie" variant="secondary" />,
-        []
-    );
+    // TODO: Bottom sheet should go here
 
     return (
         <Tab.Navigator

@@ -21,7 +21,7 @@ type Props = {
     handlePressLikes: () => void;
     liked: boolean;
     numOfComments: number;
-    numOfLikes: string;
+    numOfLikes: number;
 };
 
 const Footer = ({

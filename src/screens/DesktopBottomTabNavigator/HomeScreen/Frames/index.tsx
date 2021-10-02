@@ -37,7 +37,6 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
-            removeClippedSubviews
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}

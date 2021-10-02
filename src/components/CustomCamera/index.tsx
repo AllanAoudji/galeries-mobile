@@ -45,11 +45,6 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
         Camera.Constants.Type.back
     );
 
-    const flashState = React.useMemo(
-        () => flashMode !== Camera.Constants.FlashMode.off,
-        [flashMode]
-    );
-
     const handlePressBack = React.useCallback(() => {
         if (onPressBack) {
             if (snapShot) setSnapshot(null);
@@ -140,7 +135,11 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                         color="secondary-light"
                         onPress={handlePressSwitchFlashMode}
                         height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
-                        variant={flashState ? 'flash-off' : 'flash-on'}
+                        variant={
+                            flashMode !== Camera.Constants.FlashMode.off
+                                ? 'flash-off'
+                                : 'flash-on'
+                        }
                         pl="small"
                         pr="small"
                         width={80}

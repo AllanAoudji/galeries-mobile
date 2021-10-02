@@ -6,18 +6,14 @@ import Typography from '#components/Typography';
 import { Container, PictogramContainer } from './styles';
 
 type Props = {
-    onPress?: () => void;
+    onPress: () => void;
     pictogram?: Style.Pictograms;
     title: string;
 };
 
 const BottomSheetButton = ({ onPress, pictogram, title }: Props) => {
-    const handlePress = React.useCallback(() => {
-        if (onPress) onPress();
-    }, [onPress]);
-
     return (
-        <Container onPress={handlePress}>
+        <Container onPress={onPress}>
             {!!pictogram && (
                 <PictogramContainer>
                     <Pictogram variant={pictogram} />

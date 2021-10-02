@@ -45,7 +45,9 @@ const HomeScreen = () => {
     );
 
     React.useEffect(() => {
-        if (framesStatus === 'PENDING') dispatch(getFrames());
+        if (framesStatus === 'PENDING') {
+            dispatch(getFrames());
+        }
     }, [framesStatus]);
 
     return (

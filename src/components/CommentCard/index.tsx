@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProfilePicture from '#components/ProfilePicture';
 import SubComments from '#components/SubComments';
 import Typography from '#components/Typography';
-import { getCommentComments, updateCommentsCurrent } from '#store/comments';
+import { getCommentComments } from '#store/comments';
 import { selectUserId } from '#store/users';
 
 import {
@@ -22,9 +22,10 @@ import {
 type Props = {
     comment: Store.Models.Comment;
     onPress: (user: Store.Models.User) => void;
+    onPressReply: () => void;
 };
 
-const CommentCard = ({ comment, onPress }: Props) => {
+const CommentCard = ({ comment, onPress, onPressReply }: Props) => {
     const dispatch = useDispatch();
     const selectUser = React.useMemo(
         () => selectUserId(comment.userId),
@@ -37,9 +38,6 @@ const CommentCard = ({ comment, onPress }: Props) => {
         comment.comments ? comment.comments.allIds.length : 0
     );
 
-    const handlePressReply = React.useCallback(() => {
-        dispatch(updateCommentsCurrent(comment.id));
-    }, [comment]);
     const handlePressView = React.useCallback(() => {
         if (!comment.comments) {
             setShowComments(true);
@@ -88,7 +86,7 @@ const CommentCard = ({ comment, onPress }: Props) => {
                         {comment.body}
                     </Typography>
                 </ContentContainer>
-                <ContentContainerFooter onPress={handlePressReply}>
+                <ContentContainerFooter onPress={onPressReply}>
                     <TimeContainer>
                         <Typography fontFamily="light" fontSize={12}>
                             {moment(comment.createdAt).fromNow()}

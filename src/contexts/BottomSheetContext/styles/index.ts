@@ -41,7 +41,6 @@ const InnerContainer = styled.View`
     padding: ${({ theme }) =>
         `${theme.spacings.smallest} ${theme.spacings.small} ${theme.spacings.small}`};
 `;
-// eslint-disable-next-line import/prefer-default-export
 export {
     BottomSheetContainer,
     Container,

@@ -54,7 +54,7 @@ const successGetFrames = (
         if (galerie)
             dispatchUpdateGalerieFrames(dispatch, getState, galerie, {
                 allIds: newAllIds,
-                end: allIds.length < 20,
+                end: allIds.length < 10,
                 status: 'SUCCESS',
                 previous,
             });
@@ -64,7 +64,7 @@ const successGetFrames = (
 
         dispatch(updateFramesStatus('SUCCESS'));
         dispatch(setFramesAllIds(newAllIds));
-        dispatch(updateFramesEnd(allIds.length < 20));
+        dispatch(updateFramesEnd(allIds.length < 10));
         dispatch(updateFramesPrevious(previous));
     }
 
