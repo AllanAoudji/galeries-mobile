@@ -9,4 +9,5 @@ const Container = styled.View`
     top: 0;
 `;
 
-export default Container;
+// eslint-disable-next-line import/prefer-default-export
+export { Container };

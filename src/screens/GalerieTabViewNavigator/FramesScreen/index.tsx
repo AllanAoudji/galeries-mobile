@@ -14,8 +14,8 @@ import {
     EmptyMessage,
     FrameCard,
     FullScreenLoader,
+    GalerieTabbarScreenContainer,
 } from '#components';
-import { GalerieTabbarScreenContainer } from '#components/Screen';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import {
     getGalerieFrames,
