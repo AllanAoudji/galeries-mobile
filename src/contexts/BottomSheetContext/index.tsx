@@ -23,7 +23,7 @@ import { useComponentSize } from '#hooks';
 
 export const BottomSheetContext = React.createContext<{
     closeBottomSheet: () => void;
-    openBottomSheet: (renderItem: JSX.Element) => void;
+    openBottomSheet: (renderItem: React.ComponentType) => void;
 }>({
     closeBottomSheet: () => {},
     openBottomSheet: () => {},
@@ -33,9 +33,11 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     const dimension = useWindowDimensions();
     const { onLayout, size } = useComponentSize();
 
-    const [content, setContent] = React.useState<JSX.Element | null>(null);
+    const [Content, setContent] = React.useState<React.ComponentType | null>(
+        null
+    );
 
-    const containerValue = useSharedValue(content ? 1 : 0);
+    const containerValue = useSharedValue(Content ? 1 : 0);
     const overLayStyle = useAnimatedStyle(() => ({
         opacity: containerValue.value,
     }));
@@ -80,8 +82,8 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     });
 
     const openBottomSheet = React.useCallback(
-        (renderItem: JSX.Element) => {
-            if (!content) {
+        (renderItem: React.ComponentType) => {
+            if (!Content) {
                 setContent(renderItem);
                 containerValue.value = withTiming(
                     1,
@@ -89,7 +91,7 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
                 );
             }
         },
-        [content]
+        [Content]
     );
     const closeBottomSheet = React.useCallback(() => {
         containerValue.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(), () => {
@@ -106,7 +108,7 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
             value={{ closeBottomSheet, openBottomSheet }}
         >
             {children}
-            {content && (
+            {Content && (
                 <>
                     <Container style={overLayStyle} />
                     <PanGestureHandler onGestureEvent={gestureHandler}>
@@ -119,7 +121,7 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
                                     <HandleContainer>
                                         <Handle />
                                     </HandleContainer>
-                                    {content}
+                                    <Content />
                                 </InnerContainer>
                             </PressableWrapper>
                         </BottomSheetContainer>

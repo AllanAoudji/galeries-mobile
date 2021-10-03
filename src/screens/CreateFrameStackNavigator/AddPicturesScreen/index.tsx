@@ -47,6 +47,10 @@ const AddPicturesScreen = ({ navigation }: Props) => {
         null
     );
 
+    const containerColors = React.useMemo(
+        () => [theme.colors.tertiary, theme.colors.primary],
+        []
+    );
     const disableNextButton = React.useMemo(
         () => picturesUri.length === 0,
         [picturesUri]
@@ -71,7 +75,7 @@ const AddPicturesScreen = ({ navigation }: Props) => {
                 .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
                 .navigate('Home');
         }
-    }, [navigation]);
+    }, []);
     const handleNavigateCamera = React.useCallback(() => {
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
@@ -87,32 +91,36 @@ const AddPicturesScreen = ({ navigation }: Props) => {
     const handleNavigateGallery = React.useCallback(() => {
         (async () => {
             const { status } = await MediaLibrary.requestPermissionsAsync();
-            if (status === 'granted')
-                closeBottomSheet(() =>
-                    navigation.navigate('CreateFrameGallery')
-                );
+            if (status === 'granted') {
+                closeBottomSheet();
+                navigation.navigate('CreateFrameGallery');
+            }
         })();
-    }, [closeBottomSheet, navigation]);
+    }, [closeBottomSheet]);
+
+    const bottomSheetContainer = React.useCallback(() => {
+        return (
+            <>
+                <BottomSheetButton
+                    onPress={handleNavigateCamera}
+                    pictogram="camera-fill"
+                    title="take a picture"
+                />
+                <BottomSheetButton
+                    onPress={handleNavigateGallery}
+                    pictogram="upload"
+                    title="upload a picture"
+                />
+            </>
+        );
+    }, []);
+
     const handleOpenDeleteModal = React.useCallback((id: string) => {
         setOpenDeleteModal(true);
         setPictureToDelete(id);
     }, []);
     const handleOpenSheet = React.useCallback(() => {
-        if (picturesUri.length < 6)
-            openBottomSheet(() => (
-                <>
-                    <BottomSheetButton
-                        onPress={handleNavigateCamera}
-                        pictogram="camera-fill"
-                        title="take a picture"
-                    />
-                    <BottomSheetButton
-                        onPress={handleNavigateGallery}
-                        pictogram="upload"
-                        title="upload a picture"
-                    />
-                </>
-            ))();
+        if (picturesUri.length < 6) openBottomSheet(bottomSheetContainer);
     }, [
         handleNavigateCamera,
         handleNavigateGallery,
@@ -125,7 +133,7 @@ const AddPicturesScreen = ({ navigation }: Props) => {
     }, [handleGoBack, picturesUri, setOpenBackModal]);
 
     return (
-        <Container colors={[theme.colors.tertiary, theme.colors.primary]}>
+        <Container colors={containerColors}>
             <ReturnButtonContainer paddingTop={StatusBar.currentHeight}>
                 <Pictogram
                     color="secondary-light"
