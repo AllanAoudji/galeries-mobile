@@ -30,6 +30,10 @@ type Props = {
 
 const GalerieModal = ({ galerie }: Props) => {
     const dispatch = useDispatch();
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.GaleriesNavigationProp>();
+    const theme = useTheme();
+    const dimension = useWindowDimensions();
 
     const selectCoverPicture = React.useCallback(
         () => selectGalerieCoverPicture(galerie.id),
@@ -42,11 +46,6 @@ const GalerieModal = ({ galerie }: Props) => {
     );
     const coverPictureStatus = useSelector(selectCoverPictureStatus());
 
-    const navigation =
-        useNavigation<Screen.DesktopBottomTab.GaleriesNavigationProp>();
-    const theme = useTheme();
-    const dimension = useWindowDimensions();
-
     const [defaultCoverPicture, setDefaultCoverPicture] = React.useState<{
         colors: string[];
         endX: number;
@@ -55,6 +54,33 @@ const GalerieModal = ({ galerie }: Props) => {
         startY: number;
     } | null>(null);
 
+    const defaultCoverPictureEnd = React.useMemo(
+        () =>
+            defaultCoverPicture
+                ? {
+                      x: defaultCoverPicture.endX,
+                      y: defaultCoverPicture.endY,
+                  }
+                : null,
+        [defaultCoverPicture]
+    );
+    const defaultCoverPictureStart = React.useMemo(
+        () =>
+            defaultCoverPicture
+                ? {
+                      x: defaultCoverPicture.startX,
+                      y: defaultCoverPicture.startY,
+                  }
+                : null,
+        [defaultCoverPicture]
+    );
+    const pictureContainerColors = React.useMemo(
+        () => [theme.colors.primary, theme.colors.tertiary],
+        []
+    );
+    const pictureContainerEnd = React.useMemo(() => ({ x: 0.8, y: 1 }), []);
+    const pictureContainerStart = React.useMemo(() => ({ x: 0.2, y: 0 }), []);
+
     const handlePress = React.useCallback(() => {
         dispatch(updateGaleriesCurrent(galerie.id));
         navigation.navigate('Galerie');
@@ -62,6 +88,7 @@ const GalerieModal = ({ galerie }: Props) => {
 
     // Fetch coverPicture and users.
     React.useEffect(() => {
+        // TODO: May be in the Middleware.
         if (coverPictureStatus === 'PENDING')
             dispatch(getGalerieCurrentCoverPicture(galerie.id));
         // TODO:
@@ -81,22 +108,16 @@ const GalerieModal = ({ galerie }: Props) => {
         <Container>
             <Pressable onPress={handlePress}>
                 <PictureContainer
-                    colors={[theme.colors.primary, theme.colors.tertiary]}
-                    end={{ x: 0.8, y: 1 }}
-                    start={{ x: 0.2, y: 0 }}
+                    colors={pictureContainerColors}
+                    end={pictureContainerEnd}
+                    start={pictureContainerStart}
                 >
                     {!coverPicture && defaultCoverPicture && (
                         <DefaultCoverPicture
                             colors={defaultCoverPicture.colors}
-                            end={{
-                                x: defaultCoverPicture.endX,
-                                y: defaultCoverPicture.endY,
-                            }}
+                            end={defaultCoverPictureEnd}
                             size={dimension.width}
-                            start={{
-                                x: defaultCoverPicture.startX,
-                                y: defaultCoverPicture.startY,
-                            }}
+                            start={defaultCoverPictureStart}
                         />
                     )}
                 </PictureContainer>
