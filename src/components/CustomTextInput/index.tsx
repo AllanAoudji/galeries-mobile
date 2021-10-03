@@ -3,7 +3,10 @@ import {
     KeyboardType,
     NativeSyntheticEvent,
     Pressable,
+    StyleProp,
+    StyleSheet,
     TextInputFocusEventData,
+    TextStyle,
 } from 'react-native';
 import Animated, {
     interpolate,
@@ -178,9 +181,7 @@ const CustomTextInput = ({
                     secureTextEntry={secureTextEntry}
                     selectionColor={!!error && touched ? '#fb6d51' : '#414cb4'}
                     value={value}
-                    style={{
-                        textAlignVertical: multiline ? 'top' : 'center',
-                    }}
+                    style={style({ multiline }).textInput}
                 />
                 <ErrorContainer>
                     <Typography color="danger" fontFamily="bold" fontSize={11}>
@@ -192,4 +193,12 @@ const CustomTextInput = ({
     );
 };
 
-export default CustomTextInput;
+const style: ({ multiline }: { multiline: boolean }) => {
+    textInput: StyleProp<TextStyle>;
+} = StyleSheet.create(({ multiline }) => ({
+    textInput: {
+        textAlignVertical: multiline ? 'top' : 'center',
+    },
+}));
+
+export default React.memo(CustomTextInput);
