@@ -1,12 +1,10 @@
 import * as React from 'react';
 
-import { View } from 'react-native';
-
 import Footer from './Footer';
 import Header from './Header';
 import Slider from './Slider';
 
-// import { Container } from './styles';
+import { Container } from './styles';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -22,7 +20,7 @@ const FrameCard = ({
     onPressLike,
 }: Props) => {
     return (
-        <View>
+        <Container>
             <Header userId={frame.userId} />
             <Slider galeriePictures={frame.galeriePictures} />
             <Footer
@@ -35,7 +33,7 @@ const FrameCard = ({
                 numOfComments={frame.numOfComments}
                 numOfLikes={frame.numOfLikes}
             />
-        </View>
+        </Container>
     );
 };
 

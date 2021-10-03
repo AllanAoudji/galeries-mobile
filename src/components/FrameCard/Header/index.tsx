@@ -25,7 +25,6 @@ const Header = ({ userId }: Props) => {
                     {user ? user.pseudonym : 'username'}
                 </Typography>
             </InfoContainer>
-            {/* TODO: Should open bottomSheet on press */}
             <Pictogram
                 pb="smallest"
                 pl="small"

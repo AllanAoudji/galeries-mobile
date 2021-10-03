@@ -11,12 +11,14 @@ const ScreenContainer: React.FC<Props> = ({
     children,
     justifyContent = 'flex-start',
 }) => {
+    const behavior = React.useMemo(
+        () => (Platform.OS === 'ios' ? 'padding' : 'height'),
+        []
+    );
+
     return (
         <Container onPress={Keyboard.dismiss}>
-            <InnerContainer
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                justifyContent={justifyContent}
-            >
+            <InnerContainer behavior={behavior} justifyContent={justifyContent}>
                 {children}
             </InnerContainer>
         </Container>
