@@ -4,6 +4,7 @@ import * as ImageManipulator from 'expo-image-manipulator';
 import * as React from 'react';
 import {
     BackHandler,
+    ImageSourcePropType,
     Platform,
     StatusBar,
     useWindowDimensions,
@@ -43,6 +44,20 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
     const [snapShot, setSnapshot] = React.useState<string | null>(null);
     const [type, setType] = React.useState<CameraType>(
         Camera.Constants.Type.back
+    );
+
+    const flashVariant = React.useMemo(
+        () =>
+            flashMode !== Camera.Constants.FlashMode.off
+                ? 'flash-off'
+                : 'flash-on',
+        [flashMode]
+    );
+    const source: ImageSourcePropType = React.useMemo(
+        () => ({
+            uri: snapShot || '',
+        }),
+        [snapShot]
     );
 
     const handlePressBack = React.useCallback(() => {
@@ -112,9 +127,7 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                 ref={cameraRef}
                 type={type}
             />
-            {!!snapShot && (
-                <ImageStyled margins={margins} source={{ uri: snapShot }} />
-            )}
+            {!!snapShot && <ImageStyled margins={margins} source={source} />}
             {!!onPressBack && (
                 <BackButtonContainer paddingTop={StatusBar.currentHeight}>
                     <Pictogram
@@ -135,11 +148,7 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                         color="secondary-light"
                         onPress={handlePressSwitchFlashMode}
                         height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
-                        variant={
-                            flashMode !== Camera.Constants.FlashMode.off
-                                ? 'flash-off'
-                                : 'flash-on'
-                        }
+                        variant={flashVariant}
                         pl="small"
                         pr="small"
                         width={80}
