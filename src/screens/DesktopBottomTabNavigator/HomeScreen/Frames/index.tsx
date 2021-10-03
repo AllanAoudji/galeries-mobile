@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { ListRenderItemInfo } from 'react-native';
+import {
+    ListRenderItemInfo,
+    StyleProp,
+    StyleSheet,
+    ViewStyle,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
@@ -21,15 +26,16 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
 const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
     const disaptch = useDispatch();
 
+    const paddingTopStyle = React.useMemo(() => ({ paddingTop }), [paddingTop]);
+
     const handleEndReach = React.useCallback(() => disaptch(getFrames()), []);
     const keyExtractor = React.useCallback((data: string) => data, []);
 
     return (
         <AnimatedFlatList
-            contentContainerStyle={{
-                paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-                paddingTop,
-            }}
+            contentContainerStyle={
+                style(paddingTopStyle).animatedFlatListContentContainerStyle
+            }
             data={allIds}
             initialNumToRender={10}
             keyExtractor={keyExtractor}
@@ -43,5 +49,14 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
         />
     );
 };
+
+const style: ({ paddingTop }: { paddingTop: number }) => {
+    animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
+} = StyleSheet.create(({ paddingTop }) => ({
+    animatedFlatListContentContainerStyle: {
+        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+        paddingTop,
+    },
+}));
 
 export default Frames;

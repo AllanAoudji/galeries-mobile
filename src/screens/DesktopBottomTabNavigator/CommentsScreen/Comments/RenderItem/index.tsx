@@ -4,21 +4,28 @@ import { selectComment, updateCommentsCurrent } from '#store/comments';
 
 import { BottomSheetButton, CommentCard } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
+import { selectUserId } from '#store/users';
 
 type Props = {
     item: string;
 };
 
 const handlePressBottomSheetButton = () => {};
+
 const RenderItem = ({ item }: Props) => {
     const dispatch = useDispatch();
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
+    const userSelector = React.useMemo(
+        () => selectUserId(comment.userId),
+        [comment.userId]
+    );
+    const user = useSelector(userSelector);
 
     const { openBottomSheet } = React.useContext(BottomSheetContext);
 
-    const handlePress = React.useCallback((user: Store.Models.User) => {
-        openBottomSheet(
+    const bottomSheetContent = React.useCallback(() => {
+        return (
             <>
                 <BottomSheetButton
                     onPress={handlePressBottomSheetButton}
@@ -31,18 +38,19 @@ const RenderItem = ({ item }: Props) => {
             </>
         );
     }, []);
-
+    const handlePress = React.useCallback(() => {
+        openBottomSheet(bottomSheetContent);
+    }, []);
     const handlePressReply = React.useCallback(() => {
         dispatch(updateCommentsCurrent(comment.id));
     }, [comment]);
-
-    if (!comment) return null;
 
     return (
         <CommentCard
             comment={comment}
             onPress={handlePress}
             onPressReply={handlePressReply}
+            user={user}
         />
     );
 };

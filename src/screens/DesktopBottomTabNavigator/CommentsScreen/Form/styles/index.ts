@@ -8,7 +8,6 @@ type TextInputStyledProps = {
 const Container = styled.View`
     background-color: ${({ theme }) => theme.colors.secondary};
     bottom: 0;
-
     left: 0;
     padding-left: ${({ theme }) => theme.spacings.small};
     position: absolute;

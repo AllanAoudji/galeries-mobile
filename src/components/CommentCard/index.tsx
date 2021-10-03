@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import ProfilePicture from '#components/ProfilePicture';
 import { getCommentComments } from '#store/comments';
-import { selectUserId } from '#store/users';
 
 import Body from './Body';
 import Footer from './Footer';
@@ -15,16 +14,11 @@ type Props = {
     comment: Store.Models.Comment;
     onPress: (user: Store.Models.User) => void;
     onPressReply: () => void;
+    user: Store.Models.User;
 };
 
-const CommentCard = ({ comment, onPress, onPressReply }: Props) => {
+const CommentCard = ({ comment, onPress, onPressReply, user }: Props) => {
     const dispatch = useDispatch();
-
-    const selectUser = React.useMemo(
-        () => selectUserId(comment.userId),
-        [comment]
-    );
-    const user = useSelector(selectUser);
 
     const [showComments, setShowComments] = React.useState<boolean>(false);
     const [numOfComments, setNumOfComments] = React.useState<number>(
