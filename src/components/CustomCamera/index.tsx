@@ -181,4 +181,4 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
     );
 };
 
-export default CustomCamera;
+export default React.memo(CustomCamera);
