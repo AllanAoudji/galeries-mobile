@@ -1,23 +1,15 @@
-import moment from 'moment';
 import * as React from 'react';
-import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ProfilePicture from '#components/ProfilePicture';
 import SubComments from '#components/SubComments';
-import Typography from '#components/Typography';
 import { getCommentComments } from '#store/comments';
 import { selectUserId } from '#store/users';
 
-import {
-    BodyContainer,
-    Container,
-    ContentContainer,
-    ContentContainerFooter,
-    Separator,
-    TimeContainer,
-    ViewContainer,
-} from './styles';
+import Body from './Body';
+import Footer from './Footer';
+import ViewMore from './ViewMore';
+import { BodyContainer, Container } from './styles';
 
 type Props = {
     comment: Store.Models.Comment;
@@ -27,6 +19,7 @@ type Props = {
 
 const CommentCard = ({ comment, onPress, onPressReply }: Props) => {
     const dispatch = useDispatch();
+
     const selectUser = React.useMemo(
         () => selectUserId(comment.userId),
         [comment]
@@ -38,26 +31,28 @@ const CommentCard = ({ comment, onPress, onPressReply }: Props) => {
         comment.comments ? comment.comments.allIds.length : 0
     );
 
-    const handlePressView = React.useCallback(() => {
-        if (!comment.comments) {
-            setShowComments(true);
-            dispatch(getCommentComments(comment.id));
-        } else if (!showComments) {
-            if (comment.comments.status === 'PENDING') {
-                dispatch(getCommentComments(comment.id));
-            }
-            setShowComments(true);
-        } else {
-            setShowComments(false);
-        }
-    }, [comment, numOfComments, showComments]);
-
     const commentFetcherText = React.useMemo(() => {
         if (!showComments || !comment.comments)
             return `View ${comment.numOfComments} replies`;
         if (comment.comments.status.includes('LOADING')) return 'loading';
         return 'hide comments';
     }, [comment, showComments]);
+
+    const handlePress = React.useCallback(() => onPress(user), [user]);
+    const handlePressLoadingMore = React.useCallback(
+        () => dispatch(getCommentComments(comment.id)),
+        [comment]
+    );
+    const handlePressView = React.useCallback(() => {
+        if (!comment.comments) {
+            setShowComments(true);
+            dispatch(getCommentComments(comment.id));
+        } else if (!showComments) {
+            if (comment.comments.status === 'PENDING')
+                dispatch(getCommentComments(comment.id));
+            setShowComments(true);
+        } else setShowComments(false);
+    }, [comment, numOfComments, showComments]);
 
     React.useEffect(() => {
         if (
@@ -70,49 +65,25 @@ const CommentCard = ({ comment, onPress, onPressReply }: Props) => {
         }
     }, [comment]);
 
-    const handlePress = React.useCallback(() => onPress(user), [user]);
-
     return (
         <Container onPress={handlePress}>
             <ProfilePicture mr="smallest" user={user} />
             <BodyContainer>
-                <ContentContainer>
-                    <Typography>
-                        {!!user && (
-                            <Typography fontFamily="bold">
-                                {user.pseudonym}{' '}
-                            </Typography>
-                        )}
-                        {comment.body}
-                    </Typography>
-                </ContentContainer>
-                <ContentContainerFooter onPress={onPressReply}>
-                    <TimeContainer>
-                        <Typography fontFamily="light" fontSize={12}>
-                            {moment(comment.createdAt).fromNow()}
-                        </Typography>
-                    </TimeContainer>
-                    <Typography color="primary" fontFamily="bold" fontSize={12}>
-                        Reply
-                    </Typography>
-                </ContentContainerFooter>
+                <Body body={comment.body} user={user} />
+                <Footer createdAt={comment.createdAt} onPress={onPressReply} />
                 {comment.numOfComments > 0 && (
-                    <ViewContainer onPress={handlePressView}>
-                        <Separator />
-                        <Typography fontSize={12} color="primary">
-                            {commentFetcherText}
-                        </Typography>
-                    </ViewContainer>
+                    <ViewMore
+                        commentFetcherText={commentFetcherText}
+                        onPress={handlePressView}
+                    />
                 )}
-                <View>
-                    {!!comment.comments && showComments && (
-                        <SubComments
-                            allIds={comment.comments.allIds}
-                            commentId={comment.id}
-                            end={comment.comments.end}
-                        />
-                    )}
-                </View>
+                {!!comment.comments && showComments && (
+                    <SubComments
+                        allIds={comment.comments.allIds}
+                        end={comment.comments.end}
+                        onPress={handlePressLoadingMore}
+                    />
+                )}
             </BodyContainer>
         </Container>
     );

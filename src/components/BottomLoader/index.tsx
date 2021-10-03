@@ -31,4 +31,4 @@ const BottomLoader = ({
     );
 };
 
-export default BottomLoader;
+export default React.memo(BottomLoader);
