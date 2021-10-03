@@ -2,12 +2,12 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ProfilePicture from '#components/ProfilePicture';
-import SubComments from '#components/SubComments';
 import { getCommentComments } from '#store/comments';
 import { selectUserId } from '#store/users';
 
 import Body from './Body';
 import Footer from './Footer';
+import SubComments from './SubComments';
 import ViewMore from './ViewMore';
 import { BodyContainer, Container } from './styles';
 

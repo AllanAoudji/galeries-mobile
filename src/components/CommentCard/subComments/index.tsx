@@ -3,6 +3,7 @@ import * as React from 'react';
 import Typography from '#components/Typography';
 
 import RenderItem from './RenderItem';
+
 import { Container, LoadMoreContainer, Separator } from './styles';
 
 type Props = {
