@@ -7,7 +7,7 @@ import {
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
-import { Pressable, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { ANIMATIONS } from '#helpers/constants';
 
@@ -17,6 +17,7 @@ import {
     Handle,
     HandleContainer,
     InnerContainer,
+    PressableWrapper,
 } from './styles';
 import { useComponentSize } from '#hooks';
 
@@ -113,20 +114,14 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
                             height={dimension.height}
                             style={bottomSheetStyle}
                         >
-                            <Pressable
-                                onPress={handlePress}
-                                style={{
-                                    flex: 1,
-                                    justifyContent: 'flex-end',
-                                }}
-                            >
+                            <PressableWrapper onPress={handlePress}>
                                 <InnerContainer onLayout={onLayout}>
                                     <HandleContainer>
                                         <Handle />
                                     </HandleContainer>
                                     {content}
                                 </InnerContainer>
-                            </Pressable>
+                            </PressableWrapper>
                         </BottomSheetContainer>
                     </PanGestureHandler>
                 </>

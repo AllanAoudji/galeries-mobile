@@ -41,10 +41,16 @@ const InnerContainer = styled.View`
     padding: ${({ theme }) =>
         `${theme.spacings.smallest} ${theme.spacings.small} ${theme.spacings.small}`};
 `;
+const PressableWrapper = styled.Pressable`
+    flex: 1;
+    justify-content: flex-end;
+`;
+
 export {
     BottomSheetContainer,
     Container,
-    InnerContainer,
     Handle,
     HandleContainer,
+    InnerContainer,
+    PressableWrapper,
 };
