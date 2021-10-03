@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { ImageSourcePropType, useWindowDimensions } from 'react-native';
 
 import { Typography } from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
@@ -20,6 +20,7 @@ const Item = ({ uri }: Props) => {
         () => picturesUri.includes(uri),
         [picturesUri]
     );
+    const source: ImageSourcePropType = React.useMemo(() => ({ uri }), [uri]);
 
     const handlePress = React.useCallback(() => {
         if (picturesUri.includes(uri)) removePictures(uri);
@@ -32,7 +33,7 @@ const Item = ({ uri }: Props) => {
             picked={picturesUri.includes(uri)}
             size={dimension.width / 3}
         >
-            <ImageStyled picked={isPicked} source={{ uri }} />
+            <ImageStyled picked={isPicked} source={source} />
             {isPicked && (
                 <IndexPickerContainer>
                     <Typography>{picturesUri.indexOf(uri) + 1}</Typography>
