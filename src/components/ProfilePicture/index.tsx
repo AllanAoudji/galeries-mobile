@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Image } from 'react-native';
+import { Image, ImageSourcePropType } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { selectUserCurrentProfilePicture } from '#store/profilePictures';
-
 import DefaultProfilePicture from '../../../assets/images/PP.jpg';
+import { selectUserCurrentProfilePicture } from '#store/profilePictures';
 
 import { Container, ImageStyled, InnerContainer } from './styles';
 
@@ -51,15 +50,20 @@ const ProfilePictureWithUser = ({
             return currentProfilePicture.cropedImage.cachedSignedUrl;
         return DEFAULT_PROFILE_PICTURE;
     }, [currentProfilePicture]);
+    const source: ImageSourcePropType = React.useMemo(() => ({ uri }), [uri]);
+    const borderProp = React.useMemo(
+        () => uri === DEFAULT_PROFILE_PICTURE,
+        [uri]
+    );
 
     return (
         <Container border={border} mb={mb} ml={ml} mr={mr} mt={mt} size={size}>
             <InnerContainer
-                border={uri === DEFAULT_PROFILE_PICTURE}
+                border={borderProp}
                 containerBorder={border}
                 size={size}
             >
-                <ImageStyled source={{ uri }} />
+                <ImageStyled source={source} />
             </InnerContainer>
         </Container>
     );
@@ -74,6 +78,11 @@ const ProfilePicture = ({
     size = 'normal',
     user,
 }: Props) => {
+    const source: ImageSourcePropType = React.useMemo(
+        () => ({ uri: DEFAULT_PROFILE_PICTURE }),
+        []
+    );
+
     if (!user)
         return (
             <Container
@@ -85,7 +94,7 @@ const ProfilePicture = ({
                 size={size}
             >
                 <InnerContainer border containerBorder={border} size={size}>
-                    <ImageStyled source={{ uri: DEFAULT_PROFILE_PICTURE }} />
+                    <ImageStyled source={source} />
                 </InnerContainer>
             </Container>
         );
