@@ -1,10 +1,8 @@
 import moment from 'moment';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
-import { selectUserId } from '#store/users';
 
 import {
     BodyContainer,
@@ -15,17 +13,13 @@ import {
 
 type Props = {
     comment: Store.Models.Comment;
+    onPress: () => void;
+    user: Store.Models.User;
 };
 
-const SubCommentCard = ({ comment }: Props) => {
-    const selectUser = React.useMemo(
-        () => selectUserId(comment.userId),
-        [comment]
-    );
-    const user = useSelector(selectUser);
-
+const SubCommentCard = ({ comment, onPress, user }: Props) => {
     return (
-        <Container>
+        <Container onPress={onPress}>
             <ProfilePicture mr="smallest" size="small" user={user} />
             <BodyContainer>
                 <ContentContainer>

@@ -30,7 +30,6 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
 
     const currentGalerie = useSelector(selectCurrentGalerie);
     const loading = useSelector(selectFramesLoadingPost);
-
     const framesFieldsError = useSelector(selectFramesFieldsError);
     const { picturesUri, resetPictures } = React.useContext(CreateFrameContext);
 

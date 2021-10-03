@@ -1,5 +1,6 @@
 import * as MediaLibrary from 'expo-media-library';
 import * as React from 'react';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import {
     AnimatedFlatList,
@@ -39,7 +40,6 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
         () => (!picturesUri.length ? 'stroke' : 'fill'),
         [picturesUri]
     );
-    const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
     const showButtonLoader = React.useMemo(
         () => !firstLoad && loading,
         [firstLoad, loading]
@@ -85,9 +85,9 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
                 </AddPicturesButtonContainer>
             </Header>
             <AnimatedFlatList
-                contentContainerStyle={{
-                    paddingTop,
-                }}
+                contentContainerStyle={
+                    style({ size }).animatedFlatListContentContainer
+                }
                 data={photos}
                 keyExtractor={keyExtractor}
                 maxToRenderPerBatch={30}
@@ -104,5 +104,20 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
         </Container>
     );
 };
+
+const style: ({
+    size,
+}: {
+    size: {
+        height: number;
+        width: number;
+    } | null;
+}) => {
+    animatedFlatListContentContainer: StyleProp<ViewStyle>;
+} = StyleSheet.create(({ size }) => ({
+    animatedFlatListContentContainer: {
+        paddingTop: size ? size.height : 0,
+    },
+}));
 
 export default CreateFrameGalleryScreen;

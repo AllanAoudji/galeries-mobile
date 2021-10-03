@@ -52,8 +52,8 @@ const Container = styled.View<ContainerProps>`
 `;
 const ImageStyled = styled.Image`
     height: 100%;
-    width: 100%;
     transform: scale(1.18);
+    width: 100%;
 `;
 const InnerContainer = styled.View<InnerContainerProps>`
     border-color: ${({ theme }) => theme.colors.primary};

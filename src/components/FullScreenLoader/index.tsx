@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 import { Container } from './styles';
@@ -24,10 +24,16 @@ const FullScreenLoader = ({
             <ActivityIndicator
                 color={theme.colors[color]}
                 size="large"
-                style={{ transform: [{ scale: 1.2 }] }}
+                style={style.activityIndicator}
             />
         </Container>
     );
 };
+
+const style = StyleSheet.create({
+    activityIndicator: {
+        transform: [{ scale: 1.2 }],
+    },
+});
 
 export default FullScreenLoader;

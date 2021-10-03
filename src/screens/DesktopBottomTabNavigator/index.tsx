@@ -1,9 +1,10 @@
 import {
     BottomTabBarProps,
+    BottomTabNavigationOptions,
     createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
-import { View } from 'react-native';
+
 import { DefaultHeader } from '#components';
 
 import CommentScreen from './CommentsScreen';
@@ -19,18 +20,24 @@ import TabBar from './TabBar';
 
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 
-const tabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
 const createGalerieScreenHeader = () => (
     <DefaultHeader title="createGalerie" variant="secondary" />
 );
-const DesktopBottomTabNavigator = () => {
-    // TODO: Bottom sheet should go here
+const createGalerieScreenOption: BottomTabNavigationOptions = {
+    header: createGalerieScreenHeader,
+    headerShown: true,
+};
+const screenOptions: BottomTabNavigationOptions = {
+    headerShown: false,
+};
+const tabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
 
+const DesktopBottomTabNavigator = () => {
     return (
         <Tab.Navigator
             backBehavior="history"
             initialRouteName="Home"
-            screenOptions={{ headerShown: false }}
+            screenOptions={screenOptions}
             tabBar={tabBar}
         >
             <Tab.Screen component={CommentScreen} name="Comments" />
@@ -38,10 +45,7 @@ const DesktopBottomTabNavigator = () => {
             <Tab.Screen
                 component={CreateGalerieScreen}
                 name="CreateGalerie"
-                options={{
-                    header: createGalerieScreenHeader,
-                    headerShown: true,
-                }}
+                options={createGalerieScreenOption}
             />
             <Tab.Screen component={GalerieScreen} name="Galerie" />
             <Tab.Screen component={GaleriesScreen} name="Galeries" />

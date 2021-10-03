@@ -12,13 +12,13 @@ const CreateFrameCameraScreen = ({ navigation }: Props) => {
 
     const handlePressBack = React.useCallback(
         () => navigation.navigate('AddPictures'),
-        [navigation]
+        []
     );
 
     const handleSavePictureUri = React.useCallback(
         (uri: string) =>
             addPictures(uri, () => navigation.navigate('AddPictures')),
-        [addPictures, navigation]
+        [addPictures]
     );
 
     return (

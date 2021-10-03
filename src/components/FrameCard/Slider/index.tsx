@@ -8,11 +8,11 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
 
+import Dots from './Dots';
 import Image from './Image';
 
 import {
     ActivityIndicatorContainer,
-    Dot,
     DotsContainer,
     LinearGradiantStyled,
 } from './styles';
@@ -22,22 +22,6 @@ type Props = {
         allIds: string[];
         status: Store.Status;
     };
-};
-type DotsProps = {
-    allIds: string[];
-    currentIndex: number;
-};
-
-const Dots = ({ allIds, currentIndex }: DotsProps) => {
-    if (allIds.length <= 1) return null;
-
-    return (
-        <>
-            {allIds.map((_, index) => (
-                <Dot current={currentIndex === index} key={index} />
-            ))}
-        </>
-    );
 };
 
 const Slider = ({ galeriePictures }: Props) => {
@@ -101,4 +85,4 @@ const Slider = ({ galeriePictures }: Props) => {
     );
 };
 
-export default Slider;
+export default React.memo(Slider);

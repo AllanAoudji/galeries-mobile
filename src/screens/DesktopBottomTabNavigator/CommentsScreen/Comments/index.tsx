@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { FlatList, ListRenderItemInfo } from 'react-native';
+import {
+    FlatList,
+    ListRenderItemInfo,
+    StyleProp,
+    StyleSheet,
+    ViewStyle,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { AnimatedFlatList } from '#components';
@@ -44,12 +50,16 @@ const CommentsList = ({
     );
     const keyExtractor = React.useCallback((data: string) => data, []);
 
+    const styleProps = React.useMemo(
+        () => ({ paddingBottom, paddingTop }),
+        [paddingBottom, paddingTop]
+    );
+
     return (
         <AnimatedFlatList
-            contentContainerStyle={{
-                paddingBottom: paddingBottom + 15,
-                paddingTop: paddingTop + 30,
-            }}
+            contentContainerStyle={
+                style(styleProps).animatedFlatListContentContainerStyle
+            }
             data={allIds}
             initialNumToRender={15}
             keyExtractor={keyExtractor}
@@ -87,5 +97,20 @@ const Comments = ({
         />
     );
 };
+
+const style: ({
+    paddingBottom,
+    paddingTop,
+}: {
+    paddingBottom: number;
+    paddingTop: number;
+}) => {
+    animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
+} = StyleSheet.create(({ paddingBottom, paddingTop }) => ({
+    animatedFlatListContentContainerStyle: {
+        paddingBottom: paddingBottom + 15,
+        paddingTop: paddingTop + 30,
+    },
+}));
 
 export default Comments;

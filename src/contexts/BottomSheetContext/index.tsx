@@ -7,7 +7,7 @@ import {
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
-import { Pressable, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { ANIMATIONS } from '#helpers/constants';
 
@@ -17,12 +17,13 @@ import {
     Handle,
     HandleContainer,
     InnerContainer,
+    PressableWrapper,
 } from './styles';
 import { useComponentSize } from '#hooks';
 
 export const BottomSheetContext = React.createContext<{
     closeBottomSheet: () => void;
-    openBottomSheet: (renderItem: JSX.Element) => void;
+    openBottomSheet: (renderItem: React.ComponentType) => void;
 }>({
     closeBottomSheet: () => {},
     openBottomSheet: () => {},
@@ -32,7 +33,9 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     const dimension = useWindowDimensions();
     const { onLayout, size } = useComponentSize();
 
-    const [content, setContent] = React.useState<JSX.Element | null>(null);
+    const [content, setContent] = React.useState<React.ComponentType | null>(
+        null
+    );
 
     const containerValue = useSharedValue(content ? 1 : 0);
     const overLayStyle = useAnimatedStyle(() => ({
@@ -79,7 +82,7 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     });
 
     const openBottomSheet = React.useCallback(
-        (renderItem: JSX.Element) => {
+        (renderItem: React.ComponentType) => {
             if (!content) {
                 setContent(renderItem);
                 containerValue.value = withTiming(
@@ -113,20 +116,14 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
                             height={dimension.height}
                             style={bottomSheetStyle}
                         >
-                            <Pressable
-                                onPress={handlePress}
-                                style={{
-                                    flex: 1,
-                                    justifyContent: 'flex-end',
-                                }}
-                            >
+                            <PressableWrapper onPress={handlePress}>
                                 <InnerContainer onLayout={onLayout}>
                                     <HandleContainer>
                                         <Handle />
                                     </HandleContainer>
                                     {content}
                                 </InnerContainer>
-                            </Pressable>
+                            </PressableWrapper>
                         </BottomSheetContainer>
                     </PanGestureHandler>
                 </>

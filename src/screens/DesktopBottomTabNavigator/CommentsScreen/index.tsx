@@ -11,7 +11,6 @@ import {
 } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
-
 import { selectCurrentFrame } from '#store/frames';
 import {
     getFrameComments,

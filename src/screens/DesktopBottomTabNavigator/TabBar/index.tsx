@@ -1,5 +1,4 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { LinearGradient } from 'expo-linear-gradient';
 import * as React from 'react';
 import { Keyboard } from 'react-native';
 import {
@@ -14,7 +13,18 @@ import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 import { useKeyboard } from '#hooks';
 
-import { Container, IconContainer, PictogramContainer } from './styles';
+import {
+    Container,
+    IconContainer,
+    LinearGradientStyle,
+    PictogramContainer,
+} from './styles';
+
+const customSize = {
+    height: 28,
+    width: 28,
+};
+const location = [0, 0.8];
 
 const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     const { keyboardShown } = useKeyboard();
@@ -30,6 +40,10 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         };
     }, []);
 
+    const color = React.useMemo(
+        () => ['transparent', theme.colors['secondary-light']],
+        []
+    );
     const currentRouteName = React.useMemo(
         () => state.routes[state.index].name,
         [state.index]
@@ -66,6 +80,20 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         [currentRouteName]
     );
 
+    const bottomSheetContent = React.useCallback(() => {
+        return (
+            <>
+                <BottomSheetButton
+                    onPress={handleCreateGaleriePress}
+                    title="create a new galerie"
+                />
+                <BottomSheetButton
+                    onPress={() => {}}
+                    title="Subscribe to a galerie"
+                />
+            </>
+        );
+    }, []);
     const handleCreateGaleriePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else {
@@ -91,22 +119,9 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     }, [keyboardShown]);
     const handleAddSubscribePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
-        else
-            openBottomSheet(
-                <>
-                    <BottomSheetButton
-                        onPress={handleCreateGaleriePress}
-                        title="create a new galerie"
-                    />
-                    <BottomSheetButton
-                        onPress={() => {}}
-                        title="Subscribe to a galerie"
-                    />
-                </>
-            );
+        else openBottomSheet(bottomSheetContent);
     }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
 
-    // TODO: Bug here when reload
     React.useEffect(() => {
         if (keyboardShown)
             bottom.value = withTiming(
@@ -120,11 +135,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
 
     return (
         <Container style={style}>
-            <LinearGradient
-                colors={['transparent', theme.colors['secondary-light']]}
-                locations={[0, 0.8]}
-                style={{ width: '100%', flexDirection: 'row' }}
-            >
+            <LinearGradientStyle colors={color} locations={location}>
                 <IconContainer onPress={handleHomePress}>
                     <PictogramContainer>
                         <Pictogram color="primary" variant={homeVariant} />
@@ -138,10 +149,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
                 <IconContainer onPress={handleAddSubscribePress}>
                     <Pictogram
                         color="primary"
-                        customSize={{
-                            height: 28,
-                            width: 28,
-                        }}
+                        customSize={customSize}
                         variant="add/subscribe-stroke"
                     />
                 </IconContainer>
@@ -158,7 +166,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
                         <Pictogram color="primary" variant={profileVariant} />
                     </PictogramContainer>
                 </IconContainer>
-            </LinearGradient>
+            </LinearGradientStyle>
         </Container>
     );
 };

@@ -31,4 +31,4 @@ const AddButton = ({
     );
 };
 
-export default AddButton;
+export default React.memo(AddButton);

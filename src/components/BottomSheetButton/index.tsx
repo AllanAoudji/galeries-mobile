@@ -24,4 +24,4 @@ const BottomSheetButton = ({ onPress, pictogram, title }: Props) => {
     );
 };
 
-export default BottomSheetButton;
+export default React.memo(BottomSheetButton);

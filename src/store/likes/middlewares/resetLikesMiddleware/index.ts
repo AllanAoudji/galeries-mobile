@@ -8,7 +8,10 @@ const resetLikesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === LIKES_RESET) dispatch(resetLikesById());
+
+        if (action.type !== LIKES_RESET) return;
+
+        dispatch(resetLikesById());
     };
 
 export default resetLikesMiddleware;

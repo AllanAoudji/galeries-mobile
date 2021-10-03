@@ -12,14 +12,14 @@ type Props = {
     textAlign?: keyof Style.TextAlign;
 };
 
-const Typography: React.FC<Props> = ({
+const AnimatedTypography: React.FC<Props> = ({
     children,
     color = 'black',
     fontFamily = 'roman',
     fontSize = 14,
     style,
     textAlign = 'left',
-}): JSX.Element => {
+}) => {
     return (
         <Container
             color={color}
@@ -33,4 +33,4 @@ const Typography: React.FC<Props> = ({
     );
 };
 
-export default Typography;
+export default AnimatedTypography;

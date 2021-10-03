@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+import { ImageSourcePropType } from 'react-native';
+
 import { selectGaleriePicture } from '#store/galeriePictures';
 
 import Container from './Container';
@@ -17,11 +19,16 @@ const Image = ({ galeriePictureId }: Props) => {
     );
     const galeriePicture = useSelector(galeriePictureSelector);
 
+    const source: ImageSourcePropType = React.useMemo(
+        () => ({
+            uri: galeriePicture.cropedImage.cachedSignedUrl,
+        }),
+        [galeriePicture]
+    );
+
     return (
         <Container colors={galeriePicture.pendingHexes}>
-            <ImageStyled
-                source={{ uri: galeriePicture.cropedImage.cachedSignedUrl }}
-            />
+            <ImageStyled source={source} />
         </Container>
     );
 };

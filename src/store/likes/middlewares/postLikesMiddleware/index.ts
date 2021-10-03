@@ -9,15 +9,16 @@ const postLikesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === LIKES_POST) {
-            const frameId = action.meta.query
-                ? action.meta.query.frameId
-                : undefined;
-            if (typeof frameId === 'string') {
-                const frame = getFrame(getState, frameId);
-                if (frame) dispatchPostLike(dispatch, frameId);
-            }
-        }
+
+        if (action.type !== LIKES_POST) return;
+        const frameId = action.meta.query
+            ? action.meta.query.frameId
+            : undefined;
+        if (typeof frameId !== 'string') return;
+        const frame = getFrame(getState, frameId);
+        if (!frame) return;
+
+        dispatchPostLike(dispatch, frameId);
     };
 
 export default postLikesMiddleware;

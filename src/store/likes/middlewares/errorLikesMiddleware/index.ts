@@ -13,19 +13,18 @@ const errorLikesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === `${LIKES} ${API_ERROR}`) {
-            const frameId = action.payload.query
-                ? action.payload.query.frameId
-                : undefined;
-            if (typeof frameId === 'string') {
-                const frame = getFrame(getState, frameId);
-                if (frame)
-                    dispatchUpdateFrameLikes(dispatch, frame, {
-                        status: 'ERROR',
-                    });
-            }
+
+        if (action.type !== `${LIKES} ${API_ERROR}`) return;
+        const frameId = action.payload.query
+            ? action.payload.query.frameId
+            : undefined;
+        if (typeof frameId !== 'string')
             dispatchErrorNotification(dispatch, action);
-        }
+        const frame = getFrame(getState, frameId);
+        if (!frame) dispatchErrorNotification(dispatch, action);
+
+        dispatchUpdateFrameLikes(dispatch, frame, { status: 'ERROR' });
+        dispatchErrorNotification(dispatch, action);
     };
 
 export default errorLikesMiddleware;

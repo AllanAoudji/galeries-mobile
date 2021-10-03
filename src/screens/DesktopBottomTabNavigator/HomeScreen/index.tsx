@@ -1,14 +1,14 @@
 import * as React from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
+
 import {
     BottomLoader,
     DefaultHeader,
     EmptyMessage,
     FullScreenLoader,
 } from '#components';
-
-import { Container, Header } from './styles';
+import { GLOBAL_STYLE } from '#helpers/constants';
+import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 import {
     getFrames,
     selectFramesAllIds,
@@ -16,8 +16,8 @@ import {
 } from '#store/frames';
 
 import Frames from './Frames';
-import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
-import { GLOBAL_STYLE } from '#helpers/constants';
+
+import { Container, Header } from './styles';
 
 const HomeScreen = () => {
     const dispatch = useDispatch();

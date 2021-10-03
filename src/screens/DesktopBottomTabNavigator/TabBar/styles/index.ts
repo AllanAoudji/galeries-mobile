@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
@@ -18,8 +19,12 @@ const IconContainer = styled.Pressable`
     flex: 1;
     justify-content: center;
 `;
+const LinearGradientStyle = styled(LinearGradient)`
+    flex-direction: row;
+    width: 100%;
+`;
 const PictogramContainer = styled.View`
     padding-bottom: 3px;
 `;
 
-export { Container, IconContainer, PictogramContainer };
+export { Container, IconContainer, LinearGradientStyle, PictogramContainer };

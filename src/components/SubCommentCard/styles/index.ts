@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 const BodyContainer = styled.View`
     flex: 1;
 `;
-const Container = styled.View`
+const Container = styled.Pressable`
     flex-direction: row;
     margin: 5px 0 8px;
 `;
