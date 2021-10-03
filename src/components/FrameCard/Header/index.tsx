@@ -9,10 +9,11 @@ import { selectUserId } from '#store/users';
 import { Container, InfoContainer } from './styles';
 
 type Props = {
+    onPress: () => void;
     userId: string;
 };
 
-const Header = ({ userId }: Props) => {
+const Header = ({ onPress, userId }: Props) => {
     const selectUser = React.useMemo(() => selectUserId(userId), [userId]);
     const user = useSelector(selectUser);
 
@@ -26,6 +27,7 @@ const Header = ({ userId }: Props) => {
                 </Typography>
             </InfoContainer>
             <Pictogram
+                onPress={onPress}
                 pb="smallest"
                 pl="small"
                 pr="small"

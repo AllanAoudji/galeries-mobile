@@ -11,6 +11,7 @@ type Props = {
     onPressComments: () => void;
     onPressLikes: () => void;
     onPressLike: () => void;
+    onPressOptions: () => void;
 };
 
 const FrameCard = ({
@@ -18,10 +19,11 @@ const FrameCard = ({
     onPressComments,
     onPressLikes,
     onPressLike,
+    onPressOptions,
 }: Props) => {
     return (
         <Container>
-            <Header userId={frame.userId} />
+            <Header userId={frame.userId} onPress={onPressOptions} />
             <Slider galeriePictures={frame.galeriePictures} />
             <Footer
                 createdAt={frame.createdAt}

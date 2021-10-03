@@ -111,17 +111,6 @@ const apiRequestMiddleware: Middleware<{}, Store.Reducer> =
                     }
                 }
                 try {
-                    await axios.request({
-                        data: action.payload,
-                        method: action.meta.method,
-                        baseURL: API,
-                        url: action.meta.url,
-                        headers: {
-                            authorization: token,
-                            'Content-type': 'application/json',
-                        },
-                        withCredentials: true,
-                    });
                     const response = await axios.request({
                         data: action.payload,
                         method: action.meta.method,
