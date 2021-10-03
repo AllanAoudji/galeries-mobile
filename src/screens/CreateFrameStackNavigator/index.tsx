@@ -1,6 +1,7 @@
 import {
     CardStyleInterpolators,
     createStackNavigator,
+    StackNavigationOptions,
 } from '@react-navigation/stack';
 import * as React from 'react';
 
@@ -14,45 +15,56 @@ import { DefaultHeader } from '#components';
 
 const Stack = createStackNavigator<Screen.CreateFrameStack.ParamList>();
 
-const CreateGalerieStackNavigator = () => {
-    const addDescriptionHeader = React.useCallback(
-        () => (
-            <DefaultHeader
-                variant="secondary"
-                title="add a description (optional)"
-            />
-        ),
-        []
+const addDescriptionHeader = () => {
+    return (
+        <DefaultHeader
+            variant="secondary"
+            title="add a description (optional)"
+        />
     );
+};
+const addDescriptionOption: StackNavigationOptions = {
+    header: addDescriptionHeader,
+};
+const addPicturesOption: StackNavigationOptions = {
+    headerShown: false,
+};
+const createFrameCameraOption: StackNavigationOptions = {
+    headerShown: false,
+};
+const createFrameGalleryOption: StackNavigationOptions = {
+    headerShown: false,
+};
+const screenOptions: StackNavigationOptions = {
+    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+};
 
+const CreateGalerieStackNavigator = () => {
     return (
         <CreateFrameProvider>
             <Stack.Navigator
                 initialRouteName="AddPictures"
-                screenOptions={{
-                    cardStyleInterpolator:
-                        CardStyleInterpolators.forHorizontalIOS,
-                }}
+                screenOptions={screenOptions}
             >
                 <Stack.Screen
                     component={AddDescriptionScreen}
                     name="AddDescription"
-                    options={{ header: addDescriptionHeader }}
+                    options={addDescriptionOption}
                 />
                 <Stack.Screen
                     component={AddPicturesScreen}
                     name="AddPictures"
-                    options={{ headerShown: false }}
+                    options={addPicturesOption}
                 />
                 <Stack.Screen
                     component={CreateFrameCameraScreen}
                     name="CreateFrameCamera"
-                    options={{ headerShown: false }}
+                    options={createFrameCameraOption}
                 />
                 <Stack.Screen
                     component={CreateFrameGalleryScreen}
                     name="CreateFrameGallery"
-                    options={{ headerShown: false }}
+                    options={createFrameGalleryOption}
                 />
             </Stack.Navigator>
         </CreateFrameProvider>
