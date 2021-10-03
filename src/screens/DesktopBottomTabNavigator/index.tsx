@@ -3,7 +3,6 @@ import {
     createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
-import { View } from 'react-native';
 import { DefaultHeader } from '#components';
 
 import CommentScreen from './CommentsScreen';

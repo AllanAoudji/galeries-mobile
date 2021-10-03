@@ -1,16 +1,24 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+    createDrawerNavigator,
+    DrawerNavigationOptions,
+} from '@react-navigation/drawer';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import { DrawerContent } from '#components/Screen';
+import { selectMe } from '#store/me';
 
+import DrawerContent from './DrawerContent';
 import MainScreen from './MainScreen';
 import ModerationScreen from './ModerationScreen';
 import SendTicketScreen from './SendTicketScreen';
 import SettingsScreen from './SettingsScreen';
-import { selectMe } from '#store/me';
 
 const Drawer = createDrawerNavigator<Screen.DesktopDrawer.ParamList>();
+
+const screenOptions: DrawerNavigationOptions = {
+    headerShown: false,
+    swipeEnabled: false,
+};
 
 const DesktopStack = () => {
     const me = useSelector(selectMe);
@@ -32,10 +40,7 @@ const DesktopStack = () => {
         <Drawer.Navigator
             drawerContent={drawerContent}
             initialRouteName="Main"
-            screenOptions={{
-                headerShown: false,
-                swipeEnabled: false,
-            }}
+            screenOptions={screenOptions}
         >
             <Drawer.Screen name="Main" component={MainScreen} />
             <Drawer.Screen name="Settings" component={SettingsScreen} />

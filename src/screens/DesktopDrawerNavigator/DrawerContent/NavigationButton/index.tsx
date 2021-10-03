@@ -1,9 +1,8 @@
 import * as React from 'react';
 
-import Pictogram from '#components/Pictogram';
-import Typography from '#components/Typography';
+import { Pictogram, Typography } from '#components';
 
-import { Container, PictogramContainer, TitleContainer } from './styles';
+import { Container, TitleContainer } from './style';
 
 type Props = {
     customSize: {
@@ -25,13 +24,12 @@ const NavigationButton = ({
 }: Props) => {
     return (
         <Container onPress={onPress}>
-            <PictogramContainer>
-                <Pictogram
-                    customSize={customSize}
-                    color="primary"
-                    variant={pictogram}
-                />
-            </PictogramContainer>
+            <Pictogram
+                customSize={customSize}
+                color="primary"
+                pr="small"
+                variant={pictogram}
+            />
             <TitleContainer>
                 {subTitle && (
                     <Typography fontFamily="light" fontSize={12}>

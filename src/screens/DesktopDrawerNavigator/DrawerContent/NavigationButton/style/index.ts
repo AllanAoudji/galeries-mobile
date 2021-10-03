@@ -7,5 +7,8 @@ const Container = styled.Pressable`
     height: 65px;
     justify-content: space-between;
 `;
+const TitleContainer = styled.View`
+    flex: 1;
+`;
 
-export default Container;
+export { Container, TitleContainer };

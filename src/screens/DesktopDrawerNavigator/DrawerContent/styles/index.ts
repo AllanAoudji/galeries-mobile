@@ -8,5 +8,11 @@ const Container = styled.View`
     padding: ${({ theme }) =>
         `${theme.spacings.largest} ${theme.spacings.small} ${theme.spacings.smallest}`};
 `;
+const LogoContainer = styled.Pressable`
+    display: flex;
+    align-items: center;
+    margin-bottom: 120px;
+`;
 
-export default Container;
+// eslint-disable-next-line import/prefer-default-export
+export { Container, LogoContainer };
