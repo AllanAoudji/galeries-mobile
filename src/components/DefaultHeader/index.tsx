@@ -22,6 +22,14 @@ const DefaultHeader = ({
 }: Props & ViewProps) => {
     const navigation = useNavigation();
 
+    const pictogramVariant = React.useMemo(
+        () =>
+            variant === 'secondary' && navigation.canGoBack()
+                ? 'arrow-left'
+                : 'hamburger-menu',
+        [variant]
+    );
+
     const handlePressPictogram = React.useCallback(() => {
         if (variant === 'secondary' && navigation.canGoBack()) {
             if (onPress) onPress();
@@ -37,11 +45,7 @@ const DefaultHeader = ({
                 onPress={handlePressPictogram}
                 pl="small"
                 pr="small"
-                variant={
-                    variant === 'secondary' && navigation.canGoBack()
-                        ? 'arrow-left'
-                        : 'hamburger-menu'
-                }
+                variant={pictogramVariant}
             />
             {!!title && (
                 <Typography color="primary" fontFamily="light" fontSize={24}>
@@ -52,4 +56,4 @@ const DefaultHeader = ({
     );
 };
 
-export default DefaultHeader;
+export default React.memo(DefaultHeader);
