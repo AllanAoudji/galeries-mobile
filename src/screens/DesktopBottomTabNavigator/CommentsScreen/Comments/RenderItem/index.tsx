@@ -15,6 +15,7 @@ const handlePressBottomSheetButton = () => {};
 
 const RenderItem = ({ item }: Props) => {
     const dispatch = useDispatch();
+
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
     const userSelector = React.useMemo(
@@ -23,16 +24,21 @@ const RenderItem = ({ item }: Props) => {
     );
     const user = useSelector(userSelector);
 
-    const { bottomSheetIsOpen, openBottomSheet } =
+    const { bottomSheetIsOpen, closeBottomSheet, openBottomSheet } =
         React.useContext(BottomSheetContext);
     const { resetCommentSelected, selectedComment, setCommentSelected } =
         React.useContext(SelectedCommentContext);
+
+    const handleBottomSheetPressReply = React.useCallback(() => {
+        closeBottomSheet();
+        dispatch(updateCommentsCurrent(comment.id));
+    }, [comment]);
 
     const bottomSheetContent = React.useCallback(() => {
         return (
             <>
                 <BottomSheetButton
-                    onPress={handlePressBottomSheetButton}
+                    onPress={handleBottomSheetPressReply}
                     title={`reply to ${user.pseudonym}`}
                 />
                 <BottomSheetButton
