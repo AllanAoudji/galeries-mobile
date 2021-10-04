@@ -22,9 +22,11 @@ import {
 import { useComponentSize } from '#hooks';
 
 export const BottomSheetContext = React.createContext<{
+    bottomSheetIsOpen: boolean;
     closeBottomSheet: () => void;
     openBottomSheet: (renderItem: React.ComponentType) => void;
 }>({
+    bottomSheetIsOpen: false,
     closeBottomSheet: () => {},
     openBottomSheet: () => {},
 });
@@ -36,6 +38,8 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
     const [content, setContent] = React.useState<React.ComponentType | null>(
         null
     );
+    const [bottomSheetIsOpen, setBottomSheetIsOpen] =
+        React.useState<boolean>(false);
 
     const containerValue = useSharedValue(content ? 1 : 0);
     const overLayStyle = useAnimatedStyle(() => ({
@@ -83,6 +87,7 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
 
     const openBottomSheet = React.useCallback(
         (renderItem: React.ComponentType) => {
+            setBottomSheetIsOpen(true);
             if (!content) {
                 setContent(renderItem);
                 containerValue.value = withTiming(
@@ -94,6 +99,7 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
         [content]
     );
     const closeBottomSheet = React.useCallback(() => {
+        setBottomSheetIsOpen(false);
         containerValue.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(), () => {
             runOnJS(setContent)(null);
         });
@@ -105,7 +111,11 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
 
     return (
         <BottomSheetContext.Provider
-            value={{ closeBottomSheet, openBottomSheet }}
+            value={{
+                bottomSheetIsOpen,
+                closeBottomSheet,
+                openBottomSheet,
+            }}
         >
             {children}
             {content && (

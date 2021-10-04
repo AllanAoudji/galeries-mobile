@@ -12,12 +12,19 @@ import { BodyContainer, Container } from './styles';
 
 type Props = {
     comment: Store.Models.Comment;
-    onPress: (user: Store.Models.User) => void;
+    current: boolean;
+    onPress: (commentId: string) => void;
     onPressReply: () => void;
     user: Store.Models.User;
 };
 
-const CommentCard = ({ comment, onPress, onPressReply, user }: Props) => {
+const CommentCard = ({
+    comment,
+    current,
+    onPress,
+    onPressReply,
+    user,
+}: Props) => {
     const dispatch = useDispatch();
 
     const [showComments, setShowComments] = React.useState<boolean>(false);
@@ -32,7 +39,7 @@ const CommentCard = ({ comment, onPress, onPressReply, user }: Props) => {
         return 'hide comments';
     }, [comment, showComments]);
 
-    const handlePress = React.useCallback(() => onPress(user), [user]);
+    const handlePress = React.useCallback(() => onPress(comment.id), [comment]);
     const handlePressLoadingMore = React.useCallback(
         () => dispatch(getCommentComments(comment.id)),
         [comment]
@@ -60,7 +67,7 @@ const CommentCard = ({ comment, onPress, onPressReply, user }: Props) => {
     }, [comment]);
 
     return (
-        <Container onPress={handlePress}>
+        <Container current={current} onPress={handlePress}>
             <ProfilePicture mr="smallest" user={user} />
             <BodyContainer>
                 <Body body={comment.body} user={user} />

@@ -5,6 +5,7 @@ import { selectComment, updateCommentsCurrent } from '#store/comments';
 import { BottomSheetButton, CommentCard } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { selectUserId } from '#store/users';
+import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
 
 type Props = {
     item: string;
@@ -22,7 +23,10 @@ const RenderItem = ({ item }: Props) => {
     );
     const user = useSelector(userSelector);
 
-    const { openBottomSheet } = React.useContext(BottomSheetContext);
+    const { resetCommentSelected, selectedComment, setCommentSelected } =
+        React.useContext(SelectedCommentContext);
+    const { bottomSheetIsOpen, openBottomSheet } =
+        React.useContext(BottomSheetContext);
 
     const bottomSheetContent = React.useCallback(() => {
         return (
@@ -38,16 +42,22 @@ const RenderItem = ({ item }: Props) => {
             </>
         );
     }, []);
-    const handlePress = React.useCallback(() => {
+    const handlePress = React.useCallback((commentId: string) => {
+        setCommentSelected(commentId);
         openBottomSheet(bottomSheetContent);
     }, []);
     const handlePressReply = React.useCallback(() => {
         dispatch(updateCommentsCurrent(comment.id));
     }, [comment]);
 
+    React.useEffect(() => {
+        if (!bottomSheetIsOpen) resetCommentSelected();
+    }, [bottomSheetIsOpen]);
+
     return (
         <CommentCard
             comment={comment}
+            current={selectedComment === comment.id}
             onPress={handlePress}
             onPressReply={handlePressReply}
             user={user}
