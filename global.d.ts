@@ -277,6 +277,7 @@ declare global {
             type Comment = {
                 autoIncrementId: string;
                 body: string;
+                commentId: string | null;
                 comments?: {
                     allIds: string[];
                     end: boolean;

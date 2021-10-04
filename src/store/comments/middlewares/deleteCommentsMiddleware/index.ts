@@ -12,6 +12,7 @@ const deleteCommentsMiddleware: Middleware<{}, Store.Reducer> =
         next(action);
 
         if (action.type !== COMMENTS_DELETE) return;
+
         const loading = getCommentsLoadingDelete(getState);
         if (typeof action.payload !== 'string' || loading.includes('LOADING'))
             return;
