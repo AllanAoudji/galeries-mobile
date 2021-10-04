@@ -11,8 +11,7 @@ const Container = styled.Pressable<ContainerProps>`
     background-color: ${({ current, theme }) =>
         current ? theme.colors.secondary : 'transparent'};
     flex-direction: row;
-    margin: ${({ theme }) =>
-        `0 ${theme.spacings.small} ${theme.spacings.smallest}`};
+    padding: ${({ theme }) => `7px ${theme.spacings.small} 7px`};
 `;
 
 export { BodyContainer, Container };

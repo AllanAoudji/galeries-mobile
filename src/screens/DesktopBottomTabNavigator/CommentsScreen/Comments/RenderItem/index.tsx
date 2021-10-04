@@ -23,10 +23,10 @@ const RenderItem = ({ item }: Props) => {
     );
     const user = useSelector(userSelector);
 
-    const { resetCommentSelected, selectedComment, setCommentSelected } =
-        React.useContext(SelectedCommentContext);
     const { bottomSheetIsOpen, openBottomSheet } =
         React.useContext(BottomSheetContext);
+    const { resetCommentSelected, selectedComment, setCommentSelected } =
+        React.useContext(SelectedCommentContext);
 
     const bottomSheetContent = React.useCallback(() => {
         return (

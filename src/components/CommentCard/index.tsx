@@ -8,6 +8,7 @@ import Body from './Body';
 import Footer from './Footer';
 import SubComments from './SubComments';
 import ViewMore from './ViewMore';
+
 import { BodyContainer, Container } from './styles';
 
 type Props = {
@@ -67,26 +68,31 @@ const CommentCard = ({
     }, [comment]);
 
     return (
-        <Container current={current} onPress={handlePress}>
-            <ProfilePicture mr="smallest" user={user} />
-            <BodyContainer>
-                <Body body={comment.body} user={user} />
-                <Footer createdAt={comment.createdAt} onPress={onPressReply} />
-                {comment.numOfComments > 0 && (
-                    <ViewMore
-                        commentFetcherText={commentFetcherText}
-                        onPress={handlePressView}
+        <>
+            <Container current={current} onPress={handlePress}>
+                <ProfilePicture mr="smallest" user={user} />
+                <BodyContainer>
+                    <Body body={comment.body} user={user} />
+                    <Footer
+                        createdAt={comment.createdAt}
+                        onPress={onPressReply}
                     />
-                )}
-                {!!comment.comments && showComments && (
-                    <SubComments
-                        allIds={comment.comments.allIds}
-                        end={comment.comments.end}
-                        onPress={handlePressLoadingMore}
-                    />
-                )}
-            </BodyContainer>
-        </Container>
+                    {comment.numOfComments > 0 && (
+                        <ViewMore
+                            commentFetcherText={commentFetcherText}
+                            onPress={handlePressView}
+                        />
+                    )}
+                </BodyContainer>
+            </Container>
+            {!!comment.comments && showComments && (
+                <SubComments
+                    allIds={comment.comments.allIds}
+                    end={comment.comments.end}
+                    onPress={handlePressLoadingMore}
+                />
+            )}
+        </>
     );
 };
 

@@ -74,7 +74,8 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
                     1,
                     ANIMATIONS.TIMING_CONFIG()
                 );
-            else
+            else {
+                runOnJS(setBottomSheetIsOpen)(false);
                 containerValue.value = withTiming(
                     0,
                     ANIMATIONS.TIMING_CONFIG(),
@@ -82,6 +83,7 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
                         runOnJS(setContent)(null);
                     }
                 );
+            }
         },
     });
 
