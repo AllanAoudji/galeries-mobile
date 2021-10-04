@@ -4,16 +4,18 @@ import { selectComment, updateCommentsCurrent } from '#store/comments';
 
 import { BottomSheetButton, CommentCard } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
-import { selectUserId } from '#store/users';
 import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
+import { selectMeId } from '#store/me';
+import { selectUserId } from '#store/users';
 
 type Props = {
     item: string;
+    openModal: (commentId: string) => void;
 };
 
 const handlePressBottomSheetButton = () => {};
 
-const RenderItem = ({ item }: Props) => {
+const RenderItem = ({ item, openModal }: Props) => {
     const dispatch = useDispatch();
 
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
@@ -23,6 +25,7 @@ const RenderItem = ({ item }: Props) => {
         [comment.userId]
     );
     const user = useSelector(userSelector);
+    const meId = useSelector(selectMeId);
 
     const { bottomSheetIsOpen, closeBottomSheet, openBottomSheet } =
         React.useContext(BottomSheetContext);
@@ -33,18 +36,31 @@ const RenderItem = ({ item }: Props) => {
         closeBottomSheet();
         dispatch(updateCommentsCurrent(comment.id));
     }, [comment]);
+    const handleBottomSheetDelete = React.useCallback(() => {
+        closeBottomSheet();
+        openModal(comment.id);
+    }, [comment]);
 
     const bottomSheetContent = React.useCallback(() => {
         return (
             <>
                 <BottomSheetButton
                     onPress={handleBottomSheetPressReply}
-                    title={`reply to ${user.pseudonym}`}
+                    title={`reply to ${
+                        meId === user.id ? 'me' : user.pseudonym
+                    }`}
                 />
-                <BottomSheetButton
-                    onPress={handlePressBottomSheetButton}
-                    title="delete comment"
-                />
+                {meId === user.id ? (
+                    <BottomSheetButton
+                        onPress={handleBottomSheetDelete}
+                        title="delete comment"
+                    />
+                ) : (
+                    <BottomSheetButton
+                        onPress={handlePressBottomSheetButton}
+                        title="report comment"
+                    />
+                )}
             </>
         );
     }, []);

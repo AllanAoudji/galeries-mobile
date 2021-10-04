@@ -24,8 +24,8 @@ const successDeleteComment = (
     const frame = getFrame(getState, comment.frameId);
     if (!frame) return;
 
-    dispatch(removeCommentsById(commentId));
     dispatchDeleteFrameComment(dispatch, frame, commentId);
+    dispatch(removeCommentsById(commentId));
     dispatch(updateCommentsLoadingDelete('SUCCESS'));
 };
 

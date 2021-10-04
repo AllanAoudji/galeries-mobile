@@ -24,13 +24,14 @@ const framesByIdReducer = (state = initialState, action: Store.Action) => {
                     ...action.payload,
                 };
             return state;
-        case FRAMES_BY_ID_UPDATE:
+        case FRAMES_BY_ID_UPDATE: {
             if (typeof action.payload === 'object')
                 return {
                     ...state,
                     [action.payload.id]: { ...action.payload },
                 };
             return state;
+        }
         default:
             return state;
     }
