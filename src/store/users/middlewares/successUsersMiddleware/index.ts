@@ -1,79 +1,25 @@
-import { Dispatch, Middleware } from 'redux';
+import { Middleware } from 'redux';
 
-import { ERROR_MESSAGE } from '#helpers/constants';
 import { API_SUCCESS } from '#store/api/actionTypes';
-import {
-    dispatchErrorNotification,
-    dispatchUpdateGalerieUsers,
-} from '#store/dispatchers';
-import { ME } from '#store/genericActionTypes';
-import { getGalerie } from '#store/getters';
-import { getUserCurrentProfilePicture } from '#store/profilePictures/actionCreators';
-import {
-    setUsersAllIds,
-    setUsersById,
-    updateUsersEnd,
-    updateUsersPrevious,
-    updateUsersStatus,
-} from '#store/users/actionCreators';
+import { USERS } from '#store/genericActionTypes';
 
-const successDefaultMethod = (
-    dispatch: Dispatch<Store.Action>,
-    getState: () => Store.Reducer,
-    action: Store.Action
-) => {
-    const galerieId = action.meta.query
-        ? action.meta.query.galerieId
-        : undefined;
-    if (galerieId) {
-        const galerie = getGalerie(getState, galerieId);
-        if (galerie)
-            dispatchUpdateGalerieUsers(dispatch, galerie, {
-                status: 'ERROR',
-            });
-    } else dispatch(updateUsersStatus('ERROR'));
-    dispatchErrorNotification(dispatch, ERROR_MESSAGE.METHOD_NOT_FOUND);
-};
-const successGetUsers = (
-    dispatch: Dispatch<Store.Action>,
-    action: Store.Action
-) => {
-    const allIds: string[] = [];
-    const byId: { [key: string]: Store.Models.User } = {};
-    const { user, users } = action.payload.data;
-    if (users && Array.isArray(users)) {
-        users.forEach((u: Store.Models.User) => {
-            allIds.push(u.id);
-            byId[u.id] = u;
-        });
-    } else if (user && typeof user === 'object') {
-        allIds.push(user.id);
-        byId[user.id] = user;
-    }
-    if (allIds.length > 0) {
-        dispatch(setUsersById(byId));
-        const previousUserId = allIds[allIds.length - 1];
-        const previous = byId[previousUserId].userName || '';
-        dispatch(setUsersAllIds(allIds));
-        dispatch(updateUsersEnd(allIds.length < 20));
-        dispatch(updateUsersStatus('SUCCESS'));
-        dispatch(updateUsersPrevious(previous));
-        allIds.forEach((id) => dispatch(getUserCurrentProfilePicture(id)));
-    }
-};
+import successDefaultMethod from './successDefaultMethod';
+import successGetUsers from './successGetUsers';
+
 const successUsersMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === `${ME} ${API_SUCCESS}`) {
-            switch (action.meta.method) {
-                case 'GET':
-                    successGetUsers(dispatch, action);
-                    break;
-                default:
-                    successDefaultMethod(dispatch, getState, action);
-            }
+
+        if (action.type !== `${USERS} ${API_SUCCESS}`) return;
+
+        switch (action.meta.method) {
+            case 'GET':
+                successGetUsers(dispatch, getState, action);
+                break;
+            default:
+                successDefaultMethod(dispatch);
         }
     };
 

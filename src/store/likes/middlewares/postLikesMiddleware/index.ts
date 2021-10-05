@@ -1,7 +1,6 @@
 import { Middleware } from 'redux';
 
 import { dispatchPostLike } from '#store/dispatchers';
-import { getFrame } from '#store/getters';
 import { LIKES_POST } from '#store/likes/actionTypes';
 
 const postLikesMiddleware: Middleware<{}, Store.Reducer> =
@@ -15,7 +14,7 @@ const postLikesMiddleware: Middleware<{}, Store.Reducer> =
             ? action.meta.query.frameId
             : undefined;
         if (typeof frameId !== 'string') return;
-        const frame = getFrame(getState, frameId);
+        const frame = getState().frames.byId[frameId];
         if (!frame) return;
 
         dispatchPostLike(dispatch, frameId);

@@ -11,6 +11,9 @@ import {
     PROFILE_PICTURES_END_RESET,
     PROFILE_PICTURES_END_UPDATE,
     PROFILE_PICTURES_GET,
+    PROFILE_PICTURES_ID_REMOVE,
+    PROFILE_PICTURES_ID_RESET,
+    PROFILE_PICTURES_ID_UPDATE,
     PROFILE_PICTURES_LOADING_DELETE_RESET,
     PROFILE_PICTURES_LOADING_DELETE_UPDATE,
     PROFILE_PICTURES_LOADING_POST_RESET,
@@ -75,6 +78,13 @@ export const removeProfilePicturesById: (payload: string) => Store.Action = (
     payload,
     type: PROFILE_PICTURES_BY_ID_REMOVE,
 });
+export const removeProfilePicturesId: (userId: string) => Store.Action = (
+    userId
+) => ({
+    meta: { query: { userId } },
+    payload: {},
+    type: PROFILE_PICTURES_ID_REMOVE,
+});
 export const resetProfilePictures: () => Store.Action = () => ({
     meta: {},
     payload: {},
@@ -99,6 +109,11 @@ export const resetProfilePicturesEnd: () => Store.Action = () => ({
     meta: {},
     payload: {},
     type: PROFILE_PICTURES_END_RESET,
+});
+export const resetProfilePicturesId: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: PROFILE_PICTURES_ID_RESET,
 });
 export const resetProfilePicturesLoadingDelete: () => Store.Action = () => ({
     meta: {},
@@ -148,6 +163,14 @@ export const updateProfilePicturesEnd: (payload: boolean) => Store.Action = (
     payload,
     type: PROFILE_PICTURES_END_UPDATE,
 });
+export const updateProfilePicturesId: (
+    userId: string,
+    payload: string
+) => Store.Action = (userId, payload) => ({
+    meta: { query: { userId } },
+    payload,
+    type: PROFILE_PICTURES_ID_UPDATE,
+});
 export const updateProfilePicturesLoadingDelete: (
     payload: Store.Status
 ) => Store.Action = (payload) => ({
@@ -169,9 +192,10 @@ export const updateProfilePicturesPrevious: (payload: string) => Store.Action =
         type: PROFILE_PICTURES_PREVIOUS_UPDATE,
     });
 export const updateProfilePicturesStatus: (
+    userId: string,
     payload: Store.Status
-) => Store.Action = (payload) => ({
-    meta: {},
+) => Store.Action = (userId, payload) => ({
+    meta: { query: { userId } },
     payload,
     type: PROFILE_PICTURES_STATUS_UPDATE,
 });

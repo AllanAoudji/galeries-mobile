@@ -1,8 +1,6 @@
 export { default as dispatchDeleteComment } from './dispatchDeleteComment';
 export { default as dispatchDeleteFrame } from './dispatchDeleteFrame';
 export { default as dispatchDeleteGalerie } from './dispatchDeleteGalerie';
-export { default as dispatchDeleteFrameComment } from './dispatchDeleteFrameComment';
-export { default as dispatchDeleteGalerieFrame } from './dispatchDeleteGalerieFrame';
 export { default as dispatchDeleteProfilePicture } from './dispatchDeleteProfilePicture';
 export { default as dispatchErrorNotification } from './dispatchErrorNotification';
 export { default as dispatchGetComment } from './dispatchGetComment';
@@ -36,11 +34,3 @@ export { default as dispatchPostProfilePicture } from './dispatchPostProfilePict
 export { default as dispatchPutFrame } from './dispatchPutFrame';
 export { default as dispatchPutGalerie } from './dispatchPutGalerie';
 export { default as dispatchSuccessNotification } from './dispatchSuccessNotification';
-export { default as dispatchUpdateCommentComments } from './dispatchUpdateCommentComments';
-export { default as dispatchUpdateFrameComments } from './dispatchUpdateFrameComments';
-export { default as dispatchUpdateFrameLikes } from './dispatchUpdateFrameLikes';
-export { default as dispatchUpdateFrameGaleriePictures } from './dispatchUpdateFrameGaleriePictures';
-export { default as dispatchUpdateGalerieCoverPicture } from './dispatchUpdateGalerieCoverPicture';
-export { default as dispatchUpdateGalerieFrames } from './dispatchUpdateGalerieFrames';
-export { default as dispatchUpdateGalerieUsers } from './dispatchUpdateGalerieUsers';
-export { default as dispatchUserCurrentProfilePicture } from './dispatchUserCurrentProfilePicture';

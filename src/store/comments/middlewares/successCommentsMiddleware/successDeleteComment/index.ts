@@ -2,11 +2,10 @@ import { Dispatch } from 'redux';
 
 import {
     removeCommentsById,
-    updateCommentsById,
+    updateCommentsAllIds,
     updateCommentsLoadingDelete,
 } from '#store/comments/actionCreators';
 import { updateFramesById } from '#store/frames/actionCreators';
-import { getComment, getFrame } from '#store/getters';
 
 const successDeleteComment = (
     dispatch: Dispatch<Store.Action>,
@@ -21,50 +20,22 @@ const successDeleteComment = (
     )
         return;
     const { commentId, numOfComments } = action.payload.data;
-    const comment = getComment(getState, commentId);
+    const comment = getState().comments.byId[commentId];
     if (!comment) return;
 
-    const frame = getFrame(getState, comment.frameId);
-    const parentComment = getComment(getState, comment.commentId || '');
+    const frame = getState().frames.byId[comment.frameId];
+    const parentComment = getState().comments.byId[comment.commentId || ''];
     if (parentComment) {
-        const allIds = parentComment.comments
-            ? parentComment.comments.allIds
-            : [];
+        const allIds = getState().comments.allIds[parentComment.id];
         const newAllIds = allIds.filter((id) => id !== commentId);
-        dispatch(
-            updateCommentsById({
-                ...parentComment,
-                comments: {
-                    allIds: newAllIds,
-                    end: parentComment.comments
-                        ? parentComment.comments.end
-                        : false,
-                    previous: parentComment.comments
-                        ? parentComment.comments.previous
-                        : undefined,
-                    status: parentComment.comments
-                        ? parentComment.comments.status
-                        : 'PENDING',
-                },
-            })
-        );
+
+        dispatch(updateCommentsAllIds(parentComment.id, newAllIds));
     } else if (frame) {
-        const allIds = frame.comments ? frame.comments.allIds : [];
+        const allIds = getState().comments.allIds[frame.id];
         const newAllIds = allIds.filter((id) => id !== commentId);
-        dispatch(
-            updateFramesById({
-                ...frame,
-                numOfComments,
-                comments: {
-                    allIds: newAllIds,
-                    end: frame.comments ? frame.comments.end : false,
-                    previous: frame.comments
-                        ? frame.comments.previous
-                        : undefined,
-                    status: frame.comments ? frame.comments.status : 'PENDING',
-                },
-            })
-        );
+
+        dispatch(updateCommentsAllIds(frame.id, newAllIds));
+        dispatch(updateFramesById({ ...frame, numOfComments }));
     }
     dispatch(removeCommentsById(commentId));
     dispatch(updateCommentsLoadingDelete('SUCCESS'));

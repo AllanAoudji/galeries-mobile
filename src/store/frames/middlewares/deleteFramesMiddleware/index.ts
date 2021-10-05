@@ -3,7 +3,6 @@ import { Middleware } from 'redux';
 import { dispatchDeleteFrame } from '#store/dispatchers';
 import { updateFramesLoadingDelete } from '#store/frames/actionCreators';
 import { FRAMES_DELETE } from '#store/frames/actionTypes';
-import { getFramesLoadingDelete } from '#store/getters';
 
 const deleteFramesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -12,7 +11,7 @@ const deleteFramesMiddleware: Middleware<{}, Store.Reducer> =
         next(action);
 
         if (action.type !== FRAMES_DELETE) return;
-        const loading = getFramesLoadingDelete(getState);
+        const loading = getState().frames.loading.delete;
         if (typeof action.payload !== 'string' || loading.includes('LOADING'))
             return;
 

@@ -6,7 +6,6 @@ import {
     dispatchPostCommentComments,
     dispatchPostFrameComments,
 } from '#store/dispatchers';
-import { getComment, getCommentsLoadingPost, getFrame } from '#store/getters';
 
 const postCommentMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -16,7 +15,7 @@ const postCommentMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== COMMENTS_POST) return;
 
-        const loading = getCommentsLoadingPost(getState);
+        const loading = getState().comments.loading.post;
         const frameId = action.meta.query
             ? action.meta.query.frameId
             : undefined;
@@ -31,13 +30,15 @@ const postCommentMiddleware: Middleware<{}, Store.Reducer> =
             return;
 
         if (frameId) {
-            const frame = getFrame(getState, frameId);
+            const frame = getState().frames.byId[frameId];
             if (!frame) return;
+
             dispatch(updateCommentsLoadingPost('LOADING'));
             dispatchPostFrameComments(dispatch, frameId, action.payload);
         } else if (commentId) {
-            const comment = getComment(getState, commentId);
+            const comment = getState().comments.byId[commentId];
             if (!comment) return;
+
             dispatch(updateCommentsLoadingPost('LOADING'));
             dispatchPostCommentComments(dispatch, commentId, action.payload);
         }

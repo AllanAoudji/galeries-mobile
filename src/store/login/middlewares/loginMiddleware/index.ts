@@ -2,7 +2,6 @@ import { Middleware } from 'redux';
 
 import { dispatchErrorNotification, dispatchLogin } from '#store/dispatchers';
 import { LOGIN } from '#store/genericActionTypes';
-import { getLoginStatus, getMeId, getUser } from '#store/getters';
 import { getMe, resetMeId } from '#store/me/actionCreators';
 import { updateLoginStatus } from '#store/login/actionCreators';
 
@@ -12,17 +11,17 @@ const loginMiddleware: Middleware<{}, Store.Reducer> =
     (action: Store.Action) => {
         next(action);
         if (action.type === LOGIN) {
-            const loginStatus = getLoginStatus(getState);
+            const loginStatus = getState().login.status;
             if (
                 typeof action.payload === 'object' &&
                 typeof action.payload.password === 'string' &&
                 typeof action.payload.userNameOrEmail &&
                 !loginStatus.includes('LOADING')
             ) {
-                const meId = getMeId(getState);
+                const meId = getState().me.id;
                 if (meId) {
-                    const user = getUser(getState, meId);
-                    if (user)
+                    const me = getState().users.byId[meId];
+                    if (me)
                         dispatchErrorNotification(
                             dispatch,
                             'you already logged in.'

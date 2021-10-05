@@ -1,13 +1,36 @@
-import { createSelector } from 'reselect';
+import { createSelector, OutputSelector } from 'reselect';
 
+const selectCommentsAllIds = (state: Store.Reducer) => state.comments.allIds;
 const selectCommentsById = (state: Store.Reducer) => state.comments.byId;
+const selectCommentsStatus = (state: Store.Reducer) => state.comments.status;
 const selectFramesCurrent = (state: Store.Reducer) => state.frames.current;
-const selectFramesById = (state: Store.Reducer) => state.frames.byId;
 
 export const selectComment = (commentId: string) =>
     createSelector(
         [selectCommentsById],
         (commentsById) => commentsById[commentId]
+    );
+export const selectCommentCommentsAllIds: (
+    commentId: string
+) => OutputSelector<
+    Store.Reducer,
+    string[],
+    (res: { [key: string]: string[] }) => string[] | undefined
+> = (commentId: string) =>
+    createSelector(
+        [selectCommentsAllIds],
+        (commentsAllIds) => commentsAllIds[commentId]
+    );
+export const selectCommentCommentsStatus: (
+    commentId: string
+) => OutputSelector<
+    Store.Reducer,
+    Store.Status,
+    (res: { [key: string]: Store.Status }) => Store.Status | undefined
+> = (commentId: string) =>
+    createSelector(
+        [selectCommentsStatus],
+        (commentsStatus) => commentsStatus[commentId]
     );
 export const selectCommentsLoadingDelete = (state: Store.Reducer) =>
     state.comments.loading.delete;
@@ -16,44 +39,32 @@ export const selectCommentsLoadingPost = (state: Store.Reducer) =>
 export const selectCommentCurrent = (state: Store.Reducer) =>
     state.comments.current;
 export const selectCurrentFrameCommentsAllId = createSelector(
-    [selectFramesCurrent, selectFramesById],
-    (framesCurrent, framesById) => {
+    [selectCommentsAllIds, selectFramesCurrent],
+    (commentsAllIds, framesCurrent) => {
         if (!framesCurrent) return undefined;
-        const frame = framesById[framesCurrent];
-        if (!frame || !frame.comments) return undefined;
-        return frame.comments.allIds;
-    }
-);
-export const selectCurrentFrameComments = createSelector(
-    [selectCommentsById, selectFramesCurrent, selectFramesById],
-    (commentsById, framesCurrent, framesById) => {
-        if (!framesCurrent) return undefined;
-        const frame = framesById[framesCurrent];
-        if (!frame || !frame.comments) return undefined;
-        const { allIds } = frame.comments;
-        return allIds
-            .map((frameId) => commentsById[frameId])
-            .filter((item) => !!item);
+        return commentsAllIds[framesCurrent];
     }
 );
 export const selectCurrentFrameCommentsStatus = createSelector(
-    [selectFramesById, selectFramesCurrent],
-    (framesById, framesCurrent) => {
+    [selectCommentsStatus, selectFramesCurrent],
+    (commentsStatus, framesCurrent) => {
         if (!framesCurrent) return undefined;
-        const frame = framesById[framesCurrent];
-        if (!frame || !frame.comments) return 'PENDING';
-        return frame.comments.status;
+        return commentsStatus[framesCurrent];
     }
 );
-export const selectFrameComments = (frameId: string) =>
+export const selectFrameCommentsAllIds: (
+    frameId: string
+) => OutputSelector<
+    Store.Reducer,
+    string[],
+    (res: { [key: string]: string[] }) => string[] | undefined
+> = (frameId: string) =>
     createSelector(
-        [selectCommentsById, selectFramesById],
-        (commentsById, framesById) => {
-            const frame = framesById[frameId];
-            if (!frame || !frame.comments) return undefined;
-            const { allIds } = frame.comments;
-            return allIds
-                .map((id) => commentsById[id])
-                .filter((item) => !!item);
-        }
+        [selectCommentsAllIds],
+        (commentsAllIds) => commentsAllIds[frameId]
+    );
+export const selectFrameCommentsStatus = (frameId: string) =>
+    createSelector(
+        [selectCommentsStatus],
+        (commentsStatus) => commentsStatus[frameId]
     );

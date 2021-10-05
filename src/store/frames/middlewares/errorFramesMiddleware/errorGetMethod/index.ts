@@ -1,11 +1,10 @@
 import { Dispatch } from 'redux';
 
+import { dispatchErrorNotification } from '#store/dispatchers';
 import {
-    dispatchErrorNotification,
-    dispatchUpdateGalerieFrames,
-} from '#store/dispatchers';
-import { updateFramesStatus } from '#store/frames/actionCreators';
-import { getGalerie } from '#store/getters';
+    updateFramesStatus,
+    updateGalerieFramesStatus,
+} from '#store/frames/actionCreators';
 
 const errorGetMethod = (
     dispatch: Dispatch<Store.Action>,
@@ -16,14 +15,8 @@ const errorGetMethod = (
         ? action.meta.query.galerieId
         : undefined;
 
-    if (galerieId) {
-        const galerie = getGalerie(getState, galerieId);
-        if (galerie)
-            dispatchUpdateGalerieFrames(dispatch, getState, galerie, {
-                status: 'ERROR',
-            });
-    } else dispatch(updateFramesStatus('ERROR'));
-
+    if (galerieId) dispatch(updateGalerieFramesStatus(galerieId, 'ERROR'));
+    else dispatch(updateFramesStatus('ERROR'));
     dispatchErrorNotification(dispatch, action);
 };
 

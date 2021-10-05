@@ -1,7 +1,6 @@
 import { Middleware } from 'redux';
 
 import { dispatchPostProfilePicture } from '#store/dispatchers';
-import { getProfilePicturesLoadingPost } from '#store/getters';
 import { PROFILE_PICTURES_POST } from '#store/profilePictures/actionTypes';
 import { updateProfilePicturesLoadingPost } from '#store/profilePictures/actionCreators';
 
@@ -12,7 +11,7 @@ const postProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
         next(action);
 
         if (action.type !== PROFILE_PICTURES_POST) return;
-        const loading = getProfilePicturesLoadingPost(getState);
+        const loading = getState().profilePictures.loading.post;
         if (
             !(action.payload instanceof FormData) ||
             loading.includes('LOADING')

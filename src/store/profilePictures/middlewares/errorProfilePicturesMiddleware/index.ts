@@ -13,20 +13,21 @@ const errorProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === `${PROFILE_PICTURES} ${API_ERROR}`) {
-            switch (action.meta.method) {
-                case 'DELETE':
-                    errorDeleteMethod(dispatch, action);
-                    break;
-                case 'GET':
-                    errorGetMethod(dispatch, getState, action);
-                    break;
-                case 'POST':
-                    errorPostMethod(dispatch, action);
-                    break;
-                default:
-                    errorDefaultMethod(dispatch);
-            }
+
+        if (action.type !== `${PROFILE_PICTURES} ${API_ERROR}`) return;
+
+        switch (action.meta.method) {
+            case 'DELETE':
+                errorDeleteMethod(dispatch, action);
+                break;
+            case 'GET':
+                errorGetMethod(dispatch, getState, action);
+                break;
+            case 'POST':
+                errorPostMethod(dispatch, action);
+                break;
+            default:
+                errorDefaultMethod(dispatch);
         }
     };
 

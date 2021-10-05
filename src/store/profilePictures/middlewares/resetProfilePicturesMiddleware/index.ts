@@ -6,6 +6,7 @@ import {
     resetProfilePicturesById,
     resetProfilePicturesCurrent,
     resetProfilePicturesEnd,
+    resetProfilePicturesId,
     resetProfilePicturesLoadingDelete,
     resetProfilePicturesLoadingPost,
     resetProfilePicturesPrevious,
@@ -23,6 +24,7 @@ const resetProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
         dispatch(resetProfilePicturesById());
         dispatch(resetProfilePicturesCurrent());
         dispatch(resetProfilePicturesEnd());
+        dispatch(resetProfilePicturesId());
         dispatch(resetProfilePicturesLoadingDelete());
         dispatch(resetProfilePicturesLoadingPost());
         dispatch(resetProfilePicturesPrevious());

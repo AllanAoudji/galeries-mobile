@@ -1,10 +1,7 @@
 import { Dispatch } from 'redux';
 
-import {
-    dispatchErrorNotification,
-    dispatchUpdateFrameComments,
-} from '#store/dispatchers';
-import { getFrame } from '#store/getters';
+import { dispatchErrorNotification } from '#store/dispatchers';
+import { updateCommentsStatus } from '#store/comments/actionCreators';
 
 const errorGetMethod = (
     dispatch: Dispatch<Store.Action>,
@@ -14,19 +11,12 @@ const errorGetMethod = (
     const frameId = action.payload.query
         ? action.payload.query.frameId
         : undefined;
-    if (frameId) {
-        dispatchErrorNotification(dispatch, action);
-        return;
-    }
-    const frame = getFrame(getState, frameId);
-    if (!frame) {
-        dispatchErrorNotification(dispatch, action);
-        return;
-    }
+    const galerieId = action.payload.query
+        ? action.payload.query.galerieId
+        : undefined;
 
-    dispatchUpdateFrameComments(dispatch, frame, {
-        status: 'ERROR',
-    });
+    if (frameId) dispatch(updateCommentsStatus(frameId, 'ERROR'));
+    else if (galerieId) dispatch(updateCommentsStatus(galerieId, 'ERROR'));
     dispatchErrorNotification(dispatch, action);
 };
 

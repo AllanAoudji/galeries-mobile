@@ -1,13 +1,12 @@
 import { Dispatch } from 'redux';
 
-import { dispatchDeleteGalerieFrame } from '#store/dispatchers';
 import {
     removeFramesAllIds,
     removeFramesById,
+    removeGalerieFramesAllIds,
     resetFramesCurrent,
     updateFramesLoadingDelete,
 } from '#store/frames/actionCreators';
-import { getFrame, getGalerie } from '#store/getters';
 
 const successDeleteFrame = (
     dispatch: Dispatch<Store.Action>,
@@ -17,16 +16,13 @@ const successDeleteFrame = (
     if (typeof action.payload.data !== 'object') return;
     const { frameId } = action.payload.data;
     if (typeof frameId !== 'string') return;
-    const frame = getFrame(getState, frameId);
+    const frame = getState().frames.byId[frameId];
     if (!frame) return;
 
     dispatch(removeFramesById(frameId));
     dispatch(resetFramesCurrent());
     dispatch(removeFramesAllIds(frameId));
-
-    const galerie = getGalerie(getState, frame.galerieId);
-    if (galerie) dispatchDeleteGalerieFrame(dispatch, galerie, frameId);
-
+    dispatch(removeGalerieFramesAllIds(frame.galerieId, frameId));
     dispatch(updateFramesLoadingDelete('SUCCESS'));
 };
 

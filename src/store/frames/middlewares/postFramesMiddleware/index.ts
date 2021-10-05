@@ -6,7 +6,6 @@ import {
     updateFramesLoadingPost,
 } from '#store/frames/actionCreators';
 import { FRAMES_POST } from '#store/frames/actionTypes';
-import { getFramesLoadingPost } from '#store/getters';
 
 const postFramesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -16,10 +15,10 @@ const postFramesMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== FRAMES_POST) return;
 
-        const loading = getFramesLoadingPost(getState);
         const galerieId = action.meta.query
             ? action.meta.query.galerieId
             : undefined;
+        const loading = getState().frames.loading.post;
 
         if (
             !(action.payload instanceof FormData) ||

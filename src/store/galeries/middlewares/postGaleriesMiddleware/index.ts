@@ -3,7 +3,6 @@ import { Middleware } from 'redux';
 import { dispatchPostGalerie } from '#store/dispatchers';
 import { GALERIES_POST } from '#store/galeries/actionTypes';
 import { updateGaleriesLoadingPost } from '#store/galeries/actionCreators';
-import { getGaleriesLoadingPost } from '#store/getters';
 
 const postGaleriesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -11,7 +10,7 @@ const postGaleriesMiddleware: Middleware<{}, Store.Reducer> =
     (action: Store.Action) => {
         next(action);
         if (action.type === GALERIES_POST) {
-            const loading = getGaleriesLoadingPost(getState);
+            const loading = getState().galeries.loading.post;
             if (
                 typeof action.payload === 'object' &&
                 typeof action.payload.description === 'string' &&

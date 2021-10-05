@@ -8,15 +8,17 @@ const dispatchGetFrames: (
     dispatch: Dispatch<Store.Action>,
     previous?: string
 ) => void = (dispatch, previous) => {
-    const query = previous ? `?previous=${previous}` : '';
+    let query = '?';
+    if (previous) query = `${query}previous=${previous}`;
+
     dispatch(
         apiRequest({
-            payload: {},
             meta: {
                 entity: FRAMES,
                 method: 'GET',
                 url: `${END_POINT.FRAMES}${query}`,
             },
+            payload: {},
         })
     );
 };

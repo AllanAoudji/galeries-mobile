@@ -9,7 +9,9 @@ const dispatchGetGalerieFrames: (
     galerieId: string,
     previous?: string
 ) => void = (dispatch, galerieId, previous) => {
-    const query = previous ? `?previous=${previous}` : '';
+    let query = '?';
+    if (previous) query = `${query}previous=${previous}`;
+
     dispatch(
         apiRequest({
             meta: {

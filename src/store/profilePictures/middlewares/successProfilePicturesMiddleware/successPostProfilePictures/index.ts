@@ -1,11 +1,10 @@
 import * as FileSystem from 'expo-file-system';
 import { Dispatch } from 'redux';
 
-import { dispatchUserCurrentProfilePicture } from '#store/dispatchers';
-import { getMe } from '#store/getters';
 import {
     setProfilePicturesAllId,
     setProfilePicturesById,
+    updateProfilePicturesId,
     updateProfilePicturesLoadingPost,
 } from '#store/profilePictures/actionCreators';
 
@@ -20,8 +19,8 @@ const successPostProfilePictures = async (
         typeof action.payload.data.profilePicture !== 'object'
     )
         return;
-    const me = getMe(getState);
-    if (!me) return;
+    const meId = getState().me.id;
+    if (!meId) return;
 
     const { profilePicture } = action.payload.payload.data;
     const cropedImagePath = `${FileSystem.cacheDirectory}${profilePicture.cropedImage.id}`;
@@ -62,9 +61,7 @@ const successPostProfilePictures = async (
 
     dispatch(setProfilePicturesAllId(allIds));
     dispatch(setProfilePicturesById(byId));
-    dispatchUserCurrentProfilePicture(dispatch, me, {
-        id: profilePicture.id,
-    });
+    dispatch(updateProfilePicturesId(meId, profilePicture.id));
     updateProfilePicturesLoadingPost('SUCCESS');
 };
 

@@ -74,6 +74,14 @@ export const removeFramesAllIds: (payload: string) => Store.Action = (
     payload,
     type: FRAMES_ALL_IDS_REMOVE,
 });
+export const removeGalerieFramesAllIds: (
+    galerieId: string,
+    payload: string
+) => Store.Action = (galerieId, payload) => ({
+    meta: { query: { galerieId } },
+    payload,
+    type: FRAMES_ALL_IDS_REMOVE,
+});
 export const removeFramesById: (payload: string) => Store.Action = (
     payload
 ) => ({
@@ -143,6 +151,14 @@ export const setFramesAllIds: (payload: string[]) => Store.Action = (
     payload,
     type: FRAMES_ALL_IDS_SET,
 });
+export const setGalerieFramesAllIds: (
+    galerieId: string,
+    payload: string[]
+) => Store.Action = (galerieId, payload) => ({
+    meta: { query: { galerieId } },
+    payload,
+    type: FRAMES_ALL_IDS_SET,
+});
 export const setFramesById: (payload: {
     [key: string]: Store.Models.Frame;
 }) => Store.Action = (payload) => ({
@@ -169,6 +185,14 @@ export const updateFramesEnd: (payload: boolean) => Store.Action = (
     payload
 ) => ({
     meta: {},
+    payload,
+    type: FRAMES_END_UPDATE,
+});
+export const updateGalerieFramesEnd: (
+    galerieId: string,
+    payload: boolean
+) => Store.Action = (galerieId, payload) => ({
+    meta: { query: { galerieId } },
     payload,
     type: FRAMES_END_UPDATE,
 });
@@ -206,10 +230,26 @@ export const updateFramesPrevious: (payload: string) => Store.Action = (
     payload,
     type: FRAMES_PREVIOUS_UPDATE,
 });
+export const updateGalerieFramesPrevious: (
+    galerieId: string,
+    payload: string
+) => Store.Action = (galerieId, payload) => ({
+    meta: { query: { galerieId } },
+    payload,
+    type: FRAMES_PREVIOUS_UPDATE,
+});
 export const updateFramesStatus: (payload: Store.Status) => Store.Action = (
     payload
 ) => ({
     meta: {},
+    payload,
+    type: FRAMES_STATUS_UPDATE,
+});
+export const updateGalerieFramesStatus: (
+    galerieId: string,
+    payload: Store.Status
+) => Store.Action = (galerieId, payload) => ({
+    meta: { query: { galerieId } },
     payload,
     type: FRAMES_STATUS_UPDATE,
 });

@@ -10,8 +10,10 @@ import {
     PREVIOUS,
     END,
     ALL_IDS,
+    REMOVE,
 } from '#store/genericActionTypes';
 
+export const USERS_ALL_IDS_REMOVE = `${USERS}${ALL_IDS} ${REMOVE}`;
 export const USERS_ALL_IDS_RESET = `${USERS}${ALL_IDS} ${RESET}`;
 export const USERS_ALL_IDS_SET = `${USERS}${ALL_IDS} ${SET}`;
 export const USERS_BY_ID_SET = `${USERS}${BY_ID} ${SET}`;
