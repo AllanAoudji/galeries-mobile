@@ -41,6 +41,7 @@ declare global {
                 Comments: undefined;
                 CreateFrame: NavigatorScreenParams<CreateFrameStack.ParamList>;
                 CreateGalerie: undefined;
+                Frame: undefined;
                 Galerie: undefined;
                 Galeries: undefined;
                 Home: undefined;
@@ -60,6 +61,7 @@ declare global {
                 ParamList,
                 'CreateGalerie'
             >;
+            type FrameProp = BottomTabNavigationProp<ParamList, 'Frame'>;
             type GalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'Galerie'

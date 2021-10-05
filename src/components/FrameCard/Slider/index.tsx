@@ -16,17 +16,14 @@ import {
 import Dots from './Dots';
 import Image from './Image';
 
-import {
-    ActivityIndicatorContainer,
-    DotsContainer,
-    LinearGradiantStyled,
-} from './styles';
+import { ActivityIndicatorContainer, Container, DotsContainer } from './styles';
 
 type Props = {
     frameId: string;
+    onPressSlider: () => void;
 };
 
-const Slider = ({ frameId }: Props) => {
+const Slider = ({ frameId, onPressSlider }: Props) => {
     const dimension = useWindowDimensions();
     const theme = useTheme();
 
@@ -62,7 +59,7 @@ const Slider = ({ frameId }: Props) => {
 
     return (
         <>
-            <LinearGradiantStyled size={dimension.width}>
+            <Container onPress={onPressSlider} size={dimension.width}>
                 {galeriePictures && !galeriePicturesAreLoading ? (
                     <ScrollView
                         decelerationRate="fast"
@@ -84,7 +81,7 @@ const Slider = ({ frameId }: Props) => {
                         />
                     </ActivityIndicatorContainer>
                 )}
-            </LinearGradiantStyled>
+            </Container>
             <DotsContainer>
                 {!!galeriePictures && (
                     <Dots

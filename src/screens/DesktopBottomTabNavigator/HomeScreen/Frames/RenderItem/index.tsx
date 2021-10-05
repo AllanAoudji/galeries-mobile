@@ -58,6 +58,10 @@ const RenderItem = ({ item }: Props) => {
         () => openBottomSheet(bottomSheetContent),
         []
     );
+    const handlePressSlider = React.useCallback(() => {
+        dispatch(updateFramesCurrent(item));
+        navigation.navigate('Frame');
+    }, [item]);
 
     return (
         <FrameCard
@@ -66,6 +70,7 @@ const RenderItem = ({ item }: Props) => {
             onPressLikes={handlePressLikes}
             onPressLike={handlePressLike}
             onPressOptions={handlePressOption}
+            onPressSlider={handlePressSlider}
         />
     );
 };
