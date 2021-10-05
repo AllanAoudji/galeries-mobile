@@ -1,6 +1,12 @@
 import { Middleware } from 'redux';
 
-import { resetLikesById } from '#store/likes/actionCreators';
+import {
+    resetLikesAllIds,
+    resetLikesById,
+    resetLikesEnd,
+    resetLikesPrevious,
+    resetLikesStatus,
+} from '#store/likes/actionCreators';
 import { LIKES_RESET } from '#store/likes/actionTypes';
 
 const resetLikesMiddleware: Middleware<{}, Store.Reducer> =
@@ -12,6 +18,10 @@ const resetLikesMiddleware: Middleware<{}, Store.Reducer> =
         if (action.type !== LIKES_RESET) return;
 
         dispatch(resetLikesById());
+        dispatch(resetLikesAllIds());
+        dispatch(resetLikesEnd());
+        dispatch(resetLikesPrevious());
+        dispatch(resetLikesStatus());
     };
 
 export default resetLikesMiddleware;

@@ -2,15 +2,12 @@ import * as FileSystem from 'expo-file-system';
 import { Dispatch } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
-import {
-    dispatchErrorNotification,
-    dispatchUserCurrentProfilePicture,
-} from '#store/dispatchers';
-import { getUser } from '#store/getters';
+import { dispatchErrorNotification } from '#store/dispatchers';
 import {
     setProfilePicturesAllId,
     setProfilePicturesById,
     updateProfilePicturesEnd,
+    updateProfilePicturesId,
     updateProfilePicturesPrevious,
     updateProfilePicturesStatus,
 } from '#store/profilePictures/actionCreators';
@@ -120,13 +117,6 @@ const successGetProfilePictures = async (
             };
         }
     } catch (err) {
-        if (userId) {
-            const user = getUser(getState, userId);
-            if (!user) return;
-            dispatchUserCurrentProfilePicture(dispatch, user, {
-                status: 'ERROR',
-            });
-        } else dispatch(updateProfilePicturesStatus('ERROR'));
         dispatchErrorNotification(
             dispatch,
             ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE
@@ -144,15 +134,10 @@ const successGetProfilePictures = async (
         dispatch(setProfilePicturesAllId(allIds));
         dispatch(updateProfilePicturesEnd(allIds.length < 20));
         dispatch(updateProfilePicturesPrevious(previous));
-        dispatch(updateProfilePicturesStatus('SUCCESS'));
+        dispatch(updateProfilePicturesStatus('', 'SUCCESS'));
     } else if (id && userId) {
-        const user = getUser(getState, userId);
-        if (!user) return;
-
-        dispatchUserCurrentProfilePicture(dispatch, user, {
-            id,
-            status: 'SUCCESS',
-        });
+        dispatch(updateProfilePicturesId(userId, id));
+        dispatch(updateProfilePicturesStatus(userId, 'SUCCESS'));
     }
 };
 

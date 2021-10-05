@@ -1,10 +1,7 @@
 import { Dispatch } from 'redux';
 
-import { getUser } from '#store/getters';
-import {
-    dispatchErrorNotification,
-    dispatchUserCurrentProfilePicture,
-} from '#store/dispatchers';
+import { dispatchErrorNotification } from '#store/dispatchers';
+import { updateProfilePicturesStatus } from '#store/profilePictures/actionCreators';
 
 const errorGetMethod = (
     dispatch: Dispatch<Store.Action>,
@@ -14,13 +11,8 @@ const errorGetMethod = (
     const userId = action.payload.query
         ? action.payload.query.userId
         : undefined;
-    if (typeof userId !== 'string') return;
-    const user = getUser(getState, userId);
-    if (!user) return;
 
-    dispatchUserCurrentProfilePicture(dispatch, user, {
-        status: 'ERROR',
-    });
+    dispatch(updateProfilePicturesStatus(userId || '', 'ERROR'));
     dispatchErrorNotification(dispatch, action);
 };
 

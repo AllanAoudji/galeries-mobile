@@ -1,13 +1,13 @@
 import * as FileSystem from 'expo-file-system';
 import { Dispatch } from 'redux';
 
+import { dispatchErrorNotification } from '#store/dispatchers';
 import {
-    dispatchErrorNotification,
-    dispatchUpdateFrameGaleriePictures,
-    dispatchUpdateGalerieCoverPicture,
-} from '#store/dispatchers';
-import { setGaleriePicturesById } from '#store/galeriePictures/actionCreators';
-import { getFrame, getGalerie } from '#store/getters';
+    setGaleriePicturesById,
+    updateGaleriePicturesAllIds,
+    updateGaleriePicturesStatus,
+    updateGaleriePicturesId,
+} from '#store/galeriePictures/actionCreators';
 import { ERROR_MESSAGE } from '#helpers/constants';
 
 const successGetGaleriePictures = async (
@@ -120,26 +120,14 @@ const successGetGaleriePictures = async (
             id = galeriePicture.id;
         }
     } catch (err) {
-        if (frameId) {
-            const frame = getFrame(getState, frameId);
-            if (!frame) return;
+        if (frameId) dispatch(updateGaleriePicturesStatus(frameId, 'ERROR'));
+        else if (galerieId)
+            dispatch(updateGaleriePicturesStatus(galerieId, 'ERROR'));
 
-            dispatchUpdateFrameGaleriePictures(dispatch, frame, {
-                status: 'ERROR',
-            });
-        } else if (galerieId && typeof id === 'string') {
-            const galerie = getGalerie(getState, galerieId);
-            if (!galerie) return;
-
-            dispatchUpdateGalerieCoverPicture(dispatch, galerie, {
-                status: 'ERROR',
-            });
-        }
         dispatchErrorNotification(
             dispatch,
             ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE
         );
-
         return;
     }
 
@@ -148,21 +136,11 @@ const successGetGaleriePictures = async (
     dispatch(setGaleriePicturesById(byId));
 
     if (allIds.length && typeof frameId === 'string') {
-        const frame = getFrame(getState, frameId);
-        if (!frame) return;
-
-        dispatchUpdateFrameGaleriePictures(dispatch, frame, {
-            allIds,
-            status: 'SUCCESS',
-        });
+        dispatch(updateGaleriePicturesStatus(frameId, 'SUCCESS'));
+        dispatch(updateGaleriePicturesAllIds(frameId, allIds));
     } else if (typeof id === 'string' && typeof galerieId === 'string') {
-        const galerie = getGalerie(getState, galerieId);
-        if (!galerie) return;
-
-        dispatchUpdateGalerieCoverPicture(dispatch, galerie, {
-            id,
-            status: 'SUCCESS',
-        });
+        dispatch(updateGaleriePicturesStatus(galerieId, 'SUCCESS'));
+        dispatch(updateGaleriePicturesId(galerieId, id));
     }
 };
 

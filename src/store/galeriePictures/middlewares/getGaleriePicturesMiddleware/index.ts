@@ -3,11 +3,9 @@ import { Middleware } from 'redux';
 import {
     dispatchGetFrameGaleriePictures,
     dispatchGetGalerieCoverPicture,
-    dispatchUpdateFrameGaleriePictures,
-    dispatchUpdateGalerieCoverPicture,
 } from '#store/dispatchers';
 import { GALERIE_PICTURES_GET } from '#store/galeriePictures/actionTypes';
-import { getFrame, getGalerie } from '#store/getters';
+import { updateGaleriePicturesStatus } from '#store/galeriePictures/actionCreators';
 
 const getGaleriePicturesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -25,28 +23,23 @@ const getGaleriePicturesMiddleware: Middleware<{}, Store.Reducer> =
             : undefined;
 
         if (frameId) {
-            const frame = getFrame(getState, frameId);
+            const frame = getState().frames.byId[frameId];
             if (!frame) return;
-            const galeriePicturesStatus = frame.galeriePictures
-                ? frame.galeriePictures.status
-                : 'PENDING';
-            if (galeriePicturesStatus !== 'PENDING') return;
+            const status =
+                getState().galeriePictures.status[frameId] || 'PENDING';
+            if (status !== 'PENDING') return;
 
-            dispatchUpdateFrameGaleriePictures(dispatch, frame, {
-                status: 'LOADING',
-            });
+            dispatch(updateGaleriePicturesStatus(frameId, 'LOADING'));
             dispatchGetFrameGaleriePictures(dispatch, frameId);
         } else if (galerieId) {
-            const galerie = getGalerie(getState, galerieId);
+            const galerie = getState().galeries.byId[galerieId];
             if (!galerie) return;
-            const galeriepictureStatus = galerie.coverPicture
-                ? galerie.coverPicture.status
-                : 'PENDING';
-            if (galeriepictureStatus.includes('LOADING')) return;
 
-            dispatchUpdateGalerieCoverPicture(dispatch, galerie, {
-                status: 'LOADING',
-            });
+            const status =
+                getState().galeriePictures.status[galerieId] || 'PENDING';
+            if (status !== 'PENDING') return;
+
+            dispatch(updateGaleriePicturesStatus(galerieId, 'LOADING'));
             dispatchGetGalerieCoverPicture(dispatch, galerieId);
         }
     };

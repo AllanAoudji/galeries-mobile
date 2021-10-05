@@ -1,12 +1,11 @@
 import { Dispatch } from 'redux';
 
-import { getMe, getProfilePictures } from '#store/getters';
 import {
     removeProfilePicturesAllId,
     removeProfilePicturesById,
+    removeProfilePicturesId,
     updateProfilePicturesLoadingDelete,
 } from '#store/profilePictures/actionCreators';
-import { dispatchUserCurrentProfilePicture } from '#store/dispatchers';
 
 const successDeleteProfilePicture = (
     dispatch: Dispatch<Store.Action>,
@@ -21,21 +20,18 @@ const successDeleteProfilePicture = (
         return;
 
     const { profilePictureId } = action.payload.data;
-    dispatch(removeProfilePicturesById(profilePictureId));
 
-    const profilePictures = getProfilePictures(getState);
-    if (!profilePictures.allIds.includes(profilePictureId))
+    const { allIds } = getState().profilePictures;
+    if (!allIds.includes(profilePictureId))
         dispatch(removeProfilePicturesAllId(profilePictureId));
 
-    const me = getMe(getState);
-    if (
-        me &&
-        me.currentProfilePicture &&
-        me.currentProfilePicture.id === profilePictureId
-    )
-        dispatchUserCurrentProfilePicture(dispatch, me, {
-            id: null,
-        });
+    const profilePicture = getState().profilePictures.byId[profilePictureId];
+    if (profilePicture) {
+        dispatch(removeProfilePicturesById(profilePictureId));
+        if (getState().profilePictures.id[profilePicture.userId]) {
+            dispatch(removeProfilePicturesId(profilePicture.userId));
+        }
+    }
 
     dispatch(updateProfilePicturesLoadingDelete('SUCCESS'));
 };

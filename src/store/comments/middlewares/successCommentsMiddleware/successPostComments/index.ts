@@ -2,11 +2,11 @@ import { Dispatch } from 'redux';
 
 import {
     setCommentsById,
+    updateCommentsAllIds,
     updateCommentsById,
     updateCommentsLoadingPost,
 } from '#store/comments/actionCreators';
 import { updateFramesById } from '#store/frames/actionCreators';
-import { getComment, getFrame } from '#store/getters';
 import { combineCommentsAllIds } from '#store/combineAllIds';
 
 const successPostComments = (
@@ -19,7 +19,7 @@ const successPostComments = (
         typeof action.payload.data !== 'object' ||
         typeof action.payload.data.comment !== 'object'
     ) {
-        dispatch(updateCommentsLoadingPost('SUCCESS'));
+        dispatch(updateCommentsLoadingPost('ERROR'));
         return;
     }
 
@@ -38,65 +38,30 @@ const successPostComments = (
     }
 
     if (frameId) {
-        const frame = getFrame(getState, frameId);
-        if (!frame) {
-            dispatch(updateCommentsLoadingPost('ERROR'));
-            return;
-        }
-
-        const oldAllIds = frame.comments ? frame.comments.allIds : [];
+        const oldAllIds = getState().comments.allIds[frameId];
         const newAllIds = combineCommentsAllIds(getState, oldAllIds, [
             comment.id,
         ]);
+        dispatch(updateCommentsAllIds(frameId, newAllIds));
 
-        if (typeof numOfComments === 'number')
-            dispatch(
-                updateFramesById({
-                    ...frame,
-                    numOfComments,
-                    comments: {
-                        allIds: newAllIds,
-                        end: frame.comments ? frame.comments.end : false,
-                        status: frame.comments
-                            ? frame.comments.status
-                            : 'PENDING',
-                        previous: frame.comments
-                            ? frame.comments.previous
-                            : comment.id,
-                    },
-                })
-            );
-    } else if (commentId) {
-        const storedComment = getComment(getState, commentId);
-        if (!storedComment) {
-            dispatch(updateCommentsLoadingPost('ERROR'));
-            return;
+        if (typeof numOfComments === 'number') {
+            const frame = getState().frames.byId[frameId];
+            if (frame) dispatch(updateFramesById({ ...frame, numOfComments }));
         }
-
-        const oldsAllIds = storedComment.comments
-            ? storedComment.comments.allIds
-            : [];
-        const newAllIds = combineCommentsAllIds(getState, oldsAllIds, [
+    } else if (commentId) {
+        const oldAllIds = getState().comments.allIds[commentId] || [];
+        const newAllIds = combineCommentsAllIds(getState, oldAllIds, [
             comment.id,
         ]);
+        dispatch(updateCommentsAllIds(commentId, newAllIds));
 
-        if (typeof numOfComments === 'number')
-            dispatch(
-                updateCommentsById({
-                    ...storedComment,
-                    numOfComments,
-                    comments: {
-                        allIds: newAllIds,
-                        end: numOfComments <= newAllIds.length,
-                        status: storedComment.comments
-                            ? storedComment.comments.status
-                            : 'PENDING',
-                        previous: storedComment.comments
-                            ? storedComment.comments.previous
-                            : comment.id,
-                    },
-                })
-            );
+        if (typeof numOfComments === 'number') {
+            const storedComment = getState().comments.byId[commentId];
+            if (storedComment)
+                dispatch(
+                    updateCommentsById({ ...storedComment, numOfComments })
+                );
+        }
     }
     dispatch(updateCommentsLoadingPost('SUCCESS'));
 };

@@ -4,50 +4,82 @@ import { selectComment, updateCommentsCurrent } from '#store/comments';
 
 import { BottomSheetButton, CommentCard } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
-import { selectUserId } from '#store/users';
+import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
+import { selectMeId } from '#store/me';
+import { selectUser } from '#store/users';
 
 type Props = {
     item: string;
+    openModal: (commentId: string) => void;
 };
 
 const handlePressBottomSheetButton = () => {};
 
-const RenderItem = ({ item }: Props) => {
+const RenderItem = ({ item, openModal }: Props) => {
     const dispatch = useDispatch();
+
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
     const userSelector = React.useMemo(
-        () => selectUserId(comment.userId),
+        () => selectUser(comment.userId),
         [comment.userId]
     );
     const user = useSelector(userSelector);
+    const meId = useSelector(selectMeId);
 
-    const { openBottomSheet } = React.useContext(BottomSheetContext);
+    const { bottomSheetIsOpen, closeBottomSheet, openBottomSheet } =
+        React.useContext(BottomSheetContext);
+    const { resetCommentSelected, selectedComment, setCommentSelected } =
+        React.useContext(SelectedCommentContext);
+
+    const handleBottomSheetPressReply = React.useCallback(() => {
+        closeBottomSheet();
+        dispatch(updateCommentsCurrent(comment.id));
+    }, [comment]);
+    const handleBottomSheetDelete = React.useCallback(() => {
+        closeBottomSheet();
+        openModal(comment.id);
+    }, [comment]);
 
     const bottomSheetContent = React.useCallback(() => {
         return (
             <>
                 <BottomSheetButton
-                    onPress={handlePressBottomSheetButton}
-                    title={`reply to ${user.pseudonym}`}
+                    onPress={handleBottomSheetPressReply}
+                    title={`reply to ${
+                        meId === user.id ? 'me' : user.pseudonym
+                    }`}
                 />
-                <BottomSheetButton
-                    onPress={handlePressBottomSheetButton}
-                    title="delete comment"
-                />
+                {meId === user.id ? (
+                    <BottomSheetButton
+                        onPress={handleBottomSheetDelete}
+                        title="delete comment"
+                    />
+                ) : (
+                    <BottomSheetButton
+                        onPress={handlePressBottomSheetButton}
+                        title="report comment"
+                    />
+                )}
             </>
         );
     }, []);
-    const handlePress = React.useCallback(() => {
+    const handlePress = React.useCallback((commentId: string) => {
+        setCommentSelected(commentId);
         openBottomSheet(bottomSheetContent);
     }, []);
     const handlePressReply = React.useCallback(() => {
         dispatch(updateCommentsCurrent(comment.id));
     }, [comment]);
 
+    React.useEffect(() => {
+        if (!bottomSheetIsOpen) resetCommentSelected();
+    }, [bottomSheetIsOpen]);
+
     return (
         <CommentCard
             comment={comment}
+            current={selectedComment === comment.id}
             onPress={handlePress}
             onPressReply={handlePressReply}
             user={user}

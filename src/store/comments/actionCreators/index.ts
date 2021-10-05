@@ -1,4 +1,6 @@
 import {
+    COMMENTS_ALL_IDS_RESET,
+    COMMENTS_ALL_IDS_UPDATE,
     COMMENTS_BY_ID_REMOVE,
     COMMENTS_BY_ID_RESET,
     COMMENTS_BY_ID_SET,
@@ -6,13 +8,19 @@ import {
     COMMENTS_CURRENT_RESET,
     COMMENTS_CURRENT_UPDATE,
     COMMENTS_DELETE,
+    COMMENTS_END_RESET,
+    COMMENTS_END_UPDATE,
     COMMENTS_GET,
     COMMENTS_LOADING_DELETE_RESET,
     COMMENTS_LOADING_DELETE_UPDATE,
     COMMENTS_LOADING_POST_RESET,
     COMMENTS_LOADING_POST_UPDATE,
     COMMENTS_POST,
+    COMMENTS_PREVIOUS_RESET,
+    COMMENTS_PREVIOUS_UPDATE,
     COMMENTS_RESET,
+    COMMENTS_STATUS_RESET,
+    COMMENTS_STATUS_UPDATE,
 } from '#store/comments/actionTypes';
 
 export const deleteComment: (payload: string) => Store.Action = (payload) => ({
@@ -70,12 +78,27 @@ export const resetCommentsLoadingPost: () => Store.Action = () => ({
     payload: {},
     type: COMMENTS_LOADING_POST_RESET,
 });
+export const resetCommentsPrevious: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: COMMENTS_PREVIOUS_RESET,
+});
+export const resetCommentsStatus: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: COMMENTS_STATUS_RESET,
+});
 export const removeCommentsById: (payload: string) => Store.Action = (
     payload
 ) => ({
     meta: {},
     payload,
     type: COMMENTS_BY_ID_REMOVE,
+});
+export const resetCommentsAllIds: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: COMMENTS_ALL_IDS_RESET,
 });
 export const resetCommentsById: () => Store.Action = () => ({
     meta: {},
@@ -87,12 +110,25 @@ export const resetCommentsCurrent: () => Store.Action = () => ({
     payload: {},
     type: COMMENTS_CURRENT_RESET,
 });
+export const resetCommentsEnd: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: COMMENTS_END_RESET,
+});
 export const setCommentsById: (payload: {
     [key: string]: Store.Models.Comment;
 }) => Store.Action = (payload) => ({
     meta: {},
     payload,
     type: COMMENTS_BY_ID_SET,
+});
+export const updateCommentsAllIds: (
+    modelId: string,
+    payload: string[]
+) => Store.Action = (modelId, payload) => ({
+    meta: { query: { modelId } },
+    payload,
+    type: COMMENTS_ALL_IDS_UPDATE,
 });
 export const updateCommentsById: (
     payload: Store.Models.Comment
@@ -108,6 +144,15 @@ export const updateCommentsCurrent: (payload: string) => Store.Action = (
     payload,
     type: COMMENTS_CURRENT_UPDATE,
 });
+export const updateCommentsEnd: (
+    modelId: string,
+    payload: boolean
+) => Store.Action = (modelId, payload) => ({
+    meta: { query: { modelId } },
+    payload,
+    type: COMMENTS_END_UPDATE,
+});
+
 export const updateCommentsLoadingDelete: (
     payload: Store.Status
 ) => Store.Action = (payload) => ({
@@ -121,4 +166,20 @@ export const updateCommentsLoadingPost: (
     meta: {},
     payload,
     type: COMMENTS_LOADING_POST_UPDATE,
+});
+export const updateCommentsPrevious: (
+    modelId: string,
+    payload: string
+) => Store.Action = (modelId, payload) => ({
+    meta: { query: { modelId } },
+    payload,
+    type: COMMENTS_PREVIOUS_UPDATE,
+});
+export const updateCommentsStatus: (
+    modelId: string,
+    payload: Store.Status
+) => Store.Action = (modelId, payload) => ({
+    meta: { query: { modelId } },
+    payload,
+    type: COMMENTS_STATUS_UPDATE,
 });

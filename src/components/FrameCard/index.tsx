@@ -24,7 +24,7 @@ const FrameCard = ({
     return (
         <Container>
             <Header userId={frame.userId} onPress={onPressOptions} />
-            <Slider galeriePictures={frame.galeriePictures} />
+            <Slider frameId={frame.id} />
             <Footer
                 createdAt={frame.createdAt}
                 description={frame.description}

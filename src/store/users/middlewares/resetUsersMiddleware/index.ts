@@ -15,14 +15,15 @@ const resetUsersMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === USERS_RESET) {
-            dispatch(resetUsersAllIds());
-            dispatch(resetUsersById());
-            dispatch(resetUserCurrent());
-            dispatch(resetUsersEnd());
-            dispatch(resetUsersPrevious());
-            dispatch(resetUsersStatus());
-        }
+
+        if (action.type !== USERS_RESET) return;
+
+        dispatch(resetUsersAllIds());
+        dispatch(resetUsersById());
+        dispatch(resetUserCurrent());
+        dispatch(resetUsersEnd());
+        dispatch(resetUsersPrevious());
+        dispatch(resetUsersStatus());
     };
 
 export default resetUsersMiddleware;

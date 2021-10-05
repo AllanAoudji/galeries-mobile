@@ -22,7 +22,6 @@ import {
     updateGaleriesPrevious,
     updateGaleriesStatus,
 } from '#store/galeries/actionCreators';
-import { getGalerie } from '#store/getters';
 import { GALERIES } from '#store/genericActionTypes';
 
 const successDefaultMethod = (dispatch: Dispatch<Store.Action>) =>
@@ -98,15 +97,15 @@ const successPutGalerie = (
         typeof galerie === 'object' &&
         typeof galerie.id === 'string'
     ) {
-        const currentGalerie = getGalerie(getState, galerie.id);
-        if (currentGalerie) {
-            dispatch(
-                updateGaleriesById({
-                    ...currentGalerie,
-                    ...galerie,
-                })
-            );
-        }
+        const currentGalerie = getState().galeries.byId[galerie.id];
+        if (!currentGalerie) return;
+
+        dispatch(
+            updateGaleriesById({
+                ...currentGalerie,
+                ...galerie,
+            })
+        );
     }
     dispatch(updateGaleriesLoadingPut('SUCCESS'));
 };

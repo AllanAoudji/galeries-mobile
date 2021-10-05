@@ -24,7 +24,7 @@ const Modal = styled.View`
     background-color: ${({ theme }) => theme.colors['secondary-light']};
     border-radius: 8px;
     justify-content: space-between;
-    min-height: 178px;
+    min-height: 148px;
     padding: ${({ theme }) => theme.spacings.small};
     width: 340px;
 `;

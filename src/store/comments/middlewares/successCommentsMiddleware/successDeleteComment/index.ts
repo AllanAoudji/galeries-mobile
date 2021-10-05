@@ -2,10 +2,10 @@ import { Dispatch } from 'redux';
 
 import {
     removeCommentsById,
+    updateCommentsAllIds,
     updateCommentsLoadingDelete,
 } from '#store/comments/actionCreators';
-import { dispatchDeleteFrameComment } from '#store/dispatchers';
-import { getComment, getFrame } from '#store/getters';
+import { updateFramesById } from '#store/frames/actionCreators';
 
 const successDeleteComment = (
     dispatch: Dispatch<Store.Action>,
@@ -15,17 +15,29 @@ const successDeleteComment = (
     if (
         typeof action.payload !== 'object' ||
         typeof action.payload.data !== 'object' ||
-        typeof action.payload.data.commentId !== 'string'
+        typeof action.payload.data.commentId !== 'string' ||
+        typeof action.payload.data.numOfComments !== 'number'
     )
         return;
-    const { commentId } = action.payload.data;
-    const comment = getComment(getState, commentId);
+    const { commentId, numOfComments } = action.payload.data;
+    const comment = getState().comments.byId[commentId];
     if (!comment) return;
-    const frame = getFrame(getState, comment.frameId);
-    if (!frame) return;
 
+    const frame = getState().frames.byId[comment.frameId];
+    const parentComment = getState().comments.byId[comment.commentId || ''];
+    if (parentComment) {
+        const allIds = getState().comments.allIds[parentComment.id];
+        const newAllIds = allIds.filter((id) => id !== commentId);
+
+        dispatch(updateCommentsAllIds(parentComment.id, newAllIds));
+    } else if (frame) {
+        const allIds = getState().comments.allIds[frame.id];
+        const newAllIds = allIds.filter((id) => id !== commentId);
+
+        dispatch(updateCommentsAllIds(frame.id, newAllIds));
+        dispatch(updateFramesById({ ...frame, numOfComments }));
+    }
     dispatch(removeCommentsById(commentId));
-    dispatchDeleteFrameComment(dispatch, frame, commentId);
     dispatch(updateCommentsLoadingDelete('SUCCESS'));
 };
 

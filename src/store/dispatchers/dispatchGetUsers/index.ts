@@ -6,7 +6,7 @@ import { USERS } from '#store/genericActionTypes';
 
 const dispatchGetUsers: (
     dispatch: Dispatch<Store.Action>,
-    previous?: string | null
+    previous?: string
 ) => void = (dispatch, previous) => {
     let query = '?';
     if (previous) query = `${query}previous=${previous}`;

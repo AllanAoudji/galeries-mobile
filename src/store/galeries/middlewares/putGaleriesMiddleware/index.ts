@@ -3,7 +3,6 @@ import { Middleware } from 'redux';
 import { dispatchPutGalerie } from '#store/dispatchers';
 import { updateGaleriesLoadingPut } from '#store/galeries/actionCreators';
 import { GALERIES_PUT } from '#store/galeries/actionTypes';
-import { getGaleriesLoadingPut } from '#store/getters';
 
 const putGaleriesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -14,7 +13,7 @@ const putGaleriesMiddleware: Middleware<{}, Store.Reducer> =
             const galerieId = action.meta.query
                 ? action.meta.query.galerieId
                 : undefined;
-            const loading = getGaleriesLoadingPut(getState);
+            const loading = getState().galeries.loading.put;
             if (
                 typeof action.payload === 'object' &&
                 typeof action.payload.description === 'string' &&

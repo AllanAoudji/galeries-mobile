@@ -73,6 +73,8 @@ const Form = ({ frameId, loading, onLayout, onSuccess }: Props) => {
         [textInputHeight]
     );
 
+    const textInputRef = React.useRef<any>(null);
+
     const handleChangeBodyText = React.useCallback((e: string) => {
         formik.setFieldError('body', '');
         formik.setFieldValue('body', e);
@@ -110,7 +112,7 @@ const Form = ({ frameId, loading, onLayout, onSuccess }: Props) => {
             formik.resetForm();
             setCurrentComment(commentCurrent);
         }
-    }, [commentCurrent]);
+    }, [commentCurrent, currentComment]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -127,6 +129,7 @@ const Form = ({ frameId, loading, onLayout, onSuccess }: Props) => {
             <CurrentComment />
             <FormContainer>
                 <TextInputStyled
+                    ref={textInputRef}
                     editable={!loading.includes('LOADING')}
                     height={height}
                     loading={loading.includes('LOADING')}

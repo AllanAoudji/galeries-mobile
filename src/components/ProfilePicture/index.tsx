@@ -3,7 +3,10 @@ import { Image, ImageSourcePropType } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import DefaultProfilePicture from '../../../assets/images/PP.jpg';
-import { selectUserCurrentProfilePicture } from '#store/profilePictures';
+import {
+    selectProfilePicture,
+    selectUserCurrentProfilePictureId,
+} from '#store/profilePictures';
 
 import { Container, ImageStyled, InnerContainer } from './styles';
 
@@ -39,17 +42,24 @@ const ProfilePictureWithUser = ({
     size = 'normal',
     user,
 }: ProfilePictureWithUserProps) => {
-    const selectCurrentProfilePicture = React.useMemo(
-        () => selectUserCurrentProfilePicture(user.id),
+    const userCurrentProfilePictureIdSelector = React.useCallback(
+        () => selectUserCurrentProfilePictureId(user.id),
         [user]
     );
-    const currentProfilePicture = useSelector(selectCurrentProfilePicture);
+    const currentProfilePictureId = useSelector(
+        userCurrentProfilePictureIdSelector()
+    );
+
+    const profilePictureSelector = React.useCallback(
+        () => selectProfilePicture(currentProfilePictureId),
+        [currentProfilePictureId]
+    );
+    const profilePicture = useSelector(profilePictureSelector());
 
     const uri = React.useMemo(() => {
-        if (currentProfilePicture)
-            return currentProfilePicture.cropedImage.cachedSignedUrl;
+        if (profilePicture) return profilePicture.cropedImage.cachedSignedUrl;
         return DEFAULT_PROFILE_PICTURE;
-    }, [currentProfilePicture]);
+    }, [profilePicture]);
     const source: ImageSourcePropType = React.useMemo(() => ({ uri }), [uri]);
     const borderProp = React.useMemo(
         () => uri === DEFAULT_PROFILE_PICTURE,

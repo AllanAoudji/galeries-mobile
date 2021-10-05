@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Pictogram from '#components/Pictogram';
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
-import { selectUserId } from '#store/users';
+import { selectUser } from '#store/users';
 
 import { Container, InfoContainer } from './styles';
 
@@ -14,8 +14,8 @@ type Props = {
 };
 
 const Header = ({ onPress, userId }: Props) => {
-    const selectUser = React.useMemo(() => selectUserId(userId), [userId]);
-    const user = useSelector(selectUser);
+    const userSelector = React.useCallback(() => selectUser(userId), [userId]);
+    const user = useSelector(userSelector());
 
     return (
         <Container>

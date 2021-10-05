@@ -3,19 +3,16 @@ import { Dispatch } from 'redux';
 import {
     setFramesAllIds,
     setFramesById,
+    setGalerieFramesAllIds,
     updateFramesEnd,
     updateFramesPrevious,
     updateFramesStatus,
+    updateGalerieFramesEnd,
+    updateGalerieFramesPrevious,
+    updateGalerieFramesStatus,
 } from '#store/frames/actionCreators';
 import { combineFramesAllIds } from '#store/combineAllIds';
-import { dispatchUpdateGalerieFrames } from '#store/dispatchers';
 import { getFrameGaleriePictures } from '#store/galeriePictures/actionCreators';
-import {
-    getFramesAllIds,
-    getGalerie,
-    getGalerieFramesAllIds,
-    getUser,
-} from '#store/getters';
 import { getUserId } from '#store/users';
 
 const successGetFrames = (
@@ -47,19 +44,15 @@ const successGetFrames = (
     const previous = byId[previousFrameId].autoIncrementId;
 
     if (galerieId) {
-        const oldAllIds = getGalerieFramesAllIds(getState, galerieId) || [];
+        const oldAllIds = getState().frames.allIds[galerieId] || [];
         const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
 
-        const galerie = getGalerie(getState, galerieId);
-        if (galerie)
-            dispatchUpdateGalerieFrames(dispatch, getState, galerie, {
-                allIds: newAllIds,
-                end: allIds.length < 20,
-                status: 'SUCCESS',
-                previous,
-            });
+        dispatch(setGalerieFramesAllIds(galerieId, newAllIds));
+        dispatch(updateGalerieFramesEnd(galerieId, allIds.length < 20));
+        dispatch(updateGalerieFramesPrevious(galerieId, previous));
+        dispatch(updateGalerieFramesStatus(galerieId, 'SUCCESS'));
     } else {
-        const oldAllIds = getFramesAllIds(getState);
+        const oldAllIds = getState().frames.allIds[''] || [];
         const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
 
         dispatch(updateFramesStatus('SUCCESS'));
@@ -70,7 +63,7 @@ const successGetFrames = (
 
     allIds.forEach((id) => {
         dispatch(getFrameGaleriePictures(id));
-        const user = getUser(getState, byId[id].userId);
+        const user = getState().users.byId[byId[id].userId];
         if (!user) dispatch(getUserId(byId[id].userId));
     });
 };

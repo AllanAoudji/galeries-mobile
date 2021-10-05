@@ -13,13 +13,14 @@ import {
 
 type Props = {
     comment: Store.Models.Comment;
+    current: boolean;
     onPress: () => void;
     user: Store.Models.User;
 };
 
-const SubCommentCard = ({ comment, onPress, user }: Props) => {
+const SubCommentCard = ({ current, comment, onPress, user }: Props) => {
     return (
-        <Container onPress={onPress}>
+        <Container current={current} onPress={onPress}>
             <ProfilePicture mr="smallest" size="small" user={user} />
             <BodyContainer>
                 <ContentContainer>

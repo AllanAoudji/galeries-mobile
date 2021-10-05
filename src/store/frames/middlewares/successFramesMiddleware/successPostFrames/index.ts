@@ -1,14 +1,16 @@
 import * as FileSystem from 'expo-file-system';
 import { Dispatch } from 'redux';
 
-import { dispatchUpdateGalerieFrames } from '#store/dispatchers';
 import {
     setFramesById,
+    setGalerieFramesAllIds,
     updateFramesLoadingPost,
 } from '#store/frames/actionCreators';
-import { getGalerie, getGalerieFramesAllIds } from '#store/getters';
 import { combineFramesAllIds } from '#store/combineAllIds';
-import { setGaleriePicturesById } from '#store/galeriePictures';
+import {
+    setGaleriePicturesById,
+    updateGaleriePicturesAllIds,
+} from '#store/galeriePictures/actionCreators';
 
 const successPostFrames = async (
     dispatch: Dispatch<Store.Action>,
@@ -78,36 +80,21 @@ const successPostFrames = async (
 
     const framesAllIds: string[] = [rest.id];
     const framesById: { [key: string]: Store.Models.Frame } = {
-        [rest.id]: {
-            ...rest,
-            galeriePictures: {
-                allIds: galeriePictureAllIds,
-                status: 'SUCCESS',
-            },
-        },
+        [rest.id]: { ...rest },
     };
+
+    dispatch(setFramesById(framesById));
+    dispatch(setGaleriePicturesById(galeriePicturesById));
+    dispatch(updateGaleriePicturesAllIds(frame.id, galeriePictureAllIds));
 
     const galerieId = action.meta.query
         ? action.meta.query.galerieid
         : undefined;
-
-    dispatch(setFramesById(framesById));
-    dispatch(setGaleriePicturesById(galeriePicturesById));
-
     if (!galerieId) return;
 
-    const galerie = getGalerie(getState, galerieId);
-    if (galerie) {
-        const oldAllIds = getGalerieFramesAllIds(getState, galerieId) || [];
-        const newAllIds = combineFramesAllIds(
-            getState,
-            oldAllIds,
-            framesAllIds
-        );
-        dispatchUpdateGalerieFrames(dispatch, getState, galerie, {
-            allIds: newAllIds,
-        });
-    }
+    const oldAllIds = getState().frames.allIds[galerieId];
+    const newAllIds = combineFramesAllIds(getState, oldAllIds, framesAllIds);
+    dispatch(setGalerieFramesAllIds(galerieId, newAllIds));
 
     dispatch(updateFramesLoadingPost('SUCCESS'));
 };

@@ -172,12 +172,16 @@ declare global {
         };
         type Reducer = {
             comments: {
+                allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.Comment };
                 current: string | null;
+                end: { [key: string]: boolean };
                 loading: {
                     delete: Store.Status;
                     post: Store.Status;
                 };
+                previous: { [key: string]: string };
+                status: { [key: string]: Store.Status };
             };
             forgotYourPassword: {
                 fieldsError: {
@@ -186,18 +190,18 @@ declare global {
                 status: Store.Status;
             };
             frames: {
-                allIds: string[];
+                allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.Frame };
                 current: string | null;
-                end: boolean;
+                end: { [key: string]: boolean };
                 fieldsError: { description?: string };
                 loading: {
                     delete: Store.Status;
                     post: Store.Status;
                     put: Store.Status;
                 };
-                previous: string;
-                status: Store.Status;
+                previous: { [key: string]: string };
+                status: { [key: string]: Store.Status };
             };
             galeries: {
                 allIds: { [key: string]: string[] };
@@ -215,10 +219,17 @@ declare global {
                 status: { [key: string]: Store.Status };
             };
             galeriePictures: {
+                allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.GaleriePicture };
+                id: { [key: string]: string };
+                status: { [key: string]: Store.Status };
             };
             likes: {
+                allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.Like };
+                end: { [key: string]: boolean };
+                previous: { [key: string]: string };
+                status: { [key: string]: Store.Status };
             };
             login: {
                 fieldsError: {
@@ -239,12 +250,13 @@ declare global {
                 byId: { [key: string]: Store.Models.ProfilePicture };
                 current: string | null;
                 end: boolean;
+                id: { [key: string]: string };
                 loading: {
                     delete: Store.Status;
                     post: Store.Status;
                 };
                 previous: string;
-                status: Store.Status;
+                status: { [key: string]: Store.Status };
             };
             notification: Store.Models.Notification | null;
             signin: {
@@ -258,12 +270,12 @@ declare global {
                 status: Store.Status;
             };
             users: {
-                allIds: string[];
+                allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.User };
                 current: string | null;
-                end: boolean;
-                previous: string;
-                status: Store.Status;
+                end: { [key: string]: boolean };
+                previous: { [key: string]: string };
+                status: { [key: string]: Store.Status };
             };
         };
         type Role = 'admin' | 'moderator' | 'user';
@@ -277,12 +289,7 @@ declare global {
             type Comment = {
                 autoIncrementId: string;
                 body: string;
-                comments?: {
-                    allIds: string[];
-                    end: boolean;
-                    previous?: string;
-                    status: Store.Status;
-                };
+                commentId: string | null;
                 createdAt: string;
                 frameId: string;
                 id: string;
@@ -291,29 +298,12 @@ declare global {
                 updatedAt: string;
                 userId: string;
             };
-            type CommentPopulated = Comment & { user: UserPopulated };
             type Frame = {
                 autoIncrementId: string;
-                comments?: {
-                    allIds: string[];
-                    end: boolean;
-                    previous?: string;
-                    status: Store.Status;
-                };
                 createdAt: string;
                 description: string;
                 galerieId: string;
-                galeriePictures?: {
-                    allIds: string[];
-                    status: Store.Status;
-                };
                 id: string;
-                likes?: {
-                    allIds: string[];
-                    end: boolean;
-                    previous?: string;
-                    status: Store.Status;
-                };
                 liked: boolean;
                 numOfComments: number;
                 numOfLikes: number;
@@ -323,30 +313,14 @@ declare global {
             type Galerie = {
                 allowNotification: boolean;
                 createdAt: Date;
-                coverPicture?: {
-                    id: string | null;
-                    status: Store.Status;
-                };
                 defaultCoverPicture: string;
                 description: string;
-                frames?: {
-                    allIds: string[];
-                    end: boolean;
-                    previous?: string;
-                    status: Store.Status;
-                };
                 hasNewFrames: boolean;
                 hiddenName: string;
                 id: string;
                 name: string;
                 numOfUsers: number;
                 role: Role;
-                users?: {
-                    allIds: string[];
-                    end: boolean;
-                    previous?: string;
-                    status: Store.Status;
-                };
             };
             type GaleriePicture = {
                 createdAt: string;
@@ -375,7 +349,6 @@ declare global {
                 updatedAt: string;
                 userId: string;
             };
-            type LikePopulated = Like & { user: UserPopulated };
             type Notification = {
                 status: 'error' | 'success';
                 text: string;
@@ -391,13 +364,10 @@ declare global {
                 originalImage: Image & { cachedSignedUrl: string };
                 pendingHexes: string;
                 updatedAt: string;
+                userId: string;
             };
             type User = {
                 createdAt: Date;
-                currentProfilePicture?: {
-                    id: string | null;
-                    status: Store.Status;
-                };
                 defaultProfilePicture: string | null;
                 hasNewNotification?: boolean;
                 id: string;
@@ -406,9 +376,6 @@ declare global {
                 role: Role;
                 socialMediaUserName: string | null;
                 userName: string;
-            };
-            type UserPopulated = User & {
-                currentProfilePicture?: ProfilePicture;
             };
         }
     }

@@ -1,8 +1,13 @@
 import { Dispatch } from 'redux';
 
-import { getFrame } from '#store/getters';
-import { setLikesById } from '#store/likes/actionCreators';
-import { dispatchUpdateFrameLikes } from '#store/dispatchers';
+import {
+    setLikesAllIds,
+    setLikesById,
+    setLikesEnd,
+    setLikesPrevious,
+    setLikesStatus,
+} from '#store/likes/actionCreators';
+import combineLikesAllIds from '#store/combineAllIds/combineLikesAllIds';
 
 const successGetLikes = (
     dispatch: Dispatch<Store.Action>,
@@ -11,29 +16,31 @@ const successGetLikes = (
 ) => {
     const frameId = action.meta.query ? action.meta.query.frameId : undefined;
     if (!frameId) return;
-    const frame = getFrame(getState, frameId);
-    if (!frame) return;
 
     const allIds: string[] = [];
     const byId: { [key: string]: Store.Models.Like } = {};
     const { likes } = action.payload.data;
-    if (likes && Array.isArray(likes))
-        likes.forEach((l) => {
-            allIds.push(l.id);
-            byId[l.id] = l;
-        });
-    dispatch(setLikesById(byId));
+
+    if (!Array.isArray(likes)) return;
+
+    likes.forEach((like) => {
+        allIds.push(like.id);
+        byId[like.id] = like;
+    });
 
     if (!allIds.length) return;
 
+    dispatch(setLikesById(byId));
+
+    const oldAllIds = getState().likes.allIds[frameId] || [];
+    const newAllIds = combineLikesAllIds(getState, oldAllIds, allIds);
     const previousLikeId = allIds[allIds.length - 1];
     const previous = byId[previousLikeId].autoIncrementId;
-    dispatchUpdateFrameLikes(dispatch, frame, {
-        allIds,
-        end: allIds.length < 20,
-        previous,
-        status: 'SUCCESS',
-    });
+
+    dispatch(setLikesAllIds(frameId, newAllIds));
+    dispatch(setLikesEnd(frameId, allIds.length < 20));
+    dispatch(setLikesPrevious(frameId, previous));
+    dispatch(setLikesStatus(frameId, 'SUCCESS'));
 };
 
 export default successGetLikes;

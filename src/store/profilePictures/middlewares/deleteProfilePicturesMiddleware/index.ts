@@ -2,7 +2,6 @@ import { Middleware } from 'redux';
 
 import { dispatchDeleteProfilePicture } from '#store/dispatchers';
 import { updateGaleriesLoadingPut } from '#store/galeries/actionCreators';
-import { getProfilePicturesLoadingDelete } from '#store/getters';
 import { PROFILE_PICTURES_DELETE } from '#store/profilePictures/actionTypes';
 
 const deleteProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
@@ -12,7 +11,7 @@ const deleteProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
         next(action);
 
         if (action.type !== PROFILE_PICTURES_DELETE) return;
-        const loading = getProfilePicturesLoadingDelete(getState);
+        const loading = getState().profilePictures.loading.delete;
         if (typeof action.payload !== 'string' || loading.includes('LOADING'))
             return;
 
