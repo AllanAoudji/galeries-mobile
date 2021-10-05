@@ -7,6 +7,11 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
+import { useSelector } from 'react-redux';
+import {
+    selectFrameGaleriePicturesAllIds,
+    selectFrameGaleriePicturesStatus,
+} from '#store/galeriePictures';
 
 import Dots from './Dots';
 import Image from './Image';
@@ -18,15 +23,23 @@ import {
 } from './styles';
 
 type Props = {
-    galeriePictures?: {
-        allIds: string[];
-        status: Store.Status;
-    };
+    frameId: string;
 };
 
-const Slider = ({ galeriePictures }: Props) => {
+const Slider = ({ frameId }: Props) => {
     const dimension = useWindowDimensions();
     const theme = useTheme();
+
+    const frameGaleriePicturesAllIdsSelector = React.useCallback(
+        () => selectFrameGaleriePicturesAllIds(frameId),
+        [frameId]
+    );
+    const galeriePictures = useSelector(frameGaleriePicturesAllIdsSelector());
+    const frameGaleriePicturesStatusSelector = React.useCallback(
+        () => selectFrameGaleriePicturesStatus(frameId),
+        [frameId]
+    );
+    const status = useSelector(frameGaleriePicturesStatusSelector());
 
     const [currentIndex, setCurrentIndex] = React.useState<number>(0);
 
@@ -43,9 +56,8 @@ const Slider = ({ galeriePictures }: Props) => {
     const galeriePicturesAreLoading = React.useMemo(
         () =>
             galeriePictures &&
-            (galeriePictures.status === 'PENDING' ||
-                galeriePictures.status.includes('LOADING')),
-        [galeriePictures]
+            (!status || status === 'PENDING' || status.includes('LOADING')),
+        [status]
     );
 
     return (
@@ -60,7 +72,7 @@ const Slider = ({ galeriePictures }: Props) => {
                         overScrollMode="never"
                         snapToInterval={dimension.width}
                     >
-                        {galeriePictures.allIds.map((id) => (
+                        {galeriePictures.map((id) => (
                             <Image galeriePictureId={id} key={id} />
                         ))}
                     </ScrollView>
@@ -76,7 +88,7 @@ const Slider = ({ galeriePictures }: Props) => {
             <DotsContainer>
                 {!!galeriePictures && (
                     <Dots
-                        allIds={galeriePictures.allIds}
+                        allIds={galeriePictures}
                         currentIndex={currentIndex}
                     />
                 )}

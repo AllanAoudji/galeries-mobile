@@ -1,5 +1,9 @@
 import { Dispatch } from 'redux';
-import { removeLikesById, setLikesAllIds, setLikesById } from '#store/likes';
+import {
+    removeLikesById,
+    setLikesAllIds,
+    setLikesById,
+} from '#store/likes/actionCreators';
 import { updateFramesById } from '#store/frames';
 import combineLikesAllIds from '#store/combineAllIds/combineLikesAllIds';
 

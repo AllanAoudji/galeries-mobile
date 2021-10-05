@@ -37,7 +37,7 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
             dispatchGetGalerieFrames(dispatch, galerieId, previous);
         } else {
             const end = getState().frames.end[''];
-            const status = getState().frames.status[''];
+            const status = getState().frames.status[''] || 'PENDING';
             if (end || status.includes('LOADING')) return;
 
             const newStatus: Store.Status =

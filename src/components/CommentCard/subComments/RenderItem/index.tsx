@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import BottomSheetButton from '#components/BottomSheetButton';
 import SubCommentCard from '#components/SubCommentCard';
 import { selectComment } from '#store/comments';
-import { selectUserId } from '#store/users';
+import { selectUser } from '#store/users';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
 
@@ -18,7 +18,7 @@ const RenderItem = ({ item }: Props) => {
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
     const userSelector = React.useMemo(
-        () => selectUserId(comment.userId),
+        () => selectUser(comment.userId),
         [comment.userId]
     );
     const user = useSelector(userSelector);

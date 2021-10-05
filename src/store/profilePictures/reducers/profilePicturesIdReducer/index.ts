@@ -2,7 +2,7 @@ import {
     PROFILE_PICTURES_ID_REMOVE,
     PROFILE_PICTURES_ID_RESET,
     PROFILE_PICTURES_ID_UPDATE,
-} from '#store/profilePictures';
+} from '#store/profilePictures/actionTypes';
 
 const initialState: { [key: string]: string } = {};
 const profilePicturesIdReducer = (

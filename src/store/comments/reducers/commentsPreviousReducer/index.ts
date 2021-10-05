@@ -1,19 +1,21 @@
-import { checkIfStatus } from '#store/checkers';
 import {
-    COMMENTS_STATUS_RESET,
-    COMMENTS_STATUS_UPDATE,
+    COMMENTS_PREVIOUS_RESET,
+    COMMENTS_PREVIOUS_UPDATE,
 } from '#store/comments/actionTypes';
 
-const initialState: { [key: string]: Store.Status } = {};
-const commentsStatusReducer = (state = initialState, action: Store.Action) => {
+const initialState: { [key: string]: string } = {};
+const commentsPreviousReducer = (
+    state = initialState,
+    action: Store.Action
+) => {
     switch (action.type) {
-        case COMMENTS_STATUS_RESET:
+        case COMMENTS_PREVIOUS_RESET:
             return initialState;
-        case COMMENTS_STATUS_UPDATE:
+        case COMMENTS_PREVIOUS_UPDATE:
             if (
                 !action.meta.query ||
                 !action.meta.query.modelId ||
-                !checkIfStatus(action.payload)
+                typeof action.payload !== 'string'
             )
                 return state;
             return {
@@ -25,4 +27,4 @@ const commentsStatusReducer = (state = initialState, action: Store.Action) => {
     }
 };
 
-export default commentsStatusReducer;
+export default commentsPreviousReducer;

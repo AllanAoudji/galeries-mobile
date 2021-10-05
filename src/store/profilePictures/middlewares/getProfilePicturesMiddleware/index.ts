@@ -6,8 +6,8 @@ import {
     dispatchGetProfilePictures,
     dispatchGetUserCurrentProfilePicture,
 } from '#store/dispatchers';
+import { updateProfilePicturesStatus } from '#store/profilePictures/actionCreators';
 import { PROFILE_PICTURES_GET } from '#store/profilePictures/actionTypes';
-import { updateProfilePicturesStatus } from '#store/profilePictures';
 
 const getProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

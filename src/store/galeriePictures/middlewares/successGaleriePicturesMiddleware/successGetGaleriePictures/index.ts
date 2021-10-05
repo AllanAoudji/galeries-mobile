@@ -135,10 +135,13 @@ const successGetGaleriePictures = async (
 
     dispatch(setGaleriePicturesById(byId));
 
-    if (allIds.length && typeof frameId === 'string')
+    if (allIds.length && typeof frameId === 'string') {
+        dispatch(updateGaleriePicturesStatus(frameId, 'SUCCESS'));
         dispatch(updateGaleriePicturesAllIds(frameId, allIds));
-    else if (typeof id === 'string' && typeof galerieId === 'string')
+    } else if (typeof id === 'string' && typeof galerieId === 'string') {
+        dispatch(updateGaleriePicturesStatus(galerieId, 'SUCCESS'));
         dispatch(updateGaleriePicturesId(galerieId, id));
+    }
 };
 
 export default successGetGaleriePictures;

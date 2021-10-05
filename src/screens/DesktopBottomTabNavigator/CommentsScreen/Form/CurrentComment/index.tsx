@@ -7,7 +7,7 @@ import {
     selectComment,
     resetCommentsCurrent,
 } from '#store/comments';
-import { selectUserId } from '#store/users';
+import { selectUser } from '#store/users';
 
 import { Container, TypographyContainer } from './styles';
 
@@ -32,7 +32,7 @@ const Comment = ({ commentId }: CommentProps) => {
 const User = ({ userId }: UserProps) => {
     const dispatch = useDispatch();
 
-    const userSelector = React.useMemo(() => selectUserId(userId), [userId]);
+    const userSelector = React.useMemo(() => selectUser(userId), [userId]);
     const user = useSelector(userSelector);
 
     const handlePress = React.useCallback(

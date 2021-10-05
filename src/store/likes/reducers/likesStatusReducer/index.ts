@@ -1,5 +1,5 @@
 import { checkIfStatus } from '#store/checkers';
-import { LIKES_STATUS_RESET, LIKES_STATUS_SET } from '#store/likes';
+import { LIKES_STATUS_RESET, LIKES_STATUS_SET } from '#store/likes/actionTypes';
 
 const initialState: { [key: string]: Store.Status } = {};
 const likesStatusReducer = (state = initialState, action: Store.Action) => {

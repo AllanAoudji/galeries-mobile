@@ -4,12 +4,11 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SplashScreen } from '#components';
-import { getMe, selectMe, selectMeStatus } from '#store/me';
+import { getMe, selectMeStatus } from '#store/me';
 
 const Loader: React.FC<{}> = ({ children }) => {
     const dispatch = useDispatch();
 
-    const me = useSelector(selectMe);
     const meStatus = useSelector(selectMeStatus);
 
     const [assets] = useAssets([require('../../../assets/images/PP.jpg')]);
@@ -23,7 +22,7 @@ const Loader: React.FC<{}> = ({ children }) => {
 
     React.useEffect(() => {
         if (meStatus === 'PENDING') dispatch(getMe());
-    }, [me, meStatus]);
+    }, [meStatus]);
 
     if (
         !assets ||

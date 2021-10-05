@@ -1,8 +1,13 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ProfilePicture from '#components/ProfilePicture';
-import { getCommentComments } from '#store/comments';
+import {
+    getCommentComments,
+    selectCommentCommentsAllIds,
+    selectCommentCommentsEnd,
+    selectCommentCommentsStatus,
+} from '#store/comments';
 
 import Body from './Body';
 import Footer from './Footer';
@@ -27,16 +32,32 @@ const CommentCard = ({
     user,
 }: Props) => {
     const dispatch = useDispatch();
+    const commentCommentsAllIdsSelector = React.useCallback(
+        () => selectCommentCommentsAllIds(comment.id),
+        [comment]
+    );
+    const commentsAllIds = useSelector(commentCommentsAllIdsSelector());
+    const commentCommentsEndSelector = React.useCallback(
+        () => selectCommentCommentsEnd(comment.id),
+        [comment]
+    );
+    const commentsEnd = useSelector(commentCommentsEndSelector());
+    const commentCommentsStatusSelector = React.useCallback(
+        () => selectCommentCommentsStatus(comment.id),
+        [comment]
+    );
+    const commentsStatus = useSelector(commentCommentsStatusSelector());
 
     const [showComments, setShowComments] = React.useState<boolean>(false);
     const [numOfComments, setNumOfComments] = React.useState<number>(
-        comment.comments ? comment.comments.allIds.length : 0
+        commentsAllIds ? commentsAllIds.length : 0
     );
 
     const commentFetcherText = React.useMemo(() => {
-        if (!showComments || !comment.comments)
+        if (!showComments || !commentsAllIds)
             return `View ${comment.numOfComments} replies`;
-        if (comment.comments.status.includes('LOADING')) return 'loading';
+        if (!commentsStatus || commentsStatus.includes('LOADING'))
+            return 'loading';
         return 'hide comments';
     }, [comment, showComments]);
 
@@ -46,11 +67,11 @@ const CommentCard = ({
         [comment]
     );
     const handlePressView = React.useCallback(() => {
-        if (!comment.comments) {
+        if (!commentsAllIds) {
             setShowComments(true);
             dispatch(getCommentComments(comment.id));
         } else if (!showComments) {
-            if (comment.comments.status === 'PENDING')
+            if (commentsStatus === 'PENDING')
                 dispatch(getCommentComments(comment.id));
             setShowComments(true);
         } else setShowComments(false);
@@ -58,11 +79,11 @@ const CommentCard = ({
 
     React.useEffect(() => {
         if (
-            comment.comments &&
-            comment.comments.allIds.length > numOfComments &&
+            commentsAllIds &&
+            commentsAllIds.length > numOfComments &&
             !showComments
         ) {
-            setNumOfComments(comment.comments.allIds.length);
+            setNumOfComments(commentsAllIds.length);
             setShowComments(true);
         }
     }, [comment]);
@@ -85,10 +106,10 @@ const CommentCard = ({
                     )}
                 </BodyContainer>
             </Container>
-            {!!comment.comments && showComments && (
+            {!!commentsAllIds && showComments && (
                 <SubComments
-                    allIds={comment.comments.allIds}
-                    end={comment.comments.end}
+                    allIds={commentsAllIds}
+                    end={commentsEnd}
                     onPress={handlePressLoadingMore}
                 />
             )}

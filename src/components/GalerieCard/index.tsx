@@ -8,11 +8,7 @@ import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
 import { updateGaleriesCurrent } from '#store/galeries';
-import {
-    getGalerieCurrentCoverPicture,
-    selectGalerieCoverPicture,
-    selectGalerieCoverPictureStatus,
-} from '#store/galeriePictures';
+import { getGalerieCurrentCoverPicture } from '#store/galeriePictures/actionCreators';
 
 import {
     Container,

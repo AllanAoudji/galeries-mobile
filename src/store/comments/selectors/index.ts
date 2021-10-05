@@ -2,6 +2,7 @@ import { createSelector, OutputSelector } from 'reselect';
 
 const selectCommentsAllIds = (state: Store.Reducer) => state.comments.allIds;
 const selectCommentsById = (state: Store.Reducer) => state.comments.byId;
+const selectCommentsEnd = (state: Store.Reducer) => state.comments.end;
 const selectCommentsStatus = (state: Store.Reducer) => state.comments.status;
 const selectFramesCurrent = (state: Store.Reducer) => state.frames.current;
 
@@ -20,6 +21,17 @@ export const selectCommentCommentsAllIds: (
     createSelector(
         [selectCommentsAllIds],
         (commentsAllIds) => commentsAllIds[commentId]
+    );
+export const selectCommentCommentsEnd: (
+    commentId: string
+) => OutputSelector<
+    Store.Reducer,
+    boolean,
+    (res: { [key: string]: boolean }) => boolean | undefined
+> = (commentId: string) =>
+    createSelector(
+        [selectCommentsEnd],
+        (commentsEnd) => commentsEnd[commentId]
     );
 export const selectCommentCommentsStatus: (
     commentId: string
@@ -49,7 +61,7 @@ export const selectCurrentFrameCommentsStatus = createSelector(
     [selectCommentsStatus, selectFramesCurrent],
     (commentsStatus, framesCurrent) => {
         if (!framesCurrent) return undefined;
-        return commentsStatus[framesCurrent];
+        return commentsStatus[framesCurrent] || 'PENDING';
     }
 );
 export const selectFrameCommentsAllIds: (

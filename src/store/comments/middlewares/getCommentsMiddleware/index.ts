@@ -6,7 +6,7 @@ import {
     dispatchGetCommentComments,
     dispatchGetFrameComments,
 } from '#store/dispatchers';
-import { updateCommentsStatus } from '#store/comments';
+import { updateCommentsStatus } from '#store/comments/actionCreators';
 
 const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -24,8 +24,8 @@ const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
             : undefined;
 
         if (frameId) {
-            const end = getState().comments.end[frameId];
-            const status = getState().comments.status[frameId];
+            const end = getState().comments.end[frameId] || false;
+            const status = getState().comments.status[frameId] || 'PENDING';
             if (end || status.includes('LOADING')) return;
 
             const previous = getState().comments.previous[frameId];
@@ -35,8 +35,8 @@ const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
             dispatch(updateCommentsStatus(frameId, newStatus));
             dispatchGetFrameComments(dispatch, frameId, previous);
         } else if (commentId) {
-            const end = getState().comments.end[commentId];
-            const status = getState().comments.status[commentId];
+            const end = getState().comments.end[commentId] || false;
+            const status = getState().comments.status[commentId] || 'PENDING';
             if (end || status.includes('LOADING')) return;
 
             const previous = getState().comments.previous[commentId];

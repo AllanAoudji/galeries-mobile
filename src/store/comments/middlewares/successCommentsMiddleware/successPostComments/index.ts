@@ -19,7 +19,7 @@ const successPostComments = (
         typeof action.payload.data !== 'object' ||
         typeof action.payload.data.comment !== 'object'
     ) {
-        dispatch(updateCommentsLoadingPost('SUCCESS'));
+        dispatch(updateCommentsLoadingPost('ERROR'));
         return;
     }
 
@@ -49,7 +49,7 @@ const successPostComments = (
             if (frame) dispatch(updateFramesById({ ...frame, numOfComments }));
         }
     } else if (commentId) {
-        const oldAllIds = getState().comments.allIds[commentId];
+        const oldAllIds = getState().comments.allIds[commentId] || [];
         const newAllIds = combineCommentsAllIds(getState, oldAllIds, [
             comment.id,
         ]);

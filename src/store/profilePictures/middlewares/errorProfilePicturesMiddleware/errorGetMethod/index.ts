@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 
 import { dispatchErrorNotification } from '#store/dispatchers';
-import { updateProfilePicturesStatus } from '#store/profilePictures';
+import { updateProfilePicturesStatus } from '#store/profilePictures/actionCreators';
 
 const errorGetMethod = (
     dispatch: Dispatch<Store.Action>,

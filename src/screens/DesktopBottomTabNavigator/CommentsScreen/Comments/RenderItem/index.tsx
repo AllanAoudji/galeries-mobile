@@ -6,7 +6,7 @@ import { BottomSheetButton, CommentCard } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
 import { selectMeId } from '#store/me';
-import { selectUserId } from '#store/users';
+import { selectUser } from '#store/users';
 
 type Props = {
     item: string;
@@ -21,7 +21,7 @@ const RenderItem = ({ item, openModal }: Props) => {
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
     const userSelector = React.useMemo(
-        () => selectUserId(comment.userId),
+        () => selectUser(comment.userId),
         [comment.userId]
     );
     const user = useSelector(userSelector);
