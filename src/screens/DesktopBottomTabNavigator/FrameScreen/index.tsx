@@ -1,15 +1,32 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { ActivityIndicator } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from 'styled-components/native';
 
+import { resetFramesCurrent, selectCurrentFrame } from '#store/frames';
+import { selectFrameGaleriePicturesAllIds } from '#store/galeriePictures';
+
+import { Container } from './styles';
 import { Typography } from '#components';
-import { selectCurrentFrame } from '#store/frames';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.FrameProp;
 };
 
 const FrameScreen = ({ navigation }: Props) => {
+    const dispatch = useDispatch();
+    const theme = useTheme();
+
     const currentFrame = useSelector(selectCurrentFrame);
+    const galeriePicturesAllIdsSelector = React.useMemo(
+        () =>
+            selectFrameGaleriePicturesAllIds(
+                currentFrame ? currentFrame.id : undefined
+            ),
+        [currentFrame]
+    );
+    const galeriePicturesAllIds = useSelector(galeriePicturesAllIdsSelector);
 
     React.useEffect(() => {
         if (!currentFrame) {
@@ -18,7 +35,19 @@ const FrameScreen = ({ navigation }: Props) => {
         }
     }, [currentFrame]);
 
-    return <Typography>Frame</Typography>;
+    useFocusEffect(
+        React.useCallback(() => () => dispatch(resetFramesCurrent()), [])
+    );
+
+    return (
+        <Container>
+            {galeriePicturesAllIds ? (
+                <Typography color="white">frames</Typography>
+            ) : (
+                <ActivityIndicator color={theme.colors.white} />
+            )}
+        </Container>
+    );
 };
 
 export default FrameScreen;

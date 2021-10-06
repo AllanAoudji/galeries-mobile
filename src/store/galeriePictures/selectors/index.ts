@@ -40,17 +40,11 @@ export const selectCurrentGalerieCoverPictureStatus = createSelector(
         return galeriePicturesStatus[currentGaleries];
     }
 );
-export const selectFrameGaleriePicturesAllIds: (
-    frameId: string
-) => OutputSelector<
-    Store.Reducer,
-    string[],
-    (res: { [key: string]: string[] }) => string[] | undefined
-> = (frameId: string) =>
-    createSelector(
-        [galeriePicturesAllIdsSelector],
-        (galeriePicturesAllIds) => galeriePicturesAllIds[frameId]
-    );
+export const selectFrameGaleriePicturesAllIds = (frameId: string | undefined) =>
+    createSelector([galeriePicturesAllIdsSelector], (galeriePicturesAllIds) => {
+        if (!frameId) return undefined;
+        return galeriePicturesAllIds[frameId];
+    });
 export const selectFrameGaleriePicturesStatus: (
     frameId: string
 ) => OutputSelector<
