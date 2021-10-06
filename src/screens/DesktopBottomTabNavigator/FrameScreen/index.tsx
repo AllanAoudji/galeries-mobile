@@ -12,6 +12,7 @@ import {
 } from '#store/galeriePictures';
 
 import Carousel from './Carousel';
+import Options from './Options';
 import { Container } from './styles';
 
 type Props = {
@@ -40,6 +41,18 @@ const FrameScreen = ({ navigation }: Props) => {
     );
     const galeriePicturesStatus = useSelector(galeriePicturesStatusSelector);
 
+    const [showOptions, setShowOptions] = React.useState<boolean>(false);
+
+    const handleShowOptions = React.useCallback(() => setShowOptions(true), []);
+    const handleHideOptions = React.useCallback(
+        () => setShowOptions(false),
+        []
+    );
+    const handlePressBack = React.useCallback(() => {
+        if (navigation.canGoBack()) navigation.goBack();
+        else navigation.navigate('Home');
+    }, []);
+
     React.useEffect(() => {
         if (!currentFrame) {
             if (navigation.canGoBack()) navigation.goBack();
@@ -56,16 +69,29 @@ const FrameScreen = ({ navigation }: Props) => {
     }, [currentFrame, galeriePicturesStatus]);
 
     useFocusEffect(
-        React.useCallback(() => () => dispatch(resetFramesCurrent()), [])
+        React.useCallback(() => {
+            return () => {
+                dispatch(resetFramesCurrent());
+                handleHideOptions();
+            };
+        }, [])
     );
 
     return (
         <Container>
             {galeriePicturesAllIds ? (
-                <Carousel allIds={galeriePicturesAllIds} />
+                <Carousel
+                    allIds={galeriePicturesAllIds}
+                    onPress={handleShowOptions}
+                />
             ) : (
                 <ActivityIndicator color={theme.colors.black} />
             )}
+            <Options
+                onPressBack={handlePressBack}
+                onPress={handleHideOptions}
+                show={showOptions}
+            />
         </Container>
     );
 };

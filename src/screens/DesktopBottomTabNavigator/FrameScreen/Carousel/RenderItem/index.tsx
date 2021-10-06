@@ -8,9 +8,10 @@ import { Container, ImageStyled } from './styles';
 
 type Props = {
     item: string;
+    onPress: () => void;
 };
 
-const RenderItem = ({ item }: Props) => {
+const RenderItem = ({ item, onPress }: Props) => {
     const dimension = useWindowDimensions();
 
     const galeriePictureSelector = React.useMemo(
@@ -27,7 +28,7 @@ const RenderItem = ({ item }: Props) => {
     );
 
     return (
-        <Container width={dimension.width}>
+        <Container onPress={onPress} width={dimension.width}>
             <ImageStyled
                 height={dimension.height}
                 resizeMode="contain"

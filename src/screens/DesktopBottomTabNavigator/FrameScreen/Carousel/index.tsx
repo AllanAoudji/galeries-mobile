@@ -13,16 +13,14 @@ import { Container } from './styles';
 
 type Props = {
     allIds: string[];
+    onPress: () => void;
 };
 
 const keyExtractor: ((item: string, index: number) => string) | undefined = (
     item
 ) => item;
-const renderItem: ListRenderItem<string> | null | undefined = ({ item }) => {
-    return <RenderItem item={item} />;
-};
 
-const Carousel = ({ allIds }: Props) => {
+const Carousel = ({ allIds, onPress }: Props) => {
     const current = useSharedValue(0);
 
     const handleScroll = useAnimatedScrollHandler({
@@ -30,6 +28,11 @@ const Carousel = ({ allIds }: Props) => {
             current.value = e.contentOffset.x;
         },
     });
+
+    const renderItem: ListRenderItem<string> | null | undefined =
+        React.useCallback(({ item }) => {
+            return <RenderItem item={item} onPress={onPress} />;
+        }, []);
 
     return (
         <Container>
