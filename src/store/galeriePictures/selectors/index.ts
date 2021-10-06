@@ -45,17 +45,11 @@ export const selectFrameGaleriePicturesAllIds = (frameId: string | undefined) =>
         if (!frameId) return undefined;
         return galeriePicturesAllIds[frameId];
     });
-export const selectFrameGaleriePicturesStatus: (
-    frameId: string
-) => OutputSelector<
-    Store.Reducer,
-    Store.Status,
-    (res: { [key: string]: Store.Status }) => Store.Status | undefined
-> = (frameId: string) =>
-    createSelector(
-        [galeriePicturesStatusSelector],
-        (galeriePicturesStatus) => galeriePicturesStatus[frameId]
-    );
+export const selectFrameGaleriePicturesStatus = (frameId: string | undefined) =>
+    createSelector([galeriePicturesStatusSelector], (galeriePicturesStatus) => {
+        if (!frameId) return undefined;
+        return galeriePicturesStatus[frameId] || 'PENDING';
+    });
 export const selectGalerieCoverPictureId: (
     galerieId: string
 ) => OutputSelector<
