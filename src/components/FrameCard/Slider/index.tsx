@@ -59,7 +59,7 @@ const Slider = ({ frameId, onPressSlider }: Props) => {
 
     return (
         <>
-            <Container onPress={onPressSlider} size={dimension.width}>
+            <Container size={dimension.width}>
                 {galeriePictures && !galeriePicturesAreLoading ? (
                     <ScrollView
                         decelerationRate="fast"
@@ -70,7 +70,11 @@ const Slider = ({ frameId, onPressSlider }: Props) => {
                         snapToInterval={dimension.width}
                     >
                         {galeriePictures.map((id) => (
-                            <Image galeriePictureId={id} key={id} />
+                            <Image
+                                galeriePictureId={id}
+                                key={id}
+                                onPress={onPressSlider}
+                            />
                         ))}
                     </ScrollView>
                 ) : (

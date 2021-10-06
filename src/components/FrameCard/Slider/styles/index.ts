@@ -10,7 +10,7 @@ const ActivityIndicatorContainer = styled.View`
     justify-content: center;
     align-items: center;
 `;
-const Container = styled.Pressable<ContainerProps>`
+const Container = styled.View<ContainerProps>`
     height: ${({ size }) => `${size}px`};
     width: ${({ size }) => `${size}px`};
 `;
