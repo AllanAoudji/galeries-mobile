@@ -103,8 +103,9 @@ const GalerieTabViewNavigator = () => {
     const onPressBack = React.useCallback(() => {
         setReset(true);
         dispatch(updateGaleriesCurrent(null));
-        if (navigation.canGoBack()) navigation.goBack();
-        else navigation.navigate('Home');
+        if (navigation.canGoBack()) {
+            navigation.goBack();
+        } else navigation.navigate('Home');
     }, [navigation]);
     const onIndexChange = React.useCallback((index: number) => {
         setNavigationState({

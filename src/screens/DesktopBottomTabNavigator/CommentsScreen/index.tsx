@@ -108,12 +108,14 @@ const CommentScreen = ({ navigation }: Props) => {
     }, [currentComment]);
     const handleSuccess = React.useCallback(() => scrollToTop(), [scrollToTop]);
 
-    React.useEffect(() => {
-        if (!currentFrame) {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.navigate('Home');
-        }
-    }, [currentFrame, navigation]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!currentFrame) {
+                if (navigation.canGoBack()) navigation.goBack();
+                else navigation.navigate('Home');
+            }
+        }, [currentFrame])
+    );
 
     React.useEffect(() => {
         if (currentFrame && currentFrameCommentsStatus === 'PENDING')

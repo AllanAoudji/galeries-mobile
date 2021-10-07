@@ -4,7 +4,7 @@ import { ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
-import { resetFramesCurrent, selectCurrentFrame } from '#store/frames';
+import { selectCurrentFrame } from '#store/frames';
 import {
     getFrameGaleriePictures,
     selectFrameGaleriePicturesAllIds,
@@ -54,12 +54,6 @@ const FrameScreen = ({ navigation }: Props) => {
     }, []);
 
     React.useEffect(() => {
-        if (!currentFrame) {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.navigate('Home');
-        }
-    }, [currentFrame]);
-    React.useEffect(() => {
         if (
             (!galeriePicturesStatus ||
                 galeriePicturesStatus.includes('LOADING')) &&
@@ -70,11 +64,12 @@ const FrameScreen = ({ navigation }: Props) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            return () => {
-                dispatch(resetFramesCurrent());
-                handleHideOptions();
-            };
-        }, [])
+            if (!currentFrame) {
+                if (navigation.canGoBack()) navigation.goBack();
+                else navigation.navigate('Home');
+            }
+            return () => handleHideOptions();
+        }, [currentFrame])
     );
 
     if (!currentFrame) return null;
