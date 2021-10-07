@@ -11,7 +11,7 @@ const framesLoadingPutReducer = (
 ) => {
     switch (action.type) {
         case FRAMES_LOADING_PUT_RESET:
-            return state;
+            return initialState;
         case FRAMES_LOADING_PUT_UPDATE:
             if (checkIfStatus(action.payload)) return action.payload;
             return state;

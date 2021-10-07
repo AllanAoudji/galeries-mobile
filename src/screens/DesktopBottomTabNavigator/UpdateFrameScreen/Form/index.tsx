@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,13 +6,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { putFrameSchema } from '#helpers/schemas';
 import {
     putFrame,
+    resetFramesLoadingPut,
     selectFramesFieldsError,
     selectFramesLoadingPut,
     updateFramesFieldsError,
 } from '#store/frames';
 
 import { ButtonsContainer, Container } from './styles';
-import { CustomButton, CustomTextInput } from '#components';
+import {
+    CustomButton,
+    CustomTextInput,
+    DefaultHeader,
+    FormContainer,
+} from '#components';
 import { FIELD_REQUIREMENT } from '#helpers/constants';
 
 type Props = {
@@ -21,8 +27,8 @@ type Props = {
 };
 
 const Form = ({ description, frameId }: Props) => {
-    const navigation = useNavigation<Screen.DesktopBottomTab.UpdateFrameProp>();
     const dispatch = useDispatch();
+    const navigation = useNavigation<Screen.DesktopBottomTab.UpdateFrameProp>();
 
     const framesFieldsError = useSelector(selectFramesFieldsError);
     const loading = useSelector(selectFramesLoadingPut);
@@ -37,6 +43,12 @@ const Form = ({ description, frameId }: Props) => {
         validationSchema: putFrameSchema,
         enableReinitialize: true,
     });
+
+    const navigate = React.useCallback(() => {
+        dispatch(resetFramesLoadingPut());
+        if (navigation.canGoBack()) navigation.goBack();
+        else navigation.navigate('Home');
+    }, []);
 
     const descriptionError = React.useMemo(
         () => formik.errors.description || framesFieldsError.description,
@@ -62,44 +74,56 @@ const Form = ({ description, frameId }: Props) => {
         formik.setFieldError('description', '');
         formik.setFieldValue('description', e);
     }, []);
-    const handlePressReturn = React.useCallback(() => {
-        if (!loading.includes('LOADING')) {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.navigate('Home');
-        }
-    }, [loading]);
+    const handlePressGoBack = React.useCallback(() => {
+        if (!loading.includes('LOADING')) navigate();
+    }, [loading, navigate]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (loading === 'SUCCESS') navigate();
+        }, [loading, navigate])
+    );
 
     return (
         <>
-            <Container>
-                <CustomTextInput
-                    error={descriptionError}
-                    label="description"
-                    loading={loading.includes('LOADING')}
-                    maxLength={FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH}
-                    multiline
-                    onBlur={formik.handleBlur('description')}
-                    onChangeText={handleChangeDescriptionText}
-                    optional
-                    touched={formik.touched.description || false}
-                    value={formik.values.description}
-                />
-            </Container>
-            <ButtonsContainer>
-                <CustomButton
-                    disable={disableButton}
-                    loading={loading.includes('LOADING')}
-                    mb="smallest"
-                    onPress={formik.handleSubmit}
-                    title="post frame"
-                />
-                <CustomButton
-                    disable={loading.includes('LOADING')}
-                    onPress={handlePressReturn}
-                    title="return"
-                    variant="stroke"
-                />
-            </ButtonsContainer>
+            <DefaultHeader
+                onPress={handlePressGoBack}
+                variant="secondary"
+                title="update frame"
+            />
+            <FormContainer>
+                <Container>
+                    <CustomTextInput
+                        error={descriptionError}
+                        label="description"
+                        loading={loading.includes('LOADING')}
+                        maxLength={
+                            FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH
+                        }
+                        multiline
+                        onBlur={formik.handleBlur('description')}
+                        onChangeText={handleChangeDescriptionText}
+                        optional
+                        touched={formik.touched.description || false}
+                        value={formik.values.description}
+                    />
+                </Container>
+                <ButtonsContainer>
+                    <CustomButton
+                        disable={disableButton}
+                        loading={loading.includes('LOADING')}
+                        mb="smallest"
+                        onPress={formik.handleSubmit}
+                        title="post frame"
+                    />
+                    <CustomButton
+                        disable={loading.includes('LOADING')}
+                        onPress={handlePressGoBack}
+                        title="return"
+                        variant="stroke"
+                    />
+                </ButtonsContainer>
+            </FormContainer>
         </>
     );
 };
