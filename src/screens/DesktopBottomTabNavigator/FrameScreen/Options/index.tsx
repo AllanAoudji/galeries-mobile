@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import {
     interpolate,
     runOnJS,
@@ -13,21 +13,32 @@ import { CommentButton, LikeButton, Pictogram, Typography } from '#components';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 
 import {
+    Button,
+    BottonContainer,
+    ButtonsContainer,
     Container,
+    DescriptionContainer,
     FooterContainer,
     HeaderContainer,
-    LikeContainer,
     PressableContainer,
+    Spacing,
 } from './styles';
 
 type Props = {
+    description: string;
     frameId: string;
     onPress: () => void;
     onPressBack: () => void;
     show: boolean;
 };
 
-const Options = ({ frameId, onPress, onPressBack, show }: Props) => {
+const Options = ({
+    description,
+    frameId,
+    onPress,
+    onPressBack,
+    show,
+}: Props) => {
     const [open, setOpen] = React.useState(show);
     const navigation = useNavigation<Screen.DesktopBottomTab.FrameProp>();
 
@@ -85,15 +96,33 @@ const Options = ({ frameId, onPress, onPressBack, show }: Props) => {
                     />
                 </HeaderContainer>
                 <FooterContainer>
-                    <View>
-                        <Typography fontSize={18}>update frame</Typography>
-                        <Typography fontSize={18}>
-                            use as cover picture
-                        </Typography>
-                        <Typography fontSize={18}>delete frame</Typography>
-                        <Typography fontSize={18}>report frame...</Typography>
-                    </View>
-                    <LikeContainer>
+                    <ButtonsContainer>
+                        <Button>
+                            <Typography fontSize={18}>update frame</Typography>
+                        </Button>
+                        <Button>
+                            <Typography fontSize={18}>
+                                use as cover picture
+                            </Typography>
+                        </Button>
+                        <Button>
+                            <Typography fontSize={18}>delete frame</Typography>
+                        </Button>
+                        <Button>
+                            <Typography fontSize={18}>
+                                report frame...
+                            </Typography>
+                        </Button>
+                        <Spacing />
+                    </ButtonsContainer>
+                    {!!description && (
+                        <>
+                            <DescriptionContainer>
+                                <Typography>{description}</Typography>
+                            </DescriptionContainer>
+                        </>
+                    )}
+                    <BottonContainer>
                         <CommentButton
                             frameId={frameId}
                             onPress={handlePressComment}
@@ -102,7 +131,7 @@ const Options = ({ frameId, onPress, onPressBack, show }: Props) => {
                             frameId={frameId}
                             onPress={handlePressLike}
                         />
-                    </LikeContainer>
+                    </BottonContainer>
                 </FooterContainer>
             </PressableContainer>
         </Container>

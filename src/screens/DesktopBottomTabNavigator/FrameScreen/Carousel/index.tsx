@@ -1,12 +1,19 @@
 import * as React from 'react';
-import { ListRenderItem, StyleSheet, View } from 'react-native';
 import {
+    ListRenderItem,
+    StyleSheet,
+    useWindowDimensions,
+    View,
+} from 'react-native';
+import {
+    runOnJS,
     useAnimatedScrollHandler,
     useSharedValue,
 } from 'react-native-reanimated';
 
 import { AnimatedFlatList } from '#components';
 
+import CurrentIndex from './CurrentIndex';
 import RenderItem from './RenderItem';
 import RenderBackgroundItem from './RenderBackgroundItem';
 import { Container } from './styles';
@@ -21,10 +28,15 @@ const keyExtractor: ((item: string, index: number) => string) | undefined = (
 ) => item;
 
 const Carousel = ({ allIds, onPress }: Props) => {
+    const dimension = useWindowDimensions();
     const current = useSharedValue(0);
+
+    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
 
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (e) => {
+            const index = Math.round(e.contentOffset.x / dimension.width);
+            if (index !== currentIndex) runOnJS(setCurrentIndex)(index);
             current.value = e.contentOffset.x;
         },
     });
@@ -36,6 +48,7 @@ const Carousel = ({ allIds, onPress }: Props) => {
 
     return (
         <Container>
+            <CurrentIndex current={currentIndex} numOfImages={allIds.length} />
             <View style={StyleSheet.absoluteFillObject}>
                 {allIds.map((item, index) => (
                     <RenderBackgroundItem
