@@ -14,6 +14,7 @@ import {
 import { combineFramesAllIds } from '#store/combineAllIds';
 import { getFrameGaleriePictures } from '#store/galeriePictures/actionCreators';
 import { getUserId } from '#store/users';
+import { getGalerieId } from '#store/galeries';
 
 const successGetFrames = (
     dispatch: Dispatch<Store.Action>,
@@ -65,6 +66,8 @@ const successGetFrames = (
         dispatch(getFrameGaleriePictures(id));
         const user = getState().users.byId[byId[id].userId];
         if (!user) dispatch(getUserId(byId[id].userId));
+        const galerie = getState().galeries.byId[byId[id].galerieId];
+        if (!galerie) dispatch(getGalerieId(byId[id].galerieId));
     });
 };
 

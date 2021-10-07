@@ -12,16 +12,15 @@ import {
 import { CommentButton, LikeButton, Pictogram, Typography } from '#components';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 
+import Buttons from './Buttons';
+
 import {
-    Button,
     BottonContainer,
-    ButtonsContainer,
     Container,
     DescriptionContainer,
     FooterContainer,
     HeaderContainer,
     PressableContainer,
-    Spacing,
 } from './styles';
 
 type Props = {
@@ -96,25 +95,7 @@ const Options = ({
                     />
                 </HeaderContainer>
                 <FooterContainer>
-                    <ButtonsContainer>
-                        <Button>
-                            <Typography fontSize={18}>update frame</Typography>
-                        </Button>
-                        <Button>
-                            <Typography fontSize={18}>
-                                use as cover picture
-                            </Typography>
-                        </Button>
-                        <Button>
-                            <Typography fontSize={18}>delete frame</Typography>
-                        </Button>
-                        <Button>
-                            <Typography fontSize={18}>
-                                report frame...
-                            </Typography>
-                        </Button>
-                        <Spacing />
-                    </ButtonsContainer>
+                    <Buttons frameId={frameId} />
                     {!!description && (
                         <>
                             <DescriptionContainer>

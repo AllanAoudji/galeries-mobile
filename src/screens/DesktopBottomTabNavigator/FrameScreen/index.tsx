@@ -103,5 +103,4 @@ const FrameScreen = ({ navigation }: Props) => {
 export default FrameScreen;
 
 // TODO:
-// pagination
 // Button if user has post/user is the admin/moderator of the galerie

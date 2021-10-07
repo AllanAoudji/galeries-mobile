@@ -10,14 +10,6 @@ const BottonContainer = styled.View`
     justify-content: space-between;
     padding: ${({ theme }) => `0 ${theme.spacings.small}`};
 `;
-const Button = styled.Pressable`
-    align-items: center;
-    padding: ${({ theme }) => `${theme.spacings.smallest} 0`};
-`;
-const ButtonsContainer = styled.View`
-    margin: ${({ theme }) =>
-        `0 ${theme.spacings.normal} ${theme.spacings.small}`};
-`;
 const Container = styled(Animated.View)<ContainerProps>`
     background-color: rgba(0, 0, 0, 0.5);
     flex: 1;
@@ -37,11 +29,6 @@ const PressableContainer = styled.Pressable`
     flex: 1;
     justify-content: space-between;
 `;
-const Spacing = styled.View`
-    background-color: ${({ theme }) => theme.colors.secondary};
-    border-radius: 1px;
-    height: 2px;
-`;
 
 const DescriptionContainer = styled.View`
     margin: ${({ theme }) =>
@@ -50,13 +37,10 @@ const DescriptionContainer = styled.View`
 
 // eslint-disable-next-line import/prefer-default-export
 export {
-    Button,
-    ButtonsContainer,
     BottonContainer,
     Container,
     DescriptionContainer,
     FooterContainer,
     HeaderContainer,
     PressableContainer,
-    Spacing,
 };
