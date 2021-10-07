@@ -10,7 +10,6 @@ type Props = {
     frame: Store.Models.Frame;
     onPressComments: () => void;
     onPressLikes: () => void;
-    onPressLike: () => void;
     onPressOptions: () => void;
     onPressSlider: () => void;
 };
@@ -19,7 +18,6 @@ const FrameCard = ({
     frame,
     onPressComments,
     onPressLikes,
-    onPressLike,
     onPressOptions,
     onPressSlider,
 }: Props) => {
@@ -30,12 +28,9 @@ const FrameCard = ({
             <Footer
                 createdAt={frame.createdAt}
                 description={frame.description}
+                frameId={frame.id}
                 handlePressComments={onPressComments}
-                handlePressLike={onPressLike}
                 handlePressLikes={onPressLikes}
-                liked={frame.liked}
-                numOfComments={frame.numOfComments}
-                numOfLikes={frame.numOfLikes}
             />
         </Container>
     );

@@ -15,7 +15,8 @@ const FooterContainer = styled.View`
     background-color: ${({ theme }) => theme.colors['secondary-light']};
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    padding: ${({ theme }) => `${theme.spacings.small}`};
+    padding: ${({ theme }) =>
+        `${theme.spacings.small} ${theme.spacings.small} ${theme.spacings.smallest}`};
     margin: ${({ theme }) => `0 ${theme.spacings.smallest}`};
 `;
 
@@ -25,9 +26,10 @@ const HeaderContainer = styled.View`
 `;
 
 const LikeContainer = styled.View`
-    align-items: flex-end;
     border-top-width: 2px;
     border-top-color: ${({ theme }) => theme.colors.secondary};
+    flex-direction: row;
+    justify-content: space-between;
     padding-top: ${({ theme }) => theme.spacings.smallest};
     margin-top: ${({ theme }) => theme.spacings.smallest};
 `;

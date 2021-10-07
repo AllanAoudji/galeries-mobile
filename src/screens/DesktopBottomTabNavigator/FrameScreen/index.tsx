@@ -77,6 +77,8 @@ const FrameScreen = ({ navigation }: Props) => {
         }, [])
     );
 
+    if (!currentFrame) return null;
+
     return (
         <Container>
             {galeriePicturesAllIds ? (
@@ -88,6 +90,7 @@ const FrameScreen = ({ navigation }: Props) => {
                 <ActivityIndicator color={theme.colors.black} />
             )}
             <Options
+                frameId={currentFrame.id}
                 onPressBack={handlePressBack}
                 onPress={handleHideOptions}
                 show={showOptions}
@@ -97,3 +100,8 @@ const FrameScreen = ({ navigation }: Props) => {
 };
 
 export default FrameScreen;
+
+// TODO:
+// Style sheet button
+// pagination
+// Button if user has post/user is the admin/moderator of the galerie

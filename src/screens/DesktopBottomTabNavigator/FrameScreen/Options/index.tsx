@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import {
@@ -9,7 +9,7 @@ import {
     withTiming,
 } from 'react-native-reanimated';
 
-import { Pictogram, Typography } from '#components';
+import { CommentButton, LikeButton, Pictogram, Typography } from '#components';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 
 import {
@@ -21,13 +21,15 @@ import {
 } from './styles';
 
 type Props = {
+    frameId: string;
     onPress: () => void;
     onPressBack: () => void;
     show: boolean;
 };
 
-const Options = ({ onPress, onPressBack, show }: Props) => {
+const Options = ({ frameId, onPress, onPressBack, show }: Props) => {
     const [open, setOpen] = React.useState(show);
+    const navigation = useNavigation<Screen.DesktopBottomTab.FrameProp>();
 
     const display = useSharedValue(show ? 1 : 0);
 
@@ -35,6 +37,15 @@ const Options = ({ onPress, onPressBack, show }: Props) => {
         const scale = interpolate(display.value, [0, 1], [1.02, 1]);
         return { opacity: display.value, transform: [{ scale }] };
     }, []);
+
+    const handlePressComment = React.useCallback(
+        () => navigation.navigate('Comments'),
+        []
+    );
+    const handlePressLike = React.useCallback(
+        () => navigation.navigate('Likes'),
+        []
+    );
 
     React.useEffect(() => {
         if (show) {
@@ -83,7 +94,14 @@ const Options = ({ onPress, onPressBack, show }: Props) => {
                         <Typography fontSize={18}>report frame...</Typography>
                     </View>
                     <LikeContainer>
-                        <Pictogram variant="heart-stroke" color="danger" />
+                        <CommentButton
+                            frameId={frameId}
+                            onPress={handlePressComment}
+                        />
+                        <LikeButton
+                            frameId={frameId}
+                            onPress={handlePressLike}
+                        />
                     </LikeContainer>
                 </FooterContainer>
             </PressableContainer>
