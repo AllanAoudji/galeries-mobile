@@ -6,7 +6,7 @@ import ProfilePicture from '#components/ProfilePicture';
 import { Container, InfoContainer } from './styles';
 
 type Props = {
-    user: Store.Models.UserPopulated;
+    user: Store.Models.User;
 };
 
 const UserCard = ({ user }: Props) => {

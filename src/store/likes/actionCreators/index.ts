@@ -20,7 +20,7 @@ export const getLike: (payload: string) => Store.Action = (payload) => ({
     payload,
     type: LIKES_GET,
 });
-export const geFrameLikes: (frameId: string) => Store.Action = (frameId) => ({
+export const getFrameLikes: (frameId: string) => Store.Action = (frameId) => ({
     meta: { query: { frameId } },
     payload: {},
     type: LIKES_GET,

@@ -17,7 +17,7 @@ const dispatchGetFrameLikes = (
                 query: { frameId },
                 method: 'GET',
                 entity: LIKES,
-                url: `${END_POINT.FRAMES}/${frameId}/${END_POINT.LIKES}${query}`,
+                url: `${END_POINT.FRAMES}/${frameId}${END_POINT.LIKES}${query}`,
             },
             payload: {},
         })
