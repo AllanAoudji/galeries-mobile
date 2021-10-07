@@ -10,9 +10,10 @@ import { ImageStyled } from './styled';
 
 type Props = {
     galeriePictureId: string;
+    onPress: () => void;
 };
 
-const Image = ({ galeriePictureId }: Props) => {
+const Image = ({ galeriePictureId, onPress }: Props) => {
     const galeriePictureSelector = React.useMemo(
         () => selectGaleriePicture(galeriePictureId),
         [galeriePictureId]
@@ -27,7 +28,7 @@ const Image = ({ galeriePictureId }: Props) => {
     );
 
     return (
-        <Container colors={galeriePicture.pendingHexes}>
+        <Container onPress={onPress} colors={galeriePicture.pendingHexes}>
             <ImageStyled source={source} />
         </Container>
     );

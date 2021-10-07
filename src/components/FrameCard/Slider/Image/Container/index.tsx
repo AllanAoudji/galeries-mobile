@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { Pressable, useWindowDimensions } from 'react-native';
 
 import { LinearGradiantContainer, ViewContainer } from './styles';
 
 type Props = {
     colors: string;
+    onPress: () => void;
 };
 
-const Container: React.FC<Props> = ({ children, colors }) => {
+const Container: React.FC<Props> = ({ children, colors, onPress }) => {
     const dimension = useWindowDimensions();
 
     const imageContainer = React.useMemo(() => {
@@ -34,7 +35,7 @@ const Container: React.FC<Props> = ({ children, colors }) => {
         );
     }, [colors, dimension]);
 
-    return imageContainer;
+    return <Pressable onPress={onPress}>{imageContainer}</Pressable>;
 };
 
 export default Container;

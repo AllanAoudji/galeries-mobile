@@ -1,38 +1,30 @@
 import moment from 'moment';
 import * as React from 'react';
-import { Pressable } from 'react-native';
 
-import Pictogram from '#components/Pictogram';
+import ComentButton from '#components/CommentButton';
+import LikeButton from '#components/LikeButton';
 import Typography from '#components/Typography';
 
 import {
     ActionNavigationContainer,
-    CommentsButtonContainer,
     Container,
     DescriptionContainer,
-    LikesButtonContainer,
 } from './styles';
 
 type Props = {
     createdAt: string;
     description: string;
+    frameId: string;
     handlePressComments: () => void;
-    handlePressLike: () => void;
     handlePressLikes: () => void;
-    liked: boolean;
-    numOfComments: number;
-    numOfLikes: number;
 };
 
 const Footer = ({
     createdAt,
     description,
+    frameId,
     handlePressComments,
-    handlePressLike,
     handlePressLikes,
-    liked,
-    numOfComments,
-    numOfLikes,
 }: Props) => {
     const [cropedDescription, setCropedDescription] =
         React.useState<string>('');
@@ -56,29 +48,8 @@ const Footer = ({
     return (
         <Container>
             <ActionNavigationContainer>
-                <CommentsButtonContainer onPress={handlePressComments}>
-                    <Pictogram
-                        color="primary"
-                        mb="smallest"
-                        ml="smallest"
-                        mr="smallest"
-                        variant="comments-stroke"
-                    />
-                    <Typography>{numOfComments} comments</Typography>
-                </CommentsButtonContainer>
-                <LikesButtonContainer>
-                    <Pressable onPress={handlePressLikes}>
-                        <Typography>{numOfLikes} likes</Typography>
-                    </Pressable>
-                    <Pictogram
-                        color="danger"
-                        ml="smallest"
-                        pr="smallest"
-                        onPress={handlePressLike}
-                        pb="smallest"
-                        variant={liked ? 'heart-fill' : 'heart-stroke'}
-                    />
-                </LikesButtonContainer>
+                <ComentButton frameId={frameId} onPress={handlePressComments} />
+                <LikeButton frameId={frameId} onPress={handlePressLikes} />
             </ActionNavigationContainer>
             <DescriptionContainer onPress={handlePressDescription}>
                 {!!description &&

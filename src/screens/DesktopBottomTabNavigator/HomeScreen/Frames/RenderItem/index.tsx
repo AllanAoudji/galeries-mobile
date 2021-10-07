@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BottomSheetButton, FrameCard } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { selectFrame, updateFramesCurrent } from '#store/frames';
-import { postLike } from '#store/likes';
 
 type Props = {
     item: string;
@@ -45,9 +44,6 @@ const RenderItem = ({ item }: Props) => {
         dispatch(updateFramesCurrent(item));
         navigation.navigate('Comments');
     }, [item]);
-    const handlePressLike = React.useCallback(() => {
-        dispatch(postLike(frame.id));
-    }, [frame]);
     const handlePressLikes = React.useCallback(() => {
         if (+frame.numOfLikes > 0) {
             dispatch(updateFramesCurrent(item));
@@ -58,14 +54,18 @@ const RenderItem = ({ item }: Props) => {
         () => openBottomSheet(bottomSheetContent),
         []
     );
+    const handlePressSlider = React.useCallback(() => {
+        dispatch(updateFramesCurrent(item));
+        navigation.navigate('Frame');
+    }, [item]);
 
     return (
         <FrameCard
             frame={frame}
             onPressComments={handlePressComments}
             onPressLikes={handlePressLikes}
-            onPressLike={handlePressLike}
             onPressOptions={handlePressOption}
+            onPressSlider={handlePressSlider}
         />
     );
 };
