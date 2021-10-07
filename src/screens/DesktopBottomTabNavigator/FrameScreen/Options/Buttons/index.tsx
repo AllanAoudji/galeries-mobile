@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -13,6 +14,8 @@ type Props = {
 };
 
 const Buttons = ({ frameId }: Props) => {
+    const navigation = useNavigation<Screen.DesktopBottomTab.FrameProp>();
+
     const frameSeletor = React.useMemo(() => selectFrame(frameId), [frameId]);
     const frame = useSelector(frameSeletor);
     const galerieSelector = React.useMemo(
@@ -22,10 +25,15 @@ const Buttons = ({ frameId }: Props) => {
     const galerie = useSelector(galerieSelector);
     const me = useSelector(selectMe);
 
+    const handlePressUpdateFrame = React.useCallback(
+        () => navigation.navigate('UpdateFrame'),
+        []
+    );
+
     const updateFrameButton = React.useMemo(() => {
         if (me && me.id === frame.userId)
             return (
-                <Button>
+                <Button onPress={handlePressUpdateFrame}>
                     <Typography fontSize={18}>update frame</Typography>
                 </Button>
             );

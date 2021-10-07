@@ -48,6 +48,7 @@ declare global {
                 Likes: undefined;
                 Notifications: undefined;
                 Profile: undefined;
+                UpdateFrame: undefined;
             };
             type CommentsNavigationProp = BottomTabNavigationProp<
                 ParamList,
@@ -85,6 +86,10 @@ declare global {
             type ProfileNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'Profile'
+            >;
+            type UpdateFrameProp = BottomTabNavigationProp<
+                ParamList,
+                'UpdateFrame'
             >;
         }
         namespace DesktopDrawer {

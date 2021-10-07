@@ -1,4 +1,4 @@
-import { checkIfAllIds } from '#store/checkers';
+import { checkIfStatus } from '#store/checkers';
 import {
     FRAMES_LOADING_PUT_RESET,
     FRAMES_LOADING_PUT_UPDATE,
@@ -13,7 +13,7 @@ const framesLoadingPutReducer = (
         case FRAMES_LOADING_PUT_RESET:
             return state;
         case FRAMES_LOADING_PUT_UPDATE:
-            if (checkIfAllIds(action.payload)) return action.payload;
+            if (checkIfStatus(action.payload)) return action.payload;
             return state;
         default:
             return state;

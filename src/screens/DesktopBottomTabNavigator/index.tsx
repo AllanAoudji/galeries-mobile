@@ -18,6 +18,7 @@ import LikesScreen from './LikesScreen';
 import NotificationsScreen from './NotificationsScreen';
 import ProfileScreen from './ProfileScreen';
 import TabBar from './TabBar';
+import UpdateFrameScreen from './UpdateFrameScreen';
 
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 
@@ -55,6 +56,7 @@ const DesktopBottomTabNavigator = () => {
             <Tab.Screen component={LikesScreen} name="Likes" />
             <Tab.Screen component={NotificationsScreen} name="Notifications" />
             <Tab.Screen component={ProfileScreen} name="Profile" />
+            <Tab.Screen component={UpdateFrameScreen} name="UpdateFrame" />
         </Tab.Navigator>
     );
 };
