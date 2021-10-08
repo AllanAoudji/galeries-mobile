@@ -20,7 +20,7 @@ import {
     DescriptionContainer,
     FooterContainer,
     HeaderContainer,
-    PressableContainer,
+    InnerContainer,
 } from './styles';
 
 type Props = {
@@ -83,8 +83,8 @@ const Options = ({
             paddingTop={StatusBar.currentHeight}
             style={[StyleSheet.absoluteFillObject, style]}
         >
-            <PressableContainer onPress={onPress} style={{ flex: 1 }}>
-                <HeaderContainer>
+            <InnerContainer style={{ flex: 1 }}>
+                <HeaderContainer onPress={onPress}>
                     <Pictogram
                         variant="arrow-left"
                         color="white"
@@ -114,7 +114,7 @@ const Options = ({
                         />
                     </BottonContainer>
                 </FooterContainer>
-            </PressableContainer>
+            </InnerContainer>
         </Container>
     );
 };

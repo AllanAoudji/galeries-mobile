@@ -21,11 +21,12 @@ const FooterContainer = styled.View`
     border-top-right-radius: 20px;
     padding: ${({ theme }) => `${theme.spacings.smallest} 0`};
 `;
-const HeaderContainer = styled.View`
+const HeaderContainer = styled.Pressable`
+    flex: 1;
     flex-direction: row;
     justify-content: space-between;
 `;
-const PressableContainer = styled.Pressable`
+const InnerContainer = styled.Pressable`
     flex: 1;
     justify-content: space-between;
 `;
@@ -42,5 +43,5 @@ export {
     DescriptionContainer,
     FooterContainer,
     HeaderContainer,
-    PressableContainer,
+    InnerContainer,
 };

@@ -45,10 +45,9 @@ const FrameScreen = ({ navigation }: Props) => {
     const [showOptions, setShowOptions] = React.useState<boolean>(false);
 
     const handleShowOptions = React.useCallback(() => setShowOptions(true), []);
-    const handleHideOptions = React.useCallback(
-        () => setShowOptions(false),
-        []
-    );
+    const handleHideOptions = React.useCallback(() => {
+        setShowOptions(false);
+    }, []);
     const handlePressBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
@@ -69,9 +68,9 @@ const FrameScreen = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
-            return () => handleHideOptions();
         }, [currentFrame])
     );
+    useFocusEffect(React.useCallback(() => () => handleHideOptions(), []));
 
     if (!currentFrame) return null;
 
