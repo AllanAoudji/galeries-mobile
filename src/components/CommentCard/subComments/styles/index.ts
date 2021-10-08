@@ -6,7 +6,7 @@ const Container = styled.View`
 const LoadMoreContainer = styled.Pressable`
     align-items: center;
     flex-direction: row;
-    margin-left: 45px;
+    margin-left: 124px;
     opacity: 0.7;
 `;
 const Separator = styled.View`

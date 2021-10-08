@@ -59,7 +59,7 @@ const CommentCard = ({
         if (!commentsStatus || commentsStatus.includes('LOADING'))
             return 'loading';
         return 'hide comments';
-    }, [comment, showComments]);
+    }, [comment, showComments, commentsAllIds, commentsStatus]);
 
     const handlePress = React.useCallback(() => onPress(comment.id), [comment]);
     const handlePressLoadingMore = React.useCallback(
@@ -75,7 +75,7 @@ const CommentCard = ({
                 dispatch(getCommentComments(comment.id));
             setShowComments(true);
         } else setShowComments(false);
-    }, [comment, numOfComments, showComments]);
+    }, [comment, showComments, commentsAllIds, commentsStatus]);
 
     React.useEffect(() => {
         if (
