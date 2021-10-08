@@ -11,6 +11,7 @@ import {
     AnimatedFlatList,
     BottomLoader,
     DefaultHeader,
+    EmptyMessage,
     FullScreenLoader,
 } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
@@ -18,6 +19,8 @@ import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 import { getFrameLikes, selectCurrentFrameLikesStatus } from '#store/likes';
 
 import RenderItem from './RenderItem';
+
+import { Container, Header } from './styles';
 
 type Props = {
     allIds?: string[];
@@ -45,18 +48,21 @@ const Likes = ({ allIds, frameId }: Props) => {
     }, [frameId]);
     const keyExtractor = React.useCallback((item: string) => item, []);
 
+    const styleProps = React.useMemo(() => ({ paddingTop }), [paddingTop]);
+
     React.useEffect(() => {
         if (!status || status === 'PENDING') dispatch(getFrameLikes(frameId));
     }, [frameId, status]);
 
     return (
-        <>
-            <DefaultHeader title="likes" variant="secondary" />
-            {allIds && (
+        <Container>
+            <Header onLayout={onLayout} style={containerStyle}>
+                <DefaultHeader title="likes" variant="secondary" />
+            </Header>
+            {allIds ? (
                 <AnimatedFlatList
                     contentContainerStyle={
-                        style({ paddingTop })
-                            .animatedFlatListContentContainerStyle
+                        style(styleProps).animatedFlatListContentContainerStyle
                     }
                     data={allIds}
                     keyExtractor={keyExtractor}
@@ -69,10 +75,12 @@ const Likes = ({ allIds, frameId }: Props) => {
                     scrollEventThrottle={4}
                     showsVerticalScrollIndicator={false}
                 />
+            ) : (
+                <EmptyMessage text="no user have likes this frame" />
             )}
             <FullScreenLoader show={status === 'INITIAL_LOADING'} />
             <BottomLoader show={status === 'LOADING'} />
-        </>
+        </Container>
     );
 };
 
