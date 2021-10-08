@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import { Typography } from '#components';
+import { DeleteFrameModalContext } from '#contexts/DeleteFrameModalContext';
 import { selectFrame } from '#store/frames';
 import { selectGalerie } from '#store/galeries';
 
@@ -25,6 +26,12 @@ const Buttons = ({ frameId }: Props) => {
     const galerie = useSelector(galerieSelector);
     const me = useSelector(selectMe);
 
+    const { handleOpenModal } = React.useContext(DeleteFrameModalContext);
+
+    const handlePressDeleteFrame = React.useCallback(
+        () => handleOpenModal(frameId),
+        []
+    );
     const handlePressUpdateFrame = React.useCallback(
         () => navigation.navigate('UpdateFrame'),
         []
@@ -54,7 +61,7 @@ const Buttons = ({ frameId }: Props) => {
             (galerie && galerie.role !== 'user')
         )
             return (
-                <Button>
+                <Button onPress={handlePressDeleteFrame}>
                     <Typography fontSize={18}>delete frame</Typography>
                 </Button>
             );

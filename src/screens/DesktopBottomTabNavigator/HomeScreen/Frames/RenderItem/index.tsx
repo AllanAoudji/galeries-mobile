@@ -7,6 +7,7 @@ import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { selectFrame, updateFramesCurrent } from '#store/frames';
 import { selectGalerie } from '#store/galeries';
 import { selectMe } from '#store/me';
+import { DeleteFrameModalContext } from '#contexts/DeleteFrameModalContext';
 
 type Props = {
     item: string;
@@ -17,6 +18,10 @@ const RenderItem = ({ item }: Props) => {
     const navigation =
         useNavigation<Screen.DesktopBottomTab.HomeNavigationProp>();
 
+    const { handleOpenModal } = React.useContext(DeleteFrameModalContext);
+    const { closeBottomSheet, openBottomSheet } =
+        React.useContext(BottomSheetContext);
+
     const frameSelector = React.useMemo(() => selectFrame(item), [item]);
     const frame = useSelector(frameSelector);
     const galerieSelector = React.useMemo(
@@ -26,9 +31,10 @@ const RenderItem = ({ item }: Props) => {
     const galerie = useSelector(galerieSelector);
     const me = useSelector(selectMe);
 
-    const { closeBottomSheet, openBottomSheet } =
-        React.useContext(BottomSheetContext);
-
+    const handlePressDeleteFrame = React.useCallback(() => {
+        handleOpenModal(item);
+        closeBottomSheet();
+    }, []);
     const handlePressUpdateFrame = React.useCallback(() => {
         dispatch(updateFramesCurrent(item));
         navigation.navigate('UpdateFrame');
@@ -61,7 +67,10 @@ const RenderItem = ({ item }: Props) => {
             (galerie && galerie.role !== 'user')
         )
             return (
-                <BottomSheetButton onPress={() => {}} title="delete frame" />
+                <BottomSheetButton
+                    onPress={handlePressDeleteFrame}
+                    title="delete frame"
+                />
             );
         return <BottomSheetButton onPress={() => {}} title="report frame..." />;
     }, []);

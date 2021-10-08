@@ -19,10 +19,10 @@ const successDeleteFrame = (
     const frame = getState().frames.byId[frameId];
     if (!frame) return;
 
-    dispatch(removeFramesById(frameId));
-    dispatch(resetFramesCurrent());
     dispatch(removeFramesAllIds(frameId));
     dispatch(removeGalerieFramesAllIds(frame.galerieId, frameId));
+    dispatch(resetFramesCurrent());
+    dispatch(removeFramesById(frameId));
     dispatch(updateFramesLoadingDelete('SUCCESS'));
 };
 

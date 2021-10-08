@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { AnimatedFlatList } from '#components';
-import { getFrames } from '#store/frames';
+import { deleteFrame, getFrames } from '#store/frames';
 
 import RenderItem from './RenderItem';
 
@@ -24,11 +24,11 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
 );
 
 const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
-    const disaptch = useDispatch();
+    const dispatch = useDispatch();
 
     const paddingTopStyle = React.useMemo(() => ({ paddingTop }), [paddingTop]);
 
-    const handleEndReach = React.useCallback(() => disaptch(getFrames()), []);
+    const handleEndReach = React.useCallback(() => dispatch(getFrames()), []);
     const keyExtractor = React.useCallback((data: string) => data, []);
 
     return (

@@ -18,6 +18,7 @@ import {
 import Frames from './Frames';
 
 import { Container, Header } from './styles';
+import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
 
 const HomeScreen = () => {
     const dispatch = useDispatch();
@@ -51,22 +52,24 @@ const HomeScreen = () => {
     }, [framesStatus]);
 
     return (
-        <Container>
-            <Header onLayout={onLayout} style={containerStyle}>
-                <DefaultHeader />
-            </Header>
-            {showFrames ? (
-                <Frames
-                    allIds={framesAllIds}
-                    paddingTop={paddingTop}
-                    scrollHandler={scrollHandler}
-                />
-            ) : (
-                <EmptyMessage text="no frames" />
-            )}
-            <FullScreenLoader show={showFullScreenLoader} />
-            <BottomLoader show={showBottomLoader} bottom="huge" />
-        </Container>
+        <DeleteFrameModalProvider>
+            <Container>
+                <Header onLayout={onLayout} style={containerStyle}>
+                    <DefaultHeader />
+                </Header>
+                {showFrames ? (
+                    <Frames
+                        allIds={framesAllIds}
+                        paddingTop={paddingTop}
+                        scrollHandler={scrollHandler}
+                    />
+                ) : (
+                    <EmptyMessage text="no frames" />
+                )}
+                <FullScreenLoader show={showFullScreenLoader} />
+                <BottomLoader show={showBottomLoader} bottom="huge" />
+            </Container>
+        </DeleteFrameModalProvider>
     );
 };
 

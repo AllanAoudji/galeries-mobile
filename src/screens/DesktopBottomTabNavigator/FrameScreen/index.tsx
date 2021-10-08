@@ -4,6 +4,7 @@ import { ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
+import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
 import { selectCurrentFrame } from '#store/frames';
 import {
     getFrameGaleriePictures,
@@ -44,10 +45,9 @@ const FrameScreen = ({ navigation }: Props) => {
     const [showOptions, setShowOptions] = React.useState<boolean>(false);
 
     const handleShowOptions = React.useCallback(() => setShowOptions(true), []);
-    const handleHideOptions = React.useCallback(
-        () => setShowOptions(false),
-        []
-    );
+    const handleHideOptions = React.useCallback(() => {
+        setShowOptions(false);
+    }, []);
     const handlePressBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
@@ -68,34 +68,33 @@ const FrameScreen = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
-            return () => handleHideOptions();
         }, [currentFrame])
     );
+    useFocusEffect(React.useCallback(() => () => handleHideOptions(), []));
 
     if (!currentFrame) return null;
 
     return (
-        <Container>
-            {galeriePicturesAllIds ? (
-                <Carousel
-                    allIds={galeriePicturesAllIds}
-                    onPress={handleShowOptions}
+        <DeleteFrameModalProvider>
+            <Container>
+                {galeriePicturesAllIds ? (
+                    <Carousel
+                        allIds={galeriePicturesAllIds}
+                        onPress={handleShowOptions}
+                    />
+                ) : (
+                    <ActivityIndicator color={theme.colors.black} />
+                )}
+                <Options
+                    description={currentFrame.description}
+                    frameId={currentFrame.id}
+                    onPressBack={handlePressBack}
+                    onPress={handleHideOptions}
+                    show={showOptions}
                 />
-            ) : (
-                <ActivityIndicator color={theme.colors.black} />
-            )}
-            <Options
-                description={currentFrame.description}
-                frameId={currentFrame.id}
-                onPressBack={handlePressBack}
-                onPress={handleHideOptions}
-                show={showOptions}
-            />
-        </Container>
+            </Container>
+        </DeleteFrameModalProvider>
     );
 };
 
 export default FrameScreen;
-
-// TODO:
-// Button if user has post/user is the admin/moderator of the galerie
