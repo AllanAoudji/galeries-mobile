@@ -10,7 +10,7 @@ import {
 import { selectUser } from '#store/users';
 
 import { Container, TypographyContainer } from './styles';
-import { getMe, selectMe } from '#store/me';
+import { selectMe } from '#store/me';
 
 type CommentProps = {
     commentId: string;
