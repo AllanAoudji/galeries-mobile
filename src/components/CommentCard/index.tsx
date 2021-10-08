@@ -32,6 +32,7 @@ const CommentCard = ({
     user,
 }: Props) => {
     const dispatch = useDispatch();
+
     const commentCommentsAllIdsSelector = React.useCallback(
         () => selectCommentCommentsAllIds(comment.id),
         [comment]
@@ -54,12 +55,13 @@ const CommentCard = ({
     );
 
     const commentFetcherText = React.useMemo(() => {
-        if (!showComments || !commentsAllIds)
+        if (!commentsAllIds) return `View ${comment.numOfComments} replies`;
+        if (!showComments) {
+            if (commentsStatus === 'PENDING') return 'loading';
             return `View ${comment.numOfComments} replies`;
-        if (!commentsStatus || commentsStatus.includes('LOADING'))
-            return 'loading';
+        }
         return 'hide comments';
-    }, [comment, showComments]);
+    }, [comment, commentsAllIds, commentsStatus, showComments]);
 
     const handlePress = React.useCallback(() => onPress(comment.id), [comment]);
     const handlePressLoadingMore = React.useCallback(
@@ -75,7 +77,7 @@ const CommentCard = ({
                 dispatch(getCommentComments(comment.id));
             setShowComments(true);
         } else setShowComments(false);
-    }, [comment, numOfComments, showComments]);
+    }, [comment, commentsAllIds, commentsStatus, showComments]);
 
     React.useEffect(() => {
         if (
@@ -86,7 +88,7 @@ const CommentCard = ({
             setNumOfComments(commentsAllIds.length);
             setShowComments(true);
         }
-    }, [comment]);
+    }, [comment, commentsAllIds]);
 
     return (
         <>

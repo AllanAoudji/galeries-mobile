@@ -1,6 +1,7 @@
 import { Dispatch } from 'redux';
 
 import {
+    getCommentComments,
     setCommentsById,
     updateCommentsAllIds,
     updateCommentsById,
@@ -49,6 +50,8 @@ const successPostComments = (
             if (frame) dispatch(updateFramesById({ ...frame, numOfComments }));
         }
     } else if (commentId) {
+        const commentAllIds = getState().comments.allIds[commentId];
+        if (!commentAllIds) dispatch(getCommentComments(commentId));
         const oldAllIds = getState().comments.allIds[commentId] || [];
         const newAllIds = combineCommentsAllIds(getState, oldAllIds, [
             comment.id,

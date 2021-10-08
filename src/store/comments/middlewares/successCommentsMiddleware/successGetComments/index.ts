@@ -67,9 +67,8 @@ const successGetComments = (
         let previous: string | undefined;
         if (previousCommentId)
             previous = byId[previousCommentId].autoIncrementId;
-
         dispatch(updateCommentsAllIds(commentId, newAllIds));
-        dispatch(updateCommentsEnd(commentId, allIds.length < 20));
+        dispatch(updateCommentsEnd(commentId, allIds.length < 10));
         if (previous) dispatch(updateCommentsPrevious(commentId, previous));
         dispatch(updateCommentsStatus(commentId, 'SUCCESS'));
     }

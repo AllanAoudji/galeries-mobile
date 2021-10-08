@@ -1,32 +1,19 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-    BottomLoader,
-    DefaultHeader,
-    DeleteModal,
-    EmptyMessage,
-    FullScreenLoader,
-} from '#components';
-import { GLOBAL_STYLE } from '#helpers/constants';
+import { DeleteCommentModalProvider } from '#contexts/DeleteCommentModalContext';
 import { SelectCommentProvider } from '#contexts/SelectedCommentContext';
-import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
-import { selectCurrentFrame } from '#store/frames';
+import { FullScreenLoader } from '#components';
 import {
-    deleteComment,
     getFrameComments,
     resetCommentsCurrent,
-    selectCommentCurrent,
-    selectCommentsLoadingPost,
     selectCurrentFrameCommentsAllId,
     selectCurrentFrameCommentsStatus,
 } from '#store/comments';
+import { selectCurrentFrame } from '#store/frames';
 
 import Comments from './Comments';
-import Form from './Form';
-import { Container, Header } from './styles';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CommentsNavigationProp;
@@ -36,77 +23,8 @@ const CommentScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
     const commentsAllIds = useSelector(selectCurrentFrameCommentsAllId);
-    const currentComment = useSelector(selectCommentCurrent);
     const currentFrame = useSelector(selectCurrentFrame);
-    const currentFrameCommentsStatus = useSelector(
-        selectCurrentFrameCommentsStatus
-    );
-    const loading = useSelector(selectCommentsLoadingPost);
-
-    const { onLayout: headerOnLayout, size: headerSize } = useComponentSize();
-    const { onLayout: footerOnLayout, size: footerSize } = useComponentSize();
-    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
-        GLOBAL_STYLE.HEADER_TAB_HEIGHT
-    );
-
-    const flatListRef = React.useRef<FlatList | null>(null);
-
-    const [openModal, setOpenModal] = React.useState<boolean>(false);
-    const [commentIdToDelete, setCommentIdToDelete] = React.useState<
-        string | null
-    >(null);
-
-    const frameId = React.useMemo(
-        () => (currentFrame ? currentFrame.id : undefined),
-        [currentFrame]
-    );
-
-    const paddingBottom = React.useMemo(
-        () => (footerSize ? footerSize.height : 0),
-        [footerSize]
-    );
-    const paddingTop = React.useMemo(
-        () => (headerSize ? headerSize.height : 0),
-        [headerSize]
-    );
-    const showBody = React.useMemo(() => !!paddingTop, [paddingTop]);
-    const showBottomLoader = React.useMemo(
-        () => currentFrameCommentsStatus === 'LOADING',
-        [currentFrameCommentsStatus]
-    );
-    const showComments = React.useMemo(
-        () => !!commentsAllIds && commentsAllIds.length > 0 && !!paddingBottom,
-        [commentsAllIds, paddingBottom]
-    );
-    const showFullScreenModal = React.useMemo(
-        () =>
-            currentFrameCommentsStatus === 'PENDING' ||
-            currentFrameCommentsStatus === 'INITIAL_LOADING',
-        [currentFrameCommentsStatus]
-    );
-
-    const handleCloseModal = React.useCallback(() => {
-        setCommentIdToDelete(null);
-        setOpenModal(false);
-    }, []);
-    const handleOpenModal = React.useCallback((commentId: string) => {
-        setCommentIdToDelete(commentId);
-        setOpenModal(true);
-    }, []);
-    const handlePressDelete = React.useCallback(() => {
-        if (commentIdToDelete) dispatch(deleteComment(commentIdToDelete));
-    }, [commentIdToDelete]);
-    const onPressReturn = React.useCallback(() => {
-        if (loading && !loading.includes('LOADING')) {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.navigate('Home');
-        }
-    }, [loading, navigation]);
-    const scrollToTop = React.useCallback(() => {
-        if (flatListRef.current && !currentComment)
-            flatListRef.current.scrollToOffset({ offset: 0 });
-    }, [currentComment]);
-    const handleSuccess = React.useCallback(() => scrollToTop(), [scrollToTop]);
+    const status = useSelector(selectCurrentFrameCommentsStatus);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -114,65 +32,30 @@ const CommentScreen = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
+            return () => dispatch(resetCommentsCurrent());
         }, [currentFrame])
     );
-
-    React.useEffect(() => {
-        if (currentFrame && currentFrameCommentsStatus === 'PENDING')
-            dispatch(getFrameComments(currentFrame.id));
-    }, [currentFrame, currentFrameCommentsStatus]);
-
     useFocusEffect(
         React.useCallback(() => {
-            return () => {
-                dispatch(resetCommentsCurrent());
-            };
-        }, [])
+            if (currentFrame && status === 'PENDING')
+                dispatch(getFrameComments(currentFrame.id));
+        }, [currentFrame, status])
     );
 
+    if (
+        !commentsAllIds ||
+        !currentFrame ||
+        status === 'PENDING' ||
+        status === 'INITIAL_LOADING'
+    )
+        return <FullScreenLoader show />;
+
     return (
-        <SelectCommentProvider>
-            <Container>
-                <Header onLayout={headerOnLayout} style={containerStyle}>
-                    <DefaultHeader
-                        onPress={onPressReturn}
-                        title="comments"
-                        variant="secondary"
-                    />
-                </Header>
-                {showBody && (
-                    <>
-                        {showComments ? (
-                            <Comments
-                                allIds={commentsAllIds}
-                                flatListRef={flatListRef}
-                                frameId={frameId}
-                                openModal={handleOpenModal}
-                                paddingBottom={paddingBottom}
-                                paddingTop={paddingTop}
-                                scrollHandler={scrollHandler}
-                            />
-                        ) : (
-                            <EmptyMessage text="This frame do not have comment yet..." />
-                        )}
-                        <Form
-                            frameId={frameId}
-                            loading={loading}
-                            onLayout={footerOnLayout}
-                            onSuccess={handleSuccess}
-                        />
-                    </>
-                )}
-                <FullScreenLoader show={showFullScreenModal} />
-                <BottomLoader show={showBottomLoader} bottom="huge" />
-            </Container>
-            <DeleteModal
-                handleClose={handleCloseModal}
-                onPressDelete={handlePressDelete}
-                open={openModal}
-                title="delete this comment?"
-            />
-        </SelectCommentProvider>
+        <DeleteCommentModalProvider>
+            <SelectCommentProvider>
+                <Comments frameId={currentFrame.id} allIds={commentsAllIds} />
+            </SelectCommentProvider>
+        </DeleteCommentModalProvider>
     );
 };
 

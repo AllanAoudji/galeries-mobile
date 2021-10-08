@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
@@ -6,103 +7,136 @@ import {
     StyleSheet,
     ViewStyle,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { AnimatedFlatList } from '#components';
-import { getFrameComments } from '#store/comments';
+import {
+    AnimatedFlatList,
+    BottomLoader,
+    DefaultHeader,
+    EmptyMessage,
+} from '#components';
+import { GLOBAL_STYLE } from '#helpers/constants';
+import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
+import {
+    getFrameComments,
+    selectCommentCurrent,
+    selectCommentsLoadingPost,
+    selectCurrentFrameCommentsStatus,
+} from '#store/comments';
 
+import Form from './Form';
 import RenderItem from './RenderItem';
 
+import { Container, Header } from './styles';
+
 type CommentsProps = {
-    allIds?: string[];
-    flatListRef: React.MutableRefObject<FlatList<any> | null>;
-    frameId?: string;
-    openModal: (commentId: string) => void;
-    paddingBottom: number;
-    paddingTop: number;
-    scrollHandler: any;
-};
-type CommentsListProps = {
     allIds: string[];
-    flatListRef: React.MutableRefObject<FlatList<any> | null>;
     frameId: string;
-    openModal: (commentId: string) => void;
-    paddingBottom: number;
-    paddingTop: number;
-    scrollHandler: any;
 };
 
-const CommentsList = ({
-    allIds,
-    flatListRef,
-    frameId,
-    openModal,
-    paddingBottom,
-    paddingTop,
-    scrollHandler,
-}: CommentsListProps) => {
+const Comments = ({ allIds, frameId }: CommentsProps) => {
     const dispatch = useDispatch();
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.CommentsNavigationProp>();
 
-    const renderItem = React.useCallback(
-        ({ item }: ListRenderItemInfo<string>) => (
-            <RenderItem openModal={openModal} item={item} />
-        ),
-        []
+    const currentComment = useSelector(selectCommentCurrent);
+    const currentFrameCommentsStatus = useSelector(
+        selectCurrentFrameCommentsStatus
+    );
+    const loading = useSelector(selectCommentsLoadingPost);
+
+    const flatListRef = React.useRef<FlatList | null>(null);
+
+    const { onLayout: headerOnLayout, size: headerSize } = useComponentSize();
+    const { onLayout: footerOnLayout, size: footerSize } = useComponentSize();
+    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
+        GLOBAL_STYLE.HEADER_TAB_HEIGHT
+    );
+
+    const paddingBottom = React.useMemo(
+        () => (footerSize ? footerSize.height : 0),
+        [footerSize]
+    );
+    const paddingTop = React.useMemo(
+        () => (headerSize ? headerSize.height : 0),
+        [headerSize]
+    );
+    const styleProps = React.useMemo(
+        () => ({ paddingBottom, paddingTop }),
+        [paddingBottom, paddingTop]
     );
 
     const handleEndReach = React.useCallback(
         () => dispatch(getFrameComments(frameId)),
         []
     );
+    const handlePress = React.useCallback(() => {
+        if (loading && !loading.includes('LOADING')) {
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
+        }
+    }, [loading, navigation]);
+    const handleSuccess = React.useCallback(() => {
+        if (flatListRef.current && !currentComment)
+            flatListRef.current.scrollToOffset({ offset: 0 });
+    }, [currentComment]);
     const keyExtractor = React.useCallback((data: string) => data, []);
-
-    const styleProps = React.useMemo(
-        () => ({ paddingBottom, paddingTop }),
-        [paddingBottom, paddingTop]
+    const renderItem = React.useCallback(
+        ({ item }: ListRenderItemInfo<string>) => <RenderItem item={item} />,
+        []
     );
 
     return (
-        <AnimatedFlatList
-            contentContainerStyle={
-                style(styleProps).animatedFlatListContentContainerStyle
-            }
-            data={allIds}
-            initialNumToRender={15}
-            keyExtractor={keyExtractor}
-            maxToRenderPerBatch={15}
-            onScroll={scrollHandler}
-            onEndReached={handleEndReach}
-            onEndReachedThreshold={0.2}
-            ref={flatListRef}
-            removeClippedSubviews
-            renderItem={renderItem}
-            scrollEventThrottle={4}
-            showsVerticalScrollIndicator={false}
-        />
-    );
-};
-
-const Comments = ({
-    allIds,
-    frameId,
-    flatListRef,
-    openModal,
-    paddingBottom,
-    paddingTop,
-    scrollHandler,
-}: CommentsProps) => {
-    if (!allIds || !frameId) return null;
-
-    return (
-        <CommentsList
-            allIds={allIds}
-            flatListRef={flatListRef}
-            frameId={frameId}
-            openModal={openModal}
-            paddingBottom={paddingBottom}
-            paddingTop={paddingTop}
-            scrollHandler={scrollHandler}
-        />
+        <Container>
+            <Header onLayout={headerOnLayout} style={containerStyle}>
+                <DefaultHeader
+                    onPress={handlePress}
+                    title="comments"
+                    variant="secondary"
+                />
+            </Header>
+            {!!paddingTop && (
+                <>
+                    {!!paddingBottom && (
+                        <>
+                            {allIds.length > 0 ? (
+                                <AnimatedFlatList
+                                    contentContainerStyle={
+                                        style(styleProps)
+                                            .animatedFlatListContentContainerStyle
+                                    }
+                                    data={allIds}
+                                    extraData={allIds}
+                                    initialNumToRender={15}
+                                    keyExtractor={keyExtractor}
+                                    maxToRenderPerBatch={15}
+                                    onScroll={scrollHandler}
+                                    onEndReached={handleEndReach}
+                                    onEndReachedThreshold={0.2}
+                                    ref={flatListRef}
+                                    removeClippedSubviews
+                                    renderItem={renderItem}
+                                    scrollEventThrottle={4}
+                                    showsVerticalScrollIndicator={false}
+                                />
+                            ) : (
+                                <EmptyMessage text="This frame do not have comment yet..." />
+                            )}
+                        </>
+                    )}
+                    <Form
+                        frameId={frameId}
+                        loading={loading}
+                        onLayout={footerOnLayout}
+                        onSuccess={handleSuccess}
+                    />
+                </>
+            )}
+            <BottomLoader
+                bottom="huge"
+                show={currentFrameCommentsStatus === 'LOADING'}
+            />
+        </Container>
     );
 };
 
