@@ -26,23 +26,6 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
 const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
     const dispatch = useDispatch();
 
-    const [frameIdToDelete, setFrameIdToDelete] = React.useState<string | null>(
-        null
-    );
-    const [openDeleteModal, setOpenDeleteModal] =
-        React.useState<boolean>(false);
-    const handleOpenDeleteModal = React.useCallback((frameId: string) => {
-        setFrameIdToDelete(frameId);
-        setOpenDeleteModal(true);
-    }, []);
-    const handleCloseDeleteModal = React.useCallback(() => {
-        setFrameIdToDelete(null);
-        setOpenDeleteModal(false);
-    }, []);
-    const handleDeleteFrame = React.useCallback(() => {
-        if (frameIdToDelete) dispatch(deleteFrame(frameIdToDelete));
-    }, [frameIdToDelete]);
-
     const paddingTopStyle = React.useMemo(() => ({ paddingTop }), [paddingTop]);
 
     const handleEndReach = React.useCallback(() => dispatch(getFrames()), []);
