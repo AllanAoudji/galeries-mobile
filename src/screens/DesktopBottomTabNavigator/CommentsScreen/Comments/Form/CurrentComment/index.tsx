@@ -10,6 +10,7 @@ import {
 import { selectUser } from '#store/users';
 
 import { Container, TypographyContainer } from './styles';
+import { getMe, selectMe } from '#store/me';
 
 type CommentProps = {
     commentId: string;
@@ -31,6 +32,7 @@ const Comment = ({ commentId }: CommentProps) => {
 };
 const User = ({ userId }: UserProps) => {
     const dispatch = useDispatch();
+    const me = useSelector(selectMe);
 
     const userSelector = React.useMemo(() => selectUser(userId), [userId]);
     const user = useSelector(userSelector);
@@ -46,7 +48,9 @@ const User = ({ userId }: UserProps) => {
         <Container onPress={handlePress}>
             <TypographyContainer>
                 <Typography fontFamily="light">Answer to </Typography>
-                <Typography fontFamily="bold">{user.pseudonym}</Typography>
+                <Typography fontFamily="bold">
+                    {me && me.id === user.id ? 'me' : user.pseudonym}
+                </Typography>
             </TypographyContainer>
             <Pictogram
                 size="small"
