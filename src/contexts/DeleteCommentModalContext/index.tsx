@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { DeleteModal } from '#components';
+import DeleteModal from '#components/DeleteModal';
 import { deleteComment } from '#store/comments';
 
 export const DeleteCommentModalContext = React.createContext<{

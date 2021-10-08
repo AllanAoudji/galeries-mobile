@@ -13,6 +13,7 @@ type Props = {
 };
 
 const SubComments = ({ allIds, end, onPress }: Props) => {
+    console.log(end);
     return (
         <Container>
             {allIds.map((id) => (
