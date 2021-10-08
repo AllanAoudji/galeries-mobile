@@ -12,8 +12,6 @@ type Props = {
     item: string;
 };
 
-const handlePressBottomSheetButton = () => {};
-
 const RenderItem = ({ item }: Props) => {
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
@@ -23,15 +21,20 @@ const RenderItem = ({ item }: Props) => {
     );
     const user = useSelector(userSelector);
 
-    const { openBottomSheet } = React.useContext(BottomSheetContext);
+    const { closeBottomSheet, openBottomSheet } =
+        React.useContext(BottomSheetContext);
     const { selectedComment, setCommentSelected } = React.useContext(
         SelectedCommentContext
     );
 
+    const handleBottomSheetDelete = React.useCallback(() => {
+        closeBottomSheet();
+    }, [comment]);
+
     const bottomSheetContent = React.useCallback(() => {
         return (
             <BottomSheetButton
-                onPress={handlePressBottomSheetButton}
+                onPress={handleBottomSheetDelete}
                 title="delete comment"
             />
         );
@@ -41,7 +44,7 @@ const RenderItem = ({ item }: Props) => {
         openBottomSheet(bottomSheetContent);
     }, [comment]);
 
-    if (!comment) return null;
+    if (!comment || !user) return null;
 
     return (
         <SubCommentCard

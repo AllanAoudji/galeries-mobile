@@ -26,7 +26,6 @@ type CommentsListProps = {
     allIds: string[];
     flatListRef: React.MutableRefObject<FlatList<any> | null>;
     frameId: string;
-    openModal: (commentId: string) => void;
     paddingBottom: number;
     paddingTop: number;
     scrollHandler: any;
@@ -36,7 +35,6 @@ const CommentsList = ({
     allIds,
     flatListRef,
     frameId,
-    openModal,
     paddingBottom,
     paddingTop,
     scrollHandler,
@@ -44,9 +42,7 @@ const CommentsList = ({
     const dispatch = useDispatch();
 
     const renderItem = React.useCallback(
-        ({ item }: ListRenderItemInfo<string>) => (
-            <RenderItem openModal={openModal} item={item} />
-        ),
+        ({ item }: ListRenderItemInfo<string>) => <RenderItem item={item} />,
         []
     );
 
@@ -86,7 +82,6 @@ const Comments = ({
     allIds,
     frameId,
     flatListRef,
-    openModal,
     paddingBottom,
     paddingTop,
     scrollHandler,
@@ -98,7 +93,6 @@ const Comments = ({
             allIds={allIds}
             flatListRef={flatListRef}
             frameId={frameId}
-            openModal={openModal}
             paddingBottom={paddingBottom}
             paddingTop={paddingTop}
             scrollHandler={scrollHandler}

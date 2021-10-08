@@ -3,10 +3,10 @@ import * as React from 'react';
 import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { DeleteCommentModalProvider } from '#contexts/DeleteCommentModalContext';
 import {
     BottomLoader,
     DefaultHeader,
-    DeleteModal,
     EmptyMessage,
     FullScreenLoader,
 } from '#components';
@@ -15,7 +15,6 @@ import { SelectCommentProvider } from '#contexts/SelectedCommentContext';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 import { selectCurrentFrame } from '#store/frames';
 import {
-    deleteComment,
     getFrameComments,
     resetCommentsCurrent,
     selectCommentCurrent,
@@ -51,11 +50,6 @@ const CommentScreen = ({ navigation }: Props) => {
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
-    const [openModal, setOpenModal] = React.useState<boolean>(false);
-    const [commentIdToDelete, setCommentIdToDelete] = React.useState<
-        string | null
-    >(null);
-
     const frameId = React.useMemo(
         () => (currentFrame ? currentFrame.id : undefined),
         [currentFrame]
@@ -84,18 +78,6 @@ const CommentScreen = ({ navigation }: Props) => {
             currentFrameCommentsStatus === 'INITIAL_LOADING',
         [currentFrameCommentsStatus]
     );
-
-    const handleCloseModal = React.useCallback(() => {
-        setCommentIdToDelete(null);
-        setOpenModal(false);
-    }, []);
-    const handleOpenModal = React.useCallback((commentId: string) => {
-        setCommentIdToDelete(commentId);
-        setOpenModal(true);
-    }, []);
-    const handlePressDelete = React.useCallback(() => {
-        if (commentIdToDelete) dispatch(deleteComment(commentIdToDelete));
-    }, [commentIdToDelete]);
     const onPressReturn = React.useCallback(() => {
         if (loading && !loading.includes('LOADING')) {
             if (navigation.canGoBack()) navigation.goBack();
@@ -131,48 +113,43 @@ const CommentScreen = ({ navigation }: Props) => {
     );
 
     return (
-        <SelectCommentProvider>
-            <Container>
-                <Header onLayout={headerOnLayout} style={containerStyle}>
-                    <DefaultHeader
-                        onPress={onPressReturn}
-                        title="comments"
-                        variant="secondary"
-                    />
-                </Header>
-                {showBody && (
-                    <>
-                        {showComments ? (
-                            <Comments
-                                allIds={commentsAllIds}
-                                flatListRef={flatListRef}
-                                frameId={frameId}
-                                openModal={handleOpenModal}
-                                paddingBottom={paddingBottom}
-                                paddingTop={paddingTop}
-                                scrollHandler={scrollHandler}
-                            />
-                        ) : (
-                            <EmptyMessage text="This frame do not have comment yet..." />
-                        )}
-                        <Form
-                            frameId={frameId}
-                            loading={loading}
-                            onLayout={footerOnLayout}
-                            onSuccess={handleSuccess}
+        <DeleteCommentModalProvider>
+            <SelectCommentProvider>
+                <Container>
+                    <Header onLayout={headerOnLayout} style={containerStyle}>
+                        <DefaultHeader
+                            onPress={onPressReturn}
+                            title="comments"
+                            variant="secondary"
                         />
-                    </>
-                )}
-                <FullScreenLoader show={showFullScreenModal} />
-                <BottomLoader show={showBottomLoader} bottom="huge" />
-            </Container>
-            <DeleteModal
-                handleClose={handleCloseModal}
-                onPressDelete={handlePressDelete}
-                open={openModal}
-                title="delete this comment?"
-            />
-        </SelectCommentProvider>
+                    </Header>
+                    {showBody && (
+                        <>
+                            {showComments ? (
+                                <Comments
+                                    allIds={commentsAllIds}
+                                    flatListRef={flatListRef}
+                                    frameId={frameId}
+                                    paddingBottom={paddingBottom}
+                                    paddingTop={paddingTop}
+                                    scrollHandler={scrollHandler}
+                                />
+                            ) : (
+                                <EmptyMessage text="This frame do not have comment yet..." />
+                            )}
+                            <Form
+                                frameId={frameId}
+                                loading={loading}
+                                onLayout={footerOnLayout}
+                                onSuccess={handleSuccess}
+                            />
+                        </>
+                    )}
+                    <FullScreenLoader show={showFullScreenModal} />
+                    <BottomLoader show={showBottomLoader} bottom="huge" />
+                </Container>
+            </SelectCommentProvider>
+        </DeleteCommentModalProvider>
     );
 };
 

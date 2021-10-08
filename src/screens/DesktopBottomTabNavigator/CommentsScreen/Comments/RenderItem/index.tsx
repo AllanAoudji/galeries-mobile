@@ -7,16 +7,18 @@ import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
 import { selectMeId } from '#store/me';
 import { selectUser } from '#store/users';
+import { DeleteCommentModalContext } from '#contexts/DeleteCommentModalContext';
 
 type Props = {
     item: string;
-    openModal: (commentId: string) => void;
 };
 
 const handlePressBottomSheetButton = () => {};
 
-const RenderItem = ({ item, openModal }: Props) => {
+const RenderItem = ({ item }: Props) => {
     const dispatch = useDispatch();
+
+    const { handleOpenModal } = React.useContext(DeleteCommentModalContext);
 
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
@@ -38,7 +40,7 @@ const RenderItem = ({ item, openModal }: Props) => {
     }, [comment]);
     const handleBottomSheetDelete = React.useCallback(() => {
         closeBottomSheet();
-        openModal(comment.id);
+        handleOpenModal(comment.id);
     }, [comment]);
 
     const bottomSheetContent = React.useCallback(() => {
