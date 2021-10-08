@@ -74,7 +74,7 @@ const RenderItem = ({ item }: Props) => {
                 {deleteOrReportFrame}
             </>
         );
-    }, []);
+    }, [updateFrameButton, useAsCoverPicture, deleteOrReportFrame]);
     const handlePressComments = React.useCallback(() => {
         dispatch(updateFramesCurrent(item));
         navigation.navigate('Comments');
