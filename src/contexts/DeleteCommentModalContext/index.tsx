@@ -5,10 +5,8 @@ import DeleteModal from '#components/DeleteModal';
 import { deleteComment } from '#store/comments';
 
 export const DeleteCommentModalContext = React.createContext<{
-    handleCloseModal: () => void;
     handleOpenModal: (commentId: string) => void;
 }>({
-    handleCloseModal: () => {},
     handleOpenModal: () => {},
 });
 
@@ -33,12 +31,7 @@ export const DeleteCommentModalProvider: React.FC<{}> = ({ children }) => {
     }, [currentComment]);
 
     return (
-        <DeleteCommentModalContext.Provider
-            value={{
-                handleCloseModal,
-                handleOpenModal,
-            }}
-        >
+        <DeleteCommentModalContext.Provider value={{ handleOpenModal }}>
             {children}
             <DeleteModal
                 handleClose={handleCloseModal}
