@@ -23,7 +23,7 @@ const successPutGaleriePictures = (
     )
         return;
 
-    const galeriePicture = getState().galeriePictures.byId[galerieId];
+    const galeriePicture = getState().galeriePictures.byId[galeriePictureId];
 
     if (galeriePicture) {
         dispatch(

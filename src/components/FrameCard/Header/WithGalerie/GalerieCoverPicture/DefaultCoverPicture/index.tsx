@@ -42,7 +42,7 @@ const DefaultCoverPicture = ({ galerie }: Props) => {
                 }}
             />
         );
-    return <CoverPicture />;
+    return <CoverPicture coverPictureId={coverPictureId} />;
 };
 
 export default DefaultCoverPicture;

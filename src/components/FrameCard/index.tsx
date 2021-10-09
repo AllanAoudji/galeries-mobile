@@ -10,7 +10,6 @@ type Props = {
     frame: Store.Models.Frame;
     onPressComments: () => void;
     onPressLikes: () => void;
-    onPressOptions: () => void;
     onPressSlider: () => void;
     showGalerie?: boolean;
 };
@@ -19,19 +18,24 @@ const FrameCard = ({
     frame,
     onPressComments,
     onPressLikes,
-    onPressOptions,
     onPressSlider,
     showGalerie = false,
 }: Props) => {
+    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
+
     return (
         <Container>
             <Header
-                galerieId={frame.galerieId}
-                onPress={onPressOptions}
+                currentIndex={currentIndex}
+                frame={frame}
                 showGalerie={showGalerie}
-                userId={frame.userId}
             />
-            <Slider frameId={frame.id} onPressSlider={onPressSlider} />
+            <Slider
+                currentIndex={currentIndex}
+                frameId={frame.id}
+                onPressSlider={onPressSlider}
+                setCurrentIndex={setCurrentIndex}
+            />
             <Footer
                 createdAt={frame.createdAt}
                 description={frame.description}

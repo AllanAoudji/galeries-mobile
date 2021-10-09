@@ -67,7 +67,9 @@ const successGetFrames = (
         const user = getState().users.byId[byId[id].userId];
         if (!user) dispatch(getUserId(byId[id].userId));
         const galerie = getState().galeries.byId[byId[id].galerieId];
-        if (!galerie) dispatch(getGalerieId(byId[id].galerieId));
+        if (!galerie) {
+            dispatch(getGalerieId(byId[id].galerieId));
+        }
     });
 };
 

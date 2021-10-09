@@ -2,12 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { BottomSheetButton, FrameCard } from '#components';
-import { BottomSheetContext } from '#contexts/BottomSheetContext';
+import { FrameCard } from '#components';
 import { selectFrame, updateFramesCurrent } from '#store/frames';
-import { selectGalerie } from '#store/galeries';
-import { selectMe } from '#store/me';
-import { DeleteFrameModalContext } from '#contexts/DeleteFrameModalContext';
 
 type Props = {
     item: string;
@@ -18,72 +14,9 @@ const RenderItem = ({ item }: Props) => {
     const navigation =
         useNavigation<Screen.DesktopBottomTab.HomeNavigationProp>();
 
-    const { handleOpenModal } = React.useContext(DeleteFrameModalContext);
-    const { closeBottomSheet, openBottomSheet } =
-        React.useContext(BottomSheetContext);
-
     const frameSelector = React.useMemo(() => selectFrame(item), [item]);
     const frame = useSelector(frameSelector);
-    const galerieSelector = React.useMemo(
-        () => selectGalerie(frame.galerieId),
-        [frame]
-    );
-    const galerie = useSelector(galerieSelector);
-    const me = useSelector(selectMe);
 
-    const handlePressDeleteFrame = React.useCallback(() => {
-        handleOpenModal(item);
-        closeBottomSheet();
-    }, []);
-    const handlePressUpdateFrame = React.useCallback(() => {
-        dispatch(updateFramesCurrent(item));
-        navigation.navigate('UpdateFrame');
-        closeBottomSheet();
-    }, [item]);
-
-    const updateFrameButton = React.useMemo(() => {
-        if (me && me.id === frame.userId)
-            return (
-                <BottomSheetButton
-                    onPress={handlePressUpdateFrame}
-                    title="update frame"
-                />
-            );
-        return null;
-    }, [frame, handlePressUpdateFrame, me]);
-    const useAsCoverPicture = React.useMemo(() => {
-        if (galerie && galerie.role !== 'user')
-            return (
-                <BottomSheetButton
-                    onPress={() => {}}
-                    title="use as cover picture"
-                />
-            );
-        return null;
-    }, [galerie]);
-    const deleteOrReportFrame = React.useMemo(() => {
-        if (
-            (me && frame.userId === me.id) ||
-            (galerie && galerie.role !== 'user')
-        )
-            return (
-                <BottomSheetButton
-                    onPress={handlePressDeleteFrame}
-                    title="delete frame"
-                />
-            );
-        return <BottomSheetButton onPress={() => {}} title="report frame..." />;
-    }, []);
-
-    const bottomSheetContent = React.useCallback(() => {
-        return (
-            <>
-                {updateFrameButton}
-                {useAsCoverPicture}
-                {deleteOrReportFrame}
-            </>
-        );
-    }, [updateFrameButton, useAsCoverPicture, deleteOrReportFrame]);
     const handlePressComments = React.useCallback(() => {
         dispatch(updateFramesCurrent(item));
         navigation.navigate('Comments');
@@ -94,10 +27,7 @@ const RenderItem = ({ item }: Props) => {
             navigation.navigate('Likes');
         }
     }, [frame]);
-    const handlePressOption = React.useCallback(
-        () => openBottomSheet(bottomSheetContent),
-        []
-    );
+
     const handlePressSlider = React.useCallback(() => {
         dispatch(updateFramesCurrent(item));
         navigation.navigate('Frame');
@@ -108,7 +38,6 @@ const RenderItem = ({ item }: Props) => {
             frame={frame}
             onPressComments={handlePressComments}
             onPressLikes={handlePressLikes}
-            onPressOptions={handlePressOption}
             onPressSlider={handlePressSlider}
             showGalerie
         />

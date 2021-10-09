@@ -19,11 +19,18 @@ import Image from './Image';
 import { ActivityIndicatorContainer, Container, DotsContainer } from './styles';
 
 type Props = {
+    currentIndex: number;
     frameId: string;
     onPressSlider: () => void;
+    setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const Slider = ({ frameId, onPressSlider }: Props) => {
+const Slider = ({
+    currentIndex,
+    frameId,
+    onPressSlider,
+    setCurrentIndex,
+}: Props) => {
     const dimension = useWindowDimensions();
     const theme = useTheme();
 
@@ -37,8 +44,6 @@ const Slider = ({ frameId, onPressSlider }: Props) => {
         [frameId]
     );
     const status = useSelector(frameGaleriePicturesStatusSelector());
-
-    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
 
     const handleScroll = React.useCallback(
         ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {

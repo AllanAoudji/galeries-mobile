@@ -11,7 +11,7 @@ const galeriePicturesIdReducer = (
     switch (action.type) {
         case GALERIE_PICTURES_ID_RESET:
             return initialState;
-        case GALERIE_PICTURES_ID_UPDATE:
+        case GALERIE_PICTURES_ID_UPDATE: {
             if (
                 !action.meta.query ||
                 !action.meta.query.galerieId ||
@@ -22,6 +22,7 @@ const galeriePicturesIdReducer = (
                 ...state,
                 [action.meta.query.galerieId]: action.payload,
             };
+        }
         default:
             return state;
     }

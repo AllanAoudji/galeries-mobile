@@ -84,7 +84,7 @@ const successGetGaleriePictures = async (
             galeriePicture !== null
         ) {
             const cropedImagePath = `${FileSystem.cacheDirectory}${galeriePicture.cropedImage.id}`;
-            const originalImagePath = `${FileSystem.cacheDirectory}${galeriePictures.originalImage.id}`;
+            const originalImagePath = `${FileSystem.cacheDirectory}${galeriePicture.originalImage.id}`;
             let cropedImageCashed = '';
             let originalImageCashed = '';
 

@@ -1,31 +1,33 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import Pictogram from '#components/Pictogram';
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 import { selectUser } from '#store/users';
 
+import BottomSheetOptions from './BottomSheetOptions';
 import WithGalerie from './WithGalerie';
 
 import { Container, InfoContainer } from './styles';
 
 type Props = {
-    galerieId: string;
-    onPress: () => void;
+    currentIndex: number;
+    frame: Store.Models.Frame;
     showGalerie: boolean;
-    userId: string;
 };
 
-const Header = ({ galerieId, onPress, showGalerie, userId }: Props) => {
-    const userSelector = React.useCallback(() => selectUser(userId), [userId]);
+const Header = ({ currentIndex, frame, showGalerie }: Props) => {
+    const userSelector = React.useCallback(
+        () => selectUser(frame.userId),
+        [frame]
+    );
     const user = useSelector(userSelector());
 
     return (
         <Container>
             <InfoContainer>
                 {showGalerie ? (
-                    <WithGalerie galerieId={galerieId} user={user} />
+                    <WithGalerie galerieId={frame.galerieId} user={user} />
                 ) : (
                     <>
                         <ProfilePicture mr="smallest" user={user} />
@@ -36,15 +38,7 @@ const Header = ({ galerieId, onPress, showGalerie, userId }: Props) => {
                     </>
                 )}
             </InfoContainer>
-            <Pictogram
-                onPress={onPress}
-                pb="smallest"
-                pl="small"
-                pr="small"
-                pt="smallest"
-                size="small"
-                variant="option-vertical"
-            />
+            <BottomSheetOptions currentIndex={currentIndex} frame={frame} />
         </Container>
     );
 };
