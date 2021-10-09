@@ -229,6 +229,9 @@ declare global {
                 allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.GaleriePicture };
                 id: { [key: string]: string | null };
+                loading: {
+                    put: Store.Status;
+                };
                 status: { [key: string]: Store.Status };
             };
             likes: {

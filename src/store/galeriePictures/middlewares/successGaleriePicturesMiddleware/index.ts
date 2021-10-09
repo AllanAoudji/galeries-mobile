@@ -5,6 +5,7 @@ import { GALERIE_PICTURES } from '#store/genericActionTypes';
 
 import successDefaultMethod from './successDefaultMethod';
 import successGetGaleriePictures from './successGetGaleriePictures';
+import successPutGaleriePictures from './successPutGaleriePictures';
 
 const successGaleriePicturesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -15,6 +16,9 @@ const successGaleriePicturesMiddleware: Middleware<{}, Store.Reducer> =
             switch (action.meta.method) {
                 case 'GET':
                     await successGetGaleriePictures(dispatch, getState, action);
+                    break;
+                case 'PUT':
+                    successPutGaleriePictures(dispatch, getState, action);
                     break;
                 default:
                     successDefaultMethod(dispatch);

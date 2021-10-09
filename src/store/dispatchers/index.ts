@@ -33,4 +33,5 @@ export { default as dispatchPostLike } from './dispatchPostLike';
 export { default as dispatchPostProfilePicture } from './dispatchPostProfilePicture';
 export { default as dispatchPutFrame } from './dispatchPutFrame';
 export { default as dispatchPutGalerie } from './dispatchPutGalerie';
+export { default as dispatchPutGaleriePicture } from './dispatchPutGaleriePicture';
 export { default as dispatchSuccessNotification } from './dispatchSuccessNotification';
