@@ -50,17 +50,11 @@ export const selectFrameGaleriePicturesStatus = (frameId: string | undefined) =>
         if (!frameId) return undefined;
         return galeriePicturesStatus[frameId] || 'PENDING';
     });
-export const selectGalerieCoverPictureId: (
-    galerieId: string
-) => OutputSelector<
-    Store.Reducer,
-    string,
-    (res: { [key: string]: string }) => string | undefined
-> = (galerieId: string) =>
-    createSelector(
-        [galeriePicturesIdSelector],
-        (galeriePicturesId) => galeriePicturesId[galerieId]
-    );
+export const selectGalerieCoverPictureId = (galerieId?: string) =>
+    createSelector([galeriePicturesIdSelector], (galeriePicturesId) => {
+        if (!galerieId) return undefined;
+        return galeriePicturesId[galerieId];
+    });
 export const selectGalerieCoverPictureStatus: (
     galerieId: string
 ) => OutputSelector<

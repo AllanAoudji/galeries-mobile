@@ -67,7 +67,7 @@ export const updateGaleriePicturesAllIds: (
 });
 export const updateGaleriePicturesId: (
     galerieId: string,
-    payload: string
+    payload: string | null
 ) => Store.Action = (galerieId, payload) => ({
     meta: { query: { galerieId } },
     payload,

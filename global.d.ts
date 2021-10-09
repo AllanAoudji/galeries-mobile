@@ -228,7 +228,7 @@ declare global {
             galeriePictures: {
                 allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.GaleriePicture };
-                id: { [key: string]: string };
+                id: { [key: string]: string | null };
                 status: { [key: string]: Store.Status };
             };
             likes: {

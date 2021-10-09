@@ -15,7 +15,7 @@ const galeriePicturesIdReducer = (
             if (
                 !action.meta.query ||
                 !action.meta.query.galerieId ||
-                typeof action.payload !== 'string'
+                (typeof action.payload !== 'string' && action.payload !== null)
             )
                 return state;
             return {

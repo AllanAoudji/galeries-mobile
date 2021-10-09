@@ -110,6 +110,7 @@ const RenderItem = ({ item }: Props) => {
             onPressLikes={handlePressLikes}
             onPressOptions={handlePressOption}
             onPressSlider={handlePressSlider}
+            showGalerie
         />
     );
 };

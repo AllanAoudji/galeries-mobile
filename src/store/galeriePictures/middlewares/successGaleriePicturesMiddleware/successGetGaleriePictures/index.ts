@@ -30,7 +30,7 @@ const successGetGaleriePictures = async (
     const galerieId = action.meta.query
         ? action.meta.query.galerieId
         : undefined;
-    let id: string | undefined;
+    let id: string | null = null;
 
     try {
         if (Array.isArray(galeriePictures))
@@ -79,7 +79,10 @@ const successGetGaleriePictures = async (
                     };
                 })
             );
-        else if (typeof galeriePicture === 'object') {
+        else if (
+            typeof galeriePicture === 'object' &&
+            galeriePicture !== null
+        ) {
             const cropedImagePath = `${FileSystem.cacheDirectory}${galeriePicture.cropedImage.id}`;
             const originalImagePath = `${FileSystem.cacheDirectory}${galeriePictures.originalImage.id}`;
             let cropedImageCashed = '';
@@ -131,14 +134,17 @@ const successGetGaleriePictures = async (
         return;
     }
 
-    if (!allIds.length && typeof id !== 'string') return;
+    if (!allIds.length && typeof id !== 'string' && id !== null) return;
 
     dispatch(setGaleriePicturesById(byId));
 
     if (allIds.length && typeof frameId === 'string') {
         dispatch(updateGaleriePicturesStatus(frameId, 'SUCCESS'));
         dispatch(updateGaleriePicturesAllIds(frameId, allIds));
-    } else if (typeof id === 'string' && typeof galerieId === 'string') {
+    } else if (
+        (typeof id === 'string' || id === null) &&
+        typeof galerieId === 'string'
+    ) {
         dispatch(updateGaleriePicturesStatus(galerieId, 'SUCCESS'));
         dispatch(updateGaleriePicturesId(galerieId, id));
     }

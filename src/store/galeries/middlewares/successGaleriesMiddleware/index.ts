@@ -23,6 +23,7 @@ import {
     updateGaleriesStatus,
 } from '#store/galeries/actionCreators';
 import { GALERIES } from '#store/genericActionTypes';
+import { getGalerieCurrentCoverPicture } from '#store/galeriePictures';
 
 const successDefaultMethod = (dispatch: Dispatch<Store.Action>) =>
     dispatchErrorNotification(dispatch, ERROR_MESSAGE.METHOD_NOT_FOUND);
@@ -44,6 +45,7 @@ const successDeleteGalerie = (
 };
 const successGetGaleries = (
     dispatch: Dispatch<Store.Action>,
+    getState: () => Store.Reducer,
     action: Store.Action
 ) => {
     const allIds: string[] = [];
@@ -68,6 +70,11 @@ const successGetGaleries = (
         dispatch(updateGaleriesPrevious(previous, name));
         dispatch(updateGaleriesStatus('SUCCESS', name));
     }
+    allIds.forEach((id) => {
+        const coverPicture = getState().galeriePictures.id[id];
+        if (coverPicture === undefined)
+            dispatch(getGalerieCurrentCoverPicture(id));
+    });
 };
 const successPostGaleries = (
     dispatch: Dispatch<Store.Action>,
@@ -120,7 +127,7 @@ const successGaleriesMiddleware: Middleware<{}, Store.Reducer> =
                     successDeleteGalerie(dispatch, action);
                     break;
                 case 'GET':
-                    successGetGaleries(dispatch, action);
+                    successGetGaleries(dispatch, getState, action);
                     break;
                 case 'POST':
                     successPostGaleries(dispatch, action);
