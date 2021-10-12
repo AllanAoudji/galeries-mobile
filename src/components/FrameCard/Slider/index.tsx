@@ -6,7 +6,6 @@ import {
     selectFrameGaleriePicturesAllIds,
     selectFrameGaleriePicturesStatus,
 } from '#store/galeriePictures';
-import { UserGalerieRoleContext } from '#contexts/UserGalerieRoleContext';
 
 import Dots from './Dots';
 import ScrollContainer from './ScrollContainer';
@@ -21,8 +20,6 @@ type Props = {
 const Slider = ({ frame, onPressSlider }: Props) => {
     const dimension = useWindowDimensions();
     const theme = useTheme();
-
-    const { getGalerie, role } = React.useContext(UserGalerieRoleContext);
 
     const frameGaleriePicturesAllIdsSelector = React.useCallback(
         () => selectFrameGaleriePicturesAllIds(frame.id),
@@ -41,10 +38,6 @@ const Slider = ({ frame, onPressSlider }: Props) => {
             (!status || status === 'PENDING' || status.includes('LOADING')),
         [status]
     );
-
-    React.useEffect(() => {
-        if (!role) getGalerie(frame.galerieId);
-    }, [frame, role]);
 
     return (
         <>

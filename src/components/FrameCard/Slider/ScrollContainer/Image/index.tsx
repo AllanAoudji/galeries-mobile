@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import {
     ImageSourcePropType,
     Pressable,
     useWindowDimensions,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 
+import { LinearGradient } from 'expo-linear-gradient';
+import { useTheme } from 'styled-components';
+import CoverPictureBookMark from '#components/CoverPictureBookMark';
 import { selectGaleriePicture } from '#store/galeriePictures';
 
-import BookMark from './BookMark';
-
-import { ImageStyled } from './styled';
+import { BookMarkContainer, ImageStyled } from './styled';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 const Image = ({ frame, galeriePictureId, onPress }: Props) => {
+    const theme = useTheme();
     const dimension = useWindowDimensions();
     const galeriePictureSelector = React.useMemo(
         () => selectGaleriePicture(galeriePictureId),
@@ -34,16 +36,39 @@ const Image = ({ frame, galeriePictureId, onPress }: Props) => {
         }),
         [galeriePicture]
     );
+    const cols = React.useMemo(() => {
+        const defaultColors = [theme.colors.primary, theme.colors.tertiary];
+        if (!galeriePicture) return defaultColors;
+        const colors = galeriePicture.pendingHexes.split(',');
+        if (colors.length < 2) return defaultColors;
+        return colors;
+    }, [galeriePicture]);
 
-    if (!galeriePicture) return null;
+    if (!galeriePicture)
+        return (
+            <LinearGradient
+                colors={[theme.colors.primary, theme.colors.tertiary]}
+                style={{ width: dimension.width, height: dimension.width }}
+            />
+        );
 
     return (
         <Pressable
             style={{ width: dimension.width, height: dimension.width }}
             onPress={onPress}
         >
-            <ImageStyled source={source} />
-            <BookMark galeriePicture={galeriePicture} frame={frame} />
+            <LinearGradient
+                colors={cols}
+                style={{ width: '100%', height: '100%' }}
+            >
+                <ImageStyled source={source} />
+                <BookMarkContainer>
+                    <CoverPictureBookMark
+                        frame={frame}
+                        galeriePicture={galeriePicture}
+                    />
+                </BookMarkContainer>
+            </LinearGradient>
         </Pressable>
     );
 };

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { CurrentGaleriePictureProvider } from '#contexts/CurrentGaleriePictureContext';
-import { UserGalerieRoleProvider } from '#contexts/UserGalerieRoleContext';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -25,19 +24,17 @@ const FrameCard = ({
 }: Props) => {
     return (
         <CurrentGaleriePictureProvider>
-            <UserGalerieRoleProvider>
-                <Container>
-                    <Header frame={frame} showGalerie={showGalerie} />
-                    <Slider frame={frame} onPressSlider={onPressSlider} />
-                    <Footer
-                        createdAt={frame.createdAt}
-                        description={frame.description}
-                        frameId={frame.id}
-                        handlePressComments={onPressComments}
-                        handlePressLikes={onPressLikes}
-                    />
-                </Container>
-            </UserGalerieRoleProvider>
+            <Container>
+                <Header frame={frame} showGalerie={showGalerie} />
+                <Slider frame={frame} onPressSlider={onPressSlider} />
+                <Footer
+                    createdAt={frame.createdAt}
+                    description={frame.description}
+                    frameId={frame.id}
+                    handlePressComments={onPressComments}
+                    handlePressLikes={onPressLikes}
+                />
+            </Container>
         </CurrentGaleriePictureProvider>
     );
 };
