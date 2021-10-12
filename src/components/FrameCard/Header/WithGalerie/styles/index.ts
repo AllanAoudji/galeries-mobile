@@ -16,6 +16,12 @@ const Container = styled.View`
             convertPixelToNum(theme.spacings.smallest)
         }px`};
 `;
+const CoverPictureContainer = styled.View`
+    border-radius: 5px;
+    height: ${() => `${GLOBAL_STYLE.FRAME_COVER_PICTURE_SIZE}px`};
+    overflow: hidden;
+    width: ${() => `${GLOBAL_STYLE.FRAME_COVER_PICTURE_SIZE}px`};
+`;
 const ProfilePictureContainer = styled.View`
     bottom: 0;
     position: absolute;
@@ -29,4 +35,10 @@ const TextsContainer = styled.View`
     padding-bottom: ${({ theme }) => theme.spacings.smallest};
 `;
 
-export { Container, ProfilePictureContainer, TextContainer, TextsContainer };
+export {
+    Container,
+    CoverPictureContainer,
+    ProfilePictureContainer,
+    TextContainer,
+    TextsContainer,
+};

@@ -35,6 +35,8 @@ export const FIELDS_ERROR = '/fieldsErrors';
 export const ID = '/id';
 export const PREVIOUS = '/previous';
 export const STATUS = '/status';
+export const STATUS_NAME = '/status/name';
+export const STATUS_ID = '/status/id';
 
 // Loading reducers
 export const LOADING_DELETE = '/loading/delete';

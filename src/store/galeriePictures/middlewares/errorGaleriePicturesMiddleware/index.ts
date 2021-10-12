@@ -3,7 +3,7 @@ import { Middleware } from 'redux';
 import { API_ERROR } from '#store/api/actionTypes';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import { GALERIE_PICTURES } from '#store/genericActionTypes';
-import { updateGaleriePicturesLoadingPut } from '#store/galeriePictures';
+import { updateGaleriePicturesLoadingPut } from '#store/galeriePictures/actionCreators';
 
 const errorGaleriePictures: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>

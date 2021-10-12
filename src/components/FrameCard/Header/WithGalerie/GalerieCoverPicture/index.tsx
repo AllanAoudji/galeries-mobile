@@ -1,41 +1,47 @@
-import { LinearGradient, LinearGradientPoint } from 'expo-linear-gradient';
 import * as React from 'react';
-import { useTheme } from 'styled-components/native';
-import { GLOBAL_STYLE } from '#helpers/constants';
+import { useSelector } from 'react-redux';
 
+import { selectGalerieStatus } from '#store/galeries';
+import {
+    selectGalerieCoverPictureId,
+    selectGalerieCoverPictureStatus,
+    selectGaleriePicture,
+} from '#store/galeriePictures';
+
+import CoverPicture from './CoverPicture';
 import DefaultCoverPicture from './DefaultCoverPicture';
+import NotFoundCoverPicture from './NotFoundCoverPictiure';
 
 type Props = {
-    galerie?: Store.Models.Galerie;
+    galerie: Store.Models.Galerie;
 };
 
 const GalerieCoverPicture = ({ galerie }: Props) => {
-    const theme = useTheme();
-
-    const defaultColor = React.useMemo(
-        () => [theme.colors.primary, theme.colors.tertiary],
-        []
+    const coverPictureSelectorId = React.useMemo(
+        () => selectGalerieCoverPictureId(galerie.id),
+        [galerie]
     );
-    const defaultEnd: LinearGradientPoint = React.useMemo(() => [0.8, 0.8], []);
-    const defaultStart: LinearGradientPoint = React.useMemo(
-        () => [0.2, 0.2],
-        []
+    const coverPictureId = useSelector(coverPictureSelectorId);
+    const galerieCoverPictureStatusSelector = React.useMemo(
+        () => selectGalerieCoverPictureStatus(galerie.id),
+        [galerie]
     );
+    const galeriePictureSelector = React.useMemo(
+        () => selectGaleriePicture(coverPictureId),
+        [coverPictureId]
+    );
+    const galeriePicture = useSelector(galeriePictureSelector);
+    const coverPictureStatus = useSelector(galerieCoverPictureStatusSelector);
+    const galerieStatusSelector = React.useMemo(
+        () => selectGalerieStatus(galerie.id),
+        [galerie]
+    );
+    const galerieStatus = useSelector(galerieStatusSelector);
 
-    if (!galerie)
-        return (
-            <LinearGradient
-                colors={defaultColor}
-                end={defaultEnd}
-                start={defaultStart}
-                style={{
-                    borderRadius: 5,
-                    height: GLOBAL_STYLE.FRAME_COVER_PICTURE_SIZE,
-                    width: GLOBAL_STYLE.FRAME_COVER_PICTURE_SIZE,
-                }}
-            />
-        );
-    return <DefaultCoverPicture galerie={galerie} />;
+    if (galerieStatus !== 'SUCCESS' && coverPictureStatus !== 'SUCCESS')
+        return <NotFoundCoverPicture />;
+    if (!galeriePicture) return <DefaultCoverPicture galerie={galerie} />;
+    return <CoverPicture galeriePicture={galeriePicture} />;
 };
 
 export default GalerieCoverPicture;

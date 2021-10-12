@@ -1,59 +1,39 @@
 import * as React from 'react';
-import {
-    ActivityIndicator,
-    NativeScrollEvent,
-    NativeSyntheticEvent,
-    useWindowDimensions,
-} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ActivityIndicator, useWindowDimensions } from 'react-native';
 import { useTheme } from 'styled-components';
 import { useSelector } from 'react-redux';
 import {
     selectFrameGaleriePicturesAllIds,
     selectFrameGaleriePicturesStatus,
 } from '#store/galeriePictures';
+import { UserGalerieRoleContext } from '#contexts/UserGalerieRoleContext';
 
 import Dots from './Dots';
-import Image from './Image';
+import ScrollContainer from './ScrollContainer';
 
 import { ActivityIndicatorContainer, Container, DotsContainer } from './styles';
 
 type Props = {
-    currentIndex: number;
-    frameId: string;
+    frame: Store.Models.Frame;
     onPressSlider: () => void;
-    setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const Slider = ({
-    currentIndex,
-    frameId,
-    onPressSlider,
-    setCurrentIndex,
-}: Props) => {
+const Slider = ({ frame, onPressSlider }: Props) => {
     const dimension = useWindowDimensions();
     const theme = useTheme();
 
+    const { getGalerie, role } = React.useContext(UserGalerieRoleContext);
+
     const frameGaleriePicturesAllIdsSelector = React.useCallback(
-        () => selectFrameGaleriePicturesAllIds(frameId),
-        [frameId]
+        () => selectFrameGaleriePicturesAllIds(frame.id),
+        [frame]
     );
     const galeriePictures = useSelector(frameGaleriePicturesAllIdsSelector());
     const frameGaleriePicturesStatusSelector = React.useCallback(
-        () => selectFrameGaleriePicturesStatus(frameId),
-        [frameId]
+        () => selectFrameGaleriePicturesStatus(frame.id),
+        [frame]
     );
     const status = useSelector(frameGaleriePicturesStatusSelector());
-
-    const handleScroll = React.useCallback(
-        ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-            const index = Math.round(
-                nativeEvent.contentOffset.x / dimension.width
-            );
-            if (index !== currentIndex) setCurrentIndex(index);
-        },
-        [currentIndex]
-    );
 
     const galeriePicturesAreLoading = React.useMemo(
         () =>
@@ -62,26 +42,19 @@ const Slider = ({
         [status]
     );
 
+    React.useEffect(() => {
+        if (!role) getGalerie(frame.galerieId);
+    }, [frame, role]);
+
     return (
         <>
             <Container size={dimension.width}>
                 {galeriePictures && !galeriePicturesAreLoading ? (
-                    <ScrollView
-                        decelerationRate="fast"
-                        disableIntervalMomentum={true}
-                        horizontal
-                        onScroll={handleScroll}
-                        overScrollMode="never"
-                        snapToInterval={dimension.width}
-                    >
-                        {galeriePictures.map((id) => (
-                            <Image
-                                galeriePictureId={id}
-                                key={id}
-                                onPress={onPressSlider}
-                            />
-                        ))}
-                    </ScrollView>
+                    <ScrollContainer
+                        allIds={galeriePictures}
+                        frame={frame}
+                        onPressSlider={onPressSlider}
+                    />
                 ) : (
                     <ActivityIndicatorContainer>
                         <ActivityIndicator
@@ -92,15 +65,10 @@ const Slider = ({
                 )}
             </Container>
             <DotsContainer>
-                {!!galeriePictures && (
-                    <Dots
-                        allIds={galeriePictures}
-                        currentIndex={currentIndex}
-                    />
-                )}
+                {!!galeriePictures && <Dots allIds={galeriePictures} />}
             </DotsContainer>
         </>
     );
 };
 
-export default React.memo(Slider);
+export default Slider;

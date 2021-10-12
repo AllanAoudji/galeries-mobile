@@ -3,7 +3,7 @@ import {
     updateGaleriePicturesById,
     updateGaleriePicturesId,
     updateGaleriePicturesLoadingPut,
-} from '#store/galeriePictures';
+} from '#store/galeriePictures/actionCreators';
 
 const successPutGaleriePictures = (
     dispatch: Dispatch<Store.Action>,

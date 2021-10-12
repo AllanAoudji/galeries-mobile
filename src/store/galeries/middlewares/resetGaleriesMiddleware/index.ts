@@ -11,7 +11,8 @@ import {
     resetGaleriesLoadingPost,
     resetGaleriesLoadingPut,
     resetGaleriesPrevious,
-    resetGaleriesStatus,
+    resetGaleriesStatusId,
+    resetGaleriesStatusName,
 } from '#store/galeries/actionCreators';
 import { GALERIES_RESET } from '#store/galeries/actionTypes';
 
@@ -31,7 +32,8 @@ const resetGaleriesMiddleware: Middleware<{}, Store.Reducer> =
             dispatch(resetGaleriesLoadingPost());
             dispatch(resetGaleriesLoadingPut());
             dispatch(resetGaleriesPrevious());
-            dispatch(resetGaleriesStatus());
+            dispatch(resetGaleriesStatusId());
+            dispatch(resetGaleriesStatusName());
         }
     };
 

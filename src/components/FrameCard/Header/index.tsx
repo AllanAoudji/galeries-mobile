@@ -11,12 +11,11 @@ import WithGalerie from './WithGalerie';
 import { Container, InfoContainer } from './styles';
 
 type Props = {
-    currentIndex: number;
     frame: Store.Models.Frame;
     showGalerie: boolean;
 };
 
-const Header = ({ currentIndex, frame, showGalerie }: Props) => {
+const Header = ({ frame, showGalerie }: Props) => {
     const userSelector = React.useCallback(
         () => selectUser(frame.userId),
         [frame]
@@ -38,7 +37,7 @@ const Header = ({ currentIndex, frame, showGalerie }: Props) => {
                     </>
                 )}
             </InfoContainer>
-            <BottomSheetOptions currentIndex={currentIndex} frame={frame} />
+            <BottomSheetOptions frame={frame} />
         </Container>
     );
 };

@@ -7,6 +7,7 @@ import {
     resetFramesCurrent,
     updateFramesLoadingDelete,
 } from '#store/frames/actionCreators';
+import { updateGaleriePicturesId } from '#store/galeriePictures/actionCreators';
 
 const successDeleteFrame = (
     dispatch: Dispatch<Store.Action>,
@@ -18,6 +19,16 @@ const successDeleteFrame = (
     if (typeof frameId !== 'string') return;
     const frame = getState().frames.byId[frameId];
     if (!frame) return;
+
+    const galeriePictures = getState().galeriePictures.allIds[frameId];
+
+    if (galeriePictures.length) {
+        galeriePictures.forEach((id) => {
+            const galeriePicture = getState().galeriePictures.byId[id];
+            if (galeriePicture && galeriePicture.current)
+                dispatch(updateGaleriePicturesId(frame.galerieId, null));
+        });
+    }
 
     dispatch(removeFramesAllIds(frameId));
     dispatch(removeGalerieFramesAllIds(frame.galerieId, frameId));

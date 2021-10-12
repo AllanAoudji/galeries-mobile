@@ -1,13 +1,15 @@
 import * as React from 'react';
+import { CurrentGaleriePictureContext } from '#contexts/CurrentGaleriePictureContext';
 
 import { Dot } from './styles';
 
 type Props = {
     allIds: string[];
-    currentIndex: number;
 };
 
-const Dots = ({ allIds, currentIndex }: Props) => {
+const Dots = ({ allIds }: Props) => {
+    const { currentIndex } = React.useContext(CurrentGaleriePictureContext);
+
     if (allIds.length <= 1) return null;
 
     return (

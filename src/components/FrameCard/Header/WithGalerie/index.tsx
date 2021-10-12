@@ -9,6 +9,7 @@ import GalerieCoverPicture from './GalerieCoverPicture';
 
 import {
     Container,
+    CoverPictureContainer,
     ProfilePictureContainer,
     TextContainer,
     TextsContainer,
@@ -29,7 +30,11 @@ const WithGalerie = ({ galerieId, user }: Props) => {
     return (
         <>
             <Container>
-                <GalerieCoverPicture galerie={galerie} />
+                {!!galerie && (
+                    <CoverPictureContainer>
+                        <GalerieCoverPicture galerie={galerie} />
+                    </CoverPictureContainer>
+                )}
                 <ProfilePictureContainer>
                     <ProfilePicture border user={user} />
                 </ProfilePictureContainer>

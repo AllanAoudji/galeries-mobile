@@ -64,18 +64,10 @@ export const selectGalerieCoverPictureStatus: (
 > = (galerieId: string) =>
     createSelector(
         [galeriePicturesStatusSelector],
-        (galeriePicturesStatus) => galeriePicturesStatus[galerieId]
+        (galeriePicturesStatus) => galeriePicturesStatus[galerieId] || 'PENDING'
     );
-export const selectGaleriePicture: (
-    galeriePictureId: string
-) => OutputSelector<
-    Store.Reducer,
-    Store.Models.GaleriePicture,
-    (res: {
-        [key: string]: Store.Models.GaleriePicture;
-    }) => Store.Models.GaleriePicture | undefined
-> = (galeriePictureId: string) =>
-    createSelector(
-        [galeriePicturesByIdSelector],
-        (galeriePicturesById) => galeriePicturesById[galeriePictureId]
-    );
+export const selectGaleriePicture = (galeriePictureId?: string | null) =>
+    createSelector([galeriePicturesByIdSelector], (galeriePicturesById) => {
+        if (!galeriePictureId) return undefined;
+        return galeriePicturesById[galeriePictureId];
+    });

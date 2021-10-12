@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { CurrentGaleriePictureProvider } from '#contexts/CurrentGaleriePictureContext';
+import { UserGalerieRoleProvider } from '#contexts/UserGalerieRoleContext';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -21,30 +23,23 @@ const FrameCard = ({
     onPressSlider,
     showGalerie = false,
 }: Props) => {
-    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
-
     return (
-        <Container>
-            <Header
-                currentIndex={currentIndex}
-                frame={frame}
-                showGalerie={showGalerie}
-            />
-            <Slider
-                currentIndex={currentIndex}
-                frameId={frame.id}
-                onPressSlider={onPressSlider}
-                setCurrentIndex={setCurrentIndex}
-            />
-            <Footer
-                createdAt={frame.createdAt}
-                description={frame.description}
-                frameId={frame.id}
-                handlePressComments={onPressComments}
-                handlePressLikes={onPressLikes}
-            />
-        </Container>
+        <CurrentGaleriePictureProvider>
+            <UserGalerieRoleProvider>
+                <Container>
+                    <Header frame={frame} showGalerie={showGalerie} />
+                    <Slider frame={frame} onPressSlider={onPressSlider} />
+                    <Footer
+                        createdAt={frame.createdAt}
+                        description={frame.description}
+                        frameId={frame.id}
+                        handlePressComments={onPressComments}
+                        handlePressLikes={onPressLikes}
+                    />
+                </Container>
+            </UserGalerieRoleProvider>
+        </CurrentGaleriePictureProvider>
     );
 };
 
-export default React.memo(FrameCard);
+export default FrameCard;

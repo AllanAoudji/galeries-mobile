@@ -64,10 +64,13 @@ const successGetFrames = (
 
     allIds.forEach((id) => {
         dispatch(getFrameGaleriePictures(id));
+
         const user = getState().users.byId[byId[id].userId];
         if (!user) dispatch(getUserId(byId[id].userId));
-        const galerie = getState().galeries.byId[byId[id].galerieId];
-        if (!galerie) {
+
+        const galerieStatus =
+            getState().galeries.status.id[byId[id].galerieId] || 'PENDING';
+        if (galerieStatus === 'PENDING') {
             dispatch(getGalerieId(byId[id].galerieId));
         }
     });

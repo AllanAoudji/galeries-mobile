@@ -16,7 +16,8 @@ import {
     REMOVE,
     RESET,
     SET,
-    STATUS,
+    STATUS_ID,
+    STATUS_NAME,
     UPDATE,
 } from '#store/genericActionTypes';
 
@@ -47,5 +48,7 @@ export const GALERIES_PREVIOUS_RESET = `${GALERIES}${PREVIOUS} ${RESET}`;
 export const GALERIES_PREVIOUS_UPDATE = `${GALERIES}${PREVIOUS} ${UPDATE}`;
 export const GALERIES_PUT = `${GALERIES} ${PUT}`;
 export const GALERIES_RESET = `${GALERIES} ${RESET}`;
-export const GALERIES_STATUS_RESET = `${GALERIES}${STATUS} ${RESET}`;
-export const GALERIES_STATUS_UPDATE = `${GALERIES}${STATUS} ${UPDATE}`;
+export const GALERIES_STATUS_ID_RESET = `${GALERIES}${STATUS_ID} ${RESET}`;
+export const GALERIES_STATUS_ID_UPDATE = `${GALERIES}${STATUS_ID} ${UPDATE}`;
+export const GALERIES_STATUS_NAME_RESET = `${GALERIES}${STATUS_NAME} ${RESET}`;
+export const GALERIES_STATUS_NAME_UPDATE = `${GALERIES}${STATUS_ID} ${UPDATE}`;
