@@ -1,13 +1,20 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import styled from 'styled-components/native';
 
-const BookMarkContainer = styled.View`
-    bottom: ${({ theme }) => theme.spacings.smallest};
-    position: absolute;
-    right: ${({ theme }) => theme.spacings.smallest};
+type ImageStyledProps = {
+    size: number;
+};
+type LinearGradientStyledProps = {
+    size: number;
+};
+
+const ImageStyled = styled.Image<ImageStyledProps>`
+    height: ${({ size }) => `${size}px`};
+    width: ${({ size }) => `${size}px`};
 `;
-const ImageStyled = styled.Image`
-    height: 100%;
-    width: 100%;
+const LinearGradientStyled = styled(LinearGradient)<LinearGradientStyledProps>`
+    height: ${({ size }) => `${size}px`};
+    width: ${({ size }) => `${size}px`};
 `;
 
-export { BookMarkContainer, ImageStyled };
+export { ImageStyled, LinearGradientStyled };

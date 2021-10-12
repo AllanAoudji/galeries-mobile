@@ -1,38 +1,40 @@
-import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { selectMe } from '#store/me';
+import * as React from 'react';
+
+import { useDispatch } from 'react-redux';
 import BottomSheetButton from '#components/BottomSheetButton';
-import { updateFramesCurrent } from '#store/frames';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
+import { updateFramesCurrent } from '#store/frames';
 
 type Props = {
-    frameId: string;
-    userId: string;
+    frame: Store.Models.Frame;
+    me?: Store.Models.User;
 };
 
-const UpdateFrameButton = ({ frameId, userId }: Props) => {
+const UpdateFrameButton = ({ frame, me }: Props) => {
     const dispatch = useDispatch();
-    const navigation = useNavigation<Screen.DesktopBottomTab.UpdateFrameProp>();
+    const navigation = useNavigation<
+        | Screen.DesktopBottomTab.HomeNavigationProp
+        | Screen.DesktopBottomTab.FrameProp
+    >();
 
     const { closeBottomSheet } = React.useContext(BottomSheetContext);
 
-    const me = useSelector(selectMe);
-
     const handlePressUpdateFrame = React.useCallback(() => {
-        dispatch(updateFramesCurrent(frameId));
+        dispatch(updateFramesCurrent(frame.id));
         navigation.navigate('UpdateFrame');
         closeBottomSheet();
-    }, [frameId]);
+    }, [frame]);
 
-    if (!me || me.id !== userId) return null;
+    if (!me) return null;
+    if (me.id !== frame.userId) return null;
 
     return (
         <BottomSheetButton
-            title="update frame"
             onPress={handlePressUpdateFrame}
+            title="update frame"
         />
     );
 };
 
-export default UpdateFrameButton;
+export default React.memo(UpdateFrameButton);

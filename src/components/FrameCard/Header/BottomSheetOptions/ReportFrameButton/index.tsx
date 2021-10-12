@@ -1,28 +1,28 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 
+import { useSelector } from 'react-redux';
 import BottomSheetButton from '#components/BottomSheetButton';
-import { selectMe } from '#store/me';
 import { selectGalerie } from '#store/galeries';
 
 type Props = {
-    galerieId: string;
-    userId: string;
+    frame: Store.Models.Frame;
+    me?: Store.Models.User;
 };
 
-const ReportFrameButton = ({ galerieId, userId }: Props) => {
+const onPress = () => {};
+
+const ReportFrameButton = ({ frame, me }: Props) => {
     const galerieSelector = React.useMemo(
-        () => selectGalerie(galerieId),
-        [galerieId]
+        () => selectGalerie(frame.galerieId),
+        [frame]
     );
     const galerie = useSelector(galerieSelector);
-    const me = useSelector(selectMe);
 
     if (!me || !galerie) return null;
-    if (userId === me.id) return null;
     if (galerie.role !== 'user') return null;
+    if (frame.userId === me.id) return null;
 
-    return <BottomSheetButton onPress={() => {}} title="delete frame" />;
+    return <BottomSheetButton onPress={onPress} title="delete frame" />;
 };
 
-export default ReportFrameButton;
+export default React.memo(ReportFrameButton);

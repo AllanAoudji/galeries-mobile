@@ -1,33 +1,20 @@
-import { LinearGradient, LinearGradientPoint } from 'expo-linear-gradient';
+import { LinearGradientPoint } from 'expo-linear-gradient';
 import * as React from 'react';
 import { useTheme } from 'styled-components/native';
 
-import { GLOBAL_STYLE } from '#helpers/constants';
+import { LinearGradientStyled } from './styles';
 
 const NotFoundCoverPicture = () => {
     const theme = useTheme();
 
-    const defaultColor = React.useMemo(
+    const colors = React.useMemo(
         () => [theme.colors.primary, theme.colors.tertiary],
         []
     );
-    const defaultEnd: LinearGradientPoint = React.useMemo(() => [0.8, 0.8], []);
-    const defaultStart: LinearGradientPoint = React.useMemo(
-        () => [0.2, 0.2],
-        []
-    );
-    return (
-        <LinearGradient
-            colors={defaultColor}
-            end={defaultEnd}
-            start={defaultStart}
-            style={{
-                borderRadius: 5,
-                height: GLOBAL_STYLE.FRAME_COVER_PICTURE_SIZE,
-                width: GLOBAL_STYLE.FRAME_COVER_PICTURE_SIZE,
-            }}
-        />
-    );
+    const end: LinearGradientPoint = React.useMemo(() => [0.8, 0.8], []);
+    const start: LinearGradientPoint = React.useMemo(() => [0.2, 0.2], []);
+
+    return <LinearGradientStyled colors={colors} end={end} start={start} />;
 };
 
-export default NotFoundCoverPicture;
+export default React.memo(NotFoundCoverPicture);

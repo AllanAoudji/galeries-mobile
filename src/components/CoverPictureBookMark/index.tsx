@@ -1,11 +1,7 @@
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { selectGalerie } from '#store/galeries';
-import {
-    putGaleriePicture,
-    selectGalerieCoverPictureId,
-} from '#store/galeriePictures';
+import { putGaleriePicture } from '#store/galeriePictures';
 
 import BookMarkFill from './BookMarkFill';
 import BookMarkStroke from './BookMarkStroke';
@@ -13,33 +9,26 @@ import BookMarkStroke from './BookMarkStroke';
 import { Container } from './styles';
 
 type Props = {
-    galeriePicture: Store.Models.GaleriePicture;
+    coverPictureId: string | null | undefined;
     frame: Store.Models.Frame;
+    galeriePictureId: string;
 };
 
-const CoverPictureBookMark = ({ galeriePicture, frame }: Props) => {
+const CoverPictureBookMark = ({
+    coverPictureId,
+    frame,
+    galeriePictureId,
+}: Props) => {
     const dispatch = useDispatch();
 
-    const coverPictureIdSelector = React.useMemo(
-        () => selectGalerieCoverPictureId(frame.galerieId),
-        [frame]
-    );
-    const coverPictureId = useSelector(coverPictureIdSelector);
-    const galerieSelector = React.useMemo(
-        () => selectGalerie(frame.galerieId),
-        [frame]
-    );
-    const galerie = useSelector(galerieSelector);
-
     const handlePress = React.useCallback(() => {
-        dispatch(putGaleriePicture(frame.id, galeriePicture.id));
-    }, [frame, galeriePicture]);
-
-    if (!galerie || galerie.role === 'user') return null;
+        if (frame && galeriePictureId)
+            dispatch(putGaleriePicture(frame.id, galeriePictureId));
+    }, [frame, galeriePictureId]);
 
     return (
         <Container onPress={handlePress}>
-            {galeriePicture.id === coverPictureId ? (
+            {galeriePictureId && galeriePictureId === coverPictureId ? (
                 <BookMarkFill />
             ) : (
                 <BookMarkStroke />

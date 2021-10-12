@@ -1,33 +1,35 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { Pressable } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
-import { selectFrame } from '#store/frames';
 import { postLike } from '#store/likes';
 
 import { Container } from './styles';
+import { updateFramesCurrent } from '#store/frames';
 
 type Props = {
-    frameId: string;
-    onPress: () => void;
+    frame: Store.Models.Frame;
 };
 
-const LikeButton = ({ frameId, onPress }: Props) => {
+const LikeButton = ({ frame }: Props) => {
+    const navigation = useNavigation<
+        | Screen.DesktopBottomTab.FrameProp
+        | Screen.DesktopBottomTab.HomeNavigationProp
+    >();
     const dispatch = useDispatch();
 
-    const frameSelector = React.useMemo(() => selectFrame(frameId), [frameId]);
-    const frame = useSelector(frameSelector);
-
     const handlePress = React.useCallback(() => {
-        if (frame.numOfLikes > 0) onPress();
+        if (frame.numOfLikes > 0) {
+            dispatch(updateFramesCurrent(frame.id));
+            navigation.navigate('Likes');
+        }
     }, [frame]);
     const handlePressLike = React.useCallback(() => {
         dispatch(postLike(frame.id));
     }, [frame]);
-
-    if (!frame) return null;
 
     return (
         <Container>

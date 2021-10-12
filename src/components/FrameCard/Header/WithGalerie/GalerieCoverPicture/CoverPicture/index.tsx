@@ -1,20 +1,20 @@
 import * as React from 'react';
-import { Image } from 'react-native';
+
+import { ImageStyled } from './styles';
 
 type Props = {
     galeriePicture: Store.Models.GaleriePicture;
 };
 
 const CoverPicture = ({ galeriePicture }: Props) => {
-    return (
-        <Image
-            style={{
-                height: '100%',
-                width: '100%',
-            }}
-            source={{ uri: galeriePicture.cropedImage.cachedSignedUrl }}
-        />
+    const source = React.useMemo(
+        () => ({
+            uri: galeriePicture.cropedImage.cachedSignedUrl,
+        }),
+        [galeriePicture]
     );
+
+    return <ImageStyled source={source} />;
 };
 
-export default CoverPicture;
+export default React.memo(CoverPicture);

@@ -1,4 +1,4 @@
-import { createSelector, OutputSelector } from 'reselect';
+import { createSelector } from 'reselect';
 
 const framesAllIdsSelect = (state: Store.Reducer) => state.frames.allIds;
 const framesByIdSelector = (state: Store.Reducer) => state.frames.byId;
@@ -28,17 +28,10 @@ export const selectCurrentGalerieFramesStatus = createSelector(
         return framesStatus[galeriesCurrent] || 'PENDING';
     }
 );
-export const selectFrame: (
-    id: string
-) => OutputSelector<
-    Store.Reducer,
-    Store.Models.Frame,
-    (res: {
-        [key: string]: Store.Models.Frame;
-    }) => Store.Models.Frame | undefined
-> = (id: string) =>
+export const selectFrame = (frameId?: string | null) =>
     createSelector([framesByIdSelector], (frameById) => {
-        return frameById[id];
+        if (!frameId) return undefined;
+        return frameById[frameId];
     });
 export const selectFramesAllIds = createSelector(
     [framesAllIdsSelect],

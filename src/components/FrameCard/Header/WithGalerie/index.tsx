@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 
+import { useSelector } from 'react-redux';
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
-import { selectGalerie } from '#store/galeries';
 
 import GalerieCoverPicture from './GalerieCoverPicture';
 
@@ -14,18 +13,21 @@ import {
     TextContainer,
     TextsContainer,
 } from './styles';
+import { selectGalerie } from '#store/galeries';
+import { selectUser } from '#store/users';
 
 type Props = {
-    galerieId: string;
-    user?: Store.Models.User;
+    frame: Store.Models.Frame;
 };
 
-const WithGalerie = ({ galerieId, user }: Props) => {
+const WithGalerie = ({ frame }: Props) => {
     const galerieSelector = React.useMemo(
-        () => selectGalerie(galerieId),
-        [galerieId]
+        () => selectGalerie(frame.galerieId),
+        [frame]
     );
     const galerie = useSelector(galerieSelector);
+    const userSelector = React.useMemo(() => selectUser(frame.userId), [frame]);
+    const user = useSelector(userSelector);
 
     return (
         <>
@@ -35,21 +37,25 @@ const WithGalerie = ({ galerieId, user }: Props) => {
                         <GalerieCoverPicture galerie={galerie} />
                     </CoverPictureContainer>
                 )}
-                <ProfilePictureContainer>
-                    <ProfilePicture border user={user} />
-                </ProfilePictureContainer>
+                {!!user && (
+                    <ProfilePictureContainer>
+                        <ProfilePicture border user={user} />
+                    </ProfilePictureContainer>
+                )}
             </Container>
             <TextsContainer>
-                <TextContainer pb>
-                    <Typography fontFamily="light">Posted on </Typography>
-                    <Typography>{galerie ? galerie.name : ''}</Typography>
-                </TextContainer>
-                <TextContainer>
-                    <Typography fontFamily="light">By </Typography>
-                    <Typography>
-                        {user ? user.pseudonym : 'username'}
-                    </Typography>
-                </TextContainer>
+                {!!galerie && (
+                    <TextContainer pb>
+                        <Typography fontFamily="light">Posted on </Typography>
+                        <Typography>{galerie ? galerie.name : ''}</Typography>
+                    </TextContainer>
+                )}
+                {!!user && (
+                    <TextContainer>
+                        <Typography fontFamily="light">By </Typography>
+                        <Typography>{user.pseudonym}</Typography>
+                    </TextContainer>
+                )}
             </TextsContainer>
         </>
     );

@@ -2,36 +2,44 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import BottomSheetButton from '#components/BottomSheetButton';
-import { DeleteFrameModalContext } from '#contexts/DeleteFrameModalContext';
-import { selectGalerie } from '#store/galeries';
-import { selectMe } from '#store/me';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
+import { selectMe } from '#store/me';
+import { selectGalerie } from '#store/galeries';
+import { selectUser } from '#store/users';
+import { DeleteFrameModalContext } from '#contexts/DeleteFrameModalContext';
 
 type Props = {
-    frameId: string;
-    galerieId: string;
-    userId: string;
+    frame: Store.Models.Frame;
+    // onPress: () => void;
 };
 
-const DeleteFrameButton = ({ frameId, galerieId, userId }: Props) => {
+const DeleteFrameButton = ({ frame }: Props) => {
     const { closeBottomSheet } = React.useContext(BottomSheetContext);
-    const { handleOpenModal } = React.useContext(DeleteFrameModalContext);
 
     const galerieSelector = React.useMemo(
-        () => selectGalerie(galerieId),
-        [galerieId]
+        () => selectGalerie(frame.galerieId),
+        [frame]
     );
     const galerie = useSelector(galerieSelector);
+    const userSelector = React.useMemo(() => selectUser(frame.userId), [frame]);
+    const user = useSelector(userSelector);
 
     const me = useSelector(selectMe);
 
-    const handlePressDeleteFrame = React.useCallback(() => {
-        handleOpenModal(frameId);
-        closeBottomSheet();
-    }, [frameId]);
+    const { handleOpenModal } = React.useContext(DeleteFrameModalContext);
+    const handlePressDelete = React.useCallback(() => {
+        handleOpenModal(frame.id);
+    }, [frame]);
 
-    if (!me || userId !== me.id) return null;
-    if (!galerie || galerie.role === 'user') return null;
+    const handlePressDeleteFrame = React.useCallback(() => {
+        handlePressDelete();
+        closeBottomSheet();
+    }, []);
+
+    if (!galerie || !me || !user) return null;
+    if (galerie.role === 'user') return null;
+    if (user.id !== me.id) return null;
+
     return (
         <BottomSheetButton
             onPress={handlePressDeleteFrame}
@@ -40,4 +48,4 @@ const DeleteFrameButton = ({ frameId, galerieId, userId }: Props) => {
     );
 };
 
-export default DeleteFrameButton;
+export default React.memo(DeleteFrameButton);

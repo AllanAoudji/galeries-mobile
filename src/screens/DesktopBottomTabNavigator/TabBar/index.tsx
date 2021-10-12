@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, useWindowDimensions } from 'react-native';
 import {
     useAnimatedStyle,
     useSharedValue,
@@ -27,6 +27,7 @@ const customSize = {
 const location = [0, 0.8];
 
 const TabBar = ({ navigation, state }: BottomTabBarProps) => {
+    const dimension = useWindowDimensions();
     const { keyboardShown } = useKeyboard();
     const theme = useTheme();
 
@@ -136,8 +137,12 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     if (showTabBar) return null;
 
     return (
-        <Container style={style}>
-            <LinearGradientStyle colors={color} locations={location}>
+        <Container style={style} width={dimension.width}>
+            <LinearGradientStyle
+                colors={color}
+                locations={location}
+                width={dimension.width}
+            >
                 <IconContainer onPress={handleHomePress}>
                     <PictogramContainer>
                         <Pictogram color="primary" variant={homeVariant} />

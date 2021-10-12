@@ -40,17 +40,17 @@ export const selectCurrentGalerieCoverPictureStatus = createSelector(
         return galeriePicturesStatus[currentGaleries];
     }
 );
-export const selectFrameGaleriePicturesAllIds = (frameId: string | undefined) =>
+export const selectFrameGaleriePicturesAllIds = (frameId?: string | null) =>
     createSelector([galeriePicturesAllIdsSelector], (galeriePicturesAllIds) => {
         if (!frameId) return undefined;
         return galeriePicturesAllIds[frameId];
     });
-export const selectFrameGaleriePicturesStatus = (frameId: string | undefined) =>
+export const selectFrameGaleriePicturesStatus = (frameId?: string | null) =>
     createSelector([galeriePicturesStatusSelector], (galeriePicturesStatus) => {
         if (!frameId) return undefined;
         return galeriePicturesStatus[frameId] || 'PENDING';
     });
-export const selectGalerieCoverPictureId = (galerieId?: string) =>
+export const selectGalerieCoverPictureId = (galerieId?: string | null) =>
     createSelector([galeriePicturesIdSelector], (galeriePicturesId) => {
         if (!galerieId) return undefined;
         return galeriePicturesId[galerieId];

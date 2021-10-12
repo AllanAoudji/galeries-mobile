@@ -3,30 +3,34 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import BottomSheetButton from '#components/BottomSheetButton';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
-import { CurrentGaleriePictureContext } from '#contexts/CurrentGaleriePictureContext';
-import { selectGalerie } from '#store/galeries';
 import {
     putGaleriePicture,
     selectFrameGaleriePicturesAllIds,
     selectGaleriePicture,
 } from '#store/galeriePictures';
+import { selectGalerie } from '#store/galeries';
 
 type Props = {
-    frameId: string;
-    galerieId: string;
+    currentIndex: number;
+    frame: Store.Models.Frame;
 };
 
-const UseAsCoverPictureButton = ({ frameId, galerieId }: Props) => {
+const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
     const dispatch = useDispatch();
 
-    const { currentIndex } = React.useContext(CurrentGaleriePictureContext);
-    const { closeBottomSheet } = React.useContext(BottomSheetContext);
-
+    const galerieSelector = React.useMemo(
+        () => selectGalerie(frame ? frame.galerieId : null),
+        [frame]
+    );
+    const galerie = useSelector(galerieSelector);
     const galeriePicturesAllIdsSelector = React.useMemo(
-        () => selectFrameGaleriePicturesAllIds(frameId),
-        [frameId]
+        () => selectFrameGaleriePicturesAllIds(frame.id),
+        [frame]
     );
     const galeriePicturesAllIds = useSelector(galeriePicturesAllIdsSelector);
+
+    const { closeBottomSheet } = React.useContext(BottomSheetContext);
+
     const galeriePictureSelector = React.useMemo(
         () =>
             selectGaleriePicture(
@@ -34,24 +38,18 @@ const UseAsCoverPictureButton = ({ frameId, galerieId }: Props) => {
                     ? galeriePicturesAllIds[currentIndex]
                     : undefined
             ),
-        [currentIndex]
+        [currentIndex, galeriePicturesAllIds]
     );
     const galeriePicture = useSelector(galeriePictureSelector);
-
-    const galerieSelector = React.useMemo(
-        () => selectGalerie(galerieId),
-        [galerieId]
-    );
-    const galerie = useSelector(galerieSelector);
 
     const handlePressUseAsCoverPicture = React.useCallback(() => {
         if (galeriePicturesAllIds && galeriePicturesAllIds[currentIndex]) {
             dispatch(
-                putGaleriePicture(frameId, galeriePicturesAllIds[currentIndex])
+                putGaleriePicture(frame.id, galeriePicturesAllIds[currentIndex])
             );
         }
         closeBottomSheet();
-    }, [frameId, currentIndex, galeriePicturesAllIds]);
+    }, [currentIndex, frame, galeriePicturesAllIds]);
 
     const text = React.useMemo(() => {
         if (galeriePicture && galeriePicture.current)

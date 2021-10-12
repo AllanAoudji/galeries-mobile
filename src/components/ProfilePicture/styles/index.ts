@@ -8,6 +8,9 @@ type ContainerProps = {
     mr?: keyof Style.Spacings;
     mt?: keyof Style.Spacings;
 };
+type ImageStyleProps = {
+    size: Style.Variant.ProfilePicture;
+};
 type InnerContainerProps = {
     containerBorder: boolean;
     size: Style.Variant.ProfilePicture;
@@ -50,10 +53,10 @@ const Container = styled.View<ContainerProps>`
             (border ? CONTAINER_BORDER_WIDTH * 2 : 0)
         }px`};
 `;
-const ImageStyled = styled.Image`
-    height: 100%;
+const ImageStyled = styled.Image<ImageStyleProps>`
+    height: ${({ size }) => `${PROFILE_PICTURE_SIZE[size]}px`};
     transform: scale(1.18);
-    width: 100%;
+    width: ${({ size }) => `${PROFILE_PICTURE_SIZE[size]}px`};
 `;
 const InnerContainer = styled.View<InnerContainerProps>`
     border-color: ${({ theme }) => theme.colors.primary};

@@ -43,16 +43,20 @@ const RenderItem = ({ item }: Props) => {
         handleOpenModal(comment.id);
     }, [comment]);
 
+    const userPseudonym = React.useMemo(() => {
+        if (!user) return 'userId';
+        if (meId === user.id) return 'me';
+        return user.pseudonym;
+    }, [user, meId]);
+
     const bottomSheetContent = React.useCallback(() => {
         return (
             <>
                 <BottomSheetButton
                     onPress={handleBottomSheetPressReply}
-                    title={`reply to ${
-                        meId === user.id ? 'me' : user.pseudonym
-                    }`}
+                    title={`reply to ${userPseudonym}`}
                 />
-                {meId === user.id ? (
+                {user && meId === user.id ? (
                     <BottomSheetButton
                         onPress={handleBottomSheetDelete}
                         title="delete comment"

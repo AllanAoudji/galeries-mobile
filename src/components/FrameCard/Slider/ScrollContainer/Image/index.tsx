@@ -1,41 +1,26 @@
 import * as React from 'react';
-import {
-    ImageSourcePropType,
-    Pressable,
-    useWindowDimensions,
-} from 'react-native';
+import { ImageSourcePropType, useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
-
-import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'styled-components';
-import CoverPictureBookMark from '#components/CoverPictureBookMark';
+
 import { selectGaleriePicture } from '#store/galeriePictures';
 
-import { BookMarkContainer, ImageStyled } from './styled';
+import { ImageStyled, LinearGradientStyled } from './styled';
 
 type Props = {
-    frame: Store.Models.Frame;
     galeriePictureId: string;
-    onPress: () => void;
 };
 
-const Image = ({ frame, galeriePictureId, onPress }: Props) => {
-    const theme = useTheme();
+const Image = ({ galeriePictureId }: Props) => {
     const dimension = useWindowDimensions();
+    const theme = useTheme();
+
     const galeriePictureSelector = React.useMemo(
         () => selectGaleriePicture(galeriePictureId),
         [galeriePictureId]
     );
     const galeriePicture = useSelector(galeriePictureSelector);
 
-    const source: ImageSourcePropType = React.useMemo(
-        () => ({
-            uri: galeriePicture
-                ? galeriePicture.cropedImage.cachedSignedUrl
-                : '',
-        }),
-        [galeriePicture]
-    );
     const cols = React.useMemo(() => {
         const defaultColors = [theme.colors.primary, theme.colors.tertiary];
         if (!galeriePicture) return defaultColors;
@@ -43,34 +28,20 @@ const Image = ({ frame, galeriePictureId, onPress }: Props) => {
         if (colors.length < 2) return defaultColors;
         return colors;
     }, [galeriePicture]);
-
-    if (!galeriePicture)
-        return (
-            <LinearGradient
-                colors={[theme.colors.primary, theme.colors.tertiary]}
-                style={{ width: dimension.width, height: dimension.width }}
-            />
-        );
+    const source: ImageSourcePropType = React.useMemo(
+        () => ({
+            uri: galeriePicture
+                ? galeriePicture.cropedImage.cachedSignedUrl
+                : '',
+        }),
+        []
+    );
 
     return (
-        <Pressable
-            style={{ width: dimension.width, height: dimension.width }}
-            onPress={onPress}
-        >
-            <LinearGradient
-                colors={cols}
-                style={{ width: '100%', height: '100%' }}
-            >
-                <ImageStyled source={source} />
-                <BookMarkContainer>
-                    <CoverPictureBookMark
-                        frame={frame}
-                        galeriePicture={galeriePicture}
-                    />
-                </BookMarkContainer>
-            </LinearGradient>
-        </Pressable>
+        <LinearGradientStyled colors={cols} size={dimension.width}>
+            <ImageStyled size={dimension.width} source={source} />
+        </LinearGradientStyled>
     );
 };
 
-export default Image;
+export default React.memo(Image);

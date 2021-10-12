@@ -4,7 +4,7 @@ type DotNavigationProps = {
     current: boolean;
 };
 
-const Dot = styled.View<DotNavigationProps>`
+const Container = styled.View<DotNavigationProps>`
     background-color: ${({ theme, current }) =>
         current ? theme.colors.primary : theme.colors['secondary-dark']};
     border-radius: 2px;
@@ -15,4 +15,4 @@ const Dot = styled.View<DotNavigationProps>`
 `;
 
 // eslint-disable-next-line import/prefer-default-export
-export { Dot };
+export { Container };

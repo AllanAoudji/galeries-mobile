@@ -22,26 +22,29 @@ const GalerieCoverPicture = ({ galerie }: Props) => {
         [galerie]
     );
     const coverPictureId = useSelector(coverPictureSelectorId);
+
     const galerieCoverPictureStatusSelector = React.useMemo(
         () => selectGalerieCoverPictureStatus(galerie.id),
         [galerie]
+    );
+    const galerieCoverPictureStatus = useSelector(
+        galerieCoverPictureStatusSelector
     );
     const galeriePictureSelector = React.useMemo(
         () => selectGaleriePicture(coverPictureId),
         [coverPictureId]
     );
     const galeriePicture = useSelector(galeriePictureSelector);
-    const coverPictureStatus = useSelector(galerieCoverPictureStatusSelector);
     const galerieStatusSelector = React.useMemo(
         () => selectGalerieStatus(galerie.id),
         [galerie]
     );
     const galerieStatus = useSelector(galerieStatusSelector);
 
-    if (galerieStatus !== 'SUCCESS' && coverPictureStatus !== 'SUCCESS')
+    if (galerieStatus !== 'SUCCESS' && galerieCoverPictureStatus !== 'SUCCESS')
         return <NotFoundCoverPicture />;
     if (!galeriePicture) return <DefaultCoverPicture galerie={galerie} />;
     return <CoverPicture galeriePicture={galeriePicture} />;
 };
 
-export default GalerieCoverPicture;
+export default React.memo(GalerieCoverPicture);

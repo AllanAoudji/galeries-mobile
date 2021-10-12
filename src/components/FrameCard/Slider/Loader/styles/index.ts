@@ -1,12 +1,14 @@
 import styled from 'styled-components/native';
 
 type ContainerProps = {
-    width: number;
+    size: number;
 };
 
 const Container = styled.View<ContainerProps>`
-    padding: ${({ theme }) => `${theme.spacings.smallest} 0`};
-    width: ${({ width }) => `${width}px`};
+    align-items: center;
+    height: ${({ size }) => `${size}px`};
+    justify-content: center;
+    width: ${({ size }) => `${size}px`};
 `;
 
 // eslint-disable-next-line import/prefer-default-export

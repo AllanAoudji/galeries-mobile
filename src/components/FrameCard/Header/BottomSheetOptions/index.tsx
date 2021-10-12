@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { useSelector } from 'react-redux';
 import Pictogram from '#components/Pictogram';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 
@@ -7,6 +8,8 @@ import DeleteFrameButton from './DeleteFrameButton';
 import ReportFrameButton from './ReportFrameButton';
 import UpdateFrameButton from './UpdateFrameButton';
 import UseAsCoverPictureButton from './UseAsCoverPictureButton';
+import { selectMe } from '#store/me';
+import { CurrentGaleriePictureContext } from '#contexts/CurrentGaleriePictureContext';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -14,27 +17,23 @@ type Props = {
 
 const BottomSheetOptions = ({ frame }: Props) => {
     const { openBottomSheet } = React.useContext(BottomSheetContext);
+    const { currentIndex } = React.useContext(CurrentGaleriePictureContext);
+
+    const me = useSelector(selectMe);
 
     const bottomSheetContent = React.useCallback(() => {
         return (
             <>
-                <UpdateFrameButton frameId={frame.id} userId={frame.userId} />
+                <UpdateFrameButton frame={frame} me={me} />
                 <UseAsCoverPictureButton
-                    frameId={frame.id}
-                    galerieId={frame.galerieId}
+                    currentIndex={currentIndex}
+                    frame={frame}
                 />
-                <DeleteFrameButton
-                    frameId={frame.id}
-                    galerieId={frame.galerieId}
-                    userId={frame.userId}
-                />
-                <ReportFrameButton
-                    galerieId={frame.galerieId}
-                    userId={frame.userId}
-                />
+                <DeleteFrameButton frame={frame} />
+                <ReportFrameButton frame={frame} me={me} />
             </>
         );
-    }, [frame]);
+    }, [currentIndex, frame, me]);
 
     const handlePress = React.useCallback(() => {
         openBottomSheet(bottomSheetContent);
