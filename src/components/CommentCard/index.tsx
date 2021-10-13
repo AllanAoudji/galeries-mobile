@@ -21,7 +21,7 @@ type Props = {
     current: boolean;
     onPress: (commentId: string) => void;
     onPressReply: () => void;
-    user: Store.Models.User;
+    user?: Store.Models.User;
 };
 
 const CommentCard = ({

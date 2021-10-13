@@ -1,19 +1,29 @@
 import * as React from 'react';
+import { useSelector } from 'react-redux';
+import { selectFrameGaleriePicturesAllIds } from '#store/galeriePictures';
 
-import { Dot } from './styles';
+import Dot from './Dot';
 
 type Props = {
-    allIds: string[];
-    currentIndex: number;
+    frame: Store.Models.Frame;
 };
 
-const Dots = ({ allIds, currentIndex }: Props) => {
-    if (allIds.length <= 1) return null;
+const Dots = ({ frame }: Props) => {
+    const frameGaleriePicturesAllIdsSelector = React.useMemo(
+        () => selectFrameGaleriePicturesAllIds(frame.id),
+        [frame]
+    );
+    const frameGaleriePicturesAllIds = useSelector(
+        frameGaleriePicturesAllIdsSelector
+    );
+
+    if (!frameGaleriePicturesAllIds || frameGaleriePicturesAllIds.length <= 1)
+        return null;
 
     return (
         <>
-            {allIds.map((id, index) => (
-                <Dot current={currentIndex === index} key={id} />
+            {frameGaleriePicturesAllIds.map((id, index) => (
+                <Dot index={index} key={id} />
             ))}
         </>
     );

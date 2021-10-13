@@ -1,5 +1,6 @@
 import errorGaleriePictures from './errorGaleriePicturesMiddleware';
 import getGaleriePicturesMiddleware from './getGaleriePicturesMiddleware';
+import putGaleriePicturesMiddleware from './putGaleriePicturesMiddleware';
 import resetGaleriePicturesMiddleware from './resetGaleriePicturesMiddleware';
 import successGaleriePicturesMiddleware from './successGaleriePicturesMiddleware';
 
@@ -8,5 +9,6 @@ export const galeriePicturesMiddlwares = [
     errorGaleriePictures,
     getGaleriePicturesMiddleware,
     resetGaleriePicturesMiddleware,
+    putGaleriePicturesMiddleware,
     successGaleriePicturesMiddleware,
 ];

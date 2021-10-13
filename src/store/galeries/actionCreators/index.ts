@@ -26,8 +26,10 @@ import {
     GALERIES_PREVIOUS_UPDATE,
     GALERIES_PUT,
     GALERIES_RESET,
-    GALERIES_STATUS_RESET,
-    GALERIES_STATUS_UPDATE,
+    GALERIES_STATUS_ID_RESET,
+    GALERIES_STATUS_ID_UPDATE,
+    GALERIES_STATUS_NAME_RESET,
+    GALERIES_STATUS_NAME_UPDATE,
 } from '#store/galeries/actionTypes';
 
 export const deleteGalerie: (payload: string) => Store.Action = (payload) => ({
@@ -126,10 +128,15 @@ export const resetGaleriesPrevious: () => Store.Action = () => ({
     payload: {},
     type: GALERIES_PREVIOUS_RESET,
 });
-export const resetGaleriesStatus: () => Store.Action = () => ({
+export const resetGaleriesStatusId: () => Store.Action = () => ({
     meta: {},
     payload: {},
-    type: GALERIES_STATUS_RESET,
+    type: GALERIES_STATUS_ID_RESET,
+});
+export const resetGaleriesStatusName: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: GALERIES_STATUS_NAME_RESET,
 });
 export const setGaleriesAllIds: (
     payload: {
@@ -213,11 +220,19 @@ export const updateGaleriesPrevious: (
     payload,
     type: GALERIES_PREVIOUS_UPDATE,
 });
-export const updateGaleriesStatus: (
+export const updateGaleriesStatusId: (
+    payload: Store.Status,
+    galerieId: string
+) => Store.Action = (payload, galerieId) => ({
+    meta: { query: { galerieId } },
+    payload,
+    type: GALERIES_STATUS_ID_UPDATE,
+});
+export const updateGaleriesStatusName: (
     payload: Store.Status,
     name: string
 ) => Store.Action = (payload, name) => ({
     meta: { query: { name } },
     payload,
-    type: GALERIES_STATUS_UPDATE,
+    type: GALERIES_STATUS_NAME_UPDATE,
 });

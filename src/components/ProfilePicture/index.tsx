@@ -73,7 +73,7 @@ const ProfilePictureWithUser = ({
                 containerBorder={border}
                 size={size}
             >
-                <ImageStyled source={source} />
+                <ImageStyled size={size} source={source} />
             </InnerContainer>
         </Container>
     );
@@ -104,7 +104,7 @@ const ProfilePicture = ({
                 size={size}
             >
                 <InnerContainer border containerBorder={border} size={size}>
-                    <ImageStyled source={source} />
+                    <ImageStyled size={size} source={source} />
                 </InnerContainer>
             </Container>
         );
@@ -122,4 +122,4 @@ const ProfilePicture = ({
     );
 };
 
-export default ProfilePicture;
+export default React.memo(ProfilePicture);

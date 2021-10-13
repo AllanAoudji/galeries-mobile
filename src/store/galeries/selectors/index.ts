@@ -3,7 +3,10 @@ import { createSelector } from 'reselect';
 const selectGaleriesAllIds = (state: Store.Reducer) => state.galeries.allIds;
 const selectGaleriesById = (state: Store.Reducer) => state.galeries.byId;
 const selectGaleriesCurrent = (state: Store.Reducer) => state.galeries.current;
-const selectGaleriesStatus = (state: Store.Reducer) => state.galeries.status;
+const selectGaleriesStatusName = (state: Store.Reducer) =>
+    state.galeries.status.name;
+const selectGaleriesStatusId = (state: Store.Reducer) =>
+    state.galeries.status.id;
 const selectGaleriesFilterGaleriesName = (state: Store.Reducer) =>
     state.galeries.filterName;
 const selectGaleriesNameAllId = createSelector(
@@ -21,7 +24,7 @@ export const selectGaleriesFieldsError = (state: Store.Reducer) =>
     state.galeries.fieldsError;
 export const selectGaleriesFilterName = (state: Store.Reducer) =>
     state.galeries.filterName;
-export const selectGalerie = (galerieId?: string) =>
+export const selectGalerie = (galerieId?: string | null) =>
     createSelector([selectGaleriesById], (byId) => {
         if (!galerieId) return undefined;
         return byId[galerieId];
@@ -33,6 +36,11 @@ export const selectGaleries = createSelector(
         return allIds.map((id) => byId[id]).filter((galerie) => !!galerie);
     }
 );
+export const selectGalerieStatus = (galerieId?: string) =>
+    createSelector([selectGaleriesStatusId], (galeriesStatusId) => {
+        if (!galerieId) return 'PENDING';
+        return galeriesStatusId[galerieId] || 'PENDING';
+    });
 export const selectGaleriesLoadingDelete = (state: Store.Reducer) =>
     state.galeries.loading.delete;
 export const selectGaleriesLoadingPost = (state: Store.Reducer) =>
@@ -40,7 +48,7 @@ export const selectGaleriesLoadingPost = (state: Store.Reducer) =>
 export const selectGaleriesLoadingPut = (state: Store.Reducer) =>
     state.galeries.loading.put;
 export const selectGaleriesNameStatus = createSelector(
-    [selectGaleriesStatus, selectGaleriesFilterGaleriesName],
-    (galeriesStatus, galeriesFilterGaleriesName) =>
-        galeriesStatus[galeriesFilterGaleriesName] || 'PENDING'
+    [selectGaleriesStatusName, selectGaleriesFilterGaleriesName],
+    (galeriesStatusName, galeriesFilterGaleriesName) =>
+        galeriesStatusName[galeriesFilterGaleriesName] || 'PENDING'
 );

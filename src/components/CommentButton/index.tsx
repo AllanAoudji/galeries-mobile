@@ -1,26 +1,35 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
-import { selectFrame } from '#store/frames';
 
 import { Container } from './styles';
+import { updateFramesCurrent } from '#store/frames';
 
 type Props = {
-    onPress: () => void;
-    frameId: string;
+    frame: Store.Models.Frame;
 };
 
-const CommentButton = ({ frameId, onPress }: Props) => {
-    const frameSelector = React.useMemo(() => selectFrame(frameId), [frameId]);
+const CommentButton = ({ frame }: Props) => {
+    const dispatch = useDispatch();
+    const navigation = useNavigation<
+        | Screen.DesktopBottomTab.FrameProp
+        | Screen.DesktopBottomTab.HomeNavigationProp
+    >();
 
-    const frame = useSelector(frameSelector);
+    const handlePress = React.useCallback(() => {
+        if (frame) {
+            dispatch(updateFramesCurrent(frame.id));
+            navigation.navigate('Comments');
+        }
+    }, [frame]);
 
     if (!frame) return null;
 
     return (
-        <Container onPress={onPress}>
+        <Container onPress={handlePress}>
             <Pictogram
                 color="primary"
                 mb="smallest"
@@ -33,4 +42,4 @@ const CommentButton = ({ frameId, onPress }: Props) => {
     );
 };
 
-export default CommentButton;
+export default React.memo(CommentButton);

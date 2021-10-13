@@ -1,8 +1,12 @@
 import styled from 'styled-components/native';
 
-const Container = styled.View`
+type ContainerProps = {
+    width: number;
+};
+
+const Container = styled.View<ContainerProps>`
     padding: ${({ theme }) => `${theme.spacings.smallest} 0`};
-    width: 100%;
+    width: ${({ width }) => `${width}px`};
 `;
 
 // eslint-disable-next-line import/prefer-default-export

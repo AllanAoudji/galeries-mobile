@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import {
     removeCommentsById,
     updateCommentsAllIds,
+    updateCommentsById,
     updateCommentsLoadingDelete,
 } from '#store/comments/actionCreators';
 import { updateFramesById } from '#store/frames/actionCreators';
@@ -30,6 +31,7 @@ const successDeleteComment = (
         const newAllIds = allIds.filter((id) => id !== commentId);
 
         dispatch(updateCommentsAllIds(parentComment.id, newAllIds));
+        dispatch(updateCommentsById({ ...parentComment, numOfComments }));
     } else if (frame) {
         const allIds = getState().comments.allIds[frame.id];
         const newAllIds = allIds.filter((id) => id !== commentId);

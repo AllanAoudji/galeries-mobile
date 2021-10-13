@@ -5,68 +5,27 @@ import ComentButton from '#components/CommentButton';
 import LikeButton from '#components/LikeButton';
 import Typography from '#components/Typography';
 
-import {
-    ActionNavigationContainer,
-    Container,
-    DescriptionContainer,
-} from './styles';
+import Description from './Description';
+
+import { ActionNavigationContainer, Container } from './styles';
 
 type Props = {
-    createdAt: string;
-    description: string;
-    frameId: string;
-    handlePressComments: () => void;
-    handlePressLikes: () => void;
+    frame: Store.Models.Frame;
 };
 
-const Footer = ({
-    createdAt,
-    description,
-    frameId,
-    handlePressComments,
-    handlePressLikes,
-}: Props) => {
-    const [cropedDescription, setCropedDescription] =
-        React.useState<string>('');
-    const [descriptionIsCroped, setDescriptionIsCroped] =
-        React.useState<boolean>(false);
-
-    const handlePressDescription = React.useCallback(() => {
-        if (description) {
-            if (descriptionIsCroped) setDescriptionIsCroped(false);
-            else handlePressComments();
-        }
-    }, [description, descriptionIsCroped]);
-
-    React.useEffect(() => {
-        if (description && description.length > 40) {
-            setDescriptionIsCroped(true);
-            setCropedDescription(`${description.substring(0, 40)}... `);
-        }
-    }, [description]);
-
+const Footer = ({ frame }: Props) => {
     return (
         <Container>
             <ActionNavigationContainer>
-                <ComentButton frameId={frameId} onPress={handlePressComments} />
-                <LikeButton frameId={frameId} onPress={handlePressLikes} />
+                <ComentButton frame={frame} />
+                <LikeButton frame={frame} />
             </ActionNavigationContainer>
-            <DescriptionContainer onPress={handlePressDescription}>
-                {!!description &&
-                    (descriptionIsCroped ? (
-                        <>
-                            <Typography>{cropedDescription}</Typography>
-                            <Typography fontFamily="bold">read more</Typography>
-                        </>
-                    ) : (
-                        <Typography>{description}</Typography>
-                    ))}
-            </DescriptionContainer>
+            <Description frame={frame} />
             <Typography fontFamily="light" fontSize={12}>
-                {moment(createdAt).fromNow()}
+                {moment(frame.createdAt).fromNow()}
             </Typography>
         </Container>
     );
 };
 
-export default React.memo(Footer);
+export default Footer;

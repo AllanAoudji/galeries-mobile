@@ -223,12 +223,18 @@ declare global {
                     put: Store.Status;
                 };
                 previous: { [key: string]: string | null };
-                status: { [key: string]: Store.Status };
+                status: {
+                    name: { [key: string]: Store.Status };
+                    id: { [key: string]: Store.Status };
+                };
             };
             galeriePictures: {
                 allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.GaleriePicture };
-                id: { [key: string]: string };
+                id: { [key: string]: string | null };
+                loading: {
+                    put: Store.Status;
+                };
                 status: { [key: string]: Store.Status };
             };
             likes: {

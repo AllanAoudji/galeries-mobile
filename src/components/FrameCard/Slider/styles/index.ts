@@ -4,12 +4,6 @@ type ContainerProps = {
     size: number;
 };
 
-const ActivityIndicatorContainer = styled.View`
-    height: 100%;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-`;
 const Container = styled.View<ContainerProps>`
     height: ${({ size }) => `${size}px`};
     width: ${({ size }) => `${size}px`};
@@ -21,4 +15,4 @@ const DotsContainer = styled.View`
     justify-content: center;
 `;
 
-export { ActivityIndicatorContainer, Container, DotsContainer };
+export { Container, DotsContainer };

@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import {
@@ -25,21 +25,14 @@ import {
 
 type Props = {
     description: string;
-    frameId: string;
+    frame: Store.Models.Frame;
     onPress: () => void;
     onPressBack: () => void;
     show: boolean;
 };
 
-const Options = ({
-    description,
-    frameId,
-    onPress,
-    onPressBack,
-    show,
-}: Props) => {
+const Options = ({ description, frame, onPress, onPressBack, show }: Props) => {
     const [open, setOpen] = React.useState(show);
-    const navigation = useNavigation<Screen.DesktopBottomTab.FrameProp>();
 
     const display = useSharedValue(show ? 1 : 0);
 
@@ -47,15 +40,6 @@ const Options = ({
         const scale = interpolate(display.value, [0, 1], [1.02, 1]);
         return { opacity: display.value, transform: [{ scale }] };
     }, []);
-
-    const handlePressComment = React.useCallback(
-        () => navigation.navigate('Comments'),
-        []
-    );
-    const handlePressLike = React.useCallback(
-        () => navigation.navigate('Likes'),
-        []
-    );
 
     React.useEffect(() => {
         if (show) {
@@ -95,7 +79,7 @@ const Options = ({
                     />
                 </HeaderContainer>
                 <FooterContainer>
-                    <Buttons frameId={frameId} />
+                    <Buttons frameId={frame.id} />
                     {!!description && (
                         <>
                             <DescriptionContainer>
@@ -104,14 +88,8 @@ const Options = ({
                         </>
                     )}
                     <BottonContainer>
-                        <CommentButton
-                            frameId={frameId}
-                            onPress={handlePressComment}
-                        />
-                        <LikeButton
-                            frameId={frameId}
-                            onPress={handlePressLike}
-                        />
+                        <CommentButton frame={frame} />
+                        <LikeButton frame={frame} />
                     </BottonContainer>
                 </FooterContainer>
             </InnerContainer>

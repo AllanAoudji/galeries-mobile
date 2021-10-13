@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { AnimatedFlatList } from '#components';
-import { deleteFrame, getFrames } from '#store/frames';
+import { getFrames } from '#store/frames';
 
 import RenderItem from './RenderItem';
 
@@ -37,15 +37,18 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
                 style(paddingTopStyle).animatedFlatListContentContainerStyle
             }
             data={allIds}
-            initialNumToRender={10}
+            extraData={allIds}
+            initialNumToRender={3}
             keyExtractor={keyExtractor}
-            maxToRenderPerBatch={10}
+            maxToRenderPerBatch={3}
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}
+            updateCellsBatchingPeriod={1}
+            windowSize={41}
         />
     );
 };

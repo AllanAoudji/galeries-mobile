@@ -40,27 +40,21 @@ export const selectCurrentGalerieCoverPictureStatus = createSelector(
         return galeriePicturesStatus[currentGaleries];
     }
 );
-export const selectFrameGaleriePicturesAllIds = (frameId: string | undefined) =>
+export const selectFrameGaleriePicturesAllIds = (frameId?: string | null) =>
     createSelector([galeriePicturesAllIdsSelector], (galeriePicturesAllIds) => {
         if (!frameId) return undefined;
         return galeriePicturesAllIds[frameId];
     });
-export const selectFrameGaleriePicturesStatus = (frameId: string | undefined) =>
+export const selectFrameGaleriePicturesStatus = (frameId?: string | null) =>
     createSelector([galeriePicturesStatusSelector], (galeriePicturesStatus) => {
         if (!frameId) return undefined;
         return galeriePicturesStatus[frameId] || 'PENDING';
     });
-export const selectGalerieCoverPictureId: (
-    galerieId: string
-) => OutputSelector<
-    Store.Reducer,
-    string,
-    (res: { [key: string]: string }) => string | undefined
-> = (galerieId: string) =>
-    createSelector(
-        [galeriePicturesIdSelector],
-        (galeriePicturesId) => galeriePicturesId[galerieId]
-    );
+export const selectGalerieCoverPictureId = (galerieId?: string | null) =>
+    createSelector([galeriePicturesIdSelector], (galeriePicturesId) => {
+        if (!galerieId) return undefined;
+        return galeriePicturesId[galerieId];
+    });
 export const selectGalerieCoverPictureStatus: (
     galerieId: string
 ) => OutputSelector<
@@ -70,18 +64,10 @@ export const selectGalerieCoverPictureStatus: (
 > = (galerieId: string) =>
     createSelector(
         [galeriePicturesStatusSelector],
-        (galeriePicturesStatus) => galeriePicturesStatus[galerieId]
+        (galeriePicturesStatus) => galeriePicturesStatus[galerieId] || 'PENDING'
     );
-export const selectGaleriePicture: (
-    galeriePictureId: string
-) => OutputSelector<
-    Store.Reducer,
-    Store.Models.GaleriePicture,
-    (res: {
-        [key: string]: Store.Models.GaleriePicture;
-    }) => Store.Models.GaleriePicture | undefined
-> = (galeriePictureId: string) =>
-    createSelector(
-        [galeriePicturesByIdSelector],
-        (galeriePicturesById) => galeriePicturesById[galeriePictureId]
-    );
+export const selectGaleriePicture = (galeriePictureId?: string | null) =>
+    createSelector([galeriePicturesByIdSelector], (galeriePicturesById) => {
+        if (!galeriePictureId) return undefined;
+        return galeriePicturesById[galeriePictureId];
+    });

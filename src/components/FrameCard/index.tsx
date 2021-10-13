@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { useWindowDimensions } from 'react-native';
+
+import { CurrentGaleriePictureProvider } from '#contexts/CurrentGaleriePictureContext';
 
 import Footer from './Footer';
 import Header from './Header';
@@ -7,32 +10,23 @@ import Slider from './Slider';
 import { Container } from './styles';
 
 type Props = {
-    frame: Store.Models.Frame;
-    onPressComments: () => void;
-    onPressLikes: () => void;
-    onPressOptions: () => void;
-    onPressSlider: () => void;
+    showGalerie?: boolean;
+    frame?: Store.Models.Frame;
 };
 
-const FrameCard = ({
-    frame,
-    onPressComments,
-    onPressLikes,
-    onPressOptions,
-    onPressSlider,
-}: Props) => {
+const FrameCard = ({ frame, showGalerie = false }: Props) => {
+    const dimension = useWindowDimensions();
+
+    if (!frame) return null;
+
     return (
-        <Container>
-            <Header userId={frame.userId} onPress={onPressOptions} />
-            <Slider frameId={frame.id} onPressSlider={onPressSlider} />
-            <Footer
-                createdAt={frame.createdAt}
-                description={frame.description}
-                frameId={frame.id}
-                handlePressComments={onPressComments}
-                handlePressLikes={onPressLikes}
-            />
-        </Container>
+        <CurrentGaleriePictureProvider>
+            <Container width={dimension.width}>
+                <Header frame={frame} showGalerie={showGalerie} />
+                <Slider frame={frame} />
+                <Footer frame={frame} />
+            </Container>
+        </CurrentGaleriePictureProvider>
     );
 };
 

@@ -47,4 +47,4 @@ const AddSubscribeFill = ({
     );
 };
 
-export default AddSubscribeFill;
+export default React.memo(AddSubscribeFill);

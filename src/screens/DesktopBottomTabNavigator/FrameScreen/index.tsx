@@ -4,7 +4,6 @@ import { ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
-import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
 import { selectCurrentFrame } from '#store/frames';
 import {
     getFrameGaleriePictures,
@@ -75,25 +74,23 @@ const FrameScreen = ({ navigation }: Props) => {
     if (!currentFrame) return null;
 
     return (
-        <DeleteFrameModalProvider>
-            <Container>
-                {galeriePicturesAllIds ? (
-                    <Carousel
-                        allIds={galeriePicturesAllIds}
-                        onPress={handleShowOptions}
-                    />
-                ) : (
-                    <ActivityIndicator color={theme.colors.black} />
-                )}
-                <Options
-                    description={currentFrame.description}
-                    frameId={currentFrame.id}
-                    onPressBack={handlePressBack}
-                    onPress={handleHideOptions}
-                    show={showOptions}
+        <Container>
+            {galeriePicturesAllIds ? (
+                <Carousel
+                    allIds={galeriePicturesAllIds}
+                    onPress={handleShowOptions}
                 />
-            </Container>
-        </DeleteFrameModalProvider>
+            ) : (
+                <ActivityIndicator color={theme.colors.black} />
+            )}
+            <Options
+                description={currentFrame.description}
+                frame={currentFrame}
+                onPressBack={handlePressBack}
+                onPress={handleHideOptions}
+                show={showOptions}
+            />
+        </Container>
     );
 };
 

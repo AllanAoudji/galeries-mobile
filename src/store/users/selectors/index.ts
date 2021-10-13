@@ -44,7 +44,7 @@ export const selectGalerieUsersStatus: (
         [usersStatusSelector],
         (usersStatus) => usersStatus[galerieId]
     );
-export const selectUser = (userId?: string) =>
+export const selectUser = (userId?: string | null) =>
     createSelector([usersByIdSelector], (usersById) => {
         if (!userId) return undefined;
         return usersById[userId];
