@@ -1,21 +1,12 @@
 import * as React from 'react';
-import { ScrollView, useWindowDimensions } from 'react-native';
+import { ListRenderItem, useWindowDimensions } from 'react-native';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { FlatList } from 'react-native-gesture-handler';
 import { CurrentGaleriePictureContext } from '#contexts/CurrentGaleriePictureContext';
 
-import Image from './Image';
-import {
-    selectFrameGaleriePicturesAllIds,
-    selectGalerieCoverPictureId,
-} from '#store/galeriePictures';
-import { selectGalerie } from '#store/galeries';
-import { updateFramesCurrent } from '#store/frames';
-
-import CoverPictureBookMark from '#components/CoverPictureBookMark';
-
-import { BookMarkContainer, Container } from './styles';
+import RenderItem from './RenderItem';
+import { selectFrameGaleriePicturesAllIds } from '#store/galeriePictures';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -23,11 +14,6 @@ type Props = {
 
 const ScrollContainer = ({ frame }: Props) => {
     const dimension = useWindowDimensions();
-    const dispatch = useDispatch();
-    const navigation = useNavigation<
-        | Screen.DesktopBottomTab.FrameProp
-        | Screen.DesktopBottomTab.HomeNavigationProp
-    >();
 
     const { handleScroll } = React.useContext(CurrentGaleriePictureContext);
 
@@ -38,50 +24,40 @@ const ScrollContainer = ({ frame }: Props) => {
     const frameGaleriePicturesAllIds = useSelector(
         frameGaleriePicturesAllIdsSelector
     );
-    const galerieSelector = React.useMemo(
-        () => selectGalerie(frame.galerieId),
-        [frame]
-    );
-    const galerie = useSelector(galerieSelector);
-    const coverPictureIdSelector = React.useMemo(
-        () => selectGalerieCoverPictureId(frame.galerieId),
-        [frame]
-    );
-    const coverPictureId = useSelector(coverPictureIdSelector);
 
-    const handlePress = React.useCallback(() => {
-        dispatch(updateFramesCurrent(frame.id));
-        navigation.navigate('Frame');
-    }, []);
+    const getItemLayout = React.useCallback(
+        (_, index) => ({
+            length: dimension.width,
+            offset: dimension.width * index,
+            index,
+        }),
+        []
+    );
+    const keyExtractor = React.useCallback((item: string) => item, []);
+    const renderItem: ListRenderItem<string> = React.useCallback(
+        ({ item }) => <RenderItem galeriePictureId={item} frame={frame} />,
+        []
+    );
 
     return (
-        <ScrollView
+        <FlatList
+            data={frameGaleriePicturesAllIds}
             decelerationRate="fast"
-            disableIntervalMomentum={true}
+            disableIntervalMomentum
+            extraData={frameGaleriePicturesAllIds}
+            getItemLayout={getItemLayout}
             horizontal
+            initialNumToRender={1}
+            keyExtractor={keyExtractor}
+            maxToRenderPerBatch={1}
             onScroll={handleScroll}
             overScrollMode="never"
+            removeClippedSubviews
+            showsHorizontalScrollIndicator={false}
             snapToInterval={dimension.width}
-        >
-            {(frameGaleriePicturesAllIds || []).map((id) => (
-                <Container
-                    key={id}
-                    onPress={handlePress}
-                    size={dimension.width}
-                >
-                    <Image galeriePictureId={id} key={id} />
-                    {galerie && galerie.role !== 'user' && (
-                        <BookMarkContainer>
-                            <CoverPictureBookMark
-                                coverPictureId={coverPictureId}
-                                frame={frame}
-                                galeriePictureId={id}
-                            />
-                        </BookMarkContainer>
-                    )}
-                </Container>
-            ))}
-        </ScrollView>
+            windowSize={3}
+            renderItem={renderItem}
+        />
     );
 };
 

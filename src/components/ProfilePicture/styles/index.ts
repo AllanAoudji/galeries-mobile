@@ -54,9 +54,15 @@ const Container = styled.View<ContainerProps>`
         }px`};
 `;
 const ImageStyled = styled.Image<ImageStyleProps>`
-    height: ${({ size }) => `${PROFILE_PICTURE_SIZE[size]}px`};
+    height: ${({ size }) =>
+        `${
+            PROFILE_PICTURE_SIZE[size] - INNER_CONTAINER_BORDER_WIDTH[size] * 2
+        }px`};
     transform: scale(1.18);
-    width: ${({ size }) => `${PROFILE_PICTURE_SIZE[size]}px`};
+    width: ${({ size }) =>
+        `${
+            PROFILE_PICTURE_SIZE[size] - INNER_CONTAINER_BORDER_WIDTH[size] * 2
+        }px`};
 `;
 const InnerContainer = styled.View<InnerContainerProps>`
     border-color: ${({ theme }) => theme.colors.primary};

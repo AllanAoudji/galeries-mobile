@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
+
 import { CurrentGaleriePictureProvider } from '#contexts/CurrentGaleriePictureContext';
 
 import Footer from './Footer';

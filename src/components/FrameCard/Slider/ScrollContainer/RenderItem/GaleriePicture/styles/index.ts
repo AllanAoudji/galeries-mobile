@@ -1,13 +1,13 @@
 import styled from 'styled-components/native';
 
-type ContainerProps = {
+type ImageStyledProps = {
     size: number;
 };
 
-const Container = styled.Pressable<ContainerProps>`
+const ImageStyled = styled.Image<ImageStyledProps>`
     height: ${({ size }) => `${size}px`};
     width: ${({ size }) => `${size}px`};
 `;
 
 // eslint-disable-next-line import/prefer-default-export
-export { Container };
+export { ImageStyled };

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-
 import { useDispatch } from 'react-redux';
+
 import BottomSheetButton from '#components/BottomSheetButton';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { updateFramesCurrent } from '#store/frames';
@@ -20,7 +20,7 @@ const UpdateFrameButton = ({ frame, me }: Props) => {
 
     const { closeBottomSheet } = React.useContext(BottomSheetContext);
 
-    const handlePressUpdateFrame = React.useCallback(() => {
+    const handlePress = React.useCallback(() => {
         dispatch(updateFramesCurrent(frame.id));
         navigation.navigate('UpdateFrame');
         closeBottomSheet();
@@ -29,12 +29,7 @@ const UpdateFrameButton = ({ frame, me }: Props) => {
     if (!me) return null;
     if (me.id !== frame.userId) return null;
 
-    return (
-        <BottomSheetButton
-            onPress={handlePressUpdateFrame}
-            title="update frame"
-        />
-    );
+    return <BottomSheetButton onPress={handlePress} title="update frame" />;
 };
 
 export default React.memo(UpdateFrameButton);

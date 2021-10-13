@@ -1,8 +1,10 @@
 import * as React from 'react';
-
 import { useSelector } from 'react-redux';
+
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
+import { selectGalerie } from '#store/galeries';
+import { selectUser } from '#store/users';
 
 import GalerieCoverPicture from './GalerieCoverPicture';
 
@@ -13,8 +15,6 @@ import {
     TextContainer,
     TextsContainer,
 } from './styles';
-import { selectGalerie } from '#store/galeries';
-import { selectUser } from '#store/users';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -26,6 +26,7 @@ const WithGalerie = ({ frame }: Props) => {
         [frame]
     );
     const galerie = useSelector(galerieSelector);
+
     const userSelector = React.useMemo(() => selectUser(frame.userId), [frame]);
     const user = useSelector(userSelector);
 
@@ -37,25 +38,25 @@ const WithGalerie = ({ frame }: Props) => {
                         <GalerieCoverPicture galerie={galerie} />
                     </CoverPictureContainer>
                 )}
-                {!!user && (
-                    <ProfilePictureContainer>
-                        <ProfilePicture border user={user} />
-                    </ProfilePictureContainer>
-                )}
+                <ProfilePictureContainer>
+                    <ProfilePicture border user={user} />
+                </ProfilePictureContainer>
             </Container>
             <TextsContainer>
                 {!!galerie && (
                     <TextContainer pb>
-                        <Typography fontFamily="light">Posted on </Typography>
-                        <Typography>{galerie ? galerie.name : ''}</Typography>
+                        <Typography>Posted on </Typography>
+                        <Typography>
+                            {galerie ? galerie.name : 'galerie not found'}
+                        </Typography>
                     </TextContainer>
                 )}
-                {!!user && (
-                    <TextContainer>
-                        <Typography fontFamily="light">By </Typography>
-                        <Typography>{user.pseudonym}</Typography>
-                    </TextContainer>
-                )}
+                <TextContainer>
+                    <Typography>By </Typography>
+                    <Typography>
+                        {user ? user.pseudonym : 'user not found'}
+                    </Typography>
+                </TextContainer>
             </TextsContainer>
         </>
     );

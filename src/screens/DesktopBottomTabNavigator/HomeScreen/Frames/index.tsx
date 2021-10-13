@@ -38,16 +38,17 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
             }
             data={allIds}
             extraData={allIds}
-            initialNumToRender={15}
+            initialNumToRender={3}
             keyExtractor={keyExtractor}
-            maxToRenderPerBatch={15}
+            maxToRenderPerBatch={3}
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}
-            windowSize={31}
+            updateCellsBatchingPeriod={1}
+            windowSize={41}
         />
     );
 };

@@ -30,11 +30,13 @@ const GalerieCoverPicture = ({ galerie }: Props) => {
     const galerieCoverPictureStatus = useSelector(
         galerieCoverPictureStatusSelector
     );
+
     const galeriePictureSelector = React.useMemo(
         () => selectGaleriePicture(coverPictureId),
         [coverPictureId]
     );
     const galeriePicture = useSelector(galeriePictureSelector);
+
     const galerieStatusSelector = React.useMemo(
         () => selectGalerieStatus(galerie.id),
         [galerie]

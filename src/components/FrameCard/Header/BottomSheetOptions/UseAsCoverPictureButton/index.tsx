@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import BottomSheetButton from '#components/BottomSheetButton';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
+import { selectGalerie } from '#store/galeries';
 import {
     putGaleriePicture,
     selectFrameGaleriePicturesAllIds,
     selectGaleriePicture,
 } from '#store/galeriePictures';
-import { selectGalerie } from '#store/galeries';
 
 type Props = {
     currentIndex: number;
@@ -18,18 +18,19 @@ type Props = {
 const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
     const dispatch = useDispatch();
 
+    const { closeBottomSheet } = React.useContext(BottomSheetContext);
+
     const galerieSelector = React.useMemo(
         () => selectGalerie(frame ? frame.galerieId : null),
         [frame]
     );
     const galerie = useSelector(galerieSelector);
+
     const galeriePicturesAllIdsSelector = React.useMemo(
         () => selectFrameGaleriePicturesAllIds(frame.id),
         [frame]
     );
     const galeriePicturesAllIds = useSelector(galeriePicturesAllIdsSelector);
-
-    const { closeBottomSheet } = React.useContext(BottomSheetContext);
 
     const galeriePictureSelector = React.useMemo(
         () =>
@@ -42,7 +43,7 @@ const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
     );
     const galeriePicture = useSelector(galeriePictureSelector);
 
-    const handlePressUseAsCoverPicture = React.useCallback(() => {
+    const handlePress = React.useCallback(() => {
         if (galeriePicturesAllIds && galeriePicturesAllIds[currentIndex]) {
             dispatch(
                 putGaleriePicture(frame.id, galeriePicturesAllIds[currentIndex])
@@ -59,12 +60,7 @@ const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
 
     if (!galerie || galerie.role === 'user') return null;
 
-    return (
-        <BottomSheetButton
-            onPress={handlePressUseAsCoverPicture}
-            title={text}
-        />
-    );
+    return <BottomSheetButton onPress={handlePress} title={text} />;
 };
 
 export default UseAsCoverPictureButton;

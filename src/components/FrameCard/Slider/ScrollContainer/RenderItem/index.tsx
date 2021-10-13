@@ -1,17 +1,21 @@
 import * as React from 'react';
-import { ImageSourcePropType, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTheme } from 'styled-components';
 
 import { selectGaleriePicture } from '#store/galeriePictures';
 
-import { ImageStyled, LinearGradientStyled } from './styled';
+import BookMark from './BookMark';
+import GaleriePicture from './GaleriePicture';
+
+import { LinearGradientStyled } from './styled';
 
 type Props = {
+    frame: Store.Models.Frame;
     galeriePictureId: string;
 };
 
-const Image = ({ galeriePictureId }: Props) => {
+const RenderItem = ({ galeriePictureId, frame }: Props) => {
     const dimension = useWindowDimensions();
     const theme = useTheme();
 
@@ -28,20 +32,13 @@ const Image = ({ galeriePictureId }: Props) => {
         if (colors.length < 2) return defaultColors;
         return colors;
     }, [galeriePicture]);
-    const source: ImageSourcePropType = React.useMemo(
-        () => ({
-            uri: galeriePicture
-                ? galeriePicture.cropedImage.cachedSignedUrl
-                : '',
-        }),
-        []
-    );
 
     return (
         <LinearGradientStyled colors={cols} size={dimension.width}>
-            <ImageStyled size={dimension.width} source={source} />
+            <GaleriePicture galeriePicture={galeriePicture} />
+            <BookMark galeriePictureId={galeriePictureId} frame={frame} />
         </LinearGradientStyled>
     );
 };
 
-export default React.memo(Image);
+export default React.memo(RenderItem);

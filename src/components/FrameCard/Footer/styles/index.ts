@@ -8,10 +8,5 @@ const ActionNavigationContainer = styled.View`
 const Container = styled.View`
     padding: ${({ theme }) => `5px ${theme.spacings.smallest} 0`};
 `;
-const DescriptionContainer = styled.Pressable`
-    flex-direction: row;
-    margin: ${({ theme }) => `0 ${theme.spacings.smallest}`};
-    padding-bottom: ${({ theme }) => theme.spacings.smallest};
-`;
 
-export { ActionNavigationContainer, Container, DescriptionContainer };
+export { ActionNavigationContainer, Container };

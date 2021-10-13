@@ -1,6 +1,6 @@
 import * as React from 'react';
-
 import { useSelector } from 'react-redux';
+
 import BottomSheetButton from '#components/BottomSheetButton';
 import { selectGalerie } from '#store/galeries';
 
@@ -19,8 +19,8 @@ const ReportFrameButton = ({ frame, me }: Props) => {
     const galerie = useSelector(galerieSelector);
 
     if (!me || !galerie) return null;
-    if (galerie.role !== 'user') return null;
     if (frame.userId === me.id) return null;
+    if (galerie.role !== 'user') return null;
 
     return <BottomSheetButton onPress={onPress} title="delete frame" />;
 };

@@ -5,7 +5,6 @@ import WithGalerie from './WithGalerie';
 import WithoutGalerie from './WithoutGalerie';
 
 import { Container, InfoContainer } from './styles';
-// import { DeleteFrameModalContext } from '#contexts/DeleteFrameModalContext';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -22,10 +21,7 @@ const Header = ({ frame, showGalerie }: Props) => {
                     <WithoutGalerie frame={frame} />
                 )}
             </InfoContainer>
-            <BottomSheetOptions
-                frame={frame}
-                // onPressDelete={handlePressDelete}
-            />
+            <BottomSheetOptions frame={frame} />
         </Container>
     );
 };
