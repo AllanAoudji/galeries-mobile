@@ -7,7 +7,7 @@ import {
     setLikesPrevious,
     setLikesStatus,
 } from '#store/likes/actionCreators';
-import combineLikesAllIds from '#store/combineAllIds/combineLikesAllIds';
+import { combineLikesAllIds } from '#store/combineAllIds';
 
 const successGetLikes = (
     dispatch: Dispatch<Store.Action>,

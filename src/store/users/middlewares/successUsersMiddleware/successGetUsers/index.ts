@@ -12,6 +12,7 @@ import {
     updateUsersStatus,
     updateUsersPrevious,
 } from '#store/users/actionCreators';
+import { combineUsersAllIds } from '#store/combineAllIds';
 
 const successGetUsers = (
     dispatch: Dispatch<Store.Action>,
@@ -43,12 +44,18 @@ const successGetUsers = (
     const previous = byId[previousUserId].userName || '';
 
     if (galerieId) {
-        dispatch(setGalerieUsersAllIds(galerieId, allIds));
+        const oldAllIds = getState().users.allIds[galerieId] || [];
+        const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
+
+        dispatch(setGalerieUsersAllIds(galerieId, newAllIds));
         dispatch(updateGalerieUsersEnd(galerieId, allIds.length < 20));
         dispatch(updateGalerieUsersPrevious(galerieId, previous));
         dispatch(updateGalerieUsersStatus(galerieId, 'SUCCESS'));
     } else {
-        dispatch(setUsersAllIds(allIds));
+        const oldAllIds = getState().users.allIds[''] || [];
+        const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
+
+        dispatch(setUsersAllIds(newAllIds));
         dispatch(updateUsersEnd(allIds.length < 20));
         dispatch(updateUsersStatus('SUCCESS'));
         dispatch(updateUsersPrevious(previous));

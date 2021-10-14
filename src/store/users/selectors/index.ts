@@ -8,14 +8,14 @@ const usersStatusSelector = (state: Store.Reducer) => state.users.status;
 
 export const selectUsersCurrent = (state: Store.Reducer) => state.users.current;
 
-export const selectCurrentGalerieAllIds = createSelector(
+export const selectCurrentGalerieUsersAllIds = createSelector(
     [galeriesCurrentSelector, usersAllIdsSelector],
     (galeriesCurrent, usersAllIds) => {
         if (!galeriesCurrent) return undefined;
         return usersAllIds[galeriesCurrent];
     }
 );
-export const selectCurrentGalerieStatus = createSelector(
+export const selectCurrentGalerieUsersStatus = createSelector(
     [galeriesCurrentSelector, usersStatusSelector],
     (galeriesCurrent, usersStatus) => {
         if (!galeriesCurrent) return undefined;

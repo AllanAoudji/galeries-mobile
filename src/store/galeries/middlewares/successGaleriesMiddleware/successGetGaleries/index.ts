@@ -10,6 +10,7 @@ import {
 } from '#store/galeries/actionCreators';
 import { getGalerieCurrentCoverPicture } from '#store/galeriePictures/actionCreators';
 import { combineGaleriesAllIds } from '#store/combineAllIds';
+import { getGalerieUsers } from '#store/users';
 
 const successGetGaleries = (
     dispatch: Dispatch<Store.Action>,
@@ -43,8 +44,13 @@ const successGetGaleries = (
     allIds.forEach((id) => {
         dispatch(updateGaleriesStatusId('SUCCESS', id));
 
-        const status = getState().galeriePictures.status[id] || 'PENDING';
-        if (status === 'PENDING') dispatch(getGalerieCurrentCoverPicture(id));
+        const coverPictureStatus =
+            getState().galeriePictures.status[id] || 'PENDING';
+        if (coverPictureStatus === 'PENDING')
+            dispatch(getGalerieCurrentCoverPicture(id));
+
+        const usersStatus = getState().users.status[id] || 'PENDING';
+        if (usersStatus === 'PENDING') dispatch(getGalerieUsers(id));
     });
 };
 
