@@ -9,8 +9,8 @@ const combineGaleriesAllIds = (
 
     const allIds = uniqueArray([...oldAllIds, ...newAllIds]).sort((a, b) => {
         if (!galeriesById[a] || !galeriesById[b]) return 0;
-        return galeriesById[b].hiddenName.localeCompare(
-            galeriesById[a].hiddenName
+        return galeriesById[a].hiddenName.localeCompare(
+            galeriesById[b].hiddenName
         );
     });
 

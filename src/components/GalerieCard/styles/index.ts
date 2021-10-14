@@ -1,5 +1,4 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
@@ -8,9 +7,8 @@ type DefaultCoverPictureProps = {
     size: number;
 };
 
-const Container = styled(Animated.View)`
+const Container = styled.Pressable`
     height: ${() => `${GLOBAL_STYLE.GALERIE_MODAL_HEIGHT}px`};
-    background-color: red;
     margin-bottom: 15px;
 `;
 const DefaultCoverPicture = styled(LinearGradient)<DefaultCoverPictureProps>`

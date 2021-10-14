@@ -9,7 +9,6 @@ import {
     DefaultHeader,
     EmptyMessage,
     FullScreenLoader,
-    GalerieCard,
     SearchBar,
 } from '#components';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
@@ -24,8 +23,10 @@ import {
     updateGaleriesFilterName,
 } from '#store/galeries';
 
-const renderItem = ({ item }: ListRenderItemInfo<Store.Models.Galerie>) => (
-    <GalerieCard galerie={item} />
+import RenderItem from './RenderItem';
+
+const renderItem = ({ item }: ListRenderItemInfo<string>) => (
+    <RenderItem item={item} />
 );
 
 const GaleriesScreen = () => {
