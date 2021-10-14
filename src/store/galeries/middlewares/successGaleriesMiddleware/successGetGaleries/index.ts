@@ -9,6 +9,7 @@ import {
     updateGaleriesStatusName,
 } from '#store/galeries/actionCreators';
 import { getGalerieCurrentCoverPicture } from '#store/galeriePictures/actionCreators';
+import { combineGaleriesAllIds } from '#store/combineAllIds';
 
 const successGetGaleries = (
     dispatch: Dispatch<Store.Action>,
@@ -29,10 +30,12 @@ const successGetGaleries = (
         byId[galerie.id] = galerie;
     }
     dispatch(setGaleriesById(byId));
-    if (name && allIds.length) {
+    if (name !== undefined && allIds.length) {
         const previousGalerieId = allIds[allIds.length - 1];
         const previous = byId[previousGalerieId].hiddenName || '';
-        dispatch(setGaleriesAllIds({ allIds }, name));
+        const oldsAllIds = getState().galeries.allIds[name] || [];
+        const newAllIds = combineGaleriesAllIds(getState, oldsAllIds, allIds);
+        dispatch(setGaleriesAllIds(newAllIds, name));
         dispatch(updateGaleriesEnd(allIds.length < 20, name));
         dispatch(updateGaleriesPrevious(previous, name));
         dispatch(updateGaleriesStatusName('SUCCESS', name));

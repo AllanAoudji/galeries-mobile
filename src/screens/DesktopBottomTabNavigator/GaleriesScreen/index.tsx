@@ -74,7 +74,7 @@ const GaleriesScreen = () => {
         () => setSearchFinished(true),
         []
     );
-    const keyExtractor = React.useCallback((galerie) => galerie.id, []);
+    const keyExtractor = React.useCallback((item) => item, []);
 
     React.useEffect(() => {
         if (!galeries) {
@@ -87,6 +87,10 @@ const GaleriesScreen = () => {
             setShow(false);
         }
     }, [galeries, searchFinished]);
+
+    React.useEffect(() => {
+        if (galeriesNameStatus === 'PENDING') dispatch(getGaleries());
+    }, [galeriesNameStatus]);
 
     return (
         <Container>

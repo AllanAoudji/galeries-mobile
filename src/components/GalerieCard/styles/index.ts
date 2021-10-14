@@ -10,6 +10,8 @@ type DefaultCoverPictureProps = {
 
 const Container = styled(Animated.View)`
     height: ${() => `${GLOBAL_STYLE.GALERIE_MODAL_HEIGHT}px`};
+    background-color: red;
+    margin-bottom: 15px;
 `;
 const DefaultCoverPicture = styled(LinearGradient)<DefaultCoverPictureProps>`
     height: ${({ size }) => `${size}px`};

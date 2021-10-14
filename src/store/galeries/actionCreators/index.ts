@@ -139,9 +139,7 @@ export const resetGaleriesStatusName: () => Store.Action = () => ({
     type: GALERIES_STATUS_NAME_RESET,
 });
 export const setGaleriesAllIds: (
-    payload: {
-        allIds: string[];
-    },
+    payload: string[],
     name: string
 ) => Store.Action = (payload, name) => ({
     meta: { query: { name } },

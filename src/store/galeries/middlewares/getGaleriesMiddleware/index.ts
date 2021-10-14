@@ -24,7 +24,7 @@ const getGaleriesMiddleware: Middleware<{}, Store.Reducer> =
 
             dispatch(updateGaleriesStatusId('LOADING', action.payload));
             dispatchGetGalerie(dispatch, action.payload);
-        } else if (name) {
+        } else if (name !== undefined) {
             const end = getState().galeries.end[name] || false;
             const previous = getState().galeries.previous[name] || '';
             const status = getState().galeries.status.name[name] || 'PENDING';

@@ -14,6 +14,7 @@ const combineFramesAllIds = (
             new Date(framesById[a].createdAt).getTime()
         );
     });
+
     return allIds;
 };
 

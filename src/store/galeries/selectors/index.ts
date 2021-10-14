@@ -11,8 +11,9 @@ const selectGaleriesFilterGaleriesName = (state: Store.Reducer) =>
     state.galeries.filterName;
 const selectGaleriesNameAllId = createSelector(
     [selectGaleriesAllIds, selectGaleriesFilterGaleriesName],
-    (galeriesAllIds, galeriesFilterGaleriesName) =>
-        galeriesAllIds[galeriesFilterGaleriesName]
+    (galeriesAllIds, galeriesFilterGaleriesName) => {
+        return galeriesAllIds[galeriesFilterGaleriesName || ''];
+    }
 );
 
 export const selectCurrentGalerie = createSelector(
@@ -30,11 +31,8 @@ export const selectGalerie = (galerieId?: string | null) =>
         return byId[galerieId];
     });
 export const selectGaleries = createSelector(
-    [selectGaleriesNameAllId, selectGaleriesById],
-    (allIds, byId) => {
-        if (!allIds) return [];
-        return allIds.map((id) => byId[id]).filter((galerie) => !!galerie);
-    }
+    [selectGaleriesNameAllId],
+    (allIds) => allIds || []
 );
 export const selectGalerieStatus = (galerieId?: string) =>
     createSelector([selectGaleriesStatusId], (galeriesStatusId) => {
@@ -49,6 +47,9 @@ export const selectGaleriesLoadingPut = (state: Store.Reducer) =>
     state.galeries.loading.put;
 export const selectGaleriesNameStatus = createSelector(
     [selectGaleriesStatusName, selectGaleriesFilterGaleriesName],
-    (galeriesStatusName, galeriesFilterGaleriesName) =>
-        galeriesStatusName[galeriesFilterGaleriesName] || 'PENDING'
+    (galeriesStatusName, galeriesFilterGaleriesName) => {
+        return (
+            galeriesStatusName[galeriesFilterGaleriesName || ''] || 'PENDING'
+        );
+    }
 );
