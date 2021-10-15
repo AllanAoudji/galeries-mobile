@@ -6,6 +6,7 @@ import galeriesCurrentReducer from './galeriesCurrentReducer';
 import galeriesEndReducer from './galeriesEndReducer';
 import galeriesFieldsErrorReducer from './galeriesFieldsErrorReducer';
 import galeriesFilterNameReducer from './galeriesFilterNameReducer';
+import galeriesLoadingReducer from './galeriesLoadingReducer';
 import galeriesPreviousReducer from './galeriesPreviousReducer';
 import galeriesStatusReducer from './galeriesStatusReducer';
 
@@ -19,6 +20,7 @@ export const galeriesReducer = combineReducers({
     end: galeriesEndReducer,
     fieldsError: galeriesFieldsErrorReducer,
     filterName: galeriesFilterNameReducer,
+    loading: galeriesLoadingReducer,
     previous: galeriesPreviousReducer,
     status: galeriesStatusReducer,
 });

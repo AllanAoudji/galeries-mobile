@@ -68,14 +68,9 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
     }, [navigation]);
-    // TODO: need to trigger callback when postGalerie === success
-    const successCallback = React.useCallback(
-        () => navigation.navigate('Galerie'),
-        []
-    );
 
     React.useEffect(() => {
-        if (loading === 'SUCCESS') successCallback();
+        if (loading === 'SUCCESS') navigation.navigate('Galerie');
     }, [loading]);
 
     return (
