@@ -24,8 +24,14 @@ const PictogramContainer = styled.View`
     margin: 0 10px;
     opacity: 0.3;
 `;
+const QuitContainer = styled.Pressable`
+    align-items: center;
+    height: 32px;
+    justify-content: center;
+    width: 32px;
+`;
 const TextInputStyled = styled.TextInput`
     flex: 1;
 `;
 
-export { Container, PictogramContainer, TextInputStyled };
+export { Container, PictogramContainer, QuitContainer, TextInputStyled };

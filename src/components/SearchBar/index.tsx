@@ -2,7 +2,12 @@ import * as React from 'react';
 
 import Pictogram from '#components/Pictogram';
 
-import { Container, PictogramContainer, TextInputStyled } from './styles';
+import {
+    Container,
+    PictogramContainer,
+    QuitContainer,
+    TextInputStyled,
+} from './styles';
 
 type Props = {
     maxLength?: number;
@@ -18,6 +23,7 @@ type Props = {
 };
 
 const DELAY = 1000;
+const QUIT_CUSTOM_SIZE = { height: 11, width: 11 };
 
 const SearchBar = ({
     maxLength = 50,
@@ -43,6 +49,13 @@ const SearchBar = ({
         [onChangeText]
     );
 
+    const handleClear = React.useCallback(() => {
+        setValue('');
+        onChangeText('');
+        onStopTyping();
+        if (timer.current) clearTimeout(timer.current);
+    }, []);
+
     React.useEffect(
         () => () => {
             if (timer.current) clearTimeout(timer.current);
@@ -61,6 +74,11 @@ const SearchBar = ({
                 onChangeText={handleChangeText}
                 value={value}
             />
+            {value !== '' && (
+                <QuitContainer onPress={handleClear}>
+                    <Pictogram customSize={QUIT_CUSTOM_SIZE} variant="quit" />
+                </QuitContainer>
+            )}
         </Container>
     );
 };

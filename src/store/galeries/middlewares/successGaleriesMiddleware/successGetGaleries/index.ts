@@ -31,14 +31,20 @@ const successGetGaleries = (
         byId[galerie.id] = galerie;
     }
     dispatch(setGaleriesById(byId));
-    if (name !== undefined && allIds.length) {
-        const previousGalerieId = allIds[allIds.length - 1];
-        const previous = byId[previousGalerieId].hiddenName || '';
-        const oldsAllIds = getState().galeries.allIds[name] || [];
-        const newAllIds = combineGaleriesAllIds(getState, oldsAllIds, allIds);
-        dispatch(setGaleriesAllIds(newAllIds, name));
-        dispatch(updateGaleriesEnd(allIds.length < 20, name));
-        dispatch(updateGaleriesPrevious(previous, name));
+    if (name !== undefined) {
+        if (allIds.length) {
+            const previousGalerieId = allIds[allIds.length - 1];
+            const previous = byId[previousGalerieId].hiddenName || '';
+            const oldsAllIds = getState().galeries.allIds[name] || [];
+            const newAllIds = combineGaleriesAllIds(
+                getState,
+                oldsAllIds,
+                allIds
+            );
+            dispatch(setGaleriesAllIds(newAllIds, name));
+            dispatch(updateGaleriesEnd(allIds.length < 20, name));
+            dispatch(updateGaleriesPrevious(previous, name));
+        }
         dispatch(updateGaleriesStatusName('SUCCESS', name));
     }
     allIds.forEach((id) => {

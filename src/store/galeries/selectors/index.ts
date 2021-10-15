@@ -1,41 +1,42 @@
 import { createSelector } from 'reselect';
 
-const selectGaleriesAllIds = (state: Store.Reducer) => state.galeries.allIds;
-const selectGaleriesById = (state: Store.Reducer) => state.galeries.byId;
-const selectGaleriesCurrent = (state: Store.Reducer) => state.galeries.current;
-const selectGaleriesStatusName = (state: Store.Reducer) =>
+const galeriesAllIdsSelector = (state: Store.Reducer) => state.galeries.allIds;
+const galeriesByIdSelector = (state: Store.Reducer) => state.galeries.byId;
+const galeriesCurrentSelector = (state: Store.Reducer) =>
+    state.galeries.current;
+const GaleriesStatusNameSelector = (state: Store.Reducer) =>
     state.galeries.status.name;
-const selectGaleriesStatusId = (state: Store.Reducer) =>
+const galeriesStatusIdSelector = (state: Store.Reducer) =>
     state.galeries.status.id;
-const selectGaleriesFilterGaleriesName = (state: Store.Reducer) =>
+const galeriesFilterGaleriesNameSelector = (state: Store.Reducer) =>
     state.galeries.filterName;
-const selectGaleriesNameAllId = createSelector(
-    [selectGaleriesAllIds, selectGaleriesFilterGaleriesName],
+const galeriesNameAllIdSelector = createSelector(
+    [galeriesAllIdsSelector, galeriesFilterGaleriesNameSelector],
     (galeriesAllIds, galeriesFilterGaleriesName) => {
         return galeriesAllIds[galeriesFilterGaleriesName || ''];
     }
 );
 
 export const selectCurrentGalerie = createSelector(
-    [selectGaleriesById, selectGaleriesCurrent],
+    [galeriesByIdSelector, galeriesCurrentSelector],
     (galeriesById, galerieCurrent) =>
         galerieCurrent ? galeriesById[galerieCurrent] : undefined
 );
 export const selectGaleriesFieldsError = (state: Store.Reducer) =>
     state.galeries.fieldsError;
 export const selectGaleriesFilterName = (state: Store.Reducer) =>
-    state.galeries.filterName;
+    state.galeries.filterName || '';
 export const selectGalerie = (galerieId?: string | null) =>
-    createSelector([selectGaleriesById], (byId) => {
+    createSelector([galeriesByIdSelector], (byId) => {
         if (!galerieId) return undefined;
         return byId[galerieId];
     });
-export const selectGaleries = createSelector(
-    [selectGaleriesNameAllId],
+export const selectGaleriesAllIds = createSelector(
+    [galeriesNameAllIdSelector],
     (allIds) => allIds || []
 );
 export const selectGalerieStatus = (galerieId?: string) =>
-    createSelector([selectGaleriesStatusId], (galeriesStatusId) => {
+    createSelector([galeriesStatusIdSelector], (galeriesStatusId) => {
         if (!galerieId) return 'PENDING';
         return galeriesStatusId[galerieId] || 'PENDING';
     });
@@ -46,7 +47,7 @@ export const selectGaleriesLoadingPost = (state: Store.Reducer) =>
 export const selectGaleriesLoadingPut = (state: Store.Reducer) =>
     state.galeries.loading.put;
 export const selectGaleriesNameStatus = createSelector(
-    [selectGaleriesStatusName, selectGaleriesFilterGaleriesName],
+    [GaleriesStatusNameSelector, galeriesFilterGaleriesNameSelector],
     (galeriesStatusName, galeriesFilterGaleriesName) => {
         return (
             galeriesStatusName[galeriesFilterGaleriesName || ''] || 'PENDING'

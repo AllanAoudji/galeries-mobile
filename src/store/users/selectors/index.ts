@@ -22,17 +22,11 @@ export const selectCurrentGalerieUsersStatus = createSelector(
         return usersStatus[galeriesCurrent];
     }
 );
-export const selectGalerieUsersAllIds: (
-    galerieId: string
-) => OutputSelector<
-    Store.Reducer,
-    string[],
-    (res: { [key: string]: string[] }) => string[] | undefined
-> = (galerieId: string) =>
-    createSelector(
-        [usersAllIdsSelector],
-        (usersAllIds) => usersAllIds[galerieId]
-    );
+export const selectGalerieUsersAllIds = (galerieId?: string) =>
+    createSelector([usersAllIdsSelector], (usersAllIds) => {
+        if (!galerieId) return undefined;
+        return usersAllIds[galerieId] || [];
+    });
 export const selectGalerieUsersStatus: (
     galerieId: string
 ) => OutputSelector<
@@ -42,7 +36,7 @@ export const selectGalerieUsersStatus: (
 > = (galerieId: string) =>
     createSelector(
         [usersStatusSelector],
-        (usersStatus) => usersStatus[galerieId]
+        (usersStatus) => usersStatus[galerieId] || 'PENDING'
     );
 export const selectUser = (userId?: string | null) =>
     createSelector([usersByIdSelector], (usersById) => {
