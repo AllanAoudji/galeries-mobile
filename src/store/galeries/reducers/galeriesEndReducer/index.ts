@@ -10,15 +10,15 @@ const galeriesEndReducer = (state = initialState, action: Store.Action) => {
             return initialState;
         case GALERIES_END_UPDATE:
             if (
-                action.meta.query &&
-                action.meta.query.name &&
-                typeof action.payload === 'boolean'
+                !action.meta.query ||
+                action.meta.query.name === undefined ||
+                typeof action.payload !== 'boolean'
             )
-                return {
-                    ...state,
-                    [action.meta.query.name]: action.payload,
-                };
-            return state;
+                return state;
+            return {
+                ...state,
+                [action.meta.query.name]: action.payload,
+            };
         default:
             return state;
     }

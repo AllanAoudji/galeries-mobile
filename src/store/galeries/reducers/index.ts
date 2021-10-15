@@ -18,7 +18,7 @@ export const galeriesReducer = combineReducers({
     current: galeriesCurrentReducer,
     end: galeriesEndReducer,
     fieldsError: galeriesFieldsErrorReducer,
-    fileterName: galeriesFilterNameReducer,
+    filterName: galeriesFilterNameReducer,
     previous: galeriesPreviousReducer,
     status: galeriesStatusReducer,
 });

@@ -5,7 +5,7 @@ import {
     setLikesById,
 } from '#store/likes/actionCreators';
 import { updateFramesById } from '#store/frames';
-import combineLikesAllIds from '#store/combineAllIds/combineLikesAllIds';
+import { combineLikesAllIds } from '#store/combineAllIds';
 
 const successPostLikes = (
     dispatch: Dispatch<Store.Action>,

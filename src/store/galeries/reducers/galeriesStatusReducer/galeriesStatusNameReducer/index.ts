@@ -15,7 +15,7 @@ const galeriesStatusNameReducer = (
         case GALERIES_STATUS_NAME_UPDATE:
             if (
                 !action.meta.query ||
-                !action.meta.query.name ||
+                !action.meta.query.name === undefined ||
                 !checkIfStatus(action.payload)
             )
                 return state;

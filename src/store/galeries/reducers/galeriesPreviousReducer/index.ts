@@ -13,15 +13,15 @@ const galeriesPreviousReducer = (
             return initialState;
         case GALERIES_PREVIOUS_UPDATE:
             if (
-                action.meta.query &&
-                action.meta.query.name &&
-                typeof action.payload === 'string'
+                !action.meta.query ||
+                action.meta.query.name === undefined ||
+                typeof action.payload !== 'string'
             )
-                return {
-                    ...state,
-                    [action.meta.query.name]: action.payload,
-                };
-            return state;
+                return state;
+            return {
+                ...state,
+                [action.meta.query.name]: action.payload,
+            };
         default:
             return state;
     }

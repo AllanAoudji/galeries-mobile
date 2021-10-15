@@ -1,6 +1,6 @@
 import {
-    GALERIES_FIELDS_ERROR_RESET,
-    GALERIES_FIELDS_ERROR_UPDATE,
+    GALERIES_FILTER_NAME_RESET,
+    GALERIES_FILTER_NAME_UPDATE,
 } from '#store/galeries/actionTypes';
 
 const intialState: string = '';
@@ -9,9 +9,9 @@ const galeriesFilterNameReducer = (
     action: Store.Action
 ) => {
     switch (action.type) {
-        case GALERIES_FIELDS_ERROR_RESET:
+        case GALERIES_FILTER_NAME_RESET:
             return intialState;
-        case GALERIES_FIELDS_ERROR_UPDATE:
+        case GALERIES_FILTER_NAME_UPDATE:
             if (typeof action.payload === 'string') return action.payload;
             return state;
         default:

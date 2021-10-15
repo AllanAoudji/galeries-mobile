@@ -8,31 +8,25 @@ const usersStatusSelector = (state: Store.Reducer) => state.users.status;
 
 export const selectUsersCurrent = (state: Store.Reducer) => state.users.current;
 
-export const selectCurrentGalerieAllIds = createSelector(
+export const selectCurrentGalerieUsersAllIds = createSelector(
     [galeriesCurrentSelector, usersAllIdsSelector],
     (galeriesCurrent, usersAllIds) => {
         if (!galeriesCurrent) return undefined;
         return usersAllIds[galeriesCurrent];
     }
 );
-export const selectCurrentGalerieStatus = createSelector(
+export const selectCurrentGalerieUsersStatus = createSelector(
     [galeriesCurrentSelector, usersStatusSelector],
     (galeriesCurrent, usersStatus) => {
         if (!galeriesCurrent) return undefined;
         return usersStatus[galeriesCurrent];
     }
 );
-export const selectGalerieUsersAllIds: (
-    galerieId: string
-) => OutputSelector<
-    Store.Reducer,
-    string[],
-    (res: { [key: string]: string[] }) => string[] | undefined
-> = (galerieId: string) =>
-    createSelector(
-        [usersAllIdsSelector],
-        (usersAllIds) => usersAllIds[galerieId]
-    );
+export const selectGalerieUsersAllIds = (galerieId?: string) =>
+    createSelector([usersAllIdsSelector], (usersAllIds) => {
+        if (!galerieId) return undefined;
+        return usersAllIds[galerieId] || [];
+    });
 export const selectGalerieUsersStatus: (
     galerieId: string
 ) => OutputSelector<
@@ -42,7 +36,7 @@ export const selectGalerieUsersStatus: (
 > = (galerieId: string) =>
     createSelector(
         [usersStatusSelector],
-        (usersStatus) => usersStatus[galerieId]
+        (usersStatus) => usersStatus[galerieId] || 'PENDING'
     );
 export const selectUser = (userId?: string | null) =>
     createSelector([usersByIdSelector], (usersById) => {

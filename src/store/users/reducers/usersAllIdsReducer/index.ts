@@ -27,7 +27,7 @@ const usersAllIdsReducer = (state = initialState, action: Store.Action) => {
         }
         case USERS_ALL_IDS_RESET:
             return initialState;
-        case USERS_ALL_IDS_SET:
+        case USERS_ALL_IDS_SET: {
             if (!checkIfAllIds(action.payload)) return state;
             if (action.meta.query && action.meta.query.galerieId)
                 return {
@@ -36,6 +36,7 @@ const usersAllIdsReducer = (state = initialState, action: Store.Action) => {
                 };
 
             return { ...state, '': action.payload };
+        }
         default:
             return state;
     }

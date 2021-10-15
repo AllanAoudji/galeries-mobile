@@ -12,6 +12,7 @@ import {
     updateUsersStatus,
     updateUsersPrevious,
 } from '#store/users/actionCreators';
+import { combineUsersAllIds } from '#store/combineAllIds';
 
 const successGetUsers = (
     dispatch: Dispatch<Store.Action>,
@@ -35,24 +36,30 @@ const successGetUsers = (
         byId[user.id] = user;
     }
 
-    if (!allIds.length) return;
+    if (allIds.length) {
+        dispatch(setUsersById(byId));
+        const previousUserId = allIds[allIds.length - 1];
+        const previous = byId[previousUserId].userName || '';
 
-    dispatch(setUsersById(byId));
+        if (galerieId) {
+            const oldAllIds = getState().users.allIds[galerieId] || [];
+            const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
 
-    const previousUserId = allIds[allIds.length - 1];
-    const previous = byId[previousUserId].userName || '';
+            dispatch(setGalerieUsersAllIds(galerieId, newAllIds));
+            dispatch(updateGalerieUsersEnd(galerieId, allIds.length < 20));
+            dispatch(updateGalerieUsersPrevious(galerieId, previous));
+        } else {
+            const oldAllIds = getState().users.allIds[''] || [];
+            const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
 
-    if (galerieId) {
-        dispatch(setGalerieUsersAllIds(galerieId, allIds));
-        dispatch(updateGalerieUsersEnd(galerieId, allIds.length < 20));
-        dispatch(updateGalerieUsersPrevious(galerieId, previous));
-        dispatch(updateGalerieUsersStatus(galerieId, 'SUCCESS'));
-    } else {
-        dispatch(setUsersAllIds(allIds));
-        dispatch(updateUsersEnd(allIds.length < 20));
-        dispatch(updateUsersStatus('SUCCESS'));
-        dispatch(updateUsersPrevious(previous));
+            dispatch(setUsersAllIds(newAllIds));
+            dispatch(updateUsersEnd(allIds.length < 20));
+            dispatch(updateUsersPrevious(previous));
+        }
     }
+
+    if (galerieId) dispatch(updateGalerieUsersStatus(galerieId, 'SUCCESS'));
+    else dispatch(updateUsersStatus('SUCCESS'));
 
     allIds.forEach((id) => {
         const profilePicture = getState().profilePictures.id[id];
