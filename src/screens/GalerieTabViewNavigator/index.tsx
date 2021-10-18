@@ -13,24 +13,21 @@ import {
     SceneRendererProps,
     TabView,
 } from 'react-native-tab-view';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { Pictogram } from '#components';
 import clamp from '#helpers/clamp';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize } from '#hooks';
+import { selectCurrentGalerie } from '#store/galeries';
 
 import FramesScreen from './FramesScreen';
 import Header from './Header';
 import InvitationsScreen from './InvitationsScreen';
 import OptionsScreen from './OptionsScreen';
 import UsersScreen from './UsersScreen';
-import {
-    AbsoluteCoverPicture,
-    AbsoluteTopContainer,
-    Container,
-} from './styles';
-import { selectCurrentGalerie, updateGaleriesCurrent } from '#store/galeries';
+import AbsoluteHeader from './AbsoluteHeader';
+
+import { Container } from './styles';
 
 const routes = [
     {
@@ -52,7 +49,6 @@ const routes = [
 ];
 
 const GalerieTabViewNavigator = () => {
-    const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
 
@@ -66,7 +62,6 @@ const GalerieTabViewNavigator = () => {
         index: 0,
         routes,
     });
-    const [reset, setReset] = React.useState<boolean>(false);
 
     const maxScroll = React.useMemo(
         () =>
@@ -99,13 +94,6 @@ const GalerieTabViewNavigator = () => {
         navigation
             .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
             .navigate('CreateFrame', { screen: 'AddPictures' });
-    }, [navigation]);
-    const onPressBack = React.useCallback(() => {
-        setReset(true);
-        dispatch(updateGaleriesCurrent(null));
-        if (navigation.canGoBack()) {
-            navigation.goBack();
-        } else navigation.navigate('Home');
     }, [navigation]);
     const onIndexChange = React.useCallback((index: number) => {
         setNavigationState({
@@ -186,35 +174,9 @@ const GalerieTabViewNavigator = () => {
         [galerie, onLayoutContainer, onLayoutInfo]
     );
 
-    // Cleaner
-    React.useEffect(() => {
-        if (reset) setReset(false);
-        return () => {
-            if (reset) {
-                // TODO: if currentGalerie.id change =>
-                scrollY.value = 0;
-                setNavigationState({ index: 0, routes });
-            }
-        };
-    }, [reset]);
-
-    // TODO: reset paddingTop when currentFrame change
-
     return (
         <Container>
-            <AbsoluteTopContainer currentHeight={StatusBar.currentHeight}>
-                {/* TODO: should be an animated view */}
-                {/* Should contain coverpicture and change his opacity */}
-                <AbsoluteCoverPicture />
-                <Pictogram
-                    color="secondary-light"
-                    height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
-                    onPress={onPressBack}
-                    pl="small"
-                    pr="small"
-                    variant="arrow-left"
-                />
-            </AbsoluteTopContainer>
+            <AbsoluteHeader />
             <TabView
                 navigationState={navigationState}
                 onIndexChange={onIndexChange}

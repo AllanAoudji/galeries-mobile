@@ -44,7 +44,6 @@ const FramesScreen = ({
     );
 
     React.useEffect(() => {
-        console.log(framesStatus, galerie?.id);
         if (framesStatus && framesStatus === 'PENDING' && galerie)
             dispatch(getGalerieFrames(galerie.id));
     }, [framesStatus, galerie]);
