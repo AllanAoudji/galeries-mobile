@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import BottomSheetButton from '#components/BottomSheetButton';
-import { BottomSheetContext } from '#contexts/BottomSheetContext';
+import { Typography } from '#components';
 import { selectGalerie } from '#store/galeries';
 import {
     putGaleriePicture,
@@ -10,6 +9,8 @@ import {
     selectGalerieCoverPictureId,
     selectGaleriePicture,
 } from '#store/galeriePictures';
+
+import { Button } from './styles';
 
 type Props = {
     currentIndex: number;
@@ -24,8 +25,6 @@ const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
         [frame]
     );
     const coverPictureId = useSelector(coverPictureIdSelector);
-
-    const { closeBottomSheet } = React.useContext(BottomSheetContext);
 
     const galerieSelector = React.useMemo(
         () => selectGalerie(frame ? frame.galerieId : null),
@@ -56,7 +55,6 @@ const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
                 putGaleriePicture(frame.id, galeriePicturesAllIds[currentIndex])
             );
         }
-        closeBottomSheet();
     }, [currentIndex, frame, galeriePicturesAllIds]);
 
     const text = React.useMemo(() => {
@@ -71,7 +69,11 @@ const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
 
     if (!galerie || galerie.role === 'user') return null;
 
-    return <BottomSheetButton onPress={handlePress} title={text} />;
+    return (
+        <Button onPress={handlePress}>
+            <Typography fontSize={18}>{text}</Typography>
+        </Button>
+    );
 };
 
-export default UseAsCoverPictureButton;
+export default React.memo(UseAsCoverPictureButton);

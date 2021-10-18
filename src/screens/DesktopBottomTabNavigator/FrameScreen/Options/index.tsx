@@ -24,6 +24,7 @@ import {
 } from './styles';
 
 type Props = {
+    currentIndex: number;
     description: string;
     frame: Store.Models.Frame;
     onPress: () => void;
@@ -31,7 +32,14 @@ type Props = {
     show: boolean;
 };
 
-const Options = ({ description, frame, onPress, onPressBack, show }: Props) => {
+const Options = ({
+    currentIndex,
+    description,
+    frame,
+    onPress,
+    onPressBack,
+    show,
+}: Props) => {
     const [open, setOpen] = React.useState(show);
 
     const display = useSharedValue(show ? 1 : 0);
@@ -79,7 +87,7 @@ const Options = ({ description, frame, onPress, onPressBack, show }: Props) => {
                     />
                 </HeaderContainer>
                 <FooterContainer>
-                    <Buttons frameId={frame.id} />
+                    <Buttons currentIndex={currentIndex} frame={frame} />
                     {!!description && (
                         <>
                             <DescriptionContainer>

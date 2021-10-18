@@ -20,18 +20,25 @@ import { Container } from './styles';
 
 type Props = {
     allIds: string[];
+    frame: Store.Models.Frame;
+    currentIndex: number;
     onPress: () => void;
+    setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const keyExtractor: ((item: string, index: number) => string) | undefined = (
     item
 ) => item;
 
-const Carousel = ({ allIds, onPress }: Props) => {
+const Carousel = ({
+    allIds,
+    frame,
+    currentIndex,
+    onPress,
+    setCurrentIndex,
+}: Props) => {
     const dimension = useWindowDimensions();
     const current = useSharedValue(0);
-
-    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
 
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (e) => {
@@ -42,9 +49,14 @@ const Carousel = ({ allIds, onPress }: Props) => {
     });
 
     const renderItem: ListRenderItem<string> | null | undefined =
-        React.useCallback(({ item }) => {
-            return <RenderItem item={item} onPress={onPress} />;
-        }, []);
+        React.useCallback(
+            ({ item }) => {
+                return (
+                    <RenderItem frame={frame} item={item} onPress={onPress} />
+                );
+            },
+            [frame]
+        );
 
     return (
         <Container>
@@ -72,4 +84,4 @@ const Carousel = ({ allIds, onPress }: Props) => {
     );
 };
 
-export default Carousel;
+export default React.memo(Carousel);

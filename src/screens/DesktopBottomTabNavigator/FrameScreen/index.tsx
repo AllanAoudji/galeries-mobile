@@ -41,6 +41,7 @@ const FrameScreen = ({ navigation }: Props) => {
     );
     const galeriePicturesStatus = useSelector(galeriePicturesStatusSelector);
 
+    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
     const [showOptions, setShowOptions] = React.useState<boolean>(false);
 
     const handleShowOptions = React.useCallback(() => setShowOptions(true), []);
@@ -78,12 +79,16 @@ const FrameScreen = ({ navigation }: Props) => {
             {galeriePicturesAllIds ? (
                 <Carousel
                     allIds={galeriePicturesAllIds}
+                    frame={currentFrame}
+                    currentIndex={currentIndex}
                     onPress={handleShowOptions}
+                    setCurrentIndex={setCurrentIndex}
                 />
             ) : (
                 <ActivityIndicator color={theme.colors.black} />
             )}
             <Options
+                currentIndex={currentIndex}
                 description={currentFrame.description}
                 frame={currentFrame}
                 onPressBack={handlePressBack}

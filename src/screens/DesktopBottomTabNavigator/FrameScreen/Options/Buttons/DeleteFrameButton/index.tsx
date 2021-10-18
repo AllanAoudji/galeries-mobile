@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import BottomSheetButton from '#components/BottomSheetButton';
-import { BottomSheetContext } from '#contexts/BottomSheetContext';
+import { Typography } from '#components';
 import { DeleteFrameModalContext } from '#contexts/DeleteFrameModalContext';
 import { selectGalerie } from '#store/galeries';
+
+import { Button } from './styles';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -12,7 +13,6 @@ type Props = {
 };
 
 const DeleteFrameButton = ({ frame, me }: Props) => {
-    const { closeBottomSheet } = React.useContext(BottomSheetContext);
     const { handleOpenModal } = React.useContext(DeleteFrameModalContext);
 
     const galerieSelector = React.useMemo(
@@ -23,14 +23,17 @@ const DeleteFrameButton = ({ frame, me }: Props) => {
 
     const handlePress = React.useCallback(() => {
         handleOpenModal(frame.id);
-        closeBottomSheet();
     }, [frame]);
 
     if (!galerie || !me) return null;
     if (galerie.role === 'user') return null;
     if (frame.userId !== me.id) return null;
 
-    return <BottomSheetButton onPress={handlePress} title="delete frame" />;
+    return (
+        <Button onPress={handlePress}>
+            <Typography fontSize={18}>delete frame</Typography>
+        </Button>
+    );
 };
 
 export default React.memo(DeleteFrameButton);

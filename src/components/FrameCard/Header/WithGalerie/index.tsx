@@ -45,14 +45,14 @@ const WithGalerie = ({ frame }: Props) => {
             <TextsContainer>
                 {!!galerie && (
                     <TextContainer pb>
-                        <Typography>Posted on </Typography>
+                        <Typography fontFamily="light">Posted on </Typography>
                         <Typography>
                             {galerie ? galerie.name : 'galerie not found'}
                         </Typography>
                     </TextContainer>
                 )}
                 <TextContainer>
-                    <Typography>By </Typography>
+                    <Typography fontFamily="light">By </Typography>
                     <Typography>
                         {user ? user.pseudonym : 'user not found'}
                     </Typography>

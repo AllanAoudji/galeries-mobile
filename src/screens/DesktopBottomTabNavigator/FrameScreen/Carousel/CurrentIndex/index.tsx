@@ -23,4 +23,4 @@ const CurrentIndex = ({ current, numOfImages }: Props) => {
     );
 };
 
-export default CurrentIndex;
+export default React.memo(CurrentIndex);
