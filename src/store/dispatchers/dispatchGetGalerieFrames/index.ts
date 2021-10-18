@@ -18,7 +18,7 @@ const dispatchGetGalerieFrames: (
                 query: { galerieId },
                 entity: FRAMES,
                 method: 'GET',
-                url: `${END_POINT.GALERIES}/${galerieId}/${END_POINT.FRAMES}${query}`,
+                url: `${END_POINT.GALERIES}${galerieId}${END_POINT.FRAMES}${query}`,
             },
             payload: {},
         })

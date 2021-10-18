@@ -122,6 +122,7 @@ const GalerieTabViewNavigator = () => {
                             handleNavigateToCreateGalerieScreen={
                                 handleNavigateToCreateGalerieScreen
                             }
+                            galerie={galerie}
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }
@@ -159,7 +160,12 @@ const GalerieTabViewNavigator = () => {
                     return null;
             }
         },
-        [scrollHandler, sizeContainer, handleNavigateToCreateGalerieScreen]
+        [
+            galerie,
+            scrollHandler,
+            sizeContainer,
+            handleNavigateToCreateGalerieScreen,
+        ]
     );
     const renderTabBar = React.useCallback(
         (
