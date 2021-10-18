@@ -7,6 +7,7 @@ import { selectGalerie } from '#store/galeries';
 import {
     putGaleriePicture,
     selectFrameGaleriePicturesAllIds,
+    selectGalerieCoverPictureId,
     selectGaleriePicture,
 } from '#store/galeriePictures';
 
@@ -17,6 +18,12 @@ type Props = {
 
 const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
     const dispatch = useDispatch();
+
+    const coverPictureIdSelector = React.useMemo(
+        () => selectGalerieCoverPictureId(frame.galerieId),
+        [frame]
+    );
+    const coverPictureId = useSelector(coverPictureIdSelector);
 
     const { closeBottomSheet } = React.useContext(BottomSheetContext);
 
@@ -53,10 +60,14 @@ const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
     }, [currentIndex, frame, galeriePicturesAllIds]);
 
     const text = React.useMemo(() => {
-        if (galeriePicture && galeriePicture.current)
+        if (
+            coverPictureId &&
+            galeriePicture &&
+            galeriePicture.id === coverPictureId
+        )
             return 'remove this cover picture';
         return 'use as cover picture';
-    }, [galeriePicture]);
+    }, [coverPictureId, galeriePicture]);
 
     if (!galerie || galerie.role === 'user') return null;
 
