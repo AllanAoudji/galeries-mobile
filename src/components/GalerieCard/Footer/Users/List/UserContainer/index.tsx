@@ -21,4 +21,4 @@ const UserContainer = ({ userId }: Props) => {
     );
 };
 
-export default UserContainer;
+export default React.memo(UserContainer);
