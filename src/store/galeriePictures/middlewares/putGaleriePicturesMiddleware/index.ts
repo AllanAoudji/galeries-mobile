@@ -12,7 +12,6 @@ const putGaleriePicturesMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== GALERIE_PICTURES_PUT) return;
 
-        console.log(action);
         const frameId = action.meta.query
             ? action.meta.query.frameId
             : undefined;
