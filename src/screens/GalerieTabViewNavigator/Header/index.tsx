@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StatusBar, View } from 'react-native';
+import { LayoutChangeEvent, StatusBar } from 'react-native';
 import {
     NavigationState,
     Route,
@@ -7,9 +7,14 @@ import {
 } from 'react-native-tab-view';
 import { useTheme } from 'styled-components/native';
 
-import Animated from 'react-native-reanimated';
+import Animated, {
+    interpolate,
+    useAnimatedStyle,
+} from 'react-native-reanimated';
 import { Typography, Pictogram } from '#components';
 import convertPixelToNum from '#helpers/convertPixelToNum';
+
+import GalerieCoverPicture from './GalerieCoverPicture';
 
 import {
     Container,
@@ -19,43 +24,64 @@ import {
     EditPictogramContainer,
     TabbarContainer,
     TabbarStyled,
+    TitleContainer,
+    TypographyContainer,
 } from './styles';
 
 type Props = SceneRendererProps & {
-    containerStyle: { [key: string]: any };
     description?: string;
-    informationStyle: { [key: string]: any };
+    maxScroll: number;
     name?: string;
     navigationState: NavigationState<Route>;
     onLayoutContainer: (event: LayoutChangeEvent) => void;
     onLayoutInfo: (event: LayoutChangeEvent) => void;
+    scrollY: Animated.SharedValue<number>;
 };
 
 const GalerieTabbarNavigator = ({
     description,
-    informationStyle,
+    maxScroll,
     name,
     onLayoutContainer,
     onLayoutInfo,
-    containerStyle,
+    scrollY,
     ...props
 }: Props) => {
     const theme = useTheme();
 
+    const containerStyle = useAnimatedStyle(() => {
+        const translateY = interpolate(
+            scrollY.value,
+            [0, maxScroll],
+            [0, -maxScroll]
+        );
+        return { transform: [{ translateY }] };
+    }, [maxScroll]);
+    const coverPictureContainerStyle = useAnimatedStyle(() => {
+        const borderBottomRightRadius = interpolate(
+            scrollY.value,
+            [0, -(maxScroll / 2), -maxScroll],
+            [45, 45, 0]
+        );
+        return { borderBottomRightRadius };
+    }, [maxScroll]);
+    const titleContainerStyle = useAnimatedStyle(() => {
+        const opacity = interpolate(
+            scrollY.value,
+            [0, -(maxScroll / 2), -maxScroll],
+            [1, 1, 0]
+        );
+        return { opacity };
+    }, [maxScroll]);
+
     return (
         <Container onLayout={onLayoutContainer} style={containerStyle}>
-            <Animated.View onLayout={onLayoutInfo} style={informationStyle}>
-                <CoverPictureContainer>
+            <Animated.View onLayout={onLayoutInfo}>
+                <CoverPictureContainer style={coverPictureContainerStyle}>
                     <DarkBackground currentHeight={StatusBar.currentHeight}>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                paddingRight: 30,
-                                alignItems: 'center',
-                            }}
-                        >
-                            <View style={{ maxWidth: '80%' }}>
+                        <GalerieCoverPicture />
+                        <TitleContainer style={titleContainerStyle}>
+                            <TypographyContainer>
                                 <Typography
                                     color="secondary-light"
                                     fontFamily="bold"
@@ -63,14 +89,14 @@ const GalerieTabbarNavigator = ({
                                 >
                                     {name}
                                 </Typography>
-                            </View>
+                            </TypographyContainer>
                             <EditPictogramContainer>
                                 <Pictogram
                                     color="secondary-light"
                                     variant="edit-fill"
                                 />
                             </EditPictogramContainer>
-                        </View>
+                        </TitleContainer>
                     </DarkBackground>
                 </CoverPictureContainer>
                 {!!description && (

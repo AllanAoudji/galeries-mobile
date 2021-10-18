@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { StatusBar } from 'react-native';
 import {
-    interpolate,
     useAnimatedScrollHandler,
-    useAnimatedStyle,
     useSharedValue,
 } from 'react-native-reanimated';
 import {
@@ -58,7 +56,6 @@ const GalerieTabViewNavigator = () => {
         index: 0,
         routes,
     });
-
     const maxScroll = React.useMemo(
         () =>
             (sizeInfo ? sizeInfo.height : 0) -
@@ -66,26 +63,12 @@ const GalerieTabViewNavigator = () => {
             GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT,
         [sizeInfo]
     );
-
     const scrollY = useSharedValue(0);
     const scrollHandler = useAnimatedScrollHandler({
         onScroll: (e) => {
             scrollY.value = clamp(e.contentOffset.y, 0, maxScroll);
         },
     });
-    const informationStyle = useAnimatedStyle(() => {
-        const opacity = interpolate(scrollY.value, [0, maxScroll / 2], [1, 0]);
-        return { opacity };
-    }, [maxScroll]);
-    const style = useAnimatedStyle(() => {
-        const translateY = interpolate(
-            scrollY.value,
-            [0, maxScroll],
-            [0, -maxScroll]
-        );
-        return { transform: [{ translateY }] };
-    }, [maxScroll]);
-
     const onIndexChange = React.useCallback((index: number) => {
         setNavigationState({
             index,
@@ -145,12 +128,12 @@ const GalerieTabViewNavigator = () => {
             }
         ) => (
             <Header
-                containerStyle={style}
                 description={galerie ? galerie.description : undefined}
-                informationStyle={informationStyle}
+                maxScroll={maxScroll}
                 name={galerie ? galerie.name : undefined}
                 onLayoutContainer={onLayoutContainer}
                 onLayoutInfo={onLayoutInfo}
+                scrollY={scrollY}
                 {...props}
             />
         ),

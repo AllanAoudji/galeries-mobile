@@ -2,19 +2,18 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import ProfilePicture from '#components/ProfilePicture';
+import GalerieCoverPicture from '#components/GalerieCoverPicture';
 import Typography from '#components/Typography';
 import { selectGalerie } from '#store/galeries';
 import { selectUser } from '#store/users';
 
-import GalerieCoverPicture from './GalerieCoverPicture';
-
 import {
     Container,
-    CoverPictureContainer,
     ProfilePictureContainer,
     TextContainer,
     TextsContainer,
 } from './styles';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -33,11 +32,11 @@ const WithGalerie = ({ frame }: Props) => {
     return (
         <>
             <Container>
-                {!!galerie && (
-                    <CoverPictureContainer>
-                        <GalerieCoverPicture galerie={galerie} />
-                    </CoverPictureContainer>
-                )}
+                <GalerieCoverPicture
+                    borderRadius={5}
+                    galerie={galerie}
+                    size={GLOBAL_STYLE.FRAME_COVER_PICTURE_SIZE}
+                />
                 <ProfilePictureContainer>
                     <ProfilePicture border user={user} />
                 </ProfilePictureContainer>

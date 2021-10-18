@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 import { Typography } from '#components';
 import { selectCurrentGalerie } from '#store/galeries';
 
-import GalerieCoverPicture from './GalerieCoverPicture';
-
 import { Container, TextContainer } from './styles';
 
 type Props = {
@@ -17,7 +15,6 @@ const AbsoluteGalerieCoverPicture = ({ style }: Props) => {
 
     return (
         <Container style={style}>
-            <GalerieCoverPicture galerie={galerie} />
             {galerie && (
                 <TextContainer>
                     <Typography color="secondary-light" fontSize={24}>

@@ -33,7 +33,11 @@ const AbsoluteHeader = ({ maxScroll, scrollY }: Props) => {
     }, [navigation]);
 
     const style = useAnimatedStyle(() => {
-        const opacity = interpolate(scrollY.value, [0, maxScroll], [0, 0.8]);
+        const opacity = interpolate(
+            scrollY.value,
+            [0, maxScroll / 2, maxScroll],
+            [0, 0, 1]
+        );
         return { opacity };
     }, [maxScroll]);
 

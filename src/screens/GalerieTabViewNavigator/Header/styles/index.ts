@@ -17,17 +17,13 @@ const Container = styled(Animated.View)`
     top: 0;
     z-index: 1;
 `;
-// TODO: Should be a LinearGradiant
-const CoverPictureContainer = styled.View`
-    border-bottom-right-radius: 45px;
+const CoverPictureContainer = styled(Animated.View)`
     height: ${() => `${GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE}px`};
     overflow: hidden;
 `;
 const DarkBackground = styled.View<DarkBackgroundProps>`
     background-color: rgba(0, 0, 0, 0.2);
-    padding: ${({ currentHeight, theme }) =>
-        `${currentHeight || 0}px ${theme.spacings.small} 6px`};
-    justify-content: flex-end;
+    justify-content: center;
     flex: 1;
 `;
 const DescriptionContainer = styled.View`
@@ -44,6 +40,19 @@ const TabbarStyled = styled(TabBar)`
     background-color: transparent;
     padding-top: ${({ theme }) => theme.spacings.smallest};
 `;
+const TitleContainer = styled(Animated.View)`
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: ${({ theme }) => theme.spacings.small};
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: 0 30px 15px;
+`;
+const TypographyContainer = styled.View`
+    max-width: 80%;
+`;
 
 export {
     Container,
@@ -53,4 +62,6 @@ export {
     EditPictogramContainer,
     TabbarContainer,
     TabbarStyled,
+    TitleContainer,
+    TypographyContainer,
 };
