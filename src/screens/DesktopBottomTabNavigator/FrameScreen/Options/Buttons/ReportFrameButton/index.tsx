@@ -29,4 +29,4 @@ const ReportFrameButton = ({ frame, me }: Props) => {
     );
 };
 
-export default ReportFrameButton;
+export default React.memo(ReportFrameButton);

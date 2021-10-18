@@ -40,7 +40,11 @@ const RenderItem = ({ current, index, item }: Props) => {
     });
 
     const source: ImageSourcePropType = React.useMemo(
-        () => ({ uri: galeriePicture.originalImage.cachedSignedUrl }),
+        () => ({
+            uri: galeriePicture
+                ? galeriePicture.originalImage.cachedSignedUrl
+                : '',
+        }),
         []
     );
 
@@ -53,4 +57,4 @@ const RenderItem = ({ current, index, item }: Props) => {
     );
 };
 
-export default RenderItem;
+export default React.memo(RenderItem);

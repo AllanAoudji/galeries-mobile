@@ -20,6 +20,7 @@ import { Container } from './styles';
 
 type Props = {
     allIds: string[];
+    frame: Store.Models.Frame;
     currentIndex: number;
     onPress: () => void;
     setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -31,6 +32,7 @@ const keyExtractor: ((item: string, index: number) => string) | undefined = (
 
 const Carousel = ({
     allIds,
+    frame,
     currentIndex,
     onPress,
     setCurrentIndex,
@@ -47,9 +49,14 @@ const Carousel = ({
     });
 
     const renderItem: ListRenderItem<string> | null | undefined =
-        React.useCallback(({ item }) => {
-            return <RenderItem item={item} onPress={onPress} />;
-        }, []);
+        React.useCallback(
+            ({ item }) => {
+                return (
+                    <RenderItem frame={frame} item={item} onPress={onPress} />
+                );
+            },
+            [frame]
+        );
 
     return (
         <Container>
@@ -77,4 +84,4 @@ const Carousel = ({
     );
 };
 
-export default Carousel;
+export default React.memo(Carousel);

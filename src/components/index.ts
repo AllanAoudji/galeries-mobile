@@ -5,6 +5,7 @@ export { default as BottomLoader } from './BottomLoader';
 export { default as BottomSheetButton } from './BottomSheetButton';
 export { default as CommentButton } from './CommentButton';
 export { default as CommentCard } from './CommentCard';
+export { default as CoverPictureBookMark } from './CoverPictureBookMark';
 export { default as CustomButton } from './CustomButton';
 export { default as CustomCamera } from './CustomCamera';
 export { default as CustomTextInput } from './CustomTextInput';

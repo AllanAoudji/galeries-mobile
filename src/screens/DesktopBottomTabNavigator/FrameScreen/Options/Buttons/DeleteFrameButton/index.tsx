@@ -36,4 +36,4 @@ const DeleteFrameButton = ({ frame, me }: Props) => {
     );
 };
 
-export default DeleteFrameButton;
+export default React.memo(DeleteFrameButton);

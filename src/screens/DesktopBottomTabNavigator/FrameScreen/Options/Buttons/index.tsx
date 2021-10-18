@@ -31,4 +31,4 @@ const Buttons = ({ currentIndex, frame }: Props) => {
     );
 };
 
-export default Buttons;
+export default React.memo(Buttons);

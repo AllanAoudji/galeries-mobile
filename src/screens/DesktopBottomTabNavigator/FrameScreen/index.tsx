@@ -79,6 +79,7 @@ const FrameScreen = ({ navigation }: Props) => {
             {galeriePicturesAllIds ? (
                 <Carousel
                     allIds={galeriePicturesAllIds}
+                    frame={currentFrame}
                     currentIndex={currentIndex}
                     onPress={handleShowOptions}
                     setCurrentIndex={setCurrentIndex}

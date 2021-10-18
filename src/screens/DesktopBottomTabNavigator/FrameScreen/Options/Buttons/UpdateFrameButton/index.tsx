@@ -31,4 +31,4 @@ const UpdateFrameButton = ({ frame, me }: Props) => {
     );
 };
 
-export default UpdateFrameButton;
+export default React.memo(UpdateFrameButton);

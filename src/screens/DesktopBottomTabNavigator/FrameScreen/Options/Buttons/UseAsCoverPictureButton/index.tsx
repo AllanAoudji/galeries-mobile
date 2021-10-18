@@ -76,4 +76,4 @@ const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
     );
 };
 
-export default UseAsCoverPictureButton;
+export default React.memo(UseAsCoverPictureButton);
