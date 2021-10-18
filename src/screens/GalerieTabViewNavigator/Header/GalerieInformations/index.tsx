@@ -20,8 +20,8 @@ const GalerieInformations = ({
 }: Props) => {
     return (
         <Animated.View onLayout={onLayout}>
-            <Footer galerie={galerie} />
             <Header galerie={galerie} maxScroll={maxScroll} scrollY={scrollY} />
+            <Footer galerie={galerie} />
         </Animated.View>
     );
 };

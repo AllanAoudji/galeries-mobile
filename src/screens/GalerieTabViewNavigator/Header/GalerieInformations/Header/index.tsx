@@ -23,7 +23,7 @@ const Header = ({ galerie, maxScroll, scrollY }: Props) => {
     const containerStyle = useAnimatedStyle(() => {
         const borderBottomRightRadius = interpolate(
             scrollY.value,
-            [0, -(maxScroll / 2), -maxScroll],
+            [0, maxScroll / 2, maxScroll],
             [45, 45, 0]
         );
         return { borderBottomRightRadius };
@@ -31,7 +31,7 @@ const Header = ({ galerie, maxScroll, scrollY }: Props) => {
     const titleContainerStyle = useAnimatedStyle(() => {
         const opacity = interpolate(
             scrollY.value,
-            [0, -(maxScroll / 2), -maxScroll],
+            [0, maxScroll / 2, maxScroll],
             [1, 1, 0]
         );
         return { opacity };
