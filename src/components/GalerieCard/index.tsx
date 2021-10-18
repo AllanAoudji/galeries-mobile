@@ -35,4 +35,4 @@ const GalerieCard = ({ galerie }: Props) => {
     );
 };
 
-export default GalerieCard;
+export default React.memo(GalerieCard);

@@ -15,4 +15,4 @@ const RenderItem = ({ item }: Props) => {
     return <GalerieCard galerie={galerie} />;
 };
 
-export default RenderItem;
+export default React.memo(RenderItem);

@@ -63,6 +63,7 @@ const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
             extraData={allIds}
             getItemLayout={getItemLayout}
             keyExtractor={keyExtractor}
+            initialNumToRender={5}
             keyboardShouldPersistTaps="handled"
             maxToRenderPerBatch={4}
             onEndReached={handleEndReached}
@@ -73,6 +74,8 @@ const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}
+            updateCellsBatchingPeriod={1}
+            windowSize={41}
         />
     );
 };
