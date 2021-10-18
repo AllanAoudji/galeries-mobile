@@ -1,15 +1,26 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar } from 'react-native';
+import Animated, {
+    interpolate,
+    useAnimatedStyle,
+} from 'react-native-reanimated';
 import { useDispatch } from 'react-redux';
 
 import { Pictogram } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { updateGaleriesCurrent } from '#store/galeries';
 
-import { AbsoluteCoverPicture, Container } from './styles';
+import { Container } from './styles';
 
-const AbsoluteHeader = () => {
+import CoverPicture from './CoverPicture';
+
+type Props = {
+    maxScroll: number;
+    scrollY: Animated.SharedValue<number>;
+};
+
+const AbsoluteHeader = ({ maxScroll, scrollY }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
@@ -21,9 +32,14 @@ const AbsoluteHeader = () => {
         } else navigation.navigate('Home');
     }, [navigation]);
 
+    const style = useAnimatedStyle(() => {
+        const opacity = interpolate(scrollY.value, [0, maxScroll], [0, 0.8]);
+        return { opacity };
+    }, [maxScroll]);
+
     return (
         <Container paddingTop={StatusBar.currentHeight}>
-            <AbsoluteCoverPicture />
+            <CoverPicture style={style} />
             <Pictogram
                 color="secondary-light"
                 height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}

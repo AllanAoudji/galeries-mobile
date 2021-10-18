@@ -1,4 +1,3 @@
-import { useNavigation, NavigationProp } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar } from 'react-native';
 import {
@@ -49,9 +48,6 @@ const routes = [
 ];
 
 const GalerieTabViewNavigator = () => {
-    const navigation =
-        useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
-
     const galerie = useSelector(selectCurrentGalerie);
 
     const { onLayout: onLayoutContainer, size: sizeContainer } =
@@ -90,11 +86,6 @@ const GalerieTabViewNavigator = () => {
         return { transform: [{ translateY }] };
     }, [maxScroll]);
 
-    const handleNavigateToCreateGalerieScreen = React.useCallback(() => {
-        navigation
-            .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
-            .navigate('CreateFrame', { screen: 'AddPictures' });
-    }, [navigation]);
     const onIndexChange = React.useCallback((index: number) => {
         setNavigationState({
             index,
@@ -107,9 +98,6 @@ const GalerieTabViewNavigator = () => {
                 case 'frames':
                     return (
                         <FramesScreen
-                            handleNavigateToCreateGalerieScreen={
-                                handleNavigateToCreateGalerieScreen
-                            }
                             galerie={galerie}
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
@@ -148,12 +136,7 @@ const GalerieTabViewNavigator = () => {
                     return null;
             }
         },
-        [
-            galerie,
-            scrollHandler,
-            sizeContainer,
-            handleNavigateToCreateGalerieScreen,
-        ]
+        [galerie, scrollHandler, sizeContainer]
     );
     const renderTabBar = React.useCallback(
         (
@@ -176,7 +159,7 @@ const GalerieTabViewNavigator = () => {
 
     return (
         <Container>
-            <AbsoluteHeader />
+            <AbsoluteHeader maxScroll={maxScroll} scrollY={scrollY} />
             <TabView
                 navigationState={navigationState}
                 onIndexChange={onIndexChange}

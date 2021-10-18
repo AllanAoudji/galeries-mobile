@@ -1,3 +1,4 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,20 +20,23 @@ import Frame from './Frames';
 
 type Props = {
     galerie?: Store.Models.Galerie;
-    handleNavigateToCreateGalerieScreen: () => void;
     paddingTop: number;
     scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 };
 
-const FramesScreen = ({
-    galerie,
-    handleNavigateToCreateGalerieScreen,
-    paddingTop,
-    scrollHandler,
-}: Props) => {
+const FramesScreen = ({ galerie, paddingTop, scrollHandler }: Props) => {
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
     const dispatch = useDispatch();
+
     const framesAllIds = useSelector(selectCurrentGalerieFramesAllIds);
     const framesStatus = useSelector(selectCurrentGalerieFramesStatus);
+
+    const handlePressAddGalerie = React.useCallback(() => {
+        navigation
+            .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
+            .navigate('CreateFrame', { screen: 'AddPictures' });
+    }, [navigation]);
 
     const showBottomLoader = React.useMemo(
         () => framesStatus === 'LOADING',
@@ -68,7 +72,7 @@ const FramesScreen = ({
                     <AddButton
                         bottom="largest"
                         right="normal"
-                        onPress={handleNavigateToCreateGalerieScreen}
+                        onPress={handlePressAddGalerie}
                     />
                 </>
             )}
