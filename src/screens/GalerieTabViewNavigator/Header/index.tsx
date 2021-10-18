@@ -1,37 +1,24 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StatusBar } from 'react-native';
+import { LayoutChangeEvent } from 'react-native';
+import Animated, {
+    interpolate,
+    useAnimatedStyle,
+} from 'react-native-reanimated';
 import {
     NavigationState,
     Route,
     SceneRendererProps,
 } from 'react-native-tab-view';
-import { useTheme } from 'styled-components/native';
 
-import Animated, {
-    interpolate,
-    useAnimatedStyle,
-} from 'react-native-reanimated';
-import { Typography, Pictogram } from '#components';
-import convertPixelToNum from '#helpers/convertPixelToNum';
+import TabBar from './TabBar';
 
-import GalerieCoverPicture from './GalerieCoverPicture';
+import GalerieInformations from './GalerieInformations';
 
-import {
-    Container,
-    CoverPictureContainer,
-    DarkBackground,
-    DescriptionContainer,
-    EditPictogramContainer,
-    TabbarContainer,
-    TabbarStyled,
-    TitleContainer,
-    TypographyContainer,
-} from './styles';
+import { Container } from './styles';
 
 type Props = SceneRendererProps & {
-    description?: string;
+    galerie?: Store.Models.Galerie;
     maxScroll: number;
-    name?: string;
     navigationState: NavigationState<Route>;
     onLayoutContainer: (event: LayoutChangeEvent) => void;
     onLayoutInfo: (event: LayoutChangeEvent) => void;
@@ -39,16 +26,13 @@ type Props = SceneRendererProps & {
 };
 
 const GalerieTabbarNavigator = ({
-    description,
+    galerie,
     maxScroll,
-    name,
     onLayoutContainer,
     onLayoutInfo,
     scrollY,
     ...props
 }: Props) => {
-    const theme = useTheme();
-
     const containerStyle = useAnimatedStyle(() => {
         const translateY = interpolate(
             scrollY.value,
@@ -57,74 +41,16 @@ const GalerieTabbarNavigator = ({
         );
         return { transform: [{ translateY }] };
     }, [maxScroll]);
-    const coverPictureContainerStyle = useAnimatedStyle(() => {
-        const borderBottomRightRadius = interpolate(
-            scrollY.value,
-            [0, -(maxScroll / 2), -maxScroll],
-            [45, 45, 0]
-        );
-        return { borderBottomRightRadius };
-    }, [maxScroll]);
-    const titleContainerStyle = useAnimatedStyle(() => {
-        const opacity = interpolate(
-            scrollY.value,
-            [0, -(maxScroll / 2), -maxScroll],
-            [1, 1, 0]
-        );
-        return { opacity };
-    }, [maxScroll]);
 
     return (
         <Container onLayout={onLayoutContainer} style={containerStyle}>
-            <Animated.View onLayout={onLayoutInfo}>
-                <CoverPictureContainer style={coverPictureContainerStyle}>
-                    <DarkBackground currentHeight={StatusBar.currentHeight}>
-                        <GalerieCoverPicture />
-                        <TitleContainer style={titleContainerStyle}>
-                            <TypographyContainer>
-                                <Typography
-                                    color="secondary-light"
-                                    fontFamily="bold"
-                                    fontSize={36}
-                                >
-                                    {name}
-                                </Typography>
-                            </TypographyContainer>
-                            <EditPictogramContainer>
-                                <Pictogram
-                                    color="secondary-light"
-                                    variant="edit-fill"
-                                />
-                            </EditPictogramContainer>
-                        </TitleContainer>
-                    </DarkBackground>
-                </CoverPictureContainer>
-                {!!description && (
-                    <DescriptionContainer>
-                        <Typography fontSize={14}>{description}</Typography>
-                    </DescriptionContainer>
-                )}
-            </Animated.View>
-            <TabbarContainer>
-                <TabbarStyled
-                    indicatorStyle={{
-                        backgroundColor: theme.colors.black,
-                        height: 3,
-                    }}
-                    labelStyle={{
-                        color: theme.colors.black,
-                        fontSize: convertPixelToNum(theme.font.sizes[18]),
-                        fontFamily: theme.font.families.roman,
-                        textTransform: 'capitalize',
-                    }}
-                    pressColor="transparent"
-                    tabStyle={{
-                        justifyContent: 'flex-start',
-                        padding: 0,
-                    }}
-                    {...props}
-                />
-            </TabbarContainer>
+            <GalerieInformations
+                galerie={galerie}
+                maxScroll={maxScroll}
+                onLayout={onLayoutInfo}
+                scrollY={scrollY}
+            />
+            <TabBar {...props} />
         </Container>
     );
 };

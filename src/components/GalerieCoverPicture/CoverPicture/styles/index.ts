@@ -6,7 +6,6 @@ type ContainerProps = {
 
 const ImageStyled = styled.Image<ContainerProps>`
     height: ${({ size }) => `${size}px`};
-    opacity: 0.75;
     width: ${({ size }) => `${size}px`};
 `;
 

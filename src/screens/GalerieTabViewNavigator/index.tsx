@@ -27,22 +27,10 @@ import AbsoluteHeader from './AbsoluteHeader';
 import { Container } from './styles';
 
 const routes = [
-    {
-        key: 'frames',
-        title: 'Frames',
-    },
-    {
-        key: 'users',
-        title: 'Users',
-    },
-    {
-        key: 'invitations',
-        title: 'Invitations',
-    },
-    {
-        key: 'options',
-        title: 'Options',
-    },
+    { key: 'frames', title: 'Frames' },
+    { key: 'invitations', title: 'Invitations' },
+    { key: 'options', title: 'Options' },
+    { key: 'users', title: 'Users' },
 ];
 
 const GalerieTabViewNavigator = () => {
@@ -128,9 +116,8 @@ const GalerieTabViewNavigator = () => {
             }
         ) => (
             <Header
-                description={galerie ? galerie.description : undefined}
+                galerie={galerie}
                 maxScroll={maxScroll}
-                name={galerie ? galerie.name : undefined}
                 onLayoutContainer={onLayoutContainer}
                 onLayoutInfo={onLayoutInfo}
                 scrollY={scrollY}

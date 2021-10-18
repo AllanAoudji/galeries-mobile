@@ -16,10 +16,18 @@ import { Container } from './styles';
 type Props = {
     borderRadius?: number;
     galerie?: Store.Models.Galerie;
+    height?: number;
     size?: number;
+    width?: number;
 };
 
-const GalerieCoverPicture = ({ borderRadius, galerie, size }: Props) => {
+const GalerieCoverPicture = ({
+    borderRadius,
+    galerie,
+    height,
+    size,
+    width,
+}: Props) => {
     const dimension = useWindowDimensions();
 
     const coverPictureIdSelector = React.useMemo(
@@ -52,7 +60,12 @@ const GalerieCoverPicture = ({ borderRadius, galerie, size }: Props) => {
     }, [coverPicture, galerie, size]);
 
     return (
-        <Container borderRadius={borderRadius} size={currentSize}>
+        <Container
+            borderRadius={borderRadius}
+            height={height}
+            size={currentSize}
+            width={width}
+        >
             {content}
         </Container>
     );
