@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import BottomSheetButton from '#components/BottomSheetButton';
 import { selectGalerie } from '#store/galeries';
+
+import { Button } from './styles';
+import { Typography } from '#components';
 
 type Props = {
     frame: Store.Models.Frame;
     me?: Store.Models.User;
 };
-
-const onPress = () => {};
 
 const ReportFrameButton = ({ frame, me }: Props) => {
     const galerieSelector = React.useMemo(
@@ -22,7 +22,11 @@ const ReportFrameButton = ({ frame, me }: Props) => {
     if (frame.userId === me.id) return null;
     if (galerie.role !== 'user') return null;
 
-    return <BottomSheetButton onPress={onPress} title="report frame" />;
+    return (
+        <Button>
+            <Typography fontSize={18}>report frame</Typography>
+        </Button>
+    );
 };
 
-export default React.memo(ReportFrameButton);
+export default ReportFrameButton;

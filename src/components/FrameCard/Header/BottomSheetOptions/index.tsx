@@ -29,7 +29,7 @@ const BottomSheetOptions = ({ frame }: Props) => {
                     currentIndex={currentIndex}
                     frame={frame}
                 />
-                <DeleteFrameButton frame={frame} />
+                <DeleteFrameButton frame={frame} me={me} />
                 <ReportFrameButton frame={frame} me={me} />
             </>
         );

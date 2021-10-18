@@ -20,18 +20,23 @@ import { Container } from './styles';
 
 type Props = {
     allIds: string[];
+    currentIndex: number;
     onPress: () => void;
+    setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const keyExtractor: ((item: string, index: number) => string) | undefined = (
     item
 ) => item;
 
-const Carousel = ({ allIds, onPress }: Props) => {
+const Carousel = ({
+    allIds,
+    currentIndex,
+    onPress,
+    setCurrentIndex,
+}: Props) => {
     const dimension = useWindowDimensions();
     const current = useSharedValue(0);
-
-    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
 
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (e) => {
