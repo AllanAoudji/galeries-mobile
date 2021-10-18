@@ -41,8 +41,11 @@ const successGetFrames = (
     const galerieId = action.meta.query
         ? action.meta.query.galerieId
         : undefined;
-    const previousFrameId = allIds[allIds.length - 1];
-    const previous = byId[previousFrameId].autoIncrementId;
+    const previousFrameId =
+        allIds.length > 0 ? allIds[allIds.length - 1] : undefined;
+    const previous = previousFrameId
+        ? byId[previousFrameId].autoIncrementId
+        : undefined;
 
     if (galerieId) {
         const oldAllIds = getState().frames.allIds[galerieId] || [];
@@ -50,16 +53,17 @@ const successGetFrames = (
 
         dispatch(setGalerieFramesAllIds(galerieId, newAllIds));
         dispatch(updateGalerieFramesEnd(galerieId, allIds.length < 20));
-        dispatch(updateGalerieFramesPrevious(galerieId, previous));
+        if (previous)
+            dispatch(updateGalerieFramesPrevious(galerieId, previous));
         dispatch(updateGalerieFramesStatus(galerieId, 'SUCCESS'));
     } else {
         const oldAllIds = getState().frames.allIds[''] || [];
         const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
 
-        dispatch(updateFramesStatus('SUCCESS'));
         dispatch(setFramesAllIds(newAllIds));
         dispatch(updateFramesEnd(allIds.length < 20));
-        dispatch(updateFramesPrevious(previous));
+        if (previous) dispatch(updateFramesPrevious(previous));
+        dispatch(updateFramesStatus('SUCCESS'));
     }
 
     allIds.forEach((id) => {
