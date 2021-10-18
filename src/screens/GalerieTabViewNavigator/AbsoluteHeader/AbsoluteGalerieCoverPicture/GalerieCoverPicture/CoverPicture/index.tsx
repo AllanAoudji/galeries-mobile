@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 
-import { Container } from './styles';
+import { ImageStyled } from './styles';
 
 type Props = {
     galeriePicture: Store.Models.GaleriePicture;
@@ -17,7 +17,7 @@ const CoverPicture = ({ galeriePicture }: Props) => {
         [galeriePicture]
     );
 
-    return <Container size={dimension.width} source={source} />;
+    return <ImageStyled size={dimension.width} source={source} />;
 };
 
 export default CoverPicture;

@@ -4,7 +4,7 @@ import { useWindowDimensions } from 'react-native';
 
 import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
 
-import { Container } from './styles';
+import { LinearGradientStyled } from './styles';
 
 type Props = {
     galerie: Store.Models.Galerie;
@@ -33,7 +33,7 @@ const DefaultCoverPicture = ({ galerie }: Props) => {
     );
 
     return (
-        <Container
+        <LinearGradientStyled
             colors={defaultCoverPictureNormalized.colors}
             end={end}
             size={dimension.width}

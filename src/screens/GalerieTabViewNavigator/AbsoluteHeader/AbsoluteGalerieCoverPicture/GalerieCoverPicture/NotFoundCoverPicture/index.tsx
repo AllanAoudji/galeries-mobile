@@ -3,9 +3,9 @@ import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { useTheme } from 'styled-components';
 
-import { Container } from './styles';
+import { LinearGradientStyled } from './styles';
 
-const CoverPictureNotFound = () => {
+const NotFoundCoverPicture = () => {
     const theme = useTheme();
     const dimension = useWindowDimensions();
 
@@ -17,7 +17,7 @@ const CoverPictureNotFound = () => {
     const start: LinearGradientPoint = React.useMemo(() => [0.2, 0.2], []);
 
     return (
-        <Container
+        <LinearGradientStyled
             colors={colors}
             end={end}
             size={dimension.width}
@@ -26,4 +26,4 @@ const CoverPictureNotFound = () => {
     );
 };
 
-export default CoverPictureNotFound;
+export default NotFoundCoverPicture;

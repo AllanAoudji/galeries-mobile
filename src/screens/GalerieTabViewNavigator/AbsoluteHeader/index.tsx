@@ -13,7 +13,7 @@ import { updateGaleriesCurrent } from '#store/galeries';
 
 import { Container } from './styles';
 
-import CoverPicture from './CoverPicture';
+import AbsoluteGalerieCoverPicture from './AbsoluteGalerieCoverPicture';
 
 type Props = {
     maxScroll: number;
@@ -39,7 +39,7 @@ const AbsoluteHeader = ({ maxScroll, scrollY }: Props) => {
 
     return (
         <Container paddingTop={StatusBar.currentHeight}>
-            <CoverPicture style={style} />
+            <AbsoluteGalerieCoverPicture style={style} />
             <Pictogram
                 color="secondary-light"
                 height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}

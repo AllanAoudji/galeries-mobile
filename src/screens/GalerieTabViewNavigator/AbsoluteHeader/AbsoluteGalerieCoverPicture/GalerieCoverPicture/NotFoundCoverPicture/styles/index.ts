@@ -5,10 +5,10 @@ type ContainerProps = {
     size: number;
 };
 
-const Container = styled(LinearGradient)<ContainerProps>`
+const LinearGradientStyled = styled(LinearGradient)<ContainerProps>`
     height: ${({ size }) => `${size}px`};
     width: ${({ size }) => `${size}px`};
 `;
 
 // eslint-disable-next-line import/prefer-default-export
-export { Container };
+export { LinearGradientStyled };

@@ -7,20 +7,20 @@ import {
 } from '#store/galeriePictures';
 
 import CoverPicture from './CoverPicture';
-import CoverPictureNotFound from './CoverPictureNotFound';
+import NotFoundCoverPicture from './NotFoundCoverPicture';
 import DefaultCoverPicture from './DefaultCoverPicture';
 
 type Props = {
     galerie?: Store.Models.Galerie;
 };
 
-const Image = ({ galerie }: Props) => {
+const GalerieCoverPicture = ({ galerie }: Props) => {
     const coverPictureId = useSelector(selectCurrentGalerieCoverPictureId);
     const coverPicture = useSelector(selectGaleriePicture(coverPictureId));
 
     if (coverPicture) return <CoverPicture galeriePicture={coverPicture} />;
     if (galerie) return <DefaultCoverPicture galerie={galerie} />;
-    return <CoverPictureNotFound />;
+    return <NotFoundCoverPicture />;
 };
 
-export default Image;
+export default GalerieCoverPicture;
