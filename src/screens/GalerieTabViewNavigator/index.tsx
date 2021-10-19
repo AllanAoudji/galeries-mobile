@@ -135,13 +135,14 @@ const GalerieTabViewNavigator = () => {
                             }
                             scrollHandler={scrollHandler}
                             scrollY={scrollY}
+                            maxScroll={maxScroll}
                         />
                     );
                 default:
                     return null;
             }
         },
-        [currentRoute, galerie, scrollHandler, sizeContainer]
+        [currentRoute, galerie, scrollHandler, sizeContainer, maxScroll]
     );
     const renderTabBar = React.useCallback(
         (
