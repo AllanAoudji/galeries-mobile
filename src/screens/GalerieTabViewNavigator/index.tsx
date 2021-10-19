@@ -28,9 +28,9 @@ import { Container } from './styles';
 
 const routes = [
     { key: 'frames', title: 'Frames' },
+    { key: 'users', title: 'Users' },
     { key: 'invitations', title: 'Invitations' },
     { key: 'options', title: 'Options' },
-    { key: 'users', title: 'Users' },
 ];
 
 const GalerieTabViewNavigator = () => {
@@ -40,10 +40,6 @@ const GalerieTabViewNavigator = () => {
         useComponentSize();
     const { onLayout: onLayoutInfo, size: sizeInfo } = useComponentSize();
 
-    const [navigationState, setNavigationState] = React.useState({
-        index: 0,
-        routes,
-    });
     const maxScroll = React.useMemo(
         () =>
             (sizeInfo ? sizeInfo.height : 0) -
@@ -51,12 +47,22 @@ const GalerieTabViewNavigator = () => {
             GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT,
         [sizeInfo]
     );
+
     const scrollY = useSharedValue(0);
-    const scrollHandler = useAnimatedScrollHandler({
-        onScroll: (e) => {
-            scrollY.value = clamp(e.contentOffset.y, 0, maxScroll);
+    const scrollHandler = useAnimatedScrollHandler(
+        {
+            onScroll: (e) => {
+                scrollY.value = clamp(e.contentOffset.y, 0, maxScroll);
+            },
         },
+        [maxScroll]
+    );
+
+    const [navigationState, setNavigationState] = React.useState({
+        index: 0,
+        routes,
     });
+
     const onIndexChange = React.useCallback((index: number) => {
         setNavigationState({
             index,
@@ -124,7 +130,7 @@ const GalerieTabViewNavigator = () => {
                 {...props}
             />
         ),
-        [galerie, onLayoutContainer, onLayoutInfo]
+        [galerie, maxScroll, onLayoutContainer, onLayoutInfo]
     );
 
     return (

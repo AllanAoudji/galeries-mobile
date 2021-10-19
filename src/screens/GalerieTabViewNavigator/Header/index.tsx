@@ -25,7 +25,7 @@ type Props = SceneRendererProps & {
     scrollY: Animated.SharedValue<number>;
 };
 
-const GalerieTabbarNavigator = ({
+const Header = ({
     galerie,
     maxScroll,
     onLayoutContainer,
@@ -55,4 +55,4 @@ const GalerieTabbarNavigator = ({
     );
 };
 
-export default GalerieTabbarNavigator;
+export default Header;
