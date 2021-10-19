@@ -2,6 +2,8 @@ import styled from 'styled-components/native';
 
 import { DRAG_AND_DROP_UTILS } from '#helpers/constants';
 
+const BORDER_WIDTH = 2;
+
 type AddPictureProps = {
     left: number;
     top: number;
@@ -12,14 +14,14 @@ const AddPicture = styled.Pressable<AddPictureProps>`
     border-color: ${({ theme }) => theme.colors.primary};
     border-radius: 5px;
     border-style: dashed;
-    border-width: 2px;
-    height: ${() => `${DRAG_AND_DROP_UTILS.SIZE}px`};
+    border-width: ${() => `${BORDER_WIDTH}px`};
+    height: ${() => `${DRAG_AND_DROP_UTILS.SIZE - BORDER_WIDTH * 2}px`};
     justify-content: center;
     left: ${({ left }) => `${left}px`};
-    margin-bottom: 10px;
+    margin: ${() => `${BORDER_WIDTH}px`};
     position: absolute;
     top: ${({ top }) => `${top}px`};
-    width: ${() => `${DRAG_AND_DROP_UTILS.SIZE}px`};
+    width: ${() => `${DRAG_AND_DROP_UTILS.SIZE - BORDER_WIDTH * 2}px`};
 `;
 const Container = styled.View`
     height: ${() => `${DRAG_AND_DROP_UTILS.SIZE * 2}px`};

@@ -68,13 +68,13 @@ const AddPicturesScreen = ({ navigation }: Props) => {
         if (pictureToDelete) removePictures(pictureToDelete);
     }, [pictureToDelete, removePictures]);
     const handleGoBack = React.useCallback(() => {
-        resetPictures();
         if (navigation.canGoBack()) navigation.goBack();
         else {
             navigation
                 .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
                 .navigate('Home');
         }
+        resetPictures();
     }, []);
     const handleNavigateCamera = React.useCallback(() => {
         (async () => {
