@@ -19,6 +19,7 @@ import {
 import Frame from './Frames';
 
 type Props = {
+    current: boolean;
     galerie?: Store.Models.Galerie;
     paddingTop: number;
     scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;

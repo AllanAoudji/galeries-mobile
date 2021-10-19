@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
+import { FlatList, ListRenderItemInfo } from 'react-native';
 
-import { ListRenderItemInfo } from 'react-native';
 import { AnimatedFlatList } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { getGalerieFrames } from '#store/frames';
@@ -22,6 +22,8 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
 const Frames = ({ allIds, galerie, paddingTop, scrollHandler }: Props) => {
     const dispatch = useDispatch();
 
+    const flatListRef = React.useRef<FlatList | null>(null);
+
     const keyExtractor = React.useCallback((item: string) => item, []);
     const handleEndReach = React.useCallback(() => {
         if (galerie) dispatch(getGalerieFrames(galerie.id));
@@ -40,6 +42,7 @@ const Frames = ({ allIds, galerie, paddingTop, scrollHandler }: Props) => {
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
+            ref={flatListRef}
             removeClippedSubviews={true}
             renderItem={renderItem}
             scrollEventThrottle={4}

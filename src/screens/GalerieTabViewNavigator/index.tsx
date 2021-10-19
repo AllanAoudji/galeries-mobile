@@ -48,6 +48,7 @@ const GalerieTabViewNavigator = () => {
         [sizeInfo]
     );
 
+    const [currentRoute, setCurrentRoute] = React.useState<string>('frames');
     const scrollY = useSharedValue(0);
     const scrollHandler = useAnimatedScrollHandler(
         {
@@ -63,14 +64,38 @@ const GalerieTabViewNavigator = () => {
         routes,
     });
 
-    const onIndexChange = React.useCallback((index: number) => {
-        setNavigationState({
-            index,
-            routes,
-        });
-    }, []);
+    const onIndexChange = React.useCallback(
+        (index: number) => {
+            switch (index) {
+                case 0:
+                    setCurrentRoute('frames');
+                    break;
+                case 1:
+                    setCurrentRoute('users');
+                    break;
+                case 2:
+                    setCurrentRoute('invitations');
+                    break;
+                case 3:
+                    setCurrentRoute('options');
+                    break;
+                default:
+                    setCurrentRoute('frames');
+            }
+            return setNavigationState({
+                index,
+                routes,
+            });
+        },
+        [sizeContainer, maxScroll]
+    );
+
     const renderScene = React.useCallback(
-        ({ route }: { route: Route }) => {
+        ({
+            route,
+        }: SceneRendererProps & {
+            route: Route;
+        }) => {
             switch (route.key) {
                 case 'frames':
                     return (
@@ -79,6 +104,7 @@ const GalerieTabViewNavigator = () => {
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }
+                            current={currentRoute === 'frames'}
                             scrollHandler={scrollHandler}
                         />
                     );
@@ -103,17 +129,19 @@ const GalerieTabViewNavigator = () => {
                 case 'users':
                     return (
                         <UsersScreen
+                            current={currentRoute === 'users'}
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }
                             scrollHandler={scrollHandler}
+                            scrollY={scrollY}
                         />
                     );
                 default:
                     return null;
             }
         },
-        [galerie, scrollHandler, sizeContainer]
+        [currentRoute, galerie, scrollHandler, sizeContainer]
     );
     const renderTabBar = React.useCallback(
         (
