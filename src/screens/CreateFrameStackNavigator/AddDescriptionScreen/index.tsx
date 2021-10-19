@@ -1,21 +1,23 @@
-import { NavigationProp } from '@react-navigation/native';
-import { useFormik } from 'formik';
+import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+
 import { CustomButton, CustomTextInput, FormContainer } from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
+import CheckImageExtension from '#helpers/CheckImageExtension';
 import { FIELD_REQUIREMENT } from '#helpers/constants';
 import { frameDescriptionSchema } from '#helpers/schemas';
-
-import { ButtonsContainer, Container } from './styles';
 import {
     postFrame,
+    resetFramesLoadingPost,
     selectFramesFieldsError,
     selectFramesLoadingPost,
     updateFramesFieldsError,
 } from '#store/frames';
 import { selectCurrentGalerie } from '#store/galeries';
+
+import { ButtonsContainer, Container } from './styles';
 
 type Props = {
     navigation: Screen.CreateFrameStack.AddDescriptionNavigationProp;
@@ -38,13 +40,14 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
             if (currentGalerie) {
                 const formData = new FormData();
                 picturesUri.forEach((pictureUri) => {
-                    formData.append('image', {
-                        // @ts-ignore
-                        uri: pictureUri,
-                        // TODO: Should transform pictureUri to 'image/...' and check if all files are images.
-                        type: 'image/jpg',
-                        name: pictureUri,
-                    });
+                    const type = CheckImageExtension(pictureUri);
+                    if (type)
+                        formData.append('image', {
+                            // @ts-ignore
+                            uri: pictureUri,
+                            type,
+                            name: pictureUri,
+                        });
                 });
                 if (values.description !== '')
                     formData.append('description', values.description);
@@ -87,6 +90,10 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
     React.useEffect(() => {
         if (loading === 'SUCCESS') successCallback();
     }, [loading]);
+
+    useFocusEffect(
+        React.useCallback(() => () => dispatch(resetFramesLoadingPost()), [])
+    );
 
     return (
         <FormContainer>

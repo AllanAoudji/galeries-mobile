@@ -15,7 +15,7 @@ const dispatchPostFrame = (
                 entity: FRAMES,
                 method: 'POST',
                 query: { galerieId },
-                url: `${END_POINT.GALERIES}/${galerieId}/${END_POINT.FRAMES}`,
+                url: `${END_POINT.GALERIES}/${galerieId}${END_POINT.FRAMES}`,
             },
             payload,
         })
