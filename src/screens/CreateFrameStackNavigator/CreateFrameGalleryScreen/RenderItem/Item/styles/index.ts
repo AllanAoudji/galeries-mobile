@@ -26,11 +26,9 @@ const ImageStyled = styled.Image<ImageStyledProps>`
     top: 0;
 `;
 const IndexPickerContainer = styled.View`
-    align-items: center;
     background-color: ${({ theme }) => theme.colors.secondary};
     border-radius: ${() => `${INDEX_PICKER_CONTAINER_SIZE / 2}px`};
     height: ${() => `${INDEX_PICKER_CONTAINER_SIZE}px`};
-    justify-content: center;
     position: absolute;
     right: 15px;
     top: 15px;
