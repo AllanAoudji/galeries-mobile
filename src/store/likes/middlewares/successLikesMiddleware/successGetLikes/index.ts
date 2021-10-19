@@ -34,12 +34,15 @@ const successGetLikes = (
 
     const oldAllIds = getState().likes.allIds[frameId] || [];
     const newAllIds = combineLikesAllIds(getState, oldAllIds, allIds);
-    const previousLikeId = allIds[allIds.length - 1];
-    const previous = byId[previousLikeId].autoIncrementId;
+    const previousLikeId =
+        allIds.length > 0 ? allIds[allIds.length - 1] : undefined;
+    const previous = previousLikeId
+        ? byId[previousLikeId].autoIncrementId
+        : undefined;
 
     dispatch(setLikesAllIds(frameId, newAllIds));
     dispatch(setLikesEnd(frameId, allIds.length < 20));
-    dispatch(setLikesPrevious(frameId, previous));
+    if (previous) dispatch(setLikesPrevious(frameId, previous));
     dispatch(setLikesStatus(frameId, 'SUCCESS'));
 };
 
