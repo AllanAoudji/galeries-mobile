@@ -14,11 +14,20 @@ const successDeleteFrame = (
     getState: () => Store.Reducer,
     action: Store.Action
 ) => {
-    if (typeof action.payload.data !== 'object') return;
+    if (typeof action.payload.data !== 'object') {
+        dispatch(updateFramesLoadingDelete('ERROR'));
+        return;
+    }
     const { frameId } = action.payload.data;
-    if (typeof frameId !== 'string') return;
+    if (typeof frameId !== 'string') {
+        dispatch(updateFramesLoadingDelete('ERROR'));
+        return;
+    }
     const frame = getState().frames.byId[frameId];
-    if (!frame) return;
+    if (!frame) {
+        dispatch(updateFramesLoadingDelete('ERROR'));
+        return;
+    }
 
     const galeriePictures = getState().galeriePictures.allIds[frameId];
 

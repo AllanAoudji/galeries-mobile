@@ -112,7 +112,7 @@ export const resetInvitationsStatus: () => Store.Action = () => ({
 });
 export const setGalerieInvitationsAllIds: (
     galerieId: string,
-    payload: string
+    payload: string[]
 ) => Store.Action = (galerieId, payload) => ({
     meta: { query: { galerieId } },
     payload,
@@ -155,9 +155,10 @@ export const updateInvitationsLoadingPost: (
     type: INVITATIONS_LOADING_POST_UPDATE,
 });
 export const updateGalerieInvitationsPrevious: (
-    galerieId: string
-) => Store.Action = (payload) => ({
-    meta: {},
+    galerieId: string,
+    payload: string
+) => Store.Action = (galerieId, payload) => ({
+    meta: { query: { galerieId } },
     payload,
     type: INVITATIONS_PREVIOUS_UPDATE,
 });

@@ -7,6 +7,7 @@ import { resetFrames } from '#store/frames/actionCreators';
 import { resetGaleries } from '#store/galeries/actionCreators';
 import { resetGaleriePictures } from '#store/galeriePictures/actionCreators';
 import { LOGOUT } from '#store/genericActionTypes';
+import { resetInvitations } from '#store/invitations/actionCreators';
 import { resetLikes } from '#store/likes/actionCreators';
 import { resetLogin } from '#store/login/actionCreators';
 import { updateLogoutStatus } from '#store/logout/actionCreators';
@@ -26,6 +27,7 @@ const successLogoutMiddleware: Middleware<{}, Store.Reducer> =
                 dispatch(resetFrames());
                 dispatch(resetGaleries());
                 dispatch(resetGaleriePictures());
+                dispatch(resetInvitations());
                 dispatch(resetLikes());
                 dispatch(resetLogin());
                 dispatch(resetNotification());

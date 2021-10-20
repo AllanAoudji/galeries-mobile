@@ -17,6 +17,7 @@ export { default as dispatchGetGalerieFrames } from './dispatchGetGalerieFrames'
 export { default as dispatchGetGalerieUsers } from './dispatchGetGalerieUsers';
 export { default as dispatchGetGaleries } from './dispatchGetGaleries';
 export { default as dispatchGetGalerieInvitations } from './dispatchGetGalerieInvitations';
+export { default as dispatchGetInvitation } from './dispatchGetInvitation';
 export { default as dispatchGetLike } from './dispatchGetLike';
 export { default as dispatchGetMe } from './dispatchGetMe';
 export { default as dispatchGetMeCurrentProfilePicture } from './dispatchGetMeCurrentProfilePicture';

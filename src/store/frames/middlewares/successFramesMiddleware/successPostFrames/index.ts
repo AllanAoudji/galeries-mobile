@@ -92,9 +92,12 @@ const successPostFrames = async (
     const galerieId = action.meta.query
         ? action.meta.query.galerieId
         : undefined;
-    if (!galerieId) return;
+    if (!galerieId) {
+        dispatch(updateFramesLoadingPost('ERROR'));
+        return;
+    }
 
-    const oldAllIds = getState().frames.allIds[galerieId];
+    const oldAllIds = getState().frames.allIds[galerieId] || [];
     const newAllIds = combineFramesAllIds(getState, oldAllIds, framesAllIds);
     dispatch(setGalerieFramesAllIds(galerieId, newAllIds));
 

@@ -1,10 +1,7 @@
 import { Dispatch } from 'redux';
 
 import { dispatchErrorNotification } from '#store/dispatchers';
-import {
-    updateFramesStatus,
-    updateGalerieFramesStatus,
-} from '#store/frames/actionCreators';
+import { updateGalerieInvitationsStatus } from '#store/invitations/actionCreators';
 
 const errorGetMethod = (
     dispatch: Dispatch<Store.Action>,
@@ -14,8 +11,7 @@ const errorGetMethod = (
         ? action.meta.query.galerieId
         : undefined;
 
-    if (galerieId) dispatch(updateGalerieFramesStatus(galerieId, 'ERROR'));
-    else dispatch(updateFramesStatus('ERROR'));
+    if (galerieId) dispatch(updateGalerieInvitationsStatus(galerieId, 'ERROR'));
     dispatchErrorNotification(dispatch, action);
 };
 

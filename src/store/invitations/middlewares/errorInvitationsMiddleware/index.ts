@@ -1,21 +1,20 @@
 import { Middleware } from 'redux';
 
-import { API_ERROR } from '#store/api/actionTypes';
-import { FRAMES } from '#store/genericActionTypes';
+import { API_ERROR } from '#store/api';
+import { INVITATIONS } from '#store/genericActionTypes';
 
 import errorDefaultMethod from './errorDefaultMethod';
 import errorDeleteMethod from './errorDeleteMethod';
 import errorGetMethod from './errorGetMethod';
 import errorPostMethod from './errorPostMethod';
-import errorPutMethod from './errorPutMethod';
 
-const errorFramesMiddleware: Middleware<{}, Store.Reducer> =
+const errorInvitationsMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
 
-        if (action.type !== `${FRAMES} ${API_ERROR}`) return;
+        if (action.type !== `${INVITATIONS} ${API_ERROR}`) return;
 
         switch (action.meta.method) {
             case 'DELETE':
@@ -27,12 +26,9 @@ const errorFramesMiddleware: Middleware<{}, Store.Reducer> =
             case 'POST':
                 errorPostMethod(dispatch, action);
                 break;
-            case 'PUT':
-                errorPutMethod(dispatch, action);
-                break;
             default:
                 errorDefaultMethod(dispatch);
         }
     };
 
-export default errorFramesMiddleware;
+export default errorInvitationsMiddleware;
