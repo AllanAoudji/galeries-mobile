@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const framesAllIdsSelect = (state: Store.Reducer) => state.frames.allIds;
+const framesAllIdsSelector = (state: Store.Reducer) => state.frames.allIds;
 const framesByIdSelector = (state: Store.Reducer) => state.frames.byId;
 const framesCurrentSelector = (state: Store.Reducer) => state.frames.current;
 const framesStatusSelector = (state: Store.Reducer) => state.frames.status;
@@ -15,7 +15,7 @@ export const selectCurrentFrame = createSelector(
     }
 );
 export const selectCurrentGalerieFramesAllIds = createSelector(
-    [framesAllIdsSelect, galeriesCurrentSelector],
+    [framesAllIdsSelector, galeriesCurrentSelector],
     (framesAllIds, galeriesCurrent) => {
         if (!galeriesCurrent) return undefined;
         return framesAllIds[galeriesCurrent] || [];
@@ -34,7 +34,7 @@ export const selectFrame = (frameId?: string | null) =>
         return frameById[frameId];
     });
 export const selectFramesAllIds = createSelector(
-    [framesAllIdsSelect],
+    [framesAllIdsSelector],
     (framesAllIds) => framesAllIds[''] || []
 );
 export const selectFramesStatus = createSelector(
