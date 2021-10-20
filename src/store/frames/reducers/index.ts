@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import framesAllIdsReducer from './framesAllIdsReducer';
 import framesByIdReducer from './framesByIdReducer';
 import framesCurrentReducer from './framesCurrentReducer';
-import framesEndReducer from './framesEndInitialState';
+import framesEndReducer from './framesEndReducer';
 import framesFieldsErrorReducer from './framesFieldsErrorReducer';
 import framesLoadingReducers from './framesLoadingReducers';
 import framesPreviousReducer from './framesPreviousReducer';

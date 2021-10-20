@@ -21,7 +21,7 @@ import {
     INVITATIONS_RESET,
     INVITATIONS_STATUS_RESET,
     INVITATIONS_STATUS_UPDATE,
-} from '../actionTypes';
+} from '#store/invitations/actionTypes';
 
 export const deleteInvitation: (payload: string) => Store.Action = (
     payload

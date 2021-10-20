@@ -1,18 +1,18 @@
 import { checkIfStatus } from '#store/checkers';
 import {
-    FRAMES_LOADING_POST_RESET,
-    FRAMES_LOADING_POST_UPDATE,
-} from '#store/frames/actionTypes';
+    INVITATIONS_LOADING_DELETE_RESET,
+    INVITATIONS_LOADING_DELETE_UPDATE,
+} from '#store/invitations/actionTypes';
 
 const initialState: Store.Status = 'PENDING';
-const framesLoadingPostReducer = (
+const invitationsLoadingDeleteReducer = (
     state = initialState,
     action: Store.Action
 ) => {
     switch (action.type) {
-        case FRAMES_LOADING_POST_RESET:
+        case INVITATIONS_LOADING_DELETE_RESET:
             return initialState;
-        case FRAMES_LOADING_POST_UPDATE:
+        case INVITATIONS_LOADING_DELETE_UPDATE:
             if (!checkIfStatus(action.payload)) return state;
             return action.payload;
         default:
@@ -20,4 +20,4 @@ const framesLoadingPostReducer = (
     }
 };
 
-export default framesLoadingPostReducer;
+export default invitationsLoadingDeleteReducer;
