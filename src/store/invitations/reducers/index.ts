@@ -9,7 +9,7 @@ import invitationsPreviousReducer from './invitationsPreviousReducer';
 import invitationsStatusReducer from './invitationsStatusReducer';
 
 // eslint-disable-next-line import/prefer-default-export
-export const framesReducer = combineReducers({
+export const invitationsReducer = combineReducers({
     allIds: invitationsAllIdsReducer,
     byId: invitationsByIdReducer,
     current: invitationsCurrentReducer,
