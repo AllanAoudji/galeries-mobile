@@ -51,10 +51,11 @@ const successGetComments = (
     if (frameId) {
         const oldAllIds = getState().comments.allIds[frameId] || [];
         const newAllIds = combineCommentsAllIds(getState, oldAllIds, allIds);
-        const previousCommentId = allIds[allIds.length - 1];
-        let previous: string | undefined;
-        if (previousCommentId)
-            previous = byId[previousCommentId].autoIncrementId;
+        const previousCommentId =
+            allIds.length > 0 ? allIds[allIds.length - 1] : undefined;
+        const previous = previousCommentId
+            ? byId[previousCommentId].autoIncrementId
+            : undefined;
 
         dispatch(updateCommentsAllIds(frameId, newAllIds));
         dispatch(updateCommentsEnd(frameId, allIds.length < 20));

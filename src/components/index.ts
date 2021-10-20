@@ -16,6 +16,7 @@ export { default as FormContainer } from './FormContainer';
 export { default as FrameCard } from './FrameCard';
 export { default as FullScreenLoader } from './FullScreenLoader';
 export { default as GalerieCard } from './GalerieCard';
+export { default as GalerieCoverPicture } from './GalerieCoverPicture';
 export { default as GalerieTabbarScreenContainer } from './GalerieTabbarScreenContainer';
 export { default as LikeButton } from './LikeButton';
 export { default as Logo } from './Logo';

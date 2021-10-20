@@ -2,9 +2,9 @@ import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 
+import GalerieCoverPicture from '#components/GalerieCoverPicture';
 import { updateGaleriesCurrent } from '#store/galeries';
 
-import CoverPicture from './CoverPicture';
 import Footer from './Footer';
 
 import { Container } from './styles';
@@ -29,7 +29,7 @@ const GalerieCard = ({ galerie }: Props) => {
 
     return (
         <Container onPress={handlePress}>
-            <CoverPicture galerie={galerie} />
+            <GalerieCoverPicture galerie={galerie} height={140} />
             <Footer galerie={galerie} />
         </Container>
     );

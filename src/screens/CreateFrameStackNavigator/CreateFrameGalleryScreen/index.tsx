@@ -1,6 +1,6 @@
 import * as MediaLibrary from 'expo-media-library';
 import * as React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { ListRenderItem, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import {
     AnimatedFlatList,
@@ -20,11 +20,15 @@ import {
     Header,
 } from './styles';
 
-import Item from './Item';
+import RenderItem from './RenderItem';
 
 type Props = {
     navigation: Screen.CreateFrameStack.CreateFrameCameraNavigationProp;
 };
+
+const renderItem: ListRenderItem<MediaLibrary.Asset> = ({ item }) => (
+    <RenderItem item={item} />
+);
 
 const CreateFrameGalleryScreen = ({ navigation }: Props) => {
     const { picturesUri } = React.useContext(CreateFrameContext);
@@ -51,10 +55,6 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
     );
     const keyExtractor = React.useCallback(
         (item: MediaLibrary.Asset) => item.uri,
-        []
-    );
-    const renderItem = React.useCallback(
-        ({ item }) => <Item uri={item.uri} />,
         []
     );
 
@@ -89,6 +89,7 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
                     style({ size }).animatedFlatListContentContainer
                 }
                 data={photos}
+                extraData={photos}
                 keyExtractor={keyExtractor}
                 maxToRenderPerBatch={30}
                 numColumns={3}

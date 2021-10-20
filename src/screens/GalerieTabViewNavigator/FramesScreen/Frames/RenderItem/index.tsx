@@ -1,0 +1,18 @@
+import * as React from 'react';
+
+import { useSelector } from 'react-redux';
+import { selectFrame } from '#store/frames';
+import { FrameCard } from '#components';
+
+type Props = {
+    item: string;
+};
+
+const RenderItem = ({ item }: Props) => {
+    const frameSelector = React.useMemo(() => selectFrame(item), [item]);
+    const frame = useSelector(frameSelector);
+
+    return <FrameCard frame={frame} />;
+};
+
+export default RenderItem;

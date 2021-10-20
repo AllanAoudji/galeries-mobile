@@ -1,106 +1,58 @@
 import * as React from 'react';
-import { LayoutChangeEvent, StatusBar, View } from 'react-native';
+import { LayoutChangeEvent } from 'react-native';
+import Animated, {
+    interpolate,
+    useAnimatedStyle,
+} from 'react-native-reanimated';
 import {
     NavigationState,
     Route,
     SceneRendererProps,
 } from 'react-native-tab-view';
-import { useTheme } from 'styled-components/native';
 
-import Animated from 'react-native-reanimated';
-import { Typography, Pictogram } from '#components';
-import convertPixelToNum from '#helpers/convertPixelToNum';
+import TabBar from './TabBar';
 
-import {
-    Container,
-    CoverPictureContainer,
-    DarkBackground,
-    DescriptionContainer,
-    EditPictogramContainer,
-    TabbarContainer,
-    TabbarStyled,
-} from './styles';
+import GalerieInformations from './GalerieInformations';
+
+import { Container } from './styles';
 
 type Props = SceneRendererProps & {
-    containerStyle: { [key: string]: any };
-    description?: string;
-    informationStyle: { [key: string]: any };
-    name?: string;
+    galerie?: Store.Models.Galerie;
+    maxScroll: number;
     navigationState: NavigationState<Route>;
     onLayoutContainer: (event: LayoutChangeEvent) => void;
     onLayoutInfo: (event: LayoutChangeEvent) => void;
+    scrollY: Animated.SharedValue<number>;
 };
 
-const GalerieTabbarNavigator = ({
-    description,
-    informationStyle,
-    name,
+const Header = ({
+    galerie,
+    maxScroll,
     onLayoutContainer,
     onLayoutInfo,
-    containerStyle,
+    scrollY,
     ...props
 }: Props) => {
-    const theme = useTheme();
+    const containerStyle = useAnimatedStyle(() => {
+        const translateY = interpolate(
+            scrollY.value,
+            [0, maxScroll],
+            [0, -maxScroll]
+        );
+        return { transform: [{ translateY }] };
+    }, [maxScroll]);
 
     return (
         <Container onLayout={onLayoutContainer} style={containerStyle}>
-            <Animated.View onLayout={onLayoutInfo} style={informationStyle}>
-                <CoverPictureContainer>
-                    <DarkBackground currentHeight={StatusBar.currentHeight}>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                paddingRight: 30,
-                                alignItems: 'center',
-                            }}
-                        >
-                            <View style={{ maxWidth: '80%' }}>
-                                <Typography
-                                    color="secondary-light"
-                                    fontFamily="bold"
-                                    fontSize={36}
-                                >
-                                    {name}
-                                </Typography>
-                            </View>
-                            <EditPictogramContainer>
-                                <Pictogram
-                                    color="secondary-light"
-                                    variant="edit-fill"
-                                />
-                            </EditPictogramContainer>
-                        </View>
-                    </DarkBackground>
-                </CoverPictureContainer>
-                {!!description && (
-                    <DescriptionContainer>
-                        <Typography fontSize={14}>{description}</Typography>
-                    </DescriptionContainer>
-                )}
-            </Animated.View>
-            <TabbarContainer>
-                <TabbarStyled
-                    indicatorStyle={{
-                        backgroundColor: theme.colors.black,
-                        height: 3,
-                    }}
-                    labelStyle={{
-                        color: theme.colors.black,
-                        fontSize: convertPixelToNum(theme.font.sizes[18]),
-                        fontFamily: theme.font.families.roman,
-                        textTransform: 'capitalize',
-                    }}
-                    pressColor="transparent"
-                    tabStyle={{
-                        justifyContent: 'flex-start',
-                        padding: 0,
-                    }}
-                    {...props}
-                />
-            </TabbarContainer>
+            <GalerieInformations
+                galerie={galerie}
+                maxScroll={maxScroll}
+                onLayout={onLayoutInfo}
+                scrollY={scrollY}
+            />
+            <TabBar {...props} />
         </Container>
     );
 };
 
-export default GalerieTabbarNavigator;
+export default Header;

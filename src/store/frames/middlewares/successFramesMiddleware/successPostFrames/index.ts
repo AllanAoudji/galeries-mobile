@@ -10,6 +10,7 @@ import { combineFramesAllIds } from '#store/combineAllIds';
 import {
     setGaleriePicturesById,
     updateGaleriePicturesAllIds,
+    updateGaleriePicturesStatus,
 } from '#store/galeriePictures/actionCreators';
 
 const successPostFrames = async (
@@ -86,9 +87,10 @@ const successPostFrames = async (
     dispatch(setFramesById(framesById));
     dispatch(setGaleriePicturesById(galeriePicturesById));
     dispatch(updateGaleriePicturesAllIds(frame.id, galeriePictureAllIds));
+    dispatch(updateGaleriePicturesStatus(frame.id, 'SUCCESS'));
 
     const galerieId = action.meta.query
-        ? action.meta.query.galerieid
+        ? action.meta.query.galerieId
         : undefined;
     if (!galerieId) return;
 
