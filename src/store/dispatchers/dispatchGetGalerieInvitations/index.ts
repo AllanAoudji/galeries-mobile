@@ -2,9 +2,9 @@ import { Dispatch } from 'redux';
 
 import { END_POINT } from '#helpers/constants';
 import { apiRequest } from '#store/api/actionCreators';
-import { FRAMES } from '#store/genericActionTypes';
+import { INVITATIONS } from '#store/genericActionTypes';
 
-const dispatchGetGalerieFrames: (
+const dispatchGetGalerieInvitations: (
     dispatch: Dispatch<Store.Action>,
     galerieId: string,
     previous?: string
@@ -16,13 +16,13 @@ const dispatchGetGalerieFrames: (
         apiRequest({
             meta: {
                 query: { galerieId },
-                entity: FRAMES,
+                entity: INVITATIONS,
                 method: 'GET',
-                url: `${END_POINT.GALERIES}/${galerieId}${END_POINT.FRAMES}${query}`,
+                url: `${END_POINT.GALERIES}/${galerieId}${END_POINT.INVITATIONS}${query}`,
             },
             payload: {},
         })
     );
 };
 
-export default dispatchGetGalerieFrames;
+export default dispatchGetGalerieInvitations;
