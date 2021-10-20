@@ -237,6 +237,17 @@ declare global {
                 };
                 status: { [key: string]: Store.Status };
             };
+            invitations: {
+                allIds: { [key: string]: string[] };
+                byId: { [key: string]: Store.Models.Invitation };
+                end: { [key: string]: boolean };
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                };
+                previous: { [key: string]: string };
+                status: { [key: string]: Store.Status };
+            };
             likes: {
                 allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.Like };
@@ -353,6 +364,14 @@ declare global {
                 signedUrl: string;
                 size: number;
                 width: number;
+            };
+            type Invitation = {
+                autoIncrementId: string;
+                createdAt: string;
+                id: string;
+                galerieId: string;
+                updatedAt: string;
+                userId: string;
             };
             type Like = {
                 autoIncrementId: string;
