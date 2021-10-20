@@ -75,7 +75,7 @@ const apiRequestMiddleware: Middleware<{}, Store.Reducer> =
                             const response = await axios.request({
                                 method: 'GET',
                                 baseURL: API,
-                                url: END_POINT.REFRESH_TOKEN,
+                                url: `${END_POINT.USERS}${END_POINT.REFRESH_TOKEN}`,
                                 headers: {
                                     authorization: token,
                                     'Content-type': 'application/json',

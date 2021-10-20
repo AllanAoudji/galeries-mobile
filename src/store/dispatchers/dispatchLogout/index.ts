@@ -10,7 +10,7 @@ const dispatchLogout = (dispatch: Dispatch<Store.Action>) => {
             meta: {
                 entity: LOGOUT,
                 method: 'GET',
-                url: END_POINT.LOGOUT,
+                url: `${END_POINT.USERS}${END_POINT.LOGOUT}`,
             },
             payload: {},
         })

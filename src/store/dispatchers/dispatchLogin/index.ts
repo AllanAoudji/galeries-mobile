@@ -16,7 +16,7 @@ const dispatchLogin = (
             meta: {
                 entity: LOGIN,
                 method: 'POST',
-                url: END_POINT.LOGIN,
+                url: `${END_POINT.USERS}${END_POINT.LOGIN}`,
             },
             payload,
         })
