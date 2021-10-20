@@ -159,6 +159,7 @@ declare global {
             | '[FRAMES]'
             | '[GALERIES]'
             | '[GALERIE PICTURES]'
+            | '[INVITATIONS]'
             | '[LIKES]'
             | '[LOADING]'
             | '[LOGIN]'
@@ -240,6 +241,7 @@ declare global {
             invitations: {
                 allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.Invitation };
+                current: string | null;
                 end: { [key: string]: boolean };
                 loading: {
                     delete: Store.Status;
