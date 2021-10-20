@@ -1,7 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import Animated from 'react-native-reanimated';
 
 import {
     AddButton,
@@ -16,16 +16,25 @@ import {
     selectCurrentGalerieFramesStatus,
 } from '#store/frames';
 
-import Frame from './Frames';
+import Frames from './Frames';
 
 type Props = {
     current: boolean;
+    editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
+    maxScroll: number;
     paddingTop: number;
-    scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    scrollY: Animated.SharedValue<number>;
 };
 
-const FramesScreen = ({ galerie, paddingTop, scrollHandler }: Props) => {
+const FramesScreen = ({
+    current,
+    editScrollY,
+    galerie,
+    maxScroll,
+    paddingTop,
+    scrollY,
+}: Props) => {
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
     const dispatch = useDispatch();
@@ -58,11 +67,14 @@ const FramesScreen = ({ galerie, paddingTop, scrollHandler }: Props) => {
             {!!paddingTop && (
                 <>
                     {framesAllIds && framesAllIds.length > 0 ? (
-                        <Frame
+                        <Frames
                             allIds={framesAllIds}
+                            editScrollY={editScrollY}
+                            current={current}
                             galerie={galerie}
+                            maxScroll={maxScroll}
                             paddingTop={paddingTop}
-                            scrollHandler={scrollHandler}
+                            scrollY={scrollY}
                         />
                     ) : (
                         <EmptyMessage

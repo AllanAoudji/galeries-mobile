@@ -1,51 +1,56 @@
 import * as React from 'react';
-import {
-    FlatList,
-    NativeScrollEvent,
-    NativeSyntheticEvent,
-    useWindowDimensions,
-    View,
-} from 'react-native';
-
+import { FlatList } from 'react-native';
 import Animated, {
     runOnJS,
     useAnimatedReaction,
-    useAnimatedScrollHandler,
 } from 'react-native-reanimated';
-import { GalerieTabbarScreenContainer, AnimatedFlatList } from '#components';
-import clamp from '#helpers/clamp';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+    GalerieTabbarScreenContainer,
+    FullScreenLoader,
+    BottomLoader,
+    EmptyMessage,
+} from '#components';
+import {
+    getGalerieUsers,
+    selectCurrentGalerieUsersAllIds,
+    selectCurrentGalerieUsersStatus,
+} from '#store/users';
+
+import Users from './Users';
 
 type Props = {
     current: boolean;
-    paddingTop: number;
-    scrollHandler: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-    scrollY: Animated.SharedValue<number>;
+    editScrollY: (offsetY: number) => void;
+    galerie?: Store.Models.Galerie;
     maxScroll: number;
+    paddingTop: number;
+    scrollY: Animated.SharedValue<number>;
 };
 
-const renderItem = () => (
-    <View
-        style={{
-            width: '100%',
-            marginBottom: 10,
-            height: 150,
-            backgroundColor: 'red',
-        }}
-    />
-);
-const mockItem = [
-    { id: '0' },
-    { id: '1' },
-    // { id: '2' },
-    // { id: '3' },
-    // { id: '4' },
-    // { id: '5' },
-    // { id: '6' },
-];
-
-const UsersScreen = ({ current, paddingTop, scrollY, maxScroll }: Props) => {
-    const dimension = useWindowDimensions();
+const UsersScreen = ({
+    current,
+    editScrollY,
+    galerie,
+    maxScroll,
+    paddingTop,
+    scrollY,
+}: Props) => {
+    const dispatch = useDispatch();
     const flatListRef = React.useRef<FlatList | null>(null);
+
+    const usersAllIds = useSelector(selectCurrentGalerieUsersAllIds);
+    const usersStatus = useSelector(selectCurrentGalerieUsersStatus);
+
+    const showBottomLoader = React.useMemo(
+        () => usersStatus === 'LOADING',
+        [usersStatus]
+    );
+    const showFullScreenLoader = React.useMemo(
+        () => usersStatus === 'PENDING' || usersStatus === 'INITIAL_LOADING',
+        [usersStatus]
+    );
 
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
@@ -58,7 +63,6 @@ const UsersScreen = ({ current, paddingTop, scrollY, maxScroll }: Props) => {
         },
         [current]
     );
-
     useAnimatedReaction(
         () => scrollY.value,
         (newScrollY) => {
@@ -67,29 +71,34 @@ const UsersScreen = ({ current, paddingTop, scrollY, maxScroll }: Props) => {
         [current]
     );
 
-    const scrollHandler = useAnimatedScrollHandler(
-        {
-            onScroll: (e) => {
-                if (current)
-                    scrollY.value = clamp(e.contentOffset.y, 0, maxScroll);
-            },
-        },
-        [maxScroll, current]
-    );
+    React.useEffect(() => {
+        if (usersStatus && usersStatus === 'PENDING' && galerie)
+            dispatch(getGalerieUsers(galerie.id));
+    }, [galerie, usersStatus]);
 
     return (
         <GalerieTabbarScreenContainer>
-            <AnimatedFlatList
-                contentContainerStyle={{
-                    minHeight: dimension.height + maxScroll,
-                    paddingTop,
-                }}
-                data={mockItem}
-                renderItem={renderItem}
-                ref={flatListRef}
-                showsVerticalScrollIndicator={false}
-                onScroll={scrollHandler}
-            />
+            {!!paddingTop && (
+                <>
+                    {usersAllIds && usersAllIds.length > 0 ? (
+                        <Users
+                            allIds={usersAllIds}
+                            current={current}
+                            editScrollY={editScrollY}
+                            galerie={galerie}
+                            maxScroll={maxScroll}
+                            paddingTop={paddingTop}
+                        />
+                    ) : (
+                        <EmptyMessage
+                            pt={paddingTop}
+                            text="No other user follow this galerie yet."
+                        />
+                    )}
+                </>
+            )}
+            <FullScreenLoader show={showFullScreenLoader} />
+            <BottomLoader show={showBottomLoader} bottom="huge" />
         </GalerieTabbarScreenContainer>
     );
 };

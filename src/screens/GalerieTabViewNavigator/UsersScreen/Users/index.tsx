@@ -1,19 +1,15 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 import {
     FlatList,
     ListRenderItemInfo,
     useWindowDimensions,
 } from 'react-native';
+import { useAnimatedScrollHandler } from 'react-native-reanimated';
+import { useDispatch } from 'react-redux';
 
-import Animated, {
-    runOnJS,
-    useAnimatedReaction,
-    useAnimatedScrollHandler,
-} from 'react-native-reanimated';
 import { AnimatedFlatList } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { getGalerieFrames } from '#store/frames';
+import { getGalerieUsers } from '#store/users';
 
 import RenderItem from './RenderItem';
 
@@ -24,49 +20,31 @@ type Props = {
     galerie?: Store.Models.Galerie;
     maxScroll: number;
     paddingTop: number;
-    scrollY: Animated.SharedValue<number>;
 };
 
 const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Frames = ({
+const Users = ({
     allIds,
     current,
     editScrollY,
     galerie,
     maxScroll,
     paddingTop,
-    scrollY,
 }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
-    const keyExtractor = React.useCallback((item: string) => item, []);
     const handleEndReach = React.useCallback(() => {
-        if (galerie) dispatch(getGalerieFrames(galerie.id));
+        if (galerie) dispatch(getGalerieUsers(galerie.id));
     }, [galerie]);
-    const setInitialScroll = React.useCallback(
-        (newScrollY: number) => {
-            if (flatListRef.current && !current) {
-                flatListRef.current.scrollToOffset({
-                    animated: false,
-                    offset: newScrollY,
-                });
-            }
-        },
-        [current]
-    );
-    useAnimatedReaction(
-        () => scrollY.value,
-        (newScrollY) => {
-            runOnJS(setInitialScroll)(newScrollY);
-        },
-        [current]
-    );
+
+    const keyExtractor = React.useCallback((item: string) => item, []);
+
     const scrollHandler = useAnimatedScrollHandler(
         {
             onScroll: (e) => {
@@ -99,4 +77,4 @@ const Frames = ({
     );
 };
 
-export default Frames;
+export default Users;

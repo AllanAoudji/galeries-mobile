@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 
+import { combineUsersAllIds } from '#store/combineAllIds';
 import { getUserCurrentProfilePicture } from '#store/profilePictures/actionCreators';
 import {
     setGalerieUsersAllIds,
@@ -12,7 +13,6 @@ import {
     updateUsersStatus,
     updateUsersPrevious,
 } from '#store/users/actionCreators';
-import { combineUsersAllIds } from '#store/combineAllIds';
 
 const successGetUsers = (
     dispatch: Dispatch<Store.Action>,
