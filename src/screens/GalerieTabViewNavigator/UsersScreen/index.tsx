@@ -88,6 +88,7 @@ const UsersScreen = ({
                             galerie={galerie}
                             maxScroll={maxScroll}
                             paddingTop={paddingTop}
+                            scrollY={scrollY}
                         />
                     ) : (
                         <EmptyMessage

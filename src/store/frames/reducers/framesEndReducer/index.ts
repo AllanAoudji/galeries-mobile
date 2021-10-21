@@ -1,6 +1,6 @@
 import { FRAMES_END_RESET, FRAMES_END_UPDATE } from '#store/frames/actionTypes';
 
-const initialState: { [key: string]: '' } = {};
+const initialState: { [key: string]: boolean } = {};
 const framesEndReducer = (state = initialState, action: Store.Action) => {
     switch (action.type) {
         case FRAMES_END_RESET:

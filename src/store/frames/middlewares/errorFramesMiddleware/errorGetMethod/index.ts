@@ -8,7 +8,6 @@ import {
 
 const errorGetMethod = (
     dispatch: Dispatch<Store.Action>,
-    getState: () => Store.Reducer,
     action: Store.Action
 ) => {
     const galerieId = action.meta.query

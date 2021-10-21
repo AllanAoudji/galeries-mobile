@@ -4,6 +4,7 @@ export const FRAMES: Store.Entity = '[FRAMES]';
 export const FORGOT_YOUR_PASSWORD: Store.Entity = '[FORGOT YOUR PASSWORD]';
 export const GALERIES: Store.Entity = '[GALERIES]';
 export const GALERIE_PICTURES: Store.Entity = '[GALERIE PICTURES]';
+export const INVITATIONS: Store.Entity = '[INVITATIONS]';
 export const LIKES: Store.Entity = '[LIKES]';
 export const LOADING: Store.Entity = '[LOADING]';
 export const LOGIN: Store.Entity = '[LOGIN]';

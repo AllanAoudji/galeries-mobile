@@ -10,7 +10,7 @@ import errorPostMethod from './errorPostMethod';
 import errorPutMethod from './errorPutMethod';
 
 const errorFramesMiddleware: Middleware<{}, Store.Reducer> =
-    ({ dispatch, getState }) =>
+    ({ dispatch }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
@@ -22,7 +22,7 @@ const errorFramesMiddleware: Middleware<{}, Store.Reducer> =
                 errorDeleteMethod(dispatch, action);
                 break;
             case 'GET':
-                errorGetMethod(dispatch, getState, action);
+                errorGetMethod(dispatch, action);
                 break;
             case 'POST':
                 errorPostMethod(dispatch, action);

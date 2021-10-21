@@ -41,6 +41,7 @@ declare global {
                 Comments: undefined;
                 CreateFrame: NavigatorScreenParams<CreateFrameStack.ParamList>;
                 CreateGalerie: undefined;
+                CreateInvitation: undefined;
                 Frame: undefined;
                 Galerie: undefined;
                 Galeries: undefined;
@@ -61,6 +62,10 @@ declare global {
             type CreateGalerieProp = BottomTabNavigationProp<
                 ParamList,
                 'CreateGalerie'
+            >;
+            type CreateInvitationProp = BottomTabNavigationProp<
+                ParamList,
+                'CreateInvitation'
             >;
             type FrameProp = BottomTabNavigationProp<ParamList, 'Frame'>;
             type GalerieNavigationProp = BottomTabNavigationProp<
@@ -159,6 +164,7 @@ declare global {
             | '[FRAMES]'
             | '[GALERIES]'
             | '[GALERIE PICTURES]'
+            | '[INVITATIONS]'
             | '[LIKES]'
             | '[LOADING]'
             | '[LOGIN]'
@@ -235,6 +241,18 @@ declare global {
                 loading: {
                     put: Store.Status;
                 };
+                status: { [key: string]: Store.Status };
+            };
+            invitations: {
+                allIds: { [key: string]: string[] };
+                byId: { [key: string]: Store.Models.Invitation };
+                current: string | null;
+                end: { [key: string]: boolean };
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                };
+                previous: { [key: string]: string };
                 status: { [key: string]: Store.Status };
             };
             likes: {
@@ -353,6 +371,14 @@ declare global {
                 signedUrl: string;
                 size: number;
                 width: number;
+            };
+            type Invitation = {
+                autoIncrementId: string;
+                createdAt: string;
+                id: string;
+                galerieId: string;
+                updatedAt: string;
+                userId: string;
             };
             type Like = {
                 autoIncrementId: string;

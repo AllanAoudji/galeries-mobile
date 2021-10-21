@@ -6,6 +6,7 @@ import { commentsMiddlewares, commentsReducer } from './comments';
 import { forgotYourPasswordReducer } from './forgotYourPassword';
 import { framesMiddlewares, framesReducer } from './frames';
 import { galeriesMiddleware, galeriesReducer } from './galeries';
+import { invitationsMiddlewares, invitationsReducer } from './invitations';
 import {
     galeriePicturesMiddlwares,
     galeriePicturesReducer,
@@ -27,6 +28,7 @@ const reducers = combineReducers({
     frames: framesReducer,
     galeries: galeriesReducer,
     galeriePictures: galeriePicturesReducer,
+    invitations: invitationsReducer,
     likes: likesReducers,
     login: loginReducer,
     logout: logoutReducer,
@@ -46,6 +48,7 @@ export default createStore(
             ...framesMiddlewares,
             ...galeriesMiddleware,
             ...galeriePicturesMiddlwares,
+            ...invitationsMiddlewares,
             ...likesMiddlewares,
             ...loginMiddlewares,
             ...logoutMiddlewares,
