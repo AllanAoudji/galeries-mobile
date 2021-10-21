@@ -3,7 +3,10 @@ import { useDispatch } from 'react-redux';
 import {
     FlatList,
     ListRenderItemInfo,
+    StyleProp,
+    StyleSheet,
     useWindowDimensions,
+    ViewStyle,
 } from 'react-native';
 
 import Animated, {
@@ -45,10 +48,18 @@ const Frames = ({
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
-    const keyExtractor = React.useCallback((item: string) => item, []);
+    const styleProps = React.useMemo(
+        () => ({
+            minHeight: dimension.height + maxScroll,
+            paddingTop,
+        }),
+        []
+    );
+
     const handleEndReach = React.useCallback(() => {
         if (galerie) dispatch(getGalerieFrames(galerie.id));
     }, [galerie]);
+    const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
             if (flatListRef.current && !current) {
@@ -60,6 +71,7 @@ const Frames = ({
         },
         [current]
     );
+
     useAnimatedReaction(
         () => scrollY.value,
         (newScrollY) => {
@@ -78,11 +90,9 @@ const Frames = ({
 
     return (
         <AnimatedFlatList
-            contentContainerStyle={{
-                minHeight: dimension.height + maxScroll,
-                paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-                paddingTop,
-            }}
+            contentContainerStyle={
+                style(styleProps).animatedFlatListContentContainerStyle
+            }
             data={allIds}
             extraData={allIds}
             keyExtractor={keyExtractor}
@@ -98,5 +108,21 @@ const Frames = ({
         />
     );
 };
+
+const style: ({
+    minHeight,
+    paddingTop,
+}: {
+    minHeight: number;
+    paddingTop: number;
+}) => {
+    animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
+} = StyleSheet.create(({ minHeight, paddingTop }) => ({
+    animatedFlatListContentContainerStyle: {
+        minHeight,
+        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+        paddingTop,
+    },
+}));
 
 export default Frames;

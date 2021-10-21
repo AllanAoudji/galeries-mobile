@@ -2,9 +2,16 @@ import * as React from 'react';
 import {
     FlatList,
     ListRenderItemInfo,
+    StyleProp,
+    StyleSheet,
     useWindowDimensions,
+    ViewStyle,
 } from 'react-native';
-import { useAnimatedScrollHandler } from 'react-native-reanimated';
+import Animated, {
+    runOnJS,
+    useAnimatedReaction,
+    useAnimatedScrollHandler,
+} from 'react-native-reanimated';
 import { useDispatch } from 'react-redux';
 
 import { AnimatedFlatList } from '#components';
@@ -20,6 +27,7 @@ type Props = {
     galerie?: Store.Models.Galerie;
     maxScroll: number;
     paddingTop: number;
+    scrollY: Animated.SharedValue<number>;
 };
 
 const renderItem = ({ item }: ListRenderItemInfo<string>) => (
@@ -33,18 +41,44 @@ const Users = ({
     galerie,
     maxScroll,
     paddingTop,
+    scrollY,
 }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
+    const styleProps = React.useMemo(
+        () => ({
+            minHeight: dimension.height + maxScroll,
+            paddingTop,
+        }),
+        []
+    );
+
     const handleEndReach = React.useCallback(() => {
         if (galerie) dispatch(getGalerieUsers(galerie.id));
     }, [galerie]);
-
     const keyExtractor = React.useCallback((item: string) => item, []);
+    const setInitialScroll = React.useCallback(
+        (newScrollY: number) => {
+            if (flatListRef.current && !current) {
+                flatListRef.current.scrollToOffset({
+                    animated: false,
+                    offset: newScrollY,
+                });
+            }
+        },
+        [current]
+    );
 
+    useAnimatedReaction(
+        () => scrollY.value,
+        (newScrollY) => {
+            runOnJS(setInitialScroll)(newScrollY);
+        },
+        [current]
+    );
     const scrollHandler = useAnimatedScrollHandler(
         {
             onScroll: (e) => {
@@ -56,11 +90,9 @@ const Users = ({
 
     return (
         <AnimatedFlatList
-            contentContainerStyle={{
-                minHeight: dimension.height + maxScroll,
-                paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-                paddingTop,
-            }}
+            contentContainerStyle={
+                style(styleProps).animatedFlatListContentContainerStyle
+            }
             data={allIds}
             extraData={allIds}
             keyExtractor={keyExtractor}
@@ -76,5 +108,21 @@ const Users = ({
         />
     );
 };
+
+const style: ({
+    minHeight,
+    paddingTop,
+}: {
+    minHeight: number;
+    paddingTop: number;
+}) => {
+    animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
+} = StyleSheet.create(({ minHeight, paddingTop }) => ({
+    animatedFlatListContentContainerStyle: {
+        minHeight,
+        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+        paddingTop,
+    },
+}));
 
 export default React.memo(Users);
