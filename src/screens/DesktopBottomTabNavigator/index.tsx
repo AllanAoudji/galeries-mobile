@@ -10,6 +10,7 @@ import { DefaultHeader } from '#components';
 import CommentScreen from './CommentsScreen';
 import CreateFrameScreen from './CreateFrameScreen';
 import CreateGalerieScreen from './CreateGalerieScreen';
+import CreateInvitationScreen from './CreateInvitationScreen';
 import FrameScreen from './FrameScreen';
 import GalerieScreen from './GalerieScreen';
 import GaleriesScreen from './GaleriesScreen';
@@ -48,6 +49,10 @@ const DesktopBottomTabNavigator = () => {
                 component={CreateGalerieScreen}
                 name="CreateGalerie"
                 options={createGalerieScreenOption}
+            />
+            <Tab.Screen
+                component={CreateInvitationScreen}
+                name="CreateInvitation"
             />
             <Tab.Screen component={FrameScreen} name="Frame" />
             <Tab.Screen component={GalerieScreen} name="Galerie" />

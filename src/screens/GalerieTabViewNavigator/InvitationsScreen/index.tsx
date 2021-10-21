@@ -1,3 +1,4 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +8,7 @@ import {
     GalerieTabbarScreenContainer,
     FullScreenLoader,
     BottomLoader,
+    AddButton,
 } from '#components';
 import {
     getGalerieInvitations,
@@ -22,6 +24,8 @@ type Props = {
 
 const InvitationsScreen = ({ current, galerie, paddingTop }: Props) => {
     const dispatch = useDispatch();
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
 
     const invitationsAllIds = useSelector(
         selectCurrentGalerieInvitationsAllIds
@@ -41,6 +45,12 @@ const InvitationsScreen = ({ current, galerie, paddingTop }: Props) => {
         [invitationsStatus]
     );
 
+    const handlePressAddGalerie = React.useCallback(() => {
+        navigation
+            .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
+            .navigate('CreateInvitation');
+    }, [navigation]);
+
     React.useEffect(() => {
         if (
             current &&
@@ -54,9 +64,16 @@ const InvitationsScreen = ({ current, galerie, paddingTop }: Props) => {
     return (
         <GalerieTabbarScreenContainer>
             {!!paddingTop && (
-                <View style={{ paddingTop }}>
-                    <Typography>Invitations</Typography>
-                </View>
+                <>
+                    <View style={{ paddingTop }}>
+                        <Typography>Invitations</Typography>
+                    </View>
+                    <AddButton
+                        bottom="largest"
+                        right="normal"
+                        onPress={handlePressAddGalerie}
+                    />
+                </>
             )}
             <FullScreenLoader show={showFullScreenLoader} />
             <BottomLoader show={showBottomLoader} bottom="huge" />
