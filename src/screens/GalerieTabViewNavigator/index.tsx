@@ -106,6 +106,8 @@ const GalerieTabViewNavigator = () => {
                 case 'invitations':
                     return (
                         <InvitationsScreen
+                            current={currentRoute === 'invitations'}
+                            galerie={galerie}
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }
