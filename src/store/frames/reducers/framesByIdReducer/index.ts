@@ -17,7 +17,7 @@ const framesByIdReducer = (state = initialState, action: Store.Action) => {
         case FRAMES_BY_ID_RESET:
             return initialState;
         case FRAMES_BY_ID_SET:
-            if (typeof action.payload === 'object') return state;
+            if (typeof action.payload !== 'object') return state;
             return {
                 ...state,
                 ...action.payload,
