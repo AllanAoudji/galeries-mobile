@@ -24,10 +24,17 @@ import UpdateFrameScreen from './UpdateFrameScreen';
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 
 const createGalerieScreenHeader = () => (
-    <DefaultHeader title="createGalerie" variant="secondary" />
+    <DefaultHeader title="create galerie" variant="secondary" />
 );
 const createGalerieScreenOption: BottomTabNavigationOptions = {
     header: createGalerieScreenHeader,
+    headerShown: true,
+};
+const createInvitationScreenHeader = () => (
+    <DefaultHeader title="create invitation" variant="secondary" />
+);
+const createInvitationScreenOption: BottomTabNavigationOptions = {
+    header: createInvitationScreenHeader,
     headerShown: true,
 };
 const screenOptions: BottomTabNavigationOptions = {
@@ -53,6 +60,7 @@ const DesktopBottomTabNavigator = () => {
             <Tab.Screen
                 component={CreateInvitationScreen}
                 name="CreateInvitation"
+                options={createInvitationScreenOption}
             />
             <Tab.Screen component={FrameScreen} name="Frame" />
             <Tab.Screen component={GalerieScreen} name="Galerie" />

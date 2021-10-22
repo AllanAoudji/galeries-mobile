@@ -13,10 +13,7 @@ export const ANIMATIONS = {
     TIMING_CONFIG: (duration = 400) => {
         'worklet';
 
-        return {
-            duration,
-            easing: Easing.inOut(Easing.ease),
-        };
+        return { duration, easing: Easing.inOut(Easing.ease) };
     },
 };
 
