@@ -3,6 +3,7 @@ export { default as AnimatedFlatList } from './AnimatedFlatList';
 export { default as AnimatedTypography } from './AnimatedTypography';
 export { default as BottomLoader } from './BottomLoader';
 export { default as BottomSheetButton } from './BottomSheetButton';
+export { default as CheckBox } from './CheckBox';
 export { default as CommentButton } from './CommentButton';
 export { default as CommentCard } from './CommentCard';
 export { default as CoverPictureBookMark } from './CoverPictureBookMark';
