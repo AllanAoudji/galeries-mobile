@@ -6,7 +6,11 @@ import { CheckBox, CustomButton, FormContainer, Typography } from '#components';
 
 import { Container } from './styles';
 
-const CreateInvitationScreen = () => {
+type Props = {
+    navigation: Screen.DesktopBottomTab.CreateInvitationProp;
+};
+
+const CreateInvitationScreen = ({ navigation }: Props) => {
     const [checked, setChecked] = React.useState<boolean>(false);
 
     const handlePress = React.useCallback(
@@ -15,7 +19,10 @@ const CreateInvitationScreen = () => {
     );
 
     const handlePressCreate = React.useCallback(() => {}, []);
-    const handlePressCancel = React.useCallback(() => {}, []);
+    const handlePressCancel = React.useCallback(() => {
+        if (navigation.canGoBack()) navigation.goBack();
+        else navigation.navigate('Home');
+    }, []);
 
     return (
         <FormContainer>
