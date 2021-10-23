@@ -1,8 +1,15 @@
+import { useFormik } from 'formik';
 import * as React from 'react';
-
 import { Pressable, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { CheckBox, CustomButton, FormContainer, Typography } from '#components';
+
+import {
+    CheckBox,
+    CustomButton,
+    FormContainer,
+    NumberTextInput,
+    Typography,
+} from '#components';
+import { createInvitationSchema } from '#helpers/schemas';
 
 import { Container } from './styles';
 
@@ -10,13 +17,25 @@ type Props = {
     navigation: Screen.DesktopBottomTab.CreateInvitationProp;
 };
 
+const initialValues = {
+    numOfInvits: '',
+    time: '',
+};
+
 const CreateInvitationScreen = ({ navigation }: Props) => {
     const [checked, setChecked] = React.useState<boolean>(false);
 
-    const handlePress = React.useCallback(
-        () => setChecked((prevState) => !prevState),
-        []
-    );
+    const formik = useFormik({
+        onSubmit: () => {},
+        initialValues,
+        validateOnBlur: true,
+        validateOnChange: false,
+        validationSchema: createInvitationSchema,
+    });
+
+    const handlePress = React.useCallback(() => {
+        setChecked((prevState) => !prevState);
+    }, []);
 
     const handlePressCreate = React.useCallback(() => {}, []);
     const handlePressCancel = React.useCallback(() => {
@@ -24,9 +43,24 @@ const CreateInvitationScreen = ({ navigation }: Props) => {
         else navigation.navigate('Home');
     }, []);
 
+    const handleChangeNumOfInvits = React.useCallback((e: string) => {
+        const num = +e;
+        if (Number.isNaN(num)) return;
+        if (num < 1) formik.setFieldValue('numOfInvits', '1');
+        else if (num > 200) formik.setFieldValue('numOfInvits', '200');
+        else formik.setFieldValue('numOfInvits', e);
+    }, []);
+    const handleChangeTime = React.useCallback((e: string) => {
+        const num = +e;
+        if (Number.isNaN(num)) return;
+        if (num < 1) formik.setFieldValue('time', '1');
+        else if (num > 99) formik.setFieldValue('time', '99');
+        else formik.setFieldValue('time', e);
+    }, []);
+
     return (
         <FormContainer>
-            <Container style={{ marginVertical: 45 }}>
+            <Container>
                 <View>
                     <View style={{ marginLeft: 45 }}>
                         <Typography fontSize={18}>
@@ -35,36 +69,16 @@ const CreateInvitationScreen = ({ navigation }: Props) => {
                         <Typography color="primary">
                             minimum of 1 user, maximum of 200 users
                         </Typography>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'flex-end',
-                                marginTop: 30,
-                                marginLeft: 60,
-                            }}
-                        >
-                            <TextInput
-                                keyboardType="numeric"
-                                placeholder="1"
-                                style={{
-                                    backgroundColor: '#F2F2E6',
-                                    borderBottomWidth: 3,
-                                    borderBottomColor: '#7483FF',
-                                    height: 45,
-                                    width: 50,
-                                    paddingHorizontal: 5,
-                                    textAlign: 'right',
-                                    fontSize: 24,
-                                    fontFamily: 'HelveticaLtStRoman',
-                                    borderTopLeftRadius: 5,
-                                    borderTopRightRadius: 5,
-                                    marginRight: 15,
-                                }}
-                            />
-                            <Typography fontFamily="light" fontSize={18}>
-                                user(s)
-                            </Typography>
-                        </View>
+                        <NumberTextInput
+                            label="user(s)"
+                            onChangeText={handleChangeNumOfInvits}
+                            value={formik.values.numOfInvits}
+                            maxLength={4}
+                            ml="normal"
+                            mt="small"
+                            placeholder="1"
+                            selectTextOnFocus
+                        />
                     </View>
                     <View
                         style={{
@@ -101,39 +115,18 @@ const CreateInvitationScreen = ({ navigation }: Props) => {
                             </Typography>
                         </View>
                     </Pressable>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'flex-end',
-                            marginTop: 30,
-                            marginLeft: 105,
-                            opacity: checked ? 1 : 0.3,
-                            marginBottom: 30,
-                        }}
-                    >
-                        <TextInput
-                            keyboardType="numeric"
-                            placeholder="1"
-                            editable={checked}
-                            style={{
-                                backgroundColor: '#F2F2E6',
-                                borderBottomWidth: 3,
-                                borderBottomColor: '#7483FF',
-                                height: 45,
-                                width: 50,
-                                paddingHorizontal: 5,
-                                textAlign: 'right',
-                                fontSize: 24,
-                                fontFamily: 'HelveticaLtStRoman',
-                                borderTopLeftRadius: 5,
-                                borderTopRightRadius: 5,
-                                marginRight: 15,
-                            }}
-                        />
-                        <Typography fontFamily="light" fontSize={18}>
-                            day(s)
-                        </Typography>
-                    </View>
+                    <NumberTextInput
+                        label="day(s)"
+                        onChangeText={handleChangeTime}
+                        value={formik.values.time}
+                        disable={!checked}
+                        maxLength={3}
+                        mb="small"
+                        mt="small"
+                        ml="huge"
+                        placeholder="1"
+                        selectTextOnFocus
+                    />
                 </View>
                 <View>
                     <CustomButton

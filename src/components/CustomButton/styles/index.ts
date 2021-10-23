@@ -24,7 +24,7 @@ const Container = styled.Pressable<ContainerProps>`
     margin-left: ${({ ml, theme }) => (ml ? theme.spacings[ml] : 0)};
     margin-right: ${({ mr, theme }) => (mr ? theme.spacings[mr] : 0)};
     margin-top: ${({ mt, theme }) => (mt ? theme.spacings[mt] : 0)};
-    opacity: ${(props) => (props.disable ? '0.5' : 1)};
+    opacity: ${(props) => (props.disable ? 0.5 : 1)};
 `;
 
 // eslint-disable-next-line import/prefer-default-export

@@ -30,7 +30,9 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     const loading = useSelector(selectGaleriesLoadingPost);
 
     const formik = useFormik({
-        onSubmit: async (values) => dispatch(postGalerie(values)),
+        onSubmit: (values) => {
+            dispatch(postGalerie(values));
+        },
         initialValues,
         validateOnBlur: true,
         validateOnChange: false,
