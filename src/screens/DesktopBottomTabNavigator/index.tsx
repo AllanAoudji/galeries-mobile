@@ -15,6 +15,7 @@ import FrameScreen from './FrameScreen';
 import GalerieScreen from './GalerieScreen';
 import GaleriesScreen from './GaleriesScreen';
 import HomeScreen from './HomeScreen';
+import InvitationScreen from './InvitationScreen';
 import InvitationQRCode from './InvitationQRCode';
 import LikesScreen from './LikesScreen';
 import NotificationsScreen from './NotificationsScreen';
@@ -67,6 +68,7 @@ const DesktopBottomTabNavigator = () => {
             <Tab.Screen component={GalerieScreen} name="Galerie" />
             <Tab.Screen component={GaleriesScreen} name="Galeries" />
             <Tab.Screen component={HomeScreen} name="Home" />
+            <Tab.Screen component={InvitationScreen} name="Invitation" />
             <Tab.Screen component={InvitationQRCode} name="InvitationQRCode" />
             <Tab.Screen component={LikesScreen} name="Likes" />
             <Tab.Screen component={NotificationsScreen} name="Notifications" />

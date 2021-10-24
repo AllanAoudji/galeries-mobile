@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { deleteInvitation } from '#store/invitations';
-import { DeleteModal } from '#components';
+import DeleteModal from '#components/DeleteModal';
 
 export const DeleteInvitationModalContext = React.createContext<{
     handleOpenModal: (invitationId: string) => void;

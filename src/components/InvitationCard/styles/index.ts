@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
 
-const Container = styled.View`
+const Container = styled.Pressable`
     background-color: ${({ theme }) => theme.colors.secondary};
     border-radius: 5px;
     flex-direction: row;

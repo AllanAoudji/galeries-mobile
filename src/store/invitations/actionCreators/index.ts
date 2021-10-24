@@ -126,7 +126,7 @@ export const setInvitationsById: (payload: {
     type: INVITATIONS_BY_ID_SET,
 });
 export const updateInvitationsCurrent: (
-    payload: string | null
+    payload?: string | null
 ) => Store.Action = (payload) => ({
     meta: {},
     payload,

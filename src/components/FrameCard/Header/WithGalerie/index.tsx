@@ -1,10 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ProfilePicture from '#components/ProfilePicture';
 import GalerieCoverPicture from '#components/GalerieCoverPicture';
 import Typography from '#components/Typography';
-import { selectGalerie } from '#store/galeries';
+import { selectGalerie, updateGaleriesCurrent } from '#store/galeries';
 import { selectUser } from '#store/users';
 
 import {
@@ -20,6 +21,13 @@ type Props = {
 };
 
 const WithGalerie = ({ frame }: Props) => {
+    const dispatch = useDispatch();
+    const navigation = useNavigation<
+        | Screen.DesktopBottomTab.FrameProp
+        | Screen.DesktopBottomTab.HomeNavigationProp
+        | Screen.DesktopBottomTab.GalerieNavigationProp
+    >();
+
     const galerieSelector = React.useMemo(
         () => selectGalerie(frame.galerieId),
         [frame]
@@ -28,6 +36,11 @@ const WithGalerie = ({ frame }: Props) => {
 
     const userSelector = React.useMemo(() => selectUser(frame.userId), [frame]);
     const user = useSelector(userSelector);
+
+    const handlePressGalerie = React.useCallback(() => {
+        dispatch(updateGaleriesCurrent(frame.galerieId));
+        navigation.navigate('Galerie');
+    }, [navigation]);
 
     return (
         <>
@@ -43,7 +56,7 @@ const WithGalerie = ({ frame }: Props) => {
             </Container>
             <TextsContainer>
                 {!!galerie && (
-                    <TextContainer pb>
+                    <TextContainer onPress={handlePressGalerie} pb>
                         <Typography fontFamily="light">Posted on </Typography>
                         <Typography>
                             {galerie ? galerie.name : 'galerie not found'}
