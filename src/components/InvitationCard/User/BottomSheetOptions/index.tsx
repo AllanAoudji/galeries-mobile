@@ -16,7 +16,7 @@ const BottomSheetOptions = ({ invitation }: Props) => {
     const bottomSheetContent = React.useCallback(() => {
         return (
             <>
-                <ShowQRCodeButton />
+                <ShowQRCodeButton invitation={invitation} />
                 <DeleteInvitationButton invitation={invitation} />
             </>
         );

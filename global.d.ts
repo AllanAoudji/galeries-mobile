@@ -46,6 +46,8 @@ declare global {
                 Galerie: undefined;
                 Galeries: undefined;
                 Home: undefined;
+                Invitation: undefined;
+                InvitationQRCode: undefined;
                 Likes: undefined;
                 Notifications: undefined;
                 Profile: undefined;
@@ -79,6 +81,14 @@ declare global {
             type HomeNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'Home'
+            >;
+            type InvitationNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Invitation'
+            >;
+            type InvitationQRCodeNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'InvitationQRCode'
             >;
             type LikesNavigationProp = BottomTabNavigationProp<
                 ParamList,
