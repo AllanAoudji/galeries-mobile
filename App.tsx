@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { Notification } from '#components';
 import { BottomSheetProvider } from '#contexts/BottomSheetContext';
 import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
+import { DeleteInvitationModalProvider } from '#contexts/DeleteInvitationModalContext';
 import ThemeProvider from '#contexts/ThemeContext';
 import Loader from '#helpers/Loader';
 import RootStackNavigator from '#screens/RootStackNavigator';
@@ -23,11 +24,13 @@ export default function App() {
                 <Loader>
                     <NavigationContainer>
                         <DeleteFrameModalProvider>
-                            <BottomSheetProvider>
-                                <RootStackNavigator />
-                                <Notification />
-                                <StatusBar style="auto" />
-                            </BottomSheetProvider>
+                            <DeleteInvitationModalProvider>
+                                <BottomSheetProvider>
+                                    <RootStackNavigator />
+                                    <Notification />
+                                    <StatusBar style="auto" />
+                                </BottomSheetProvider>
+                            </DeleteInvitationModalProvider>
                         </DeleteFrameModalProvider>
                     </NavigationContainer>
                 </Loader>

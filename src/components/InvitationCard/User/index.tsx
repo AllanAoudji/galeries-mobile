@@ -1,15 +1,17 @@
 import * as React from 'react';
 
 import Typography from '#components/Typography';
-import Pictogram from '#components/Pictogram';
+
+import BottomSheetOptions from './BottomSheetOptions';
 
 import { Container } from './styles';
 
 type Props = {
+    invitation: Store.Models.Invitation;
     user?: Store.Models.User;
 };
 
-const User = ({ user }: Props) => {
+const User = ({ invitation, user }: Props) => {
     return (
         <Container>
             <Typography>
@@ -18,12 +20,7 @@ const User = ({ user }: Props) => {
                     {user ? user.pseudonym : 'user'}
                 </Typography>
             </Typography>
-            <Pictogram
-                ml="smallest"
-                mr="smallest"
-                size="small"
-                variant="option-vertical"
-            />
+            <BottomSheetOptions invitation={invitation} />
         </Container>
     );
 };

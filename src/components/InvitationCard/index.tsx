@@ -26,7 +26,7 @@ const InvitationCard = ({ invitation }: Props) => {
         <Container>
             <ProfilePicture user={user} mr="smallest" />
             <InnerContainer>
-                <User user={user} />
+                <User invitation={invitation} user={user} />
                 <Informations invitation={invitation} />
             </InnerContainer>
         </Container>
