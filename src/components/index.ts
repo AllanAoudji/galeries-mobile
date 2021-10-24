@@ -19,6 +19,7 @@ export { default as FullScreenLoader } from './FullScreenLoader';
 export { default as GalerieCard } from './GalerieCard';
 export { default as GalerieCoverPicture } from './GalerieCoverPicture';
 export { default as GalerieTabbarScreenContainer } from './GalerieTabbarScreenContainer';
+export { deault as InvitationCard } from './InvitationCard';
 export { default as LikeButton } from './LikeButton';
 export { default as Logo } from './Logo';
 export { default as Notification } from './Notification';

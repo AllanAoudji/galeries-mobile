@@ -107,10 +107,13 @@ const GalerieTabViewNavigator = () => {
                     return (
                         <InvitationsScreen
                             current={currentRoute === 'invitations'}
+                            editScrollY={editScrollY}
                             galerie={galerie}
+                            maxScroll={maxScroll}
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }
+                            scrollY={scrollY}
                         />
                     );
                 case 'options':
