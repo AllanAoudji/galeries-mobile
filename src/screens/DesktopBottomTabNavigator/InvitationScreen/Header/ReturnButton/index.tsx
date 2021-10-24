@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import * as React from 'react';
-import { Container } from './styles';
 
 import { Pictogram } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
+
+import { Container } from './styles';
 
 const ReturnButton = () => {
     const navigation =
@@ -18,12 +19,12 @@ const ReturnButton = () => {
     return (
         <Container paddingTop={StatusBar.currentHeight}>
             <Pictogram
-                variant="arrow-left"
                 color="white"
                 height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
                 onPress={handlePress}
                 pl="small"
                 pr="small"
+                variant="arrow-left"
             />
         </Container>
     );

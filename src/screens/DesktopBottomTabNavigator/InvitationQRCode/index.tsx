@@ -17,8 +17,8 @@ type Props = {
 };
 
 const InvitationQRCode = ({ navigation }: Props) => {
-    const theme = useTheme();
     const dimension = useWindowDimensions();
+    const theme = useTheme();
 
     const invitation = useSelector(selectCurrentInvitation);
 

@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 
 import { selectCurrentInvitation } from '#store/invitations';
 
+import Body from './Body';
+import Footer from './Footer';
 import Header from './Header';
 
 import { Container } from './styles';
@@ -26,6 +28,8 @@ const InvitationScreen = ({ navigation }: Props) => {
     return (
         <Container>
             <Header invitation={invitation} />
+            <Body invitation={invitation} />
+            <Footer invitation={invitation} />
         </Container>
     );
 };
