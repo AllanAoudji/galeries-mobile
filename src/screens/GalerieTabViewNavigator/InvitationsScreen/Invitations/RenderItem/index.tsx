@@ -15,7 +15,7 @@ const RenderItem = ({ item }: Props) => {
     );
     const invitation = useSelector(invitationSelector);
 
-    return <InvitationCard />;
+    return <InvitationCard invitation={invitation} />;
 };
 
 export default React.memo(RenderItem);
