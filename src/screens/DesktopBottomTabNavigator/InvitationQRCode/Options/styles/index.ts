@@ -6,7 +6,6 @@ type ContainerProps = {
 };
 
 const Container = styled(Animated.View)<ContainerProps>`
-    background-color: rgba(0, 0, 0, 0.5);
     flex: 1;
     padding-top: ${({ paddingTop }) => `${paddingTop || 0}px`};
 `;
