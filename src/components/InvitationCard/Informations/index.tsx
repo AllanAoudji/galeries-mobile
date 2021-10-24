@@ -26,7 +26,7 @@ const Informations = ({ invitation }: Props) => {
             }`;
         }
         return `${Math.floor(duration.asMinutes())} minute${
-            !!Math.floor(duration.asMinutes()) && 's'
+            !!(Math.floor(duration.asMinutes()) > 1) && 's'
         }`;
     }, [invitation]);
 
