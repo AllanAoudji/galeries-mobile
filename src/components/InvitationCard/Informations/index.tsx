@@ -41,4 +41,4 @@ const Informations = ({ invitation }: Props) => {
     );
 };
 
-export default Informations;
+export default React.memo(Informations);

@@ -56,6 +56,14 @@ const Invitations = ({
         []
     );
 
+    const getItemLayout = React.useCallback(
+        (_, index) => ({
+            length: GLOBAL_STYLE.INVITATION_CARD_HEIGHT,
+            offset: GLOBAL_STYLE.INVITATION_CARD_HEIGHT * index,
+            index,
+        }),
+        []
+    );
     const handleEndReach = React.useCallback(() => {
         if (galerie) dispatch(getGalerieInvitations(galerie.id));
     }, [galerie]);
@@ -95,6 +103,7 @@ const Invitations = ({
             }
             data={allIds}
             extraData={allIds}
+            getItemLayout={getItemLayout}
             keyExtractor={keyExtractor}
             maxToRenderPerBatch={4}
             onEndReached={handleEndReach}
@@ -125,4 +134,4 @@ const style: ({
     },
 }));
 
-export default Invitations;
+export default React.memo(Invitations);
