@@ -27,15 +27,9 @@ const successDeleteMethod = (
         return;
     }
 
-    const galerieId = action.meta.query
-        ? action.meta.query.galerieId
-        : undefined;
-    if (!galerieId) {
-        dispatch(updateInvitationsLoadingDelete('ERROR'));
-        return;
-    }
-
-    dispatch(removeGalerieInvitationsAllIds(galerieId, invitationId));
+    dispatch(
+        removeGalerieInvitationsAllIds(invitation.galerieId, invitationId)
+    );
     dispatch(resetInvitationsCurrent());
     dispatch(removeInvitationsById(invitationId));
     dispatch(updateInvitationsLoadingDelete('SUCCESS'));

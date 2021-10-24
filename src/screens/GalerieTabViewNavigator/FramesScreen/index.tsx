@@ -42,12 +42,6 @@ const FramesScreen = ({
     const framesAllIds = useSelector(selectCurrentGalerieFramesAllIds);
     const framesStatus = useSelector(selectCurrentGalerieFramesStatus);
 
-    const handlePressAddGalerie = React.useCallback(() => {
-        navigation
-            .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
-            .navigate('CreateFrame', { screen: 'AddPictures' });
-    }, [navigation]);
-
     const showBottomLoader = React.useMemo(
         () => framesStatus === 'LOADING',
         [framesStatus]
@@ -56,6 +50,12 @@ const FramesScreen = ({
         () => framesStatus === 'PENDING' || framesStatus === 'INITIAL_LOADING',
         [framesStatus]
     );
+
+    const handlePressAddGalerie = React.useCallback(() => {
+        navigation
+            .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
+            .navigate('CreateFrame', { screen: 'AddPictures' });
+    }, [navigation]);
 
     React.useEffect(() => {
         if (framesStatus && framesStatus === 'PENDING' && galerie)

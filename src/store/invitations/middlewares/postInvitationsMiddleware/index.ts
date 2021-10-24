@@ -20,13 +20,9 @@ const postInvitationsMiddleware: Middleware<{}, Store.Reducer> =
         if (!galerieId) return;
         if (loading.includes('LOADING')) return;
         if (typeof action.payload !== 'object') return;
+        if (typeof action.payload.numOfInvits !== 'number') return;
         if (
-            action.payload.numOfInvits !== undefined ||
-            typeof action.payload.numOfInvits !== 'number'
-        )
-            return;
-        if (
-            action.payload.time !== undefined ||
+            action.payload.time !== undefined &&
             typeof action.payload.time !== 'number'
         )
             return;

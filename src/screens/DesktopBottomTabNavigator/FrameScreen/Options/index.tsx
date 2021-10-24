@@ -75,7 +75,7 @@ const Options = ({
             paddingTop={StatusBar.currentHeight}
             style={[StyleSheet.absoluteFillObject, style]}
         >
-            <InnerContainer style={{ flex: 1 }}>
+            <InnerContainer>
                 <HeaderContainer onPress={onPress}>
                     <Pictogram
                         variant="arrow-left"

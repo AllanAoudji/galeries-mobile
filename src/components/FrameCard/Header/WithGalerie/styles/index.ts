@@ -21,7 +21,7 @@ const ProfilePictureContainer = styled.View`
     position: absolute;
     right: 0;
 `;
-const TextContainer = styled.View<TextContainerProps>`
+const TextContainer = styled.Pressable<TextContainerProps>`
     flex-direction: row;
     padding-bottom: ${({ pb }) => (pb ? '2px' : 0)};
 `;

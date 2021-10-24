@@ -17,6 +17,7 @@ const CommentButton = ({ frame }: Props) => {
     const navigation = useNavigation<
         | Screen.DesktopBottomTab.FrameProp
         | Screen.DesktopBottomTab.HomeNavigationProp
+        | Screen.DesktopBottomTab.GalerieNavigationProp
     >();
 
     const handlePress = React.useCallback(() => {

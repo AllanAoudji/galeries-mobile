@@ -15,6 +15,8 @@ import FrameScreen from './FrameScreen';
 import GalerieScreen from './GalerieScreen';
 import GaleriesScreen from './GaleriesScreen';
 import HomeScreen from './HomeScreen';
+import InvitationScreen from './InvitationScreen';
+import InvitationQRCode from './InvitationQRCode';
 import LikesScreen from './LikesScreen';
 import NotificationsScreen from './NotificationsScreen';
 import ProfileScreen from './ProfileScreen';
@@ -24,10 +26,17 @@ import UpdateFrameScreen from './UpdateFrameScreen';
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 
 const createGalerieScreenHeader = () => (
-    <DefaultHeader title="createGalerie" variant="secondary" />
+    <DefaultHeader title="create galerie" variant="secondary" />
 );
 const createGalerieScreenOption: BottomTabNavigationOptions = {
     header: createGalerieScreenHeader,
+    headerShown: true,
+};
+const createInvitationScreenHeader = () => (
+    <DefaultHeader title="create invitation" variant="secondary" />
+);
+const createInvitationScreenOption: BottomTabNavigationOptions = {
+    header: createInvitationScreenHeader,
     headerShown: true,
 };
 const screenOptions: BottomTabNavigationOptions = {
@@ -53,11 +62,14 @@ const DesktopBottomTabNavigator = () => {
             <Tab.Screen
                 component={CreateInvitationScreen}
                 name="CreateInvitation"
+                options={createInvitationScreenOption}
             />
             <Tab.Screen component={FrameScreen} name="Frame" />
             <Tab.Screen component={GalerieScreen} name="Galerie" />
             <Tab.Screen component={GaleriesScreen} name="Galeries" />
             <Tab.Screen component={HomeScreen} name="Home" />
+            <Tab.Screen component={InvitationScreen} name="Invitation" />
+            <Tab.Screen component={InvitationQRCode} name="InvitationQRCode" />
             <Tab.Screen component={LikesScreen} name="Likes" />
             <Tab.Screen component={NotificationsScreen} name="Notifications" />
             <Tab.Screen component={ProfileScreen} name="Profile" />

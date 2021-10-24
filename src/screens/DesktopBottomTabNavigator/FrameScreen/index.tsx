@@ -44,10 +44,10 @@ const FrameScreen = ({ navigation }: Props) => {
     const [currentIndex, setCurrentIndex] = React.useState<number>(0);
     const [showOptions, setShowOptions] = React.useState<boolean>(false);
 
-    const handleShowOptions = React.useCallback(() => setShowOptions(true), []);
     const handleHideOptions = React.useCallback(() => {
         setShowOptions(false);
     }, []);
+    const handleShowOptions = React.useCallback(() => setShowOptions(true), []);
     const handlePressBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');

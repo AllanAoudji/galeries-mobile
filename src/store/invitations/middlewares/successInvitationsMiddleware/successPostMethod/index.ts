@@ -33,6 +33,8 @@ const successPostMethod = (
         [invitation.id]: { ...invitation },
     };
 
+    dispatch(setInvitationsById(invitationsById));
+
     const oldAllIds = getState().invitations.allIds[galerieId] || [];
     const newAllIds = combineInvitationsAllIds(
         getState,
@@ -40,7 +42,6 @@ const successPostMethod = (
         invitationsAllIds
     );
 
-    dispatch(setInvitationsById(invitationsById));
     dispatch(setGalerieInvitationsAllIds(galerieId, newAllIds));
     dispatch(updateInvitationsLoadingPost('SUCCESS'));
 };

@@ -13,10 +13,7 @@ export const ANIMATIONS = {
     TIMING_CONFIG: (duration = 400) => {
         'worklet';
 
-        return {
-            duration,
-            easing: Easing.inOut(Easing.ease),
-        };
+        return { duration, easing: Easing.inOut(Easing.ease) };
     },
 };
 
@@ -100,9 +97,10 @@ export const FIELD_REQUIREMENT = {
 
 export const GLOBAL_STYLE = {
     BOTTOM_TAB_HEIGHT: 65,
+    FRAME_COVER_PICTURE_SIZE: 45,
     GALERIE_MODAL_HEIGHT: 239,
     GALERIE_TAB_BAR_COVER_PICTURE: 200,
     HEADER_TAB_HEIGHT: 95,
+    INVITATION_CARD_HEIGHT: 95,
     TOP_LEFT_PICTOGRAM_HEIGHT: 60,
-    FRAME_COVER_PICTURE_SIZE: 45,
 };

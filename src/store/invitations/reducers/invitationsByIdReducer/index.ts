@@ -11,7 +11,7 @@ const invitationsByIdReducer = (state = initialState, action: Store.Action) => {
             if (typeof action.payload !== 'string') return state;
             const newState = { ...state };
             delete newState[action.payload];
-            return { newState };
+            return newState;
         }
         case INVITATIONS_BY_ID_RESET:
             return initialState;

@@ -44,7 +44,7 @@ export const getGalerieInvitations: (galerieId: string) => Store.Action = (
 });
 export const postInvitations: (
     galerieId: string,
-    payload: { numOfInvits: number | null; time: number | null }
+    payload: { numOfInvits: number; time?: number }
 ) => Store.Action = (galerieId, payload) => ({
     meta: { query: { galerieId } },
     payload,
@@ -126,7 +126,7 @@ export const setInvitationsById: (payload: {
     type: INVITATIONS_BY_ID_SET,
 });
 export const updateInvitationsCurrent: (
-    payload: string | null
+    payload?: string | null
 ) => Store.Action = (payload) => ({
     meta: {},
     payload,

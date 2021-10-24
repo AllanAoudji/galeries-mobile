@@ -77,7 +77,10 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
             currentRouteName === 'Comments' ||
             currentRouteName === 'CreateFrame' ||
             currentRouteName === 'CreateGalerie' ||
+            currentRouteName === 'CreateInvitation' ||
             currentRouteName === 'Frame' ||
+            currentRouteName === 'Invitation' ||
+            currentRouteName === 'InvitationQRCode' ||
             currentRouteName === 'Likes' ||
             currentRouteName === 'UpdateFrame',
         [currentRouteName]

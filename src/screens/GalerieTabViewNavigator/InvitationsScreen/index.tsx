@@ -1,28 +1,39 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import Animated from 'react-native-reanimated';
 
 import {
-    Typography,
     GalerieTabbarScreenContainer,
     FullScreenLoader,
     BottomLoader,
     AddButton,
+    EmptyMessage,
 } from '#components';
 import {
     getGalerieInvitations,
     selectCurrentGalerieInvitationsAllIds,
     selectCurrentGalerieInvitationsStatus,
 } from '#store/invitations';
+import Invitations from './Invitations';
 
 type Props = {
     current: boolean;
+    editScrollY: (offsetY: number) => void;
+    maxScroll: number;
     galerie?: Store.Models.Galerie;
     paddingTop: number;
+    scrollY: Animated.SharedValue<number>;
 };
 
-const InvitationsScreen = ({ current, galerie, paddingTop }: Props) => {
+const InvitationsScreen = ({
+    current,
+    editScrollY,
+    galerie,
+    maxScroll,
+    paddingTop,
+    scrollY,
+}: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
@@ -65,9 +76,22 @@ const InvitationsScreen = ({ current, galerie, paddingTop }: Props) => {
         <GalerieTabbarScreenContainer>
             {!!paddingTop && (
                 <>
-                    <View style={{ paddingTop }}>
-                        <Typography>Invitations</Typography>
-                    </View>
+                    {invitationsAllIds && invitationsAllIds.length > 0 ? (
+                        <Invitations
+                            allIds={invitationsAllIds}
+                            editScrollY={editScrollY}
+                            current={current}
+                            galerie={galerie}
+                            maxScroll={maxScroll}
+                            paddingTop={paddingTop}
+                            scrollY={scrollY}
+                        />
+                    ) : (
+                        <EmptyMessage
+                            pt={paddingTop}
+                            text="This galerie doesn't have invitation yet. Click on the + button to post a new one."
+                        />
+                    )}
                     <AddButton
                         bottom="largest"
                         right="normal"

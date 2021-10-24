@@ -11,9 +11,10 @@ const invitationsCurrentReducer = (
     switch (action.type) {
         case INVITATIONS_CURRENT_RESET:
             return initialState;
-        case INVITATIONS_CURRENT_UPDATE:
-            if (typeof action.payload !== 'string') return action.payload;
-            return state;
+        case INVITATIONS_CURRENT_UPDATE: {
+            if (typeof action.payload !== 'string') return state;
+            return action.payload;
+        }
         default:
             return state;
     }

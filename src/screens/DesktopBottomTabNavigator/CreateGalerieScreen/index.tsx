@@ -12,6 +12,7 @@ import {
     selectGaleriesFieldsError,
     updateGaleriesFieldsError,
     selectGaleriesLoadingPost,
+    resetGaleriesLoadingPost,
 } from '#store/galeries';
 
 type Props = {
@@ -30,7 +31,9 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     const loading = useSelector(selectGaleriesLoadingPost);
 
     const formik = useFormik({
-        onSubmit: async (values) => dispatch(postGalerie(values)),
+        onSubmit: (values) => {
+            dispatch(postGalerie(values));
+        },
         initialValues,
         validateOnBlur: true,
         validateOnChange: false,
@@ -70,7 +73,10 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     }, [navigation]);
 
     React.useEffect(() => {
-        if (loading === 'SUCCESS') navigation.navigate('Galerie');
+        if (loading === 'SUCCESS') {
+            dispatch(resetGaleriesLoadingPost());
+            navigation.navigate('Galerie');
+        }
     }, [loading]);
 
     return (

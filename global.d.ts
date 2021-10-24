@@ -46,6 +46,8 @@ declare global {
                 Galerie: undefined;
                 Galeries: undefined;
                 Home: undefined;
+                Invitation: undefined;
+                InvitationQRCode: undefined;
                 Likes: undefined;
                 Notifications: undefined;
                 Profile: undefined;
@@ -79,6 +81,14 @@ declare global {
             type HomeNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'Home'
+            >;
+            type InvitationNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'Invitation'
+            >;
+            type InvitationQRCodeNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'InvitationQRCode'
             >;
             type LikesNavigationProp = BottomTabNavigationProp<
                 ParamList,
@@ -374,9 +384,12 @@ declare global {
             };
             type Invitation = {
                 autoIncrementId: string;
+                code: string;
                 createdAt: string;
-                id: string;
                 galerieId: string;
+                id: string;
+                numOfInvits: number;
+                time: string | null;
                 updatedAt: string;
                 userId: string;
             };
@@ -473,6 +486,8 @@ declare global {
             | 'heart-stroke'
             | 'home-fill'
             | 'home-stroke'
+            | 'invitation-fill'
+            | 'invitation-stroke'
             | 'logout-left'
             | 'logout-right'
             | 'moderation-fill'
@@ -489,6 +504,8 @@ declare global {
             | 'switch'
             | 'ticket-fill'
             | 'ticket-stroke'
+            | 'time-fill'
+            | 'time-stroke'
             | 'upload'
             | 'valid';
         type Spacings = {
