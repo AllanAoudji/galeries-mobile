@@ -16,6 +16,8 @@ const errorInvitationsMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== `${INVITATIONS} ${API_ERROR}`) return;
 
+        console.log(action);
+
         switch (action.meta.method) {
             case 'DELETE':
                 errorDeleteMethod(dispatch, action);

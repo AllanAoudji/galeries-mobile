@@ -16,6 +16,8 @@ const successInvitationsMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== `${INVITATIONS} ${API_SUCCESS}`) return;
 
+        console.log(action);
+
         switch (action.meta.method) {
             case 'DELETE':
                 successDeleteMethod(dispatch, getState, action);

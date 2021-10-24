@@ -374,9 +374,12 @@ declare global {
             };
             type Invitation = {
                 autoIncrementId: string;
+                code: string;
                 createdAt: string;
-                id: string;
                 galerieId: string;
+                id: string;
+                numOfInvits: number;
+                time: string | null;
                 updatedAt: string;
                 userId: string;
             };
