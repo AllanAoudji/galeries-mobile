@@ -12,8 +12,6 @@ const postInvitationsMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== INVITATIONS_POST) return;
 
-        console.log(action);
-
         const galerieId = action.meta.query
             ? action.meta.query.galerieId
             : undefined;
@@ -23,13 +21,11 @@ const postInvitationsMiddleware: Middleware<{}, Store.Reducer> =
         if (loading.includes('LOADING')) return;
         if (typeof action.payload !== 'object') return;
         if (typeof action.payload.numOfInvits !== 'number') return;
-        console.log('numOfInvits is valid');
         if (
             action.payload.time !== undefined &&
             typeof action.payload.time !== 'number'
         )
             return;
-        console.log('time is valid');
 
         dispatch(updateInvitationsLoadingPost('LOADING'));
         dispatchPostInvitations(dispatch, galerieId, action.payload);

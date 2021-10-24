@@ -20,7 +20,11 @@ import {
     NumOfInvitsContainer,
     TimeLabelContainer,
 } from './styles';
-import { postInvitations } from '#store/invitations';
+import {
+    postInvitations,
+    resetInvitationsLoadingPost,
+    selectInvitationsLoadingPost,
+} from '#store/invitations';
 import { selectCurrentGalerie } from '#store/galeries';
 
 type Props = {
@@ -35,7 +39,9 @@ const initialValues = {
 
 const CreateInvitationScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
+
     const galerie = useSelector(selectCurrentGalerie);
+    const loading = useSelector(selectInvitationsLoadingPost);
 
     const formik = useFormik({
         onSubmit: ({ checked, numOfInvits, time }) => {
@@ -54,6 +60,14 @@ const CreateInvitationScreen = ({ navigation }: Props) => {
         validateOnChange: false,
         validationSchema: createInvitationSchema,
     });
+
+    const disableButton = React.useMemo(() => {
+        const clientHasError =
+            formik.submitCount > 0 &&
+            (!!formik.errors.numOfInvits || !!formik.errors.time);
+
+        return clientHasError || formik.values.numOfInvits === '';
+    }, [formik.submitCount, formik.errors, formik.values]);
 
     const handleChangeNumOfInvits = React.useCallback((e: string) => {
         if (e.length === 0) formik.setFieldValue('numOfInvits', '1');
@@ -86,13 +100,12 @@ const CreateInvitationScreen = ({ navigation }: Props) => {
         }
     }, [galerie]);
 
-    const disableButton = React.useMemo(() => {
-        const clientHasError =
-            formik.submitCount > 0 &&
-            (!!formik.errors.numOfInvits || !!formik.errors.time);
-
-        return clientHasError || formik.values.numOfInvits === '';
-    }, [formik.submitCount, formik.errors, formik.values]);
+    React.useEffect(() => {
+        if (loading === 'SUCCESS') {
+            dispatch(resetInvitationsLoadingPost());
+            navigation.navigate('Galerie');
+        }
+    }, [loading]);
 
     return (
         <FormContainer>
@@ -141,6 +154,7 @@ const CreateInvitationScreen = ({ navigation }: Props) => {
                 <View>
                     <CustomButton
                         disable={disableButton}
+                        loading={loading.includes('LOADING')}
                         onPress={formik.handleSubmit}
                         title="create"
                         mb="smallest"
