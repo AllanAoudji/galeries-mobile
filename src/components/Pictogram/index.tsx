@@ -20,6 +20,8 @@ import HeartFill from './HeartFill';
 import HeartStroke from './HeartStroke';
 import HomeFill from './HomeFill';
 import HomeStroke from './HomeStroke';
+import InvitationFill from './InvitationFill';
+import InvitationStroke from './InvitationStroke';
 import LogoutLeft from './LogoutLeft';
 import LogoutRight from './LogoutRight';
 import ModerationFill from './ModerationFill';
@@ -34,6 +36,8 @@ import Search from './Search';
 import SettingsFill from './SettingsFill';
 import SettingsStroke from './SettingsStroke';
 import Switch from './Switch';
+import TimeFill from './TimeFill';
+import TimeStroke from './TimeStroke';
 import TicketFill from './TicketFill';
 import TicketStroke from './TicketStroke';
 import Upload from './Upload';
@@ -83,6 +87,8 @@ const variants = {
     'heart-stroke': HeartStroke,
     'home-fill': HomeFill,
     'home-stroke': HomeStroke,
+    'invitation-fill': InvitationFill,
+    'invitation-stroke': InvitationStroke,
     'logout-left': LogoutLeft,
     'logout-right': LogoutRight,
     'moderation-fill': ModerationFill,
@@ -99,6 +105,8 @@ const variants = {
     switch: Switch,
     'ticket-fill': TicketFill,
     'ticket-stroke': TicketStroke,
+    'time-fill': TimeFill,
+    'time-stroke': TimeStroke,
     upload: Upload,
     valid: Valid,
 };

@@ -486,6 +486,8 @@ declare global {
             | 'heart-stroke'
             | 'home-fill'
             | 'home-stroke'
+            | 'invitation-fill'
+            | 'invitation-stroke'
             | 'logout-left'
             | 'logout-right'
             | 'moderation-fill'
@@ -502,6 +504,8 @@ declare global {
             | 'switch'
             | 'ticket-fill'
             | 'ticket-stroke'
+            | 'time-fill'
+            | 'time-stroke'
             | 'upload'
             | 'valid';
         type Spacings = {
