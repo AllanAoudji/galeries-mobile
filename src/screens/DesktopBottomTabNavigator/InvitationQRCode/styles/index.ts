@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-const Container = styled.View`
+const Container = styled.Pressable`
     align-items: center;
     background-color: ${({ theme }) => theme.colors.black};
     flex: 1;
