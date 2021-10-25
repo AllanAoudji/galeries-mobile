@@ -119,6 +119,7 @@ const GalerieTabViewNavigator = () => {
                 case 'options':
                     return (
                         <OptionsScreen
+                            galerie={galerie}
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }
