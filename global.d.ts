@@ -237,7 +237,11 @@ declare global {
                 current: string | null;
                 end: { [key: string]: boolean };
                 filterName: string;
-                fieldsError: { description?: string; name?: string };
+                fieldsError: {
+                    description?: string;
+                    name?: string;
+                    password?: string;
+                };
                 loading: {
                     delete: Store.Status;
                     post: Store.Status;

@@ -1,6 +1,7 @@
 export { default as createCommentSchema } from './createCommentSchema';
 export { default as createGaleriesSchema } from './createGaleriesSchema';
 export { default as createInvitationSchema } from './createInvitationSchema';
+export { default as deleteGalerieSchema } from './deleteGalerieSchema';
 export { default as forgotPassworSchema } from './forgotPassworSchema';
 export { default as frameDescriptionSchema } from './frameDescriptionSchema';
 export { default as loginSchema } from './loginSchema';

@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as React from 'react';
 import { View } from 'react-native';
@@ -93,12 +94,14 @@ const CreateInvitationScreen = ({ navigation }: Props) => {
         formik.setFieldValue('checked', !formik.values.checked);
     }, [formik.values.checked]);
 
-    React.useEffect(() => {
-        if (!galerie) {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.navigate('Home');
-        }
-    }, [galerie]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!galerie) {
+                if (navigation.canGoBack()) navigation.goBack();
+                else navigation.navigate('Home');
+            }
+        }, [galerie])
+    );
 
     React.useEffect(() => {
         if (loading === 'SUCCESS') {

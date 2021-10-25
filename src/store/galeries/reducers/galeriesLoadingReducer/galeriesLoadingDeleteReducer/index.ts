@@ -10,11 +10,13 @@ const galeriesLoadingPostReducer = (
     action: Store.Action
 ) => {
     switch (action.type) {
-        case GALERIES_LOADING_DELETE_RESET:
+        case GALERIES_LOADING_DELETE_RESET: {
             return initialState;
-        case GALERIES_LOADING_DELETE_UPDATE:
+        }
+        case GALERIES_LOADING_DELETE_UPDATE: {
             if (checkIfStatus(action.payload)) return action.payload;
             return state;
+        }
         default:
             return state;
     }

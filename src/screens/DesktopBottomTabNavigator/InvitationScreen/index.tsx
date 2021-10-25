@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -16,12 +17,14 @@ type Props = {
 const InvitationScreen = ({ navigation }: Props) => {
     const invitation = useSelector(selectCurrentInvitation);
 
-    React.useEffect(() => {
-        if (!invitation) {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.navigate('Home');
-        }
-    }, [invitation]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!invitation) {
+                if (navigation.canGoBack()) navigation.goBack();
+                else navigation.navigate('Home');
+            }
+        }, [invitation])
+    );
 
     if (!invitation) return null;
 

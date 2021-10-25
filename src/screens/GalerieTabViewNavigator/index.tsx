@@ -1,3 +1,4 @@
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { StatusBar } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
@@ -31,6 +32,8 @@ const routes = [
 ];
 
 const GalerieTabViewNavigator = () => {
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
     const galerie = useSelector(selectCurrentGalerie);
 
     const { onLayout: onLayoutContainer, size: sizeContainer } =
@@ -82,6 +85,15 @@ const GalerieTabViewNavigator = () => {
             routes,
         });
     }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!galerie) {
+                if (navigation.canGoBack()) navigation.goBack();
+                else navigation.navigate('Home');
+            }
+        }, [galerie])
+    );
 
     const renderScene = React.useCallback(
         ({
