@@ -104,4 +104,4 @@ const UsersScreen = ({
     );
 };
 
-export default UsersScreen;
+export default React.memo(UsersScreen);

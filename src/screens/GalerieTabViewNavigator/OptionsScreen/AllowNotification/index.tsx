@@ -27,6 +27,10 @@ const AllowNotification = ({ galerie }: Props) => {
         dispatch(putGalerieNotification(galerie.id));
     }, [galerie, loading]);
 
+    React.useEffect(() => {
+        setValue(galerie.allowNotification);
+    }, [galerie]);
+
     return (
         <Container>
             <Typography>Allow notification for this galerie?</Typography>

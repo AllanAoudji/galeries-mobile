@@ -119,10 +119,14 @@ const GalerieTabViewNavigator = () => {
                 case 'options':
                     return (
                         <OptionsScreen
+                            current={currentRoute === 'options'}
+                            editScrollY={editScrollY}
+                            maxScroll={maxScroll}
                             galerie={galerie}
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }
+                            scrollY={scrollY}
                         />
                     );
                 case 'users':
