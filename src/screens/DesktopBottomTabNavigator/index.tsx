@@ -11,6 +11,7 @@ import CommentScreen from './CommentsScreen';
 import CreateFrameScreen from './CreateFrameScreen';
 import CreateGalerieScreen from './CreateGalerieScreen';
 import CreateInvitationScreen from './CreateInvitationScreen';
+import DeleteGalerieScreen from './DeleteGalerieScreen';
 import FrameScreen from './FrameScreen';
 import GalerieScreen from './GalerieScreen';
 import GaleriesScreen from './GaleriesScreen';
@@ -64,6 +65,7 @@ const DesktopBottomTabNavigator = () => {
                 name="CreateInvitation"
                 options={createInvitationScreenOption}
             />
+            <Tab.Screen component={DeleteGalerieScreen} name="DeleteGalerie" />
             <Tab.Screen component={FrameScreen} name="Frame" />
             <Tab.Screen component={GalerieScreen} name="Galerie" />
             <Tab.Screen component={GaleriesScreen} name="Galeries" />

@@ -42,6 +42,7 @@ declare global {
                 CreateFrame: NavigatorScreenParams<CreateFrameStack.ParamList>;
                 CreateGalerie: undefined;
                 CreateInvitation: undefined;
+                DeleteGalerie: undefined;
                 Frame: undefined;
                 Galerie: undefined;
                 Galeries: undefined;
@@ -68,6 +69,10 @@ declare global {
             type CreateInvitationProp = BottomTabNavigationProp<
                 ParamList,
                 'CreateInvitation'
+            >;
+            type DeleteGalerieNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'DeleteGalerie'
             >;
             type FrameProp = BottomTabNavigationProp<ParamList, 'Frame'>;
             type GalerieNavigationProp = BottomTabNavigationProp<

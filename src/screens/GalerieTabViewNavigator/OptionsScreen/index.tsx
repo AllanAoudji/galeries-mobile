@@ -13,9 +13,10 @@ import Animated, {
     useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import { GalerieTabbarScreenContainer } from '#components';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 import AllowNotification from './AllowNotification';
-import { GLOBAL_STYLE } from '#helpers/constants';
+import RemoveButtons from './RemoveButtons';
 
 type Props = {
     current: boolean;
@@ -88,6 +89,7 @@ const OptionsScreen = ({
                     ref={scrollViewRef}
                 >
                     <AllowNotification galerie={galerie} />
+                    <RemoveButtons galerie={galerie} />
                 </Animated.ScrollView>
             )}
         </GalerieTabbarScreenContainer>
