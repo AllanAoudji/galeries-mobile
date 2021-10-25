@@ -66,6 +66,13 @@ export const putGalerie: (
     payload,
     type: GALERIES_PUT,
 });
+export const putGalerieNotification: (galerieId: string) => Store.Action = (
+    galerieId
+) => ({
+    meta: { query: { galerieId } },
+    payload: {},
+    type: GALERIES_PUT,
+});
 export const removeGaleriesById: (payload: string) => Store.Action = (
     payload
 ) => ({

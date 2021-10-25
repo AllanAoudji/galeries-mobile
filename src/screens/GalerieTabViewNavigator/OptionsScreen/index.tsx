@@ -1,17 +1,22 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
-import { Typography, GalerieTabbarScreenContainer } from '#components';
+import { GalerieTabbarScreenContainer } from '#components';
+
+import AllowNotification from './AllowNotification';
 
 type Props = {
+    galerie?: Store.Models.Galerie;
     paddingTop: number;
 };
 
-const OptionsScreen = ({ paddingTop }: Props) => {
+const OptionsScreen = ({ galerie, paddingTop }: Props) => {
+    if (!galerie) return null;
+
     return (
         <GalerieTabbarScreenContainer>
             <View style={{ paddingTop }}>
-                <Typography>Options</Typography>
+                <AllowNotification galerie={galerie} />
             </View>
         </GalerieTabbarScreenContainer>
     );
