@@ -37,7 +37,6 @@ const AllowNotification = ({ galerie }: Props) => {
             <CustomSwitch
                 onChange={handleChange}
                 pb="smallest"
-                pr="small"
                 pl="smallest"
                 pt="smallest"
                 value={value}

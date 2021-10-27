@@ -16,7 +16,13 @@ const DeleteGalerieButton = ({ galerie }: Props) => {
         [galerie]
     );
 
-    return <CustomButton onPress={handlePress} title="delete this galerie" />;
+    return (
+        <CustomButton
+            mt="large"
+            onPress={handlePress}
+            title="delete this galerie"
+        />
+    );
 };
 
 export default DeleteGalerieButton;

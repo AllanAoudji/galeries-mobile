@@ -18,6 +18,8 @@ import { GLOBAL_STYLE } from '#helpers/constants';
 import AllowNotification from './AllowNotification';
 import RemoveButtons from './RemoveButtons';
 
+import { Container } from './styles';
+
 type Props = {
     current: boolean;
     editScrollY: (offsetY: number) => void;
@@ -87,9 +89,12 @@ const OptionsScreen = ({
                     onScroll={scrollHandler}
                     // @ts-ignore
                     ref={scrollViewRef}
+                    showsVerticalScrollIndicator={false}
                 >
-                    <AllowNotification galerie={galerie} />
-                    <RemoveButtons galerie={galerie} />
+                    <Container>
+                        <AllowNotification galerie={galerie} />
+                        <RemoveButtons galerie={galerie} />
+                    </Container>
                 </Animated.ScrollView>
             )}
         </GalerieTabbarScreenContainer>
