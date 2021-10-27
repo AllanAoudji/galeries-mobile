@@ -83,6 +83,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
             currentRouteName === 'Invitation' ||
             currentRouteName === 'InvitationQRCode' ||
             currentRouteName === 'Likes' ||
+            currentRouteName === 'SubscribeGalerie' ||
             currentRouteName === 'UpdateFrame',
         [currentRouteName]
     );
@@ -95,7 +96,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
                     title="create a new galerie"
                 />
                 <BottomSheetButton
-                    onPress={() => {}}
+                    onPress={handleSubscribeGaleriePress}
                     title="Subscribe to a galerie"
                 />
             </>
@@ -128,6 +129,13 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         if (keyboardShown) Keyboard.dismiss();
         else openBottomSheet(bottomSheetContent);
     }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
+    const handleSubscribeGaleriePress = React.useCallback(() => {
+        if (keyboardShown) Keyboard.dismiss();
+        else {
+            closeBottomSheet();
+            navigation.navigate('SubscribeGalerie');
+        }
+    }, [keyboardShown]);
 
     React.useEffect(() => {
         if (keyboardShown)

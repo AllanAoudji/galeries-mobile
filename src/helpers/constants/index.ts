@@ -64,6 +64,7 @@ export const END_POINT = {
     PROFILE_PICTURES: '/profilePictures',
     REFRESH_TOKEN: '/refreshToken/',
     SIGNIN: '/signin',
+    SUBSCRIBE: '/subscribe',
     USERS: '/users',
 };
 

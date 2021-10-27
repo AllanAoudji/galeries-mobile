@@ -61,6 +61,12 @@ export const postGalerie: (payload: {
     payload,
     type: GALERIES_POST,
 });
+export const postGalerieSubscribe: (payload: { code: string }) => Store.Action =
+    (payload) => ({
+        meta: {},
+        payload,
+        type: GALERIES_POST,
+    });
 export const putGalerie: (
     galerieId: string,
     payload: {

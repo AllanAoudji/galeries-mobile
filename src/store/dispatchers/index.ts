@@ -32,6 +32,7 @@ export { default as dispatchPostCommentComments } from './dispatchPostCommentCom
 export { default as dispatchPostFrame } from './dispatchPostFrame';
 export { default as dispatchPostFrameComments } from './dispatchPostFrameComments';
 export { default as dispatchPostGalerie } from './dispatchPostGalerie';
+export { default as dispatchPostGalerieSubscribe } from './dispatchPostGalerieSubscribe';
 export { default as dispatchPostInvitations } from './dispatchPostInvitations';
 export { default as dispatchPostLike } from './dispatchPostLike';
 export { default as dispatchPostProfilePicture } from './dispatchPostProfilePicture';
