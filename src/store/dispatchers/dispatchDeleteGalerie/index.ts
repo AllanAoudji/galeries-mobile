@@ -6,8 +6,12 @@ import { GALERIES } from '#store/genericActionTypes';
 
 const dispatchDeleteGalerie: (
     dispatch: Dispatch<Store.Action>,
-    galerieId: string
-) => void = (dispatch, galerieId) => {
+    galerieId: string,
+    payload: {
+        password: string;
+        name: string;
+    }
+) => void = (dispatch, galerieId, payload) => {
     dispatch(
         apiRequest({
             meta: {
@@ -15,7 +19,7 @@ const dispatchDeleteGalerie: (
                 method: 'DELETE',
                 url: `${END_POINT.GALERIES}/${galerieId}`,
             },
-            payload: {},
+            payload,
         })
     );
 };

@@ -95,4 +95,4 @@ const FramesScreen = ({
     );
 };
 
-export default FramesScreen;
+export default React.memo(FramesScreen);

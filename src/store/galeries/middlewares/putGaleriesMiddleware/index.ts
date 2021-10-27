@@ -1,6 +1,9 @@
 import { Middleware } from 'redux';
 
-import { dispatchPutGalerie } from '#store/dispatchers';
+import {
+    dispatchPutGalerie,
+    dispatchPutGalerieAllowNotification,
+} from '#store/dispatchers';
 import { updateGaleriesLoadingPut } from '#store/galeries/actionCreators';
 import { GALERIES_PUT } from '#store/galeries/actionTypes';
 
@@ -9,21 +12,28 @@ const putGaleriesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === GALERIES_PUT) {
-            const galerieId = action.meta.query
-                ? action.meta.query.galerieId
-                : undefined;
-            const loading = getState().galeries.loading.put;
-            if (
-                typeof action.payload === 'object' &&
-                typeof action.payload.description === 'string' &&
-                typeof action.payload.name === 'string' &&
-                galerieId &&
-                !loading.includes('LOADING')
-            ) {
-                dispatch(updateGaleriesLoadingPut('LOADING'));
-                dispatchPutGalerie(dispatch, galerieId, action.payload);
-            }
+
+        if (action.type !== GALERIES_PUT) return;
+        const galerieId = action.meta.query
+            ? action.meta.query.galerieId
+            : undefined;
+        if (!galerieId) return;
+        const loading = getState().galeries.loading.put;
+        if (loading.includes('LOADING')) return;
+
+        if (
+            typeof action.payload === 'object' &&
+            typeof action.payload.description === 'string' &&
+            typeof action.payload.name === 'string'
+        ) {
+            dispatch(updateGaleriesLoadingPut('LOADING'));
+            dispatchPutGalerie(dispatch, galerieId, action.payload);
+        } else if (
+            typeof action.payload === 'object' &&
+            Object.keys(action.payload).length === 0
+        ) {
+            dispatch(updateGaleriesLoadingPut('LOADING'));
+            dispatchPutGalerieAllowNotification(dispatch, galerieId);
         }
     };
 

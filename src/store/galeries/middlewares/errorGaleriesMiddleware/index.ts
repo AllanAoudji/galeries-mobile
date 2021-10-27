@@ -8,7 +8,7 @@ import {
     updateGaleriesLoadingDelete,
     updateGaleriesLoadingPost,
     updateGaleriesLoadingPut,
-    updateGaleriesStatus,
+    updateGaleriesStatusId,
 } from '#store/galeries/actionCreators';
 import { GALERIES } from '#store/genericActionTypes';
 
@@ -18,15 +18,21 @@ const errorDeleteMethod = (
     dispatch: Dispatch<Store.Action>,
     action: Store.Action
 ) => {
+    if (
+        typeof action.payload === 'object' &&
+        (typeof action.payload.name === 'string' ||
+            typeof action.payload.password === 'string')
+    )
+        dispatch(updateGaleriesFieldsError(action.payload));
+    else dispatchErrorNotification(dispatch, action);
     dispatch(updateGaleriesLoadingDelete('ERROR'));
-    dispatchErrorNotification(dispatch, action);
 };
 const errorGetMethod = (
     dispatch: Dispatch<Store.Action>,
     action: Store.Action
 ) => {
     const name = action.meta.query ? action.meta.query.name : undefined;
-    if (name) dispatch(updateGaleriesStatus('ERROR', name));
+    if (name) dispatch(updateGaleriesStatusId('ERROR', name));
     dispatchErrorNotification(dispatch, action);
 };
 const errorPostMethod = (
@@ -39,8 +45,8 @@ const errorPostMethod = (
             typeof action.payload.name === 'string')
     )
         dispatch(updateGaleriesFieldsError(action.payload));
-    else dispatch(updateGaleriesLoadingPost('ERROR'));
-    dispatchErrorNotification(dispatch, action);
+    else dispatchErrorNotification(dispatch, action);
+    dispatch(updateGaleriesLoadingPost('ERROR'));
 };
 const errorPutMethod = (
     dispatch: Dispatch<Store.Action>,

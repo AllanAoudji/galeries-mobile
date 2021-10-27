@@ -105,4 +105,4 @@ const InvitationsScreen = ({
     );
 };
 
-export default InvitationsScreen;
+export default React.memo(InvitationsScreen);

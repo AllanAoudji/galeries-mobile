@@ -27,9 +27,8 @@ const AbsoluteHeader = ({ maxScroll, scrollY }: Props) => {
 
     const handlePress = React.useCallback(() => {
         dispatch(updateGaleriesCurrent(null));
-        if (navigation.canGoBack()) {
-            navigation.goBack();
-        } else navigation.navigate('Home');
+        if (navigation.canGoBack()) navigation.goBack();
+        else navigation.navigate('Home');
     }, [navigation]);
 
     const style = useAnimatedStyle(() => {

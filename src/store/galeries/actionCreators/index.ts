@@ -32,8 +32,14 @@ import {
     GALERIES_STATUS_NAME_UPDATE,
 } from '#store/galeries/actionTypes';
 
-export const deleteGalerie: (payload: string) => Store.Action = (payload) => ({
-    meta: {},
+export const deleteGalerie: (
+    galerieId: string,
+    payload: {
+        password: string;
+        name: string;
+    }
+) => Store.Action = (galerieId, payload) => ({
+    meta: { query: { galerieId } },
     payload,
     type: GALERIES_DELETE,
 });
@@ -64,6 +70,13 @@ export const putGalerie: (
 ) => Store.Action = (galerieId, payload) => ({
     meta: { query: { galerieId } },
     payload,
+    type: GALERIES_PUT,
+});
+export const putGalerieNotification: (galerieId: string) => Store.Action = (
+    galerieId
+) => ({
+    meta: { query: { galerieId } },
+    payload: {},
     type: GALERIES_PUT,
 });
 export const removeGaleriesById: (payload: string) => Store.Action = (
@@ -156,6 +169,7 @@ export const setGaleriesById: (payload: {
 export const updateGaleriesFieldsError: (payload: {
     description?: string;
     name?: string;
+    password?: string;
 }) => Store.Action = (payload) => ({
     meta: {},
     payload,

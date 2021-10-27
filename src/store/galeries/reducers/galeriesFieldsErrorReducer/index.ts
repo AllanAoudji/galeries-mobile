@@ -18,7 +18,8 @@ const galeriesFieldsErrorReducer = (
             if (
                 typeof action.payload === 'object' &&
                 (typeof action.payload.description === 'string' ||
-                    typeof action.payload.name === 'string')
+                    typeof action.payload.name === 'string' ||
+                    typeof action.payload.password === 'string')
             )
                 return {
                     ...state,

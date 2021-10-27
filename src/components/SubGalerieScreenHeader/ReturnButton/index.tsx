@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import * as React from 'react';
 
-import { Pictogram } from '#components';
+import Pictogram from '#components/Pictogram';
 import { GLOBAL_STYLE } from '#helpers/constants';
 
 import { Container } from './styles';

@@ -34,12 +34,14 @@ const InvitationQRCode = ({ navigation }: Props) => {
     }, []);
     const handleShowOptions = React.useCallback(() => setShowOptions(true), []);
 
-    React.useEffect(() => {
-        if (!invitation) {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.navigate('Home');
-        }
-    }, [navigation]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!invitation) {
+                if (navigation.canGoBack()) navigation.goBack();
+                else navigation.navigate('Home');
+            }
+        }, [invitation])
+    );
 
     useFocusEffect(
         React.useCallback(() => {

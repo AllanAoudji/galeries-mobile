@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import { resetFrames } from '#store/frames/actionCreators';
 import {
     removeGaleriesById,
     resetGaleriesAllIds,
@@ -16,6 +17,7 @@ const successDeleteGalerie = (
 ) => {
     const { galerieId } = action.payload.data;
     if (typeof galerieId === 'string') {
+        dispatch(resetFrames());
         dispatch(removeGaleriesById(galerieId));
         dispatch(resetGaleriesAllIds());
         dispatch(resetGaleriesCurrent());
