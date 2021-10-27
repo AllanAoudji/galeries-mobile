@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import styled from 'styled-components/native';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
@@ -10,11 +11,20 @@ type TitleContainerProps = {
 const Container = styled.View`
     height: ${() => `${GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE}px`};
     justify-content: center;
+    margin-bottom: 50px;
 `;
 const CoverPictureContainer = styled.View`
     height: ${() => `${GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE}px`};
     justify-content: center;
     overflow: hidden;
+`;
+const LinearGradientStyle = styled(LinearGradient)`
+    bottom: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 1;
 `;
 const TitleContainer = styled.View<TitleContainerProps>`
     align-items: center;
@@ -27,6 +37,12 @@ const TitleContainer = styled.View<TitleContainerProps>`
     position: absolute;
     width: ${({ theme, width }) =>
         `${width - convertPixelToNum(theme.spacings.normal) * 2}px`};
+    z-index: 10;
 `;
 
-export { Container, CoverPictureContainer, TitleContainer };
+export {
+    Container,
+    CoverPictureContainer,
+    LinearGradientStyle,
+    TitleContainer,
+};

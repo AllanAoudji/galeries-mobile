@@ -1,9 +1,16 @@
 import styled from 'styled-components/native';
 
 const Container = styled.View`
-    padding: ${({ theme }) => `${theme.spacings.small} 0`};
     flex: 1;
+    justify-content: space-between;
+    padding: ${({ theme }) => `${theme.spacings.small} 0`};
+`;
+const FieldsContainer = styled.View`
+    padding-bottom: ${({ theme }) => theme.spacings.small};
+`;
+const TypographyContainer = styled.View`
+    margin-bottom: ${({ theme }) => theme.spacings.normal};
+    margin-right: ${({ theme }) => theme.spacings.normal};
 `;
 
-// eslint-disable-next-line import/prefer-default-export
-export { Container };
+export { Container, FieldsContainer, TypographyContainer };

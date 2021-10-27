@@ -1,10 +1,13 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { selectCurrentGalerie } from '#store/galeries';
-
-import Header from './Header';
+import { SubGalerieScreenHeader } from '#components';
+import {
+    resetGaleriesFieldsError,
+    resetGaleriesLoadingDelete,
+    selectCurrentGalerie,
+} from '#store/galeries';
 
 import Body from './Body';
 
@@ -15,6 +18,7 @@ type Props = {
 };
 
 const DeleteGalerieScreen = ({ navigation }: Props) => {
+    const dispatch = useDispatch();
     const galerie = useSelector(selectCurrentGalerie);
 
     useFocusEffect(
@@ -23,6 +27,10 @@ const DeleteGalerieScreen = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
+            return () => {
+                dispatch(resetGaleriesLoadingDelete());
+                dispatch(resetGaleriesFieldsError());
+            };
         }, [galerie])
     );
 
@@ -30,7 +38,11 @@ const DeleteGalerieScreen = ({ navigation }: Props) => {
 
     return (
         <Container>
-            <Header galerie={galerie} />
+            <SubGalerieScreenHeader
+                galerie={galerie}
+                subTitle="delete galerie"
+                title={galerie.name}
+            />
             <Body galerie={galerie} />
         </Container>
     );

@@ -2,6 +2,7 @@ import * as FileSystem from 'expo-file-system';
 import { Dispatch } from 'redux';
 
 import {
+    resetFrames,
     setFramesById,
     setGalerieFramesAllIds,
     updateFramesLoadingPost,
@@ -101,6 +102,7 @@ const successPostFrames = async (
     const newAllIds = combineFramesAllIds(getState, oldAllIds, framesAllIds);
     dispatch(setGalerieFramesAllIds(galerieId, newAllIds));
 
+    dispatch(resetFrames());
     dispatch(updateFramesLoadingPost('SUCCESS'));
 };
 

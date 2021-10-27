@@ -8,6 +8,7 @@ import Typography from '#components/Typography';
 import { Container } from './styles';
 
 type Props = {
+    color?: keyof Style.Colors;
     disable?: boolean;
     loading?: boolean;
     mb?: keyof Style.Spacings;
@@ -22,6 +23,7 @@ type Props = {
 };
 
 const CustomButton = ({
+    color = 'primary-dark',
     disable = false,
     loading = false,
     mb,
@@ -71,6 +73,7 @@ const CustomButton = ({
 
     return (
         <Container
+            color={color}
             disable={disableButton}
             mb={mb}
             ml={ml}
