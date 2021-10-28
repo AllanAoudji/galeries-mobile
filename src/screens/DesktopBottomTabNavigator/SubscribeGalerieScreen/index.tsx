@@ -28,6 +28,8 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
 
     const handleBarCodeScanned: BarCodeScannedCallback = React.useCallback(
         ({ data }) => {
+            if (notification) return;
+            if (loading.includes('LOADING')) return;
             const code = data.split(PRE_CODE)[1];
             if (!code) {
                 dispatch(
@@ -37,8 +39,7 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
                     })
                 );
             }
-            if (!loading.includes('LOADING') || !notification)
-                dispatch(postGalerieSubscribe({ code }));
+            dispatch(postGalerieSubscribe({ code }));
         },
         [loading, notification]
     );

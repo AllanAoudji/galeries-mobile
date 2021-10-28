@@ -46,7 +46,6 @@ const apiRequestMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     async (action: Store.Action) => {
         if (action.type.includes(API_REQUEST)) {
-            console.log(action.type);
             if (action.meta.entity && action.meta.method && action.meta.url) {
                 let expiresIn: string | null = null;
                 let token: string | null = null;
