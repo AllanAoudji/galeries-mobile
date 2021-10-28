@@ -23,6 +23,7 @@ const successLogoutMiddleware: Middleware<{}, Store.Reducer> =
         next(action);
         if (action.type === `${LOGOUT} ${API_SUCCESS}`) {
             AsyncStorage.clear().finally(() => {
+                dispatch(resetMe());
                 dispatch(resetComments());
                 dispatch(resetFrames());
                 dispatch(resetGaleries());
@@ -31,7 +32,6 @@ const successLogoutMiddleware: Middleware<{}, Store.Reducer> =
                 dispatch(resetLikes());
                 dispatch(resetLogin());
                 dispatch(resetNotification());
-                dispatch(resetMe());
                 dispatch(resetProfilePictures());
                 dispatch(resetUsers());
                 dispatch(updateLogoutStatus('SUCCESS'));

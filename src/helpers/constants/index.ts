@@ -58,7 +58,7 @@ export const END_POINT = {
     GALERIES: '/galeries',
     INVITATIONS: '/invitations',
     LIKES: '/likes',
-    LOGIN: 'login',
+    LOGIN: '/login',
     LOGOUT: '/logout',
     ME: '/me',
     PROFILE_PICTURES: '/profilePictures',
