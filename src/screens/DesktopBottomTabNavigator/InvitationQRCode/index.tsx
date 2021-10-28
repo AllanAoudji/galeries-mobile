@@ -5,6 +5,7 @@ import { useWindowDimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
+import { PRE_CODE } from '#helpers/constants';
 import convertPixelToNum from '#helpers/convertPixelToNum';
 import { selectCurrentInvitation } from '#store/invitations';
 
@@ -58,7 +59,7 @@ const InvitationQRCode = ({ navigation }: Props) => {
                     backgroundColor={theme.colors.black}
                     color={theme.colors.white}
                     size={size}
-                    value={invitation.code}
+                    value={`${PRE_CODE}${invitation.code}`}
                 />
             )}
             <Options onPress={handleHideOptions} show={showOptions} />

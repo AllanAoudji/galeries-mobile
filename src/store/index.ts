@@ -15,6 +15,7 @@ import { likesMiddlewares, likesReducers } from './likes';
 import { loginMiddlewares, loginReducer } from './login';
 import { logoutMiddlewares, logoutReducer } from './logout';
 import { meMiddlewares, meReducer } from './me';
+import { notificationReducer } from './notification';
 import {
     profilePicturesMiddlewares,
     profilePicturesReducer,
@@ -33,6 +34,7 @@ const reducers = combineReducers({
     login: loginReducer,
     logout: logoutReducer,
     me: meReducer,
+    notification: notificationReducer,
     profilePictures: profilePicturesReducer,
     signin: signinReducer,
     users: usersReducer,

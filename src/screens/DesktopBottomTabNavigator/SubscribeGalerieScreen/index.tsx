@@ -1,22 +1,46 @@
-import { useFocusEffect } from '@react-navigation/native';
 import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { PRE_CODE } from '#helpers/constants';
+import {
+    postGalerieSubscribe,
+    selectGaleriesLoadingPost,
+} from '#store/galeries';
+import { selectNotification, updateNotification } from '#store/notification';
+
+import { Container } from './styles';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.SubscribeGalerieNavigationProp;
 };
 
 const SubscribeGalerieScreen = ({ navigation }: Props) => {
+    const dispatch = useDispatch();
+
+    const notification = useSelector(selectNotification);
+    const loading = useSelector(selectGaleriesLoadingPost);
+
     const [hasPermission, setHasPermission] = React.useState<boolean | null>(
         null
     );
 
     const handleBarCodeScanned: BarCodeScannedCallback = React.useCallback(
-        ({ type, data }) => {
-            console.log(type, data);
+        ({ data }) => {
+            const code = data.split(PRE_CODE)[1];
+            if (!code) {
+                dispatch(
+                    updateNotification({
+                        status: 'error',
+                        text: 'wrong QRcode',
+                    })
+                );
+            }
+            if (!loading.includes('LOADING') || !notification)
+                dispatch(postGalerieSubscribe({ code }));
         },
-        []
+        [loading, notification]
     );
 
     React.useEffect(() => {
@@ -34,12 +58,12 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
     }, [hasPermission]);
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#000' }}>
+        <Container>
             <BarCodeScanner
                 style={StyleSheet.absoluteFillObject}
                 onBarCodeScanned={handleBarCodeScanned}
             />
-        </View>
+        </Container>
     );
 };
 
