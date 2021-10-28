@@ -1,16 +1,17 @@
 import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
-import { StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PRE_CODE } from '#helpers/constants';
+import { GLOBAL_STYLE, PRE_CODE } from '#helpers/constants';
 import {
     postGalerieSubscribe,
     selectGaleriesLoadingPost,
 } from '#store/galeries';
 import { selectNotification, updateNotification } from '#store/notification';
 
-import { Container } from './styles';
+import { BackButtonContainer, Container } from './styles';
+import { Pictogram } from '#components';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.SubscribeGalerieNavigationProp;
@@ -43,6 +44,10 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
         },
         [loading, notification]
     );
+    const handlePressBack = React.useCallback(() => {
+        if (navigation.canGoBack()) navigation.goBack();
+        else navigation.navigate('Home');
+    }, []);
 
     React.useEffect(() => {
         (async () => {
@@ -60,6 +65,16 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
 
     return (
         <Container>
+            <BackButtonContainer paddingTop={StatusBar.currentHeight}>
+                <Pictogram
+                    color="secondary-light"
+                    height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
+                    onPress={handlePressBack}
+                    pl="small"
+                    pr="small"
+                    variant="arrow-left"
+                />
+            </BackButtonContainer>
             <BarCodeScanner
                 style={StyleSheet.absoluteFillObject}
                 onBarCodeScanned={handleBarCodeScanned}

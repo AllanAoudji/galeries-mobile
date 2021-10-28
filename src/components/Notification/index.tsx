@@ -59,7 +59,6 @@ const Notification = () => {
 
     React.useEffect(() => {
         if (notification) {
-            console.log('test');
             setHasNotification(true);
             value.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
 
