@@ -5,6 +5,7 @@ import CoverPictureBookMark from '#components/CoverPictureBookMark';
 import { selectGalerieCoverPictureId } from '#store/galeriePictures';
 
 import { Container } from './styles';
+import { selectGalerie } from '#store/galeries';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -17,6 +18,15 @@ const BookMark = ({ frame, galeriePictureId }: Props) => {
         [frame]
     );
     const coverPictureId = useSelector(coverPictureIdSelector);
+
+    const galerieSelector = React.useMemo(
+        () => selectGalerie(frame.galerieId),
+        [frame]
+    );
+    const galerie = useSelector(galerieSelector);
+
+    if (!galerie) return null;
+    if (galerie.role === 'user') return null;
 
     return (
         <Container>
