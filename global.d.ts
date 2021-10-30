@@ -186,6 +186,7 @@ declare global {
             | '[FRAMES]'
             | '[GALERIES]'
             | '[GALERIE PICTURES]'
+            | '[GALERIE ROLES]'
             | '[INVITATIONS]'
             | '[LIKES]'
             | '[LOADING]'
@@ -268,6 +269,9 @@ declare global {
                     put: Store.Status;
                 };
                 status: { [key: string]: Store.Status };
+            };
+            galerieRoles: {
+                allIds: { [key: string]: { [key: string]: Store.Role } };
             };
             invitations: {
                 allIds: { [key: string]: string[] };

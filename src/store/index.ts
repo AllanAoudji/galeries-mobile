@@ -6,6 +6,7 @@ import { commentsMiddlewares, commentsReducer } from './comments';
 import { forgotYourPasswordReducer } from './forgotYourPassword';
 import { framesMiddlewares, framesReducer } from './frames';
 import { galeriesMiddleware, galeriesReducer } from './galeries';
+import { galerieRolesReducer } from './galerieRoles';
 import { invitationsMiddlewares, invitationsReducer } from './invitations';
 import {
     galeriePicturesMiddlwares,
@@ -29,6 +30,7 @@ const reducers = combineReducers({
     frames: framesReducer,
     galeries: galeriesReducer,
     galeriePictures: galeriePicturesReducer,
+    galerieRoles: galerieRolesReducer,
     invitations: invitationsReducer,
     likes: likesReducers,
     login: loginReducer,
