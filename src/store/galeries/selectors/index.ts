@@ -19,8 +19,8 @@ const galeriesNameAllIdSelector = createSelector(
 
 export const selectCurrentGalerie = createSelector(
     [galeriesByIdSelector, galeriesCurrentSelector],
-    (galeriesById, galerieCurrent) =>
-        galerieCurrent ? galeriesById[galerieCurrent] : undefined
+    (galeriesById, galeriesCurrent) =>
+        galeriesCurrent ? galeriesById[galeriesCurrent] : undefined
 );
 export const selectGaleriesFieldsError = (state: Store.Reducer) =>
     state.galeries.fieldsError;

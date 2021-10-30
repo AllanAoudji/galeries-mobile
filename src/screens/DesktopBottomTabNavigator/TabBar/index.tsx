@@ -84,7 +84,8 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
             currentRouteName === 'InvitationQRCode' ||
             currentRouteName === 'Likes' ||
             currentRouteName === 'SubscribeGalerie' ||
-            currentRouteName === 'UpdateFrame',
+            currentRouteName === 'UpdateFrame' ||
+            currentRouteName === 'UserScreen',
         [currentRouteName]
     );
 

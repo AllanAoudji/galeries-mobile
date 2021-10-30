@@ -3,10 +3,9 @@ import { createSelector, OutputSelector } from 'reselect';
 const galeriesCurrentSelector = (state: Store.Reducer) =>
     state.galeries.current;
 const usersByIdSelector = (state: Store.Reducer) => state.users.byId;
+const usersCurrentSelector = (state: Store.Reducer) => state.users.current;
 const usersAllIdsSelector = (state: Store.Reducer) => state.users.allIds;
 const usersStatusSelector = (state: Store.Reducer) => state.users.status;
-
-export const selectUsersCurrent = (state: Store.Reducer) => state.users.current;
 
 export const selectCurrentGalerieUsersAllIds = createSelector(
     [galeriesCurrentSelector, usersAllIdsSelector],
@@ -21,6 +20,11 @@ export const selectCurrentGalerieUsersStatus = createSelector(
         if (!galeriesCurrent) return undefined;
         return usersStatus[galeriesCurrent];
     }
+);
+export const selectCurrentUser = createSelector(
+    [usersByIdSelector, usersCurrentSelector],
+    (usersById, usersCurrent) =>
+        usersCurrent ? usersById[usersCurrent] : undefined
 );
 export const selectGalerieUsersAllIds = (galerieId?: string) =>
     createSelector([usersAllIdsSelector], (usersAllIds) => {
