@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Pressable } from 'react-native';
 import { UserCard } from '#components';
 import { getUserId, selectUser, updateUserCurrent } from '#store/users';
+import { selectCurrentGalerie } from '#store/galeries';
+import { selectGalerieUserRole } from '#store/galerieRoles';
 
 type Props = {
     index: number;
@@ -16,8 +18,20 @@ const RenderItem = ({ index, item }: Props) => {
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
 
+    const galerie = useSelector(selectCurrentGalerie);
+
     const userSelector = React.useMemo(() => selectUser(item), [item]);
     const user = useSelector(userSelector);
+
+    const roleSelector = React.useMemo(
+        () =>
+            selectGalerieUserRole(
+                galerie ? galerie.id : null,
+                user ? user.id : null
+            ),
+        [galerie, user]
+    );
+    const role = useSelector(roleSelector);
 
     const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -39,6 +53,7 @@ const RenderItem = ({ index, item }: Props) => {
         <Pressable onPress={handlePress}>
             <UserCard
                 color={index % 2 ? 'secondary' : 'secondary-light'}
+                role={role}
                 user={user}
             />
         </Pressable>

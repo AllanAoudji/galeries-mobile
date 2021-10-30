@@ -14,5 +14,9 @@ const Container = styled.View<ContainerStyle>`
 const InfoContainer = styled.View`
     margin-left: ${({ theme }) => theme.spacings.smallest};
 `;
+const UserNameContainer = styled.View`
+    align-items: center;
+    flex-direction: row;
+`;
 
-export { Container, InfoContainer };
+export { Container, InfoContainer, UserNameContainer };
