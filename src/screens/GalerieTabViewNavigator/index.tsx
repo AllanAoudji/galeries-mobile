@@ -71,31 +71,37 @@ const GalerieTabViewNavigator = () => {
                 : adminRoleRoutes,
     });
 
-    const onIndexChange = React.useCallback((index: number) => {
-        switch (index) {
-            case 0:
-                setCurrentRoute('frames');
-                break;
-            case 1:
-                setCurrentRoute('users');
-                break;
-            case 2:
-                setCurrentRoute('invitations');
-                break;
-            case 3:
-                setCurrentRoute('options');
-                break;
-            default:
-                setCurrentRoute('frames');
-        }
-        return setNavigationState({
-            index,
-            routes:
-                galerie && galerie.role === 'user'
-                    ? userRoleRoutes
-                    : adminRoleRoutes,
-        });
-    }, []);
+    const onIndexChange = React.useCallback(
+        (index: number) => {
+            switch (index) {
+                case 0:
+                    setCurrentRoute('frames');
+                    break;
+                case 1:
+                    setCurrentRoute('users');
+                    break;
+                case 2:
+                    if (galerie && galerie.role === 'user')
+                        setCurrentRoute('options');
+                    else setCurrentRoute('invitations');
+                    break;
+                case 3:
+                    if (galerie && galerie.role === 'admin')
+                        setCurrentRoute('options');
+                    break;
+                default:
+                    setCurrentRoute('frames');
+            }
+            return setNavigationState({
+                index,
+                routes:
+                    galerie && galerie.role === 'user'
+                        ? userRoleRoutes
+                        : adminRoleRoutes,
+            });
+        },
+        [galerie]
+    );
 
     useFocusEffect(
         React.useCallback(() => {
