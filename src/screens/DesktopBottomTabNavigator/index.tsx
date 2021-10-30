@@ -21,6 +21,7 @@ import InvitationQRCode from './InvitationQRCode';
 import LikesScreen from './LikesScreen';
 import NotificationsScreen from './NotificationsScreen';
 import ProfileScreen from './ProfileScreen';
+import ProfilePictureScreen from './ProfilePictureScreen';
 import SubscribeGalerieScreen from './SubscribeGalerieScreen';
 import TabBar from './TabBar';
 import UpdateFrameScreen from './UpdateFrameScreen';
@@ -77,6 +78,10 @@ const DesktopBottomTabNavigator = () => {
             <Tab.Screen component={LikesScreen} name="Likes" />
             <Tab.Screen component={NotificationsScreen} name="Notifications" />
             <Tab.Screen component={ProfileScreen} name="Profile" />
+            <Tab.Screen
+                component={ProfilePictureScreen}
+                name="ProfilePicture"
+            />
             <Tab.Screen
                 component={SubscribeGalerieScreen}
                 name="SubscribeGalerie"

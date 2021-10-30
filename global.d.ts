@@ -52,6 +52,7 @@ declare global {
                 Likes: undefined;
                 Notifications: undefined;
                 Profile: undefined;
+                ProfilePicture: undefined;
                 SubscribeGalerie: undefined;
                 UpdateFrame: undefined;
                 UserScreen: undefined;
@@ -108,6 +109,10 @@ declare global {
             type ProfileNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'Profile'
+            >;
+            type ProfilePictureNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'ProfilePicture'
             >;
             type SubscribeGalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,
