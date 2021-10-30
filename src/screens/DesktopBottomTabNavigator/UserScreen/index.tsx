@@ -7,6 +7,7 @@ import { selectCurrentGalerie } from '#store/galeries';
 import { selectCurrentUser } from '#store/users';
 
 import { Container } from './styles';
+import { selectGalerieUserRole } from '#store/galerieRoles';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.UserScreen;
@@ -15,6 +16,15 @@ type Props = {
 const UserScreen = ({ navigation }: Props) => {
     const galerie = useSelector(selectCurrentGalerie);
     const user = useSelector(selectCurrentUser);
+    const roleSelector = React.useMemo(
+        () =>
+            selectGalerieUserRole(
+                galerie ? galerie.id : null,
+                user ? user.id : null
+            ),
+        [galerie, user]
+    );
+    const role = useSelector(roleSelector);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -31,6 +41,7 @@ const UserScreen = ({ navigation }: Props) => {
         <Container>
             <Typography>{user.pseudonym}</Typography>
             <Typography>{galerie.name}</Typography>
+            <Typography>{role || 'role not found'}</Typography>
         </Container>
     );
 };

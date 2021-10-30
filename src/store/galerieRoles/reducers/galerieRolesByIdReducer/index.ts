@@ -1,17 +1,17 @@
 import {
-    GALERIES_ROLES_SET,
-    GALERIE_ROLES_RESET,
+    GALERIE_ROLES_BY_ID_RESET,
+    GALERIES_ROLES_BY_ID_SET,
 } from '#store/galerieRoles/actionTypes';
 
 const initialState: { [key: string]: { [key: string]: string } } = {};
-const galerieRolesAllIdsReducer = (
+const galerieRolesByIdReducer = (
     state = initialState,
     action: Store.Action
 ) => {
     switch (action.type) {
-        case GALERIE_ROLES_RESET:
+        case GALERIE_ROLES_BY_ID_RESET:
             return initialState;
-        case GALERIES_ROLES_SET:
+        case GALERIES_ROLES_BY_ID_SET:
             if (typeof action.payload !== 'object') return state;
             return {
                 ...state,
@@ -22,4 +22,4 @@ const galerieRolesAllIdsReducer = (
     }
 };
 
-export default galerieRolesAllIdsReducer;
+export default galerieRolesByIdReducer;

@@ -13,6 +13,7 @@ import {
     updateUsersStatus,
     updateUsersPrevious,
 } from '#store/users/actionCreators';
+import { setGalerieRolesById } from '#store/galerieRoles';
 
 const successGetUsers = (
     dispatch: Dispatch<Store.Action>,
@@ -27,9 +28,11 @@ const successGetUsers = (
         : undefined;
 
     if (users && Array.isArray(users)) {
-        users.forEach((u: Store.Models.User) => {
+        users.forEach((u: Store.Models.User & { galerieRole?: Store.Role }) => {
+            const returnedUser = { ...u };
+            if (returnedUser.galerieRole) delete returnedUser.galerieRole;
             allIds.push(u.id);
-            byId[u.id] = u;
+            byId[u.id] = returnedUser;
         });
     } else if (user && typeof user === 'object') {
         allIds.push(user.id);
@@ -60,6 +63,20 @@ const successGetUsers = (
 
     if (galerieId) dispatch(updateGalerieUsersStatus(galerieId, 'SUCCESS'));
     else dispatch(updateUsersStatus('SUCCESS'));
+
+    if (galerieId) {
+        const usersRole: { [key: string]: Store.Role } = {};
+        const oldById = getState().galerieRoles.byId[galerieId] || {};
+        if (users && Array.isArray(users))
+            users.forEach(
+                (u: Store.Models.User & { galerieRole?: Store.Role }) => {
+                    if (u.galerieRole) usersRole[u.id] = u.galerieRole;
+                }
+            );
+        else if (user && typeof user === 'object' && !!user.galerieRole)
+            usersRole[user.id] = user.galerieRole;
+        dispatch(setGalerieRolesById(galerieId, { ...oldById, ...usersRole }));
+    }
 
     allIds.forEach((id) => {
         const profilePicture = getState().profilePictures.id[id];
