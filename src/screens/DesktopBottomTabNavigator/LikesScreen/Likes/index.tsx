@@ -27,8 +27,8 @@ type Props = {
     frameId: string;
 };
 
-const renderItem = ({ item }: ListRenderItemInfo<string>) => {
-    return <RenderItem item={item} />;
+const renderItem = ({ index, item }: ListRenderItemInfo<string>) => {
+    return <RenderItem index={index} item={item} />;
 };
 
 const Likes = ({ allIds, frameId }: Props) => {

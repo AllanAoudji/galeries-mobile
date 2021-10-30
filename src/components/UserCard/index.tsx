@@ -6,13 +6,14 @@ import ProfilePicture from '#components/ProfilePicture';
 import { Container, InfoContainer } from './styles';
 
 type Props = {
+    color?: keyof Style.Colors;
     user: Store.Models.User;
 };
 
-const UserCard = ({ user }: Props) => {
+const UserCard = ({ color = 'secondary-light', user }: Props) => {
     return (
-        <Container>
-            <ProfilePicture size="large" user={user} />
+        <Container color={color}>
+            <ProfilePicture size="normal" user={user} />
             <InfoContainer>
                 <Typography fontFamily="bold" fontSize={18}>
                     {user.pseudonym}

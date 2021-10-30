@@ -24,10 +24,15 @@ import AbsoluteHeader from './AbsoluteHeader';
 
 import { Container } from './styles';
 
-const routes = [
+const adminRoleRoutes = [
     { key: 'frames', title: 'Frames' },
     { key: 'users', title: 'Users' },
-    { key: 'invitations', title: 'Invitations' },
+    { key: 'invitations', title: 'Invits' },
+    { key: 'options', title: 'Options' },
+];
+const userRoleRoutes = [
+    { key: 'frames', title: 'Frames' },
+    { key: 'users', title: 'Users' },
     { key: 'options', title: 'Options' },
 ];
 
@@ -60,7 +65,10 @@ const GalerieTabViewNavigator = () => {
     const [currentRoute, setCurrentRoute] = React.useState<string>('frames');
     const [navigationState, setNavigationState] = React.useState({
         index: 0,
-        routes,
+        routes:
+            galerie && galerie.role === 'user'
+                ? userRoleRoutes
+                : adminRoleRoutes,
     });
 
     const onIndexChange = React.useCallback((index: number) => {
@@ -82,7 +90,10 @@ const GalerieTabViewNavigator = () => {
         }
         return setNavigationState({
             index,
-            routes,
+            routes:
+                galerie && galerie.role === 'user'
+                    ? userRoleRoutes
+                    : adminRoleRoutes,
         });
     }, []);
 

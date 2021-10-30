@@ -5,10 +5,11 @@ import { UserCard } from '#components';
 import { getUserId, selectUser } from '#store/users';
 
 type Props = {
+    index: number;
     item: string;
 };
 
-const RenderItem = ({ item }: Props) => {
+const RenderItem = ({ index, item }: Props) => {
     const dispatch = useDispatch();
 
     const userSelector = React.useMemo(() => selectUser(item), [item]);
@@ -25,7 +26,12 @@ const RenderItem = ({ item }: Props) => {
 
     if (!user) return null;
 
-    return <UserCard user={user} />;
+    return (
+        <UserCard
+            color={index % 2 ? 'secondary' : 'secondary-light'}
+            user={user}
+        />
+    );
 };
 
 export default React.memo(RenderItem);

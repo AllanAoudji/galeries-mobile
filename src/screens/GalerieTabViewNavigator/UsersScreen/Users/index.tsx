@@ -30,8 +30,8 @@ type Props = {
     scrollY: Animated.SharedValue<number>;
 };
 
-const renderItem = ({ item }: ListRenderItemInfo<string>) => (
-    <RenderItem item={item} />
+const renderItem = ({ index, item }: ListRenderItemInfo<string>) => (
+    <RenderItem index={index} item={item} />
 );
 
 const Users = ({
