@@ -488,6 +488,7 @@ declare global {
         type Pictograms =
             | 'add/subscribe-fill'
             | 'add/subscribe-stroke'
+            | 'admin-role'
             | 'arrow-left'
             | 'arrow-right'
             | 'camera-fill'
@@ -512,6 +513,7 @@ declare global {
             | 'logout-right'
             | 'moderation-fill'
             | 'moderation-stroke'
+            | 'moderator-role'
             | 'option-horizontal'
             | 'option-vertical'
             | 'plus'

@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import AddSubscribeFill from './AddSubscribeFill';
 import AddSubscribeStroke from './AddSubscribeStroke';
+import AdminRole from './AdminRole';
 import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
 import CameraFill from './CameraFill';
@@ -26,6 +27,7 @@ import LogoutLeft from './LogoutLeft';
 import LogoutRight from './LogoutRight';
 import ModerationFill from './ModerationFill';
 import ModerationStroke from './ModerationStroke';
+import ModeratorRole from './ModeratorRole';
 import OptionHorizontal from './OptionHorizontal';
 import OptionVertical from './OptionVertical';
 import Plus from './Plus';
@@ -69,6 +71,7 @@ type Props = {
 const variants = {
     'add/subscribe-fill': AddSubscribeFill,
     'add/subscribe-stroke': AddSubscribeStroke,
+    'admin-role': AdminRole,
     'arrow-left': ArrowLeft,
     'arrow-right': ArrowRight,
     'camera-fill': CameraFill,
@@ -93,6 +96,7 @@ const variants = {
     'logout-right': LogoutRight,
     'moderation-fill': ModerationFill,
     'moderation-stroke': ModerationStroke,
+    'moderator-role': ModeratorRole,
     'option-horizontal': OptionHorizontal,
     'option-vertical': OptionVertical,
     plus: Plus,
