@@ -2,12 +2,13 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Typography } from '#components';
 import { selectCurrentGalerie } from '#store/galeries';
 import { selectCurrentUser } from '#store/users';
 
 import { Container } from './styles';
-import { selectGalerieUserRole } from '#store/galerieRoles';
+
+import Body from './Body';
+import Header from './Header';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.UserScreen;
@@ -16,15 +17,6 @@ type Props = {
 const UserScreen = ({ navigation }: Props) => {
     const galerie = useSelector(selectCurrentGalerie);
     const user = useSelector(selectCurrentUser);
-    const roleSelector = React.useMemo(
-        () =>
-            selectGalerieUserRole(
-                galerie ? galerie.id : null,
-                user ? user.id : null
-            ),
-        [galerie, user]
-    );
-    const role = useSelector(roleSelector);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -39,9 +31,8 @@ const UserScreen = ({ navigation }: Props) => {
 
     return (
         <Container>
-            <Typography>{user.pseudonym}</Typography>
-            <Typography>{galerie.name}</Typography>
-            <Typography>{role || 'role not found'}</Typography>
+            <Header galerie={galerie} user={user} />
+            <Body galerie={galerie} user={user} />
         </Container>
     );
 };

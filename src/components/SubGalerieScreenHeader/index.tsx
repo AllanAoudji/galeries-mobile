@@ -1,11 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 import GalerieCoverPicture from '#components/GalerieCoverPicture';
+import ReturnButton from '#components/ReturnButton';
 import Typography from '#components/Typography';
-
-import ReturnButton from './ReturnButton';
 
 import {
     Container,
@@ -30,9 +30,17 @@ const SubGalerieScreenHeader = ({
     const dimension = useWindowDimensions();
     const theme = useTheme();
 
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.InvitationNavigationProp>();
+
+    const handlePressReturn = React.useCallback(() => {
+        if (navigation.canGoBack()) navigation.goBack();
+        else navigation.navigate('Home');
+    }, []);
+
     return (
         <Container>
-            <ReturnButton />
+            <ReturnButton onPress={handlePressReturn} />
             <LinearGradientStyle
                 colors={['transparent', theme.colors['secondary-light']]}
             />

@@ -1,27 +1,22 @@
-import { useNavigation } from '@react-navigation/native';
-import { StatusBar } from 'react-native';
 import * as React from 'react';
+import { StatusBar } from 'react-native';
 
 import Pictogram from '#components/Pictogram';
 import { GLOBAL_STYLE } from '#helpers/constants';
 
 import { Container } from './styles';
 
-const ReturnButton = () => {
-    const navigation =
-        useNavigation<Screen.DesktopBottomTab.InvitationNavigationProp>();
+type Props = {
+    onPress: () => void;
+};
 
-    const handlePress = React.useCallback(() => {
-        if (navigation.canGoBack()) navigation.goBack();
-        else navigation.navigate('Home');
-    }, []);
-
+const ReturnButton = ({ onPress }: Props) => {
     return (
         <Container paddingTop={StatusBar.currentHeight}>
             <Pictogram
                 color="white"
                 height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
-                onPress={handlePress}
+                onPress={onPress}
                 pl="small"
                 pr="small"
                 variant="arrow-left"
