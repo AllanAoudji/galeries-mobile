@@ -17,6 +17,7 @@ const ButtonContainer = styled.View`
     width: 50%;
 `;
 const ButtonsContainer = styled.View`
+    margin-top: ${({ theme }) => theme.spacings.normal};
     flex-direction: row;
     justify-content: space-between;
 `;

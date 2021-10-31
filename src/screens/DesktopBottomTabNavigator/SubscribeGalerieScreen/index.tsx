@@ -3,9 +3,11 @@ import { StatusBar, StyleSheet } from 'react-native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useFocusEffect } from '@react-navigation/native';
 import { GLOBAL_STYLE, PRE_CODE } from '#helpers/constants';
 import {
     postGalerieSubscribe,
+    resetGaleriesLoadingPost,
     selectGaleriesLoadingPost,
 } from '#store/galeries';
 import { selectNotification, updateNotification } from '#store/notification';
@@ -30,7 +32,7 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
     const handleBarCodeScanned: BarCodeScannedCallback = React.useCallback(
         ({ data }) => {
             if (notification) return;
-            if (loading.includes('LOADING')) return;
+            if (loading.includes('LOADING') || loading === 'SUCCESS') return;
             const code = data.split(PRE_CODE)[1];
             if (!code) {
                 dispatch(
@@ -62,6 +64,15 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
             else navigation.navigate('Home');
         }
     }, [hasPermission]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (loading === 'SUCCESS') {
+                dispatch(resetGaleriesLoadingPost());
+                navigation.navigate('Galerie');
+            }
+        }, [loading])
+    );
 
     return (
         <Container>
