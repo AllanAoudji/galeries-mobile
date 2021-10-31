@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 
 import { END_POINT } from '#helpers/constants';
 import { apiRequest } from '#store/api';
-import { USERS } from '#store/genericActionTypes';
+import { GALERIE_ROLES } from '#store/genericActionTypes';
 
 const dispatchPutGalerieUserRole = (
     dispatch: Dispatch<Store.Action>,
@@ -12,7 +12,7 @@ const dispatchPutGalerieUserRole = (
     dispatch(
         apiRequest({
             meta: {
-                entity: USERS,
+                entity: GALERIE_ROLES,
                 method: 'PUT',
                 query: { galerieId, userId },
                 url: `${END_POINT.GALERIES}/${galerieId}${END_POINT.USERS}/${userId}`,

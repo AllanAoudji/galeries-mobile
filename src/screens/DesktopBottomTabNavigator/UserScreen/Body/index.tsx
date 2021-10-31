@@ -31,7 +31,7 @@ const Body = ({ galerie, user }: Props) => {
             }
         >
             <UserInformations role={role} user={user} />
-            <ButtonsContainer galerie={galerie} role={role} />
+            <ButtonsContainer galerie={galerie} role={role} user={user} />
         </Container>
     );
 };

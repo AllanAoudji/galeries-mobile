@@ -11,8 +11,11 @@ export const resetGalerieRolesById: () => Store.Action = () => ({
     payload: {},
     type: GALERIE_ROLES_BY_ID_RESET,
 });
-export const putGalerieUserRole: () => Store.Action = () => ({
-    meta: {},
+export const putGalerieUserRole: (
+    galerieId: string,
+    userId: string
+) => Store.Action = (galerieId, userId) => ({
+    meta: { query: { galerieId, userId } },
     payload: {},
     type: GALERIE_ROLES_PUT,
 });

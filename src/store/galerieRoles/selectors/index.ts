@@ -14,3 +14,6 @@ export const selectGalerieUserRole = (
         if (!galerie) return undefined;
         return galerie[userId];
     });
+
+export const selectGalerieUserRolesLoadingPut = (state: Store.Reducer) =>
+    state.galerieRoles.loading.put;
