@@ -65,6 +65,7 @@ export const END_POINT = {
     REFRESH_TOKEN: '/refreshToken/',
     SIGNIN: '/signin',
     SUBSCRIBE: '/subscribe',
+    UNSUBSCRIBE: '/unsubscribe',
     USERS: '/users',
 };
 

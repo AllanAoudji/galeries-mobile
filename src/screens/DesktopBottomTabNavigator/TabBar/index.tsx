@@ -1,6 +1,10 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
-import { Keyboard, useWindowDimensions } from 'react-native';
+import {
+    InteractionManager,
+    Keyboard,
+    useWindowDimensions,
+} from 'react-native';
 import {
     useAnimatedStyle,
     useSharedValue,
@@ -8,6 +12,7 @@ import {
 } from 'react-native-reanimated';
 import { useTheme } from 'styled-components/native';
 
+import { useDispatch } from 'react-redux';
 import { BottomSheetButton, Pictogram } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
@@ -19,6 +24,7 @@ import {
     LinearGradientStyle,
     PictogramContainer,
 } from './styles';
+import { resetGaleriesCurrent } from '#store/galeries';
 
 const customSize = {
     height: 28,
@@ -27,6 +33,7 @@ const customSize = {
 const location = [0, 0.8];
 
 const TabBar = ({ navigation, state }: BottomTabBarProps) => {
+    const dispatch = useDispatch();
     const dimension = useWindowDimensions();
     const { keyboardShown } = useKeyboard();
     const theme = useTheme();
@@ -117,15 +124,30 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     }, [keyboardShown]);
     const handleHomePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
-        else navigation.navigate('Home');
+        else {
+            navigation.navigate('Home');
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(resetGaleriesCurrent());
+            });
+        }
     }, [keyboardShown]);
     const handleNotificationsPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
-        else navigation.navigate('Notifications');
+        else {
+            navigation.navigate('Notifications');
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(resetGaleriesCurrent());
+            });
+        }
     }, [keyboardShown]);
     const handleProfilePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
-        else navigation.navigate('Profile');
+        else {
+            navigation.navigate('Profile');
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(resetGaleriesCurrent());
+            });
+        }
     }, [keyboardShown]);
     const handleAddSubscribePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();

@@ -172,6 +172,13 @@ export const setGaleriesById: (payload: {
     payload,
     type: GALERIES_BY_ID_SET,
 });
+export const unsubscribeGalerie: (galerieId: string) => Store.Action = (
+    galerieId
+) => ({
+    meta: { query: { galerieId } },
+    payload: {},
+    type: GALERIES_DELETE,
+});
 export const updateGaleriesFieldsError: (payload: {
     description?: string;
     name?: string;

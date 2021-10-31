@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { StatusBar } from 'react-native';
+import { BackHandler, StatusBar } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import {
     NavigationState,
@@ -8,12 +8,13 @@ import {
     SceneRendererProps,
     TabView,
 } from 'react-native-tab-view';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { UnsubscribeGalerieProvider } from '#contexts/UnsubscribeGalerieContext';
 import clamp from '#helpers/clamp';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize } from '#hooks';
-import { selectCurrentGalerie } from '#store/galeries';
+import { resetGaleriesCurrent, selectCurrentGalerie } from '#store/galeries';
 
 import FramesScreen from './FramesScreen';
 import Header from './Header';
@@ -23,6 +24,7 @@ import UsersScreen from './UsersScreen';
 import AbsoluteHeader from './AbsoluteHeader';
 
 import { Container } from './styles';
+import { FullScreenLoader } from '#components';
 
 const adminRoleRoutes = [
     { key: 'frames', title: 'Frames' },
@@ -37,6 +39,7 @@ const userRoleRoutes = [
 ];
 
 const GalerieTabViewNavigator = () => {
+    const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
     const galerie = useSelector(selectCurrentGalerie);
@@ -63,13 +66,14 @@ const GalerieTabViewNavigator = () => {
     );
 
     const [currentRoute, setCurrentRoute] = React.useState<string>('frames');
-    const [navigationState, setNavigationState] = React.useState({
-        index: 0,
-        routes:
-            galerie && galerie.role === 'user'
-                ? userRoleRoutes
-                : adminRoleRoutes,
-    });
+    const [navigationState, setNavigationState] =
+        React.useState<NavigationState<Route> | null>({
+            index: 0,
+            routes:
+                galerie && galerie.role === 'user'
+                    ? userRoleRoutes
+                    : adminRoleRoutes,
+        });
 
     const onIndexChange = React.useCallback(
         (index: number) => {
@@ -101,15 +105,6 @@ const GalerieTabViewNavigator = () => {
             });
         },
         [galerie]
-    );
-
-    useFocusEffect(
-        React.useCallback(() => {
-            if (!galerie) {
-                if (navigation.canGoBack()) navigation.goBack();
-                else navigation.navigate('Home');
-            }
-        }, [galerie])
     );
 
     const renderScene = React.useCallback(
@@ -194,16 +189,68 @@ const GalerieTabViewNavigator = () => {
         [galerie, maxScroll, onLayoutContainer, onLayoutInfo]
     );
 
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!galerie) {
+                if (navigation.canGoBack()) navigation.goBack();
+                else navigation.navigate('Home');
+            }
+        }, [galerie])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!navigationState) {
+                setNavigationState({
+                    index: 0,
+                    routes:
+                        galerie && galerie.role === 'user'
+                            ? userRoleRoutes
+                            : adminRoleRoutes,
+                });
+            }
+        }, [galerie, navigationState])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            const dispatchResetCurrentGalerie = () => {
+                dispatch(resetGaleriesCurrent());
+                return false;
+            };
+            BackHandler.addEventListener(
+                'hardwareBackPress',
+                dispatchResetCurrentGalerie
+            );
+            return () => {
+                BackHandler.removeEventListener(
+                    'hardwareBackPress',
+                    dispatchResetCurrentGalerie
+                );
+            };
+        }, [])
+    );
+    React.useEffect(() => {
+        if (!galerie) {
+            scrollY.value = 0;
+            setCurrentRoute('frames');
+            setNavigationState(null);
+        }
+    }, [galerie]);
+
+    if (!galerie) return null;
+    if (!navigationState) return <FullScreenLoader show />;
+
     return (
-        <Container>
-            <AbsoluteHeader maxScroll={maxScroll} scrollY={scrollY} />
-            <TabView
-                navigationState={navigationState}
-                onIndexChange={onIndexChange}
-                renderScene={renderScene}
-                renderTabBar={renderTabBar}
-            />
-        </Container>
+        <UnsubscribeGalerieProvider>
+            <Container>
+                <AbsoluteHeader maxScroll={maxScroll} scrollY={scrollY} />
+                <TabView
+                    navigationState={navigationState}
+                    onIndexChange={onIndexChange}
+                    renderScene={renderScene}
+                    renderTabBar={renderTabBar}
+                />
+            </Container>
+        </UnsubscribeGalerieProvider>
     );
 };
 
