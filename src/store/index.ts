@@ -6,7 +6,7 @@ import { commentsMiddlewares, commentsReducer } from './comments';
 import { forgotYourPasswordReducer } from './forgotYourPassword';
 import { framesMiddlewares, framesReducer } from './frames';
 import { galeriesMiddleware, galeriesReducer } from './galeries';
-import { galerieRolesReducer } from './galerieRoles';
+import { galerieRolesMiddlewares, galerieRolesReducer } from './galerieRoles';
 import { invitationsMiddlewares, invitationsReducer } from './invitations';
 import {
     galeriePicturesMiddlwares,
@@ -42,8 +42,6 @@ const reducers = combineReducers({
     users: usersReducer,
 });
 
-// GaleriePictures AllIds should by { [frameId: string]: string[] }
-
 export default createStore(
     reducers,
     composeWithDevTools(
@@ -52,6 +50,7 @@ export default createStore(
             ...framesMiddlewares,
             ...galeriesMiddleware,
             ...galeriePicturesMiddlwares,
+            ...galerieRolesMiddlewares,
             ...invitationsMiddlewares,
             ...likesMiddlewares,
             ...loginMiddlewares,

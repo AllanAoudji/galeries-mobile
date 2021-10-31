@@ -1,18 +1,18 @@
 import { checkIfStatus } from '#store/checkers';
 import {
-    FRAMES_LOADING_PUT_RESET,
-    FRAMES_LOADING_PUT_UPDATE,
-} from '#store/frames/actionTypes';
+    GALERIE_ROLES_LOADING_PUT_RESET,
+    GALERIE_ROLES_LOADING_PUT_UPDATE,
+} from '#store/galerieRoles/actionTypes';
 
 const initialState: Store.Status = 'PENDING';
-const framesLoadingPutReducer = (
+const galerieRolesLoadingPutReducer = (
     state = initialState,
     action: Store.Action
 ) => {
     switch (action.type) {
-        case FRAMES_LOADING_PUT_RESET:
+        case GALERIE_ROLES_LOADING_PUT_RESET:
             return initialState;
-        case FRAMES_LOADING_PUT_UPDATE:
+        case GALERIE_ROLES_LOADING_PUT_UPDATE:
             if (!checkIfStatus(action.payload)) return state;
             return action.payload;
         default:
@@ -20,4 +20,4 @@ const framesLoadingPutReducer = (
     }
 };
 
-export default framesLoadingPutReducer;
+export default galerieRolesLoadingPutReducer;

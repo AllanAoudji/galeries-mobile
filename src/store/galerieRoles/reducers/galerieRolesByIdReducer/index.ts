@@ -1,6 +1,6 @@
 import {
     GALERIE_ROLES_BY_ID_RESET,
-    GALERIES_ROLES_BY_ID_SET,
+    GALERIE_ROLES_BY_ID_SET,
 } from '#store/galerieRoles/actionTypes';
 
 const initialState: { [key: string]: { [key: string]: string } } = {};
@@ -11,7 +11,7 @@ const galerieRolesByIdReducer = (
     switch (action.type) {
         case GALERIE_ROLES_BY_ID_RESET:
             return initialState;
-        case GALERIES_ROLES_BY_ID_SET:
+        case GALERIE_ROLES_BY_ID_SET:
             if (typeof action.payload !== 'object') return state;
             return {
                 ...state,

@@ -277,6 +277,9 @@ declare global {
             };
             galerieRoles: {
                 byId: { [key: string]: { [key: string]: Store.Role } };
+                loading: {
+                    put: Store.Status;
+                };
             };
             invitations: {
                 allIds: { [key: string]: string[] };
