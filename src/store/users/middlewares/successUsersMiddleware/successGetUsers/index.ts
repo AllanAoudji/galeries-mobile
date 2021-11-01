@@ -13,7 +13,7 @@ import {
     updateUsersStatus,
     updateUsersPrevious,
 } from '#store/users/actionCreators';
-import { setGalerieRolesById } from '#store/galerieRoles';
+import { setGalerieRolesById } from '#store/galerieRoles/actionCreators';
 
 const successGetUsers = (
     dispatch: Dispatch<Store.Action>,

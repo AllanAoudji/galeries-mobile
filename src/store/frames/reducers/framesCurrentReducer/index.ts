@@ -9,8 +9,8 @@ const framesCurrentReducer = (state = initialState, action: Store.Action) => {
         case FRAMES_CURRENT_RESET:
             return initialState;
         case FRAMES_CURRENT_UPDATE:
-            if (typeof action.payload === 'string') return action.payload;
-            return state;
+            if (typeof action.payload !== 'string') return state;
+            return action.payload;
         default:
             return state;
     }

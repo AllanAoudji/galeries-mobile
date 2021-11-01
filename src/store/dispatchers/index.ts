@@ -1,6 +1,7 @@
 export { default as dispatchDeleteComment } from './dispatchDeleteComment';
 export { default as dispatchDeleteFrame } from './dispatchDeleteFrame';
 export { default as dispatchDeleteGalerie } from './dispatchDeleteGalerie';
+export { default as dispatchDeleteGalerieBlackList } from './dispatchDeleteGalerieBlackList';
 export { default as dispatchDeleteInvitation } from './dispatchDeleteInvitation';
 export { default as dispatchDeleteProfilePicture } from './dispatchDeleteProfilePicture';
 export { default as dispatchErrorNotification } from './dispatchErrorNotification';
@@ -12,6 +13,8 @@ export { default as dispatchGetFrameGaleriePictures } from './dispatchGetFrameGa
 export { default as dispatchGetFrameLikes } from './dispatchGetFrameLikes';
 export { default as dispatchGetFrames } from './dispatchGetFrames';
 export { default as dispatchGetGalerie } from './dispatchGetGalerie';
+export { default as dispatchGetGalerieBlackList } from './dispatchGetGalerieBlackList';
+export { default as dispatchGetGalerieBlackLists } from './dispatchGetGalerieBlackLists';
 export { default as dispatchGetGalerieCoverPicture } from './dispatchGetGalerieCoverPicture';
 export { default as dispatchGetGalerieFrames } from './dispatchGetGalerieFrames';
 export { default as dispatchGetGalerieUsers } from './dispatchGetGalerieUsers';
@@ -32,6 +35,7 @@ export { default as dispatchPostCommentComments } from './dispatchPostCommentCom
 export { default as dispatchPostFrame } from './dispatchPostFrame';
 export { default as dispatchPostFrameComments } from './dispatchPostFrameComments';
 export { default as dispatchPostGalerie } from './dispatchPostGalerie';
+export { default as dispatchPostGalerieBlackList } from './dispatchPostGalerieBlackList';
 export { default as dispatchPostGalerieSubscribe } from './dispatchPostGalerieSubscribe';
 export { default as dispatchPostInvitations } from './dispatchPostInvitations';
 export { default as dispatchPostLike } from './dispatchPostLike';

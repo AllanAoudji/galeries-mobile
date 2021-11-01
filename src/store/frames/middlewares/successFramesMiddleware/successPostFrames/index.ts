@@ -19,11 +19,20 @@ const successPostFrames = async (
     getState: () => Store.Reducer,
     action: Store.Action
 ) => {
-    if (typeof action.payload.data !== 'object') return;
+    if (typeof action.payload.data !== 'object') {
+        dispatch(updateFramesLoadingPost('ERROR'));
+        return;
+    }
     const { frame } = action.payload.data;
-    if (!frame || typeof frame !== 'object') return;
+    if (!frame || typeof frame !== 'object') {
+        dispatch(updateFramesLoadingPost('ERROR'));
+        return;
+    }
     const { galeriePictures, ...rest } = frame;
-    if (!galeriePictures || !Array.isArray(galeriePictures)) return;
+    if (!galeriePictures || !Array.isArray(galeriePictures)) {
+        dispatch(updateFramesLoadingPost('ERROR'));
+        return;
+    }
 
     const galeriePictureAllIds: string[] = [];
     const galeriePicturesById: {

@@ -1,7 +1,7 @@
 import { Middleware } from 'redux';
 
 import { dispatchPutGalerieUserRole } from '#store/dispatchers';
-import { updateGalerieRolesLoadingPut } from '#store/galerieRoles';
+import { updateGalerieRolesLoadingPut } from '#store/galerieRoles/actionCreators';
 import { GALERIE_ROLES_PUT } from '#store/galerieRoles/actionTypes';
 
 const putGalerieRolesMiddleware: Middleware<{}, Store.Reducer> =

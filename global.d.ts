@@ -190,6 +190,7 @@ declare global {
             | '[FORGOT YOUR PASSWORD]'
             | '[FRAMES]'
             | '[GALERIES]'
+            | '[GALERIE BLACKLISTS]'
             | '[GALERIE PICTURES]'
             | '[GALERIE ROLES]'
             | '[INVITATIONS]'
@@ -265,6 +266,18 @@ declare global {
                     name: { [key: string]: Store.Status };
                     id: { [key: string]: Store.Status };
                 };
+            };
+            galerieBlackLists: {
+                allIds: { [key: string]: string[] };
+                byId: { [key: string]: Store.Models.GalerieBlackList };
+                current: string | null;
+                end: { [key: string]: boolean };
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                };
+                previous: { [key: string]: string };
+                status: { [key: string]: Store.Status };
             };
             galeriePictures: {
                 allIds: { [key: string]: string[] };
@@ -390,6 +403,15 @@ declare global {
                 name: string;
                 numOfUsers: number;
                 role: Role;
+            };
+            type GalerieBlackList = {
+                autoIncrementId: string;
+                createdAt: string;
+                createdById: string;
+                galerieId: string;
+                id: string;
+                userId: string;
+                updatedAt: string;
             };
             type GaleriePicture = {
                 createdAt: string;

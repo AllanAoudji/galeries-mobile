@@ -50,6 +50,7 @@ export const DRAG_AND_DROP_UTILS = {
 export const END_POINT = {
     ALLOW_NOTIFICATION: '/allowNotification',
     BETA: '/beta',
+    BLACKLISTS: '/blackList',
     COMMENTS: '/comments',
     COVER_PICTURE: '/coverPicture',
     CURRENT_PROFILE_PICTURE: '/currentProfilePicture',

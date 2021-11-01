@@ -4,6 +4,7 @@ import {
     GALERIE_ROLES_PUT,
     GALERIE_ROLES_LOADING_PUT_RESET,
     GALERIE_ROLES_LOADING_PUT_UPDATE,
+    GALERIE_ROLES_RESET,
 } from '#store/galerieRoles/actionTypes';
 
 export const resetGalerieRolesById: () => Store.Action = () => ({
@@ -18,6 +19,11 @@ export const putGalerieUserRole: (
     meta: { query: { galerieId, userId } },
     payload: {},
     type: GALERIE_ROLES_PUT,
+});
+export const resetGalerieRoles: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: GALERIE_ROLES_RESET,
 });
 export const resetGalerieRolesLoadingPut: () => Store.Action = () => ({
     meta: {},

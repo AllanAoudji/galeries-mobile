@@ -16,6 +16,7 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
+
         if (action.type !== FRAMES_GET) return;
 
         const galerieId = action.meta.query
