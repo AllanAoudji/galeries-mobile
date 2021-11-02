@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-    FlatList,
     Keyboard,
     ListRenderItemInfo,
     RefreshControl,
@@ -8,7 +7,6 @@ import {
     StyleSheet,
     ViewStyle,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
@@ -22,18 +20,25 @@ import {
 
 import RenderItem from './RenderItem';
 
+import { StyledAnimatedFlatList } from './styles';
+
 type Props = {
     allIds: string[];
-    paddingTop: number;
+    innerPaddingTop: number;
+    outerPaddingTop: number;
     scrollHandler: any;
 };
 
-const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
+const Galeries = ({
+    allIds,
+    innerPaddingTop,
+    outerPaddingTop,
+    scrollHandler,
+}: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -51,7 +56,10 @@ const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
         ],
         []
     );
-    const styleProps = React.useMemo(() => ({ paddingTop }), [paddingTop]);
+    const styleProps = React.useMemo(
+        () => ({ innerPaddingTop }),
+        [innerPaddingTop]
+    );
 
     const handleEndReached = React.useCallback(() => {
         if (galeriesNameStatus === 'ERROR' || galeriesNameStatus === 'SUCCESS')
@@ -80,7 +88,8 @@ const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
     }, [loading, refreshing]);
 
     return (
-        <AnimatedFlatList
+        <StyledAnimatedFlatList
+            marginTop={outerPaddingTop - innerPaddingTop}
             contentContainerStyle={
                 style(styleProps).animatedFlatListContentContainerStyle
             }
@@ -99,7 +108,7 @@ const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={paddingTop}
+                    progressViewOffset={innerPaddingTop}
                     progressBackgroundColor={theme.colors.secondary}
                     refreshing={refreshing}
                 />
@@ -114,12 +123,12 @@ const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
     );
 };
 
-const style: ({ paddingTop }: { paddingTop: number }) => {
+const style: ({ innerPaddingTop }: { innerPaddingTop: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ paddingTop }) => ({
+} = StyleSheet.create(({ innerPaddingTop }) => ({
     animatedFlatListContentContainerStyle: {
-        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT + 15,
-        paddingTop: paddingTop + 30,
+        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+        paddingTop: innerPaddingTop,
     },
 }));
 

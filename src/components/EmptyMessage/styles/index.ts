@@ -13,13 +13,5 @@ const Container = styled.View<ContainerProps>`
         `${pt || 0}px ${theme.spacings.normal} ${pb || 0}px`};
 `;
 
-const Button = styled.Pressable`
-    margin-top: ${({ theme }) => theme.spacings.small};
-    padding: ${({ theme }) => `11px ${theme.spacings.small}`};
-    border-width: 1px;
-    border-color: ${({ theme }) => theme.colors.primary};
-    border-radius: 5px;
-`;
-
 // eslint-disable-next-line import/prefer-default-export
-export { Button, Container };
+export { Container };

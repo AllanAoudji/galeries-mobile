@@ -75,7 +75,7 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
                     colors={colors}
                     onRefresh={handleRefresh}
                     progressViewOffset={paddingTop}
-                    progressBackgroundColor={theme.colors.secondary}
+                    progressBackgroundColor={theme.colors['secondary-light']}
                     refreshing={refreshing}
                 />
             }

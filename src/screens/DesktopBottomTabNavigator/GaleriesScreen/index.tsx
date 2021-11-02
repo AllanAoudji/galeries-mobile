@@ -6,7 +6,6 @@ import { withTiming } from 'react-native-reanimated';
 import {
     BottomLoader,
     DefaultHeader,
-    EmptyMessage,
     FullScreenLoader,
     SearchBar,
 } from '#components';
@@ -22,6 +21,7 @@ import {
     updateGaleriesFilterName,
 } from '#store/galeries';
 
+import EmptyScrollView from './EmptyScrollView';
 import Galeries from './Galeries';
 
 const GaleriesScreen = () => {
@@ -31,16 +31,21 @@ const GaleriesScreen = () => {
     const galeriesAllIds = useSelector(selectGaleriesAllIds);
     const galeriesNameStatus = useSelector(selectGaleriesNameStatus);
 
-    const { onLayout, size } = useComponentSize();
+    const { onLayout: onInnerLayout, size: innerSize } = useComponentSize();
+    const { onLayout: onOuterLayout, size: outerSize } = useComponentSize();
     const { containerStyle, headerStyle, scrollHandler, translateY } =
         useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT, true);
 
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
     const [value, setValue] = React.useState<string>(filterGaleriesName);
 
-    const paddingTop = React.useMemo(
-        () => (size ? size.height : undefined),
-        [size]
+    const innerPaddingTop = React.useMemo(
+        () => (innerSize ? innerSize.height : 0),
+        [innerSize]
+    );
+    const outerPaddingTop = React.useMemo(
+        () => (outerSize ? outerSize.height : 0),
+        [outerSize]
     );
 
     const handleChangeText = React.useCallback((e: string) => {
@@ -65,8 +70,12 @@ const GaleriesScreen = () => {
 
     return (
         <Container>
-            <Header onLayout={onLayout} style={containerStyle}>
-                <DefaultHeader style={headerStyle} title="galeries" />
+            <Header onLayout={onOuterLayout} style={containerStyle}>
+                <DefaultHeader
+                    style={headerStyle}
+                    onLayout={onInnerLayout}
+                    title="galeries"
+                />
                 <SearchBarContainer>
                     <SearchBar
                         mt="smallest"
@@ -78,14 +87,19 @@ const GaleriesScreen = () => {
                     />
                 </SearchBarContainer>
             </Header>
-            {!!galeriesAllIds && galeriesAllIds.length > 0 && paddingTop ? (
+            {!!galeriesAllIds && galeriesAllIds.length > 0 ? (
                 <Galeries
                     allIds={galeriesAllIds}
-                    paddingTop={paddingTop}
+                    innerPaddingTop={innerPaddingTop}
+                    outerPaddingTop={outerPaddingTop}
                     scrollHandler={scrollHandler}
                 />
             ) : (
-                <EmptyMessage pt={paddingTop} text="No galerie found" />
+                <EmptyScrollView
+                    innerPaddingTop={innerPaddingTop}
+                    outerPaddingTop={outerPaddingTop}
+                    scrollHandler={scrollHandler}
+                />
             )}
             <FullScreenLoader
                 show={

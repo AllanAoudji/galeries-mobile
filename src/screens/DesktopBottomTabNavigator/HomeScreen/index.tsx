@@ -3,12 +3,7 @@ import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-    BottomLoader,
-    DefaultHeader,
-    EmptyMessage,
-    FullScreenLoader,
-} from '#components';
+import { BottomLoader, DefaultHeader, FullScreenLoader } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
 import {
@@ -18,6 +13,7 @@ import {
 } from '#store/frames';
 
 import Frames from './Frames';
+import EmptyScrollView from './EmptyScrollView';
 
 import { Container, Header } from './styles';
 
@@ -69,7 +65,10 @@ const HomeScreen = () => {
                     scrollHandler={scrollHandler}
                 />
             ) : (
-                <EmptyMessage pt={paddingTop} text="no frames" />
+                <EmptyScrollView
+                    paddingTop={paddingTop}
+                    scrollHandler={scrollHandler}
+                />
             )}
             <FullScreenLoader show={showFullScreenLoader} />
             <BottomLoader show={showBottomLoader} bottom="huge" />

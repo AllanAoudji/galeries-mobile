@@ -2,16 +2,15 @@ import * as React from 'react';
 
 import Typography from '#components/Typography';
 
-import { Button, Container } from './styles';
+import { Container } from './styles';
 
 type Props = {
     pb?: number;
     pt?: number;
-    onPressRefreshButton?: () => void;
     text: string;
 };
 
-const EmptyMessage = ({ pb, pt, onPressRefreshButton, text }: Props) => {
+const EmptyMessage = ({ pb, pt, text }: Props) => {
     return (
         <Container pb={pb} pt={pt}>
             <Typography
@@ -22,11 +21,6 @@ const EmptyMessage = ({ pb, pt, onPressRefreshButton, text }: Props) => {
             >
                 {text}
             </Typography>
-            <Button>
-                <Typography color="primary" fontFamily="light">
-                    refresh
-                </Typography>
-            </Button>
         </Container>
     );
 };
