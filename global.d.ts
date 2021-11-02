@@ -209,6 +209,7 @@ declare global {
             entity?: Entity;
             method?: Method;
             params?: string;
+            refresh?: boolean;
             query?: { [key: string]: string };
             url?: string;
         };
@@ -356,6 +357,9 @@ declare global {
                 byId: { [key: string]: Store.Models.User };
                 current: string | null;
                 end: { [key: string]: boolean };
+                loading: {
+                    delete: Store.Status;
+                };
                 previous: { [key: string]: string };
                 status: { [key: string]: Store.Status };
             };
@@ -366,6 +370,7 @@ declare global {
             | 'INITIAL_LOADING'
             | 'LOADING'
             | 'PENDING'
+            | 'REFRESH'
             | 'SUCCESS';
         namespace Models {
             type Comment = {

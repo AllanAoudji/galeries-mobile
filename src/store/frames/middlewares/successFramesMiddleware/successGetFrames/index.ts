@@ -57,7 +57,10 @@ const successGetFrames = (
             dispatch(updateGalerieFramesPrevious(galerieId, previous));
         dispatch(updateGalerieFramesStatus(galerieId, 'SUCCESS'));
     } else {
-        const oldAllIds = getState().frames.allIds[''] || [];
+        let oldAllIds: string[];
+        if (action.meta.refresh) oldAllIds = [];
+        else oldAllIds = getState().frames.allIds[''] || [];
+
         const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
 
         dispatch(setFramesAllIds(newAllIds));

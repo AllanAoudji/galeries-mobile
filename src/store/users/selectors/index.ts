@@ -55,3 +55,5 @@ export const selectUsersStatus = createSelector(
     [usersStatusSelector],
     (usersStatus) => usersStatus[''] || 'PENDING'
 );
+export const selectUsersLoadingDelete = (state: Store.Reducer) =>
+    state.users.loading.delete;

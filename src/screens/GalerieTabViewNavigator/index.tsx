@@ -17,6 +17,7 @@ import { useComponentSize } from '#hooks';
 import { resetGaleriesCurrent, selectCurrentGalerie } from '#store/galeries';
 
 import FramesScreen from './FramesScreen';
+import GalerieBlackListsScreen from './GalerieBlackListsScreen';
 import Header from './Header';
 import InvitationsScreen from './InvitationsScreen';
 import OptionsScreen from './OptionsScreen';
@@ -29,7 +30,8 @@ import { FullScreenLoader } from '#components';
 const adminRoleRoutes = [
     { key: 'frames', title: 'Frames' },
     { key: 'users', title: 'Users' },
-    { key: 'invitations', title: 'Invits' },
+    { key: 'galerieBlackLists', title: 'Black Lists' },
+    { key: 'invitations', title: 'Invitations' },
     { key: 'options', title: 'Options' },
 ];
 const userRoleRoutes = [
@@ -87,9 +89,13 @@ const GalerieTabViewNavigator = () => {
                 case 2:
                     if (galerie && galerie.role === 'user')
                         setCurrentRoute('options');
-                    else setCurrentRoute('invitations');
+                    else setCurrentRoute('galerieBlackLists');
                     break;
                 case 3:
+                    if (galerie && galerie.role === 'admin')
+                        setCurrentRoute('invitations');
+                    break;
+                case 4:
                     if (galerie && galerie.role === 'admin')
                         setCurrentRoute('options');
                     break;
@@ -121,6 +127,17 @@ const GalerieTabViewNavigator = () => {
                             editScrollY={editScrollY}
                             galerie={galerie}
                             maxScroll={maxScroll}
+                            paddingTop={
+                                sizeContainer ? sizeContainer.height : 0
+                            }
+                            scrollY={scrollY}
+                        />
+                    );
+                case 'galerieBlackLists':
+                    return (
+                        <GalerieBlackListsScreen
+                            current={currentRoute === 'galerieBlackLists'}
+                            galerie={galerie}
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }

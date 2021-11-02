@@ -7,6 +7,8 @@ import {
     selectGalerieUserRolesLoadingPut,
 } from '#store/galerieRoles';
 
+import DeleteBanButton from './DeleteBanButton';
+
 import { Container } from './styles';
 
 type Props = {
@@ -14,8 +16,6 @@ type Props = {
     role?: Store.Role;
     user: Store.Models.User;
 };
-
-const handlePress = () => {};
 
 const ButtonsContainer = ({ galerie, role, user }: Props) => {
     const dispatch = useDispatch();
@@ -42,11 +42,7 @@ const ButtonsContainer = ({ galerie, role, user }: Props) => {
                     }`}
                 />
             )}
-            <CustomButton
-                onPress={handlePress}
-                title="delete/ban user"
-                variant="stroke"
-            />
+            <DeleteBanButton galerie={galerie} role={role} user={user} />
         </Container>
     );
 };

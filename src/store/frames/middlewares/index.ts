@@ -3,6 +3,7 @@ import errorFramesMiddleware from './errorFramesMiddleware';
 import getFramesMiddleware from './getFramesMiddleware';
 import postFramesMiddleware from './postFramesMiddleware';
 import putFrameMiddleware from './putFramesMiddleware';
+import refreshFramesMiddleware from './refreshFramesMiddleware';
 import resetFramesMiddleware from './resetFramesMiddleware';
 import successFramesMiddleware from './successFramesMiddleware';
 
@@ -13,6 +14,7 @@ export const framesMiddlewares = [
     getFramesMiddleware,
     postFramesMiddleware,
     putFrameMiddleware,
+    refreshFramesMiddleware,
     resetFramesMiddleware,
     successFramesMiddleware,
 ];

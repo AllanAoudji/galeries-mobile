@@ -7,7 +7,7 @@ import {
     updateGalerieBlackListsLoadingPost,
 } from '#store/galerieBlackLists/actionCreators';
 import { combineGalerieBlackListsAllIds } from '#store/combineAllIds';
-import { resetUsers } from '#store/users';
+import { removeGalerieUserAllIds } from '#store/users';
 
 const successPostMethod = (
     dispatch: Dispatch<Store.Action>,
@@ -36,7 +36,12 @@ const successPostMethod = (
         allIds
     );
     dispatch(setGalerieBlackListsAllIds(galerieBlackList.galerieId, newAllIds));
-    dispatch(resetUsers());
+    dispatch(
+        removeGalerieUserAllIds(
+            galerieBlackList.galerieId,
+            galerieBlackList.userId
+        )
+    );
     dispatch(resetGalerieBlackLists());
     dispatch(updateGalerieBlackListsLoadingPost('SUCCESS'));
 };

@@ -27,6 +27,7 @@ const TabBar = (
                 labelStyle={style(styleProps).labelStyle}
                 pressColor="transparent"
                 tabStyle={style(styleProps).tabStyle}
+                scrollEnabled
                 {...props}
             />
         </Container>
@@ -47,10 +48,12 @@ const style: ({ theme }: { theme: DefaultTheme }) => {
         fontSize: convertPixelToNum(theme.font.sizes[18]),
         fontFamily: theme.font.families.roman,
         textTransform: 'capitalize',
+        paddingHorizontal: 10,
     },
     tabStyle: {
         justifyContent: 'flex-start',
         padding: 0,
+        width: 120,
     },
 }));
 

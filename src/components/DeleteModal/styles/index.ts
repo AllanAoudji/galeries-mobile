@@ -1,10 +1,6 @@
 import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
-type OverlayProps = {
-    height: number;
-};
-
 const Background = styled.Pressable`
     background-color: rgba(0, 0, 0, 0.4);
     bottom: 0;
@@ -29,10 +25,9 @@ const Modal = styled.View`
     padding: ${({ theme }) => theme.spacings.small};
     width: 340px;
 `;
-const Overlay = styled(Animated.View)<OverlayProps>`
+const Overlay = styled(Animated.View)`
     align-items: center;
     bottom: 0;
-    height: ${({ height }) => `${height}px`};
     justify-content: center;
     left: 0;
     position: absolute;

@@ -3,6 +3,7 @@ import errorGaleriesMiddleware from './errorGaleriesMiddleware';
 import getGaleriesMiddleware from './getGaleriesMiddleware';
 import postGaleriesMiddleware from './postGaleriesMiddleware';
 import putGaleriesMiddleware from './putGaleriesMiddleware';
+import refreshGaleriesMiddleware from './refreshGaleriesMiddleware';
 import resetGaleriesMiddleware from './resetGaleriesMiddleware';
 import successGaleriesMiddleware from './successGaleriesMiddleware';
 
@@ -13,6 +14,7 @@ export const galeriesMiddleware = [
     getGaleriesMiddleware,
     postGaleriesMiddleware,
     putGaleriesMiddleware,
+    refreshGaleriesMiddleware,
     resetGaleriesMiddleware,
     successGaleriesMiddleware,
 ];

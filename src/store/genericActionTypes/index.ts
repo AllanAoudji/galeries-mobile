@@ -22,6 +22,7 @@ export const DELETE = 'Delete';
 export const GET = 'Get';
 export const POST = 'Post';
 export const PUT = 'Put';
+export const REFRESH = 'Refresh';
 
 // Reducer action
 export const REMOVE = 'Remove';

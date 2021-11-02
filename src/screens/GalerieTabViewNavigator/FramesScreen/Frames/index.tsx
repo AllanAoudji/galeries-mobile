@@ -7,6 +7,7 @@ import {
     StyleSheet,
     useWindowDimensions,
     ViewStyle,
+    RefreshControl,
 } from 'react-native';
 
 import Animated, {
@@ -48,6 +49,8 @@ const Frames = ({
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
     const styleProps = React.useMemo(
         () => ({
             minHeight: dimension.height + maxScroll,
@@ -59,6 +62,9 @@ const Frames = ({
     const handleEndReach = React.useCallback(() => {
         if (galerie) dispatch(getGalerieFrames(galerie.id));
     }, [galerie]);
+    const handleRefresh = React.useCallback(() => {
+        setRefreshing(true);
+    }, []);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
@@ -93,18 +99,27 @@ const Frames = ({
             contentContainerStyle={
                 style(styleProps).animatedFlatListContentContainerStyle
             }
+            style={{ flex: 1 }}
             data={allIds}
             extraData={allIds}
             keyExtractor={keyExtractor}
             maxToRenderPerBatch={4}
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
+            onRefresh={handleRefresh}
             onScroll={scrollHandler}
             ref={flatListRef}
+            refreshing={refreshing}
             removeClippedSubviews={true}
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={handleRefresh}
+                />
+            }
         />
     );
 };

@@ -9,6 +9,8 @@ export { default as CommentCard } from './CommentCard';
 export { default as CoverPictureBookMark } from './CoverPictureBookMark';
 export { default as CustomButton } from './CustomButton';
 export { default as CustomCamera } from './CustomCamera';
+export { default as CustomRadio } from './CustomRadio';
+export { default as CustomRefreshControle } from './CustomRefreshControle';
 export { default as CustomSwitch } from './CustomSwitch';
 export { default as CustomTextInput } from './CustomTextInput';
 export { default as DefaultHeader } from './DefaultHeader';

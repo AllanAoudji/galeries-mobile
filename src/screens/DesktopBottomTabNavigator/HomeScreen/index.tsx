@@ -69,7 +69,7 @@ const HomeScreen = () => {
                     scrollHandler={scrollHandler}
                 />
             ) : (
-                <EmptyMessage text="no frames" />
+                <EmptyMessage pt={paddingTop} text="no frames" />
             )}
             <FullScreenLoader show={showFullScreenLoader} />
             <BottomLoader show={showBottomLoader} bottom="huge" />

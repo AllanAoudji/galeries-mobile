@@ -1,15 +1,18 @@
 import * as React from 'react';
 import {
+    FlatList,
     ListRenderItemInfo,
+    RefreshControl,
     StyleProp,
     StyleSheet,
     ViewStyle,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Animated from 'react-native-reanimated';
 
+import { useTheme } from 'styled-components/native';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { AnimatedFlatList } from '#components';
-import { getFrames } from '#store/frames';
+import { getFrames, refreshFrames, selectFramesStatus } from '#store/frames';
 
 import RenderItem from './RenderItem';
 
@@ -19,24 +22,47 @@ type Props = {
     scrollHandler: any;
 };
 
+const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
 const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
     const dispatch = useDispatch();
+    const theme = useTheme();
 
-    const paddingTopStyle = React.useMemo(() => ({ paddingTop }), [paddingTop]);
+    const loading = useSelector(selectFramesStatus);
+
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+    const colors = React.useMemo(
+        () => [
+            theme.colors.primary,
+            theme.colors['primary-dark'],
+            theme.colors['primary-light'],
+        ],
+        []
+    );
+    const styleProps = React.useMemo(() => ({ paddingTop }), [paddingTop]);
 
     const handleEndReach = React.useCallback(() => dispatch(getFrames()), []);
+    const handleRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        dispatch(refreshFrames());
+    }, []);
     const keyExtractor = React.useCallback((data: string) => data, []);
+
+    React.useEffect(() => {
+        if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
+    }, [loading, refreshing]);
 
     return (
         <AnimatedFlatList
             contentContainerStyle={
-                style(paddingTopStyle).animatedFlatListContentContainerStyle
+                style(styleProps).animatedFlatListContentContainerStyle
             }
             data={allIds}
+            style={{ flex: 1 }}
             extraData={allIds}
             initialNumToRender={3}
             keyExtractor={keyExtractor}
@@ -44,6 +70,15 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
+            refreshControl={
+                <RefreshControl
+                    colors={colors}
+                    onRefresh={handleRefresh}
+                    progressViewOffset={paddingTop}
+                    progressBackgroundColor={theme.colors.secondary}
+                    refreshing={refreshing}
+                />
+            }
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}

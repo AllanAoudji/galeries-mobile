@@ -20,7 +20,10 @@ const successGetMethod = (
         : undefined;
     if (!galerieId) return;
     const galerie = getState().galeries.byId[galerieId];
-    if (!galerie) return;
+    if (!galerie) {
+        dispatch(updateGalerieInvitationsStatus(galerieId, 'ERROR'));
+        return;
+    }
 
     if (typeof action.payload.data !== 'object') {
         dispatch(updateGalerieInvitationsStatus(galerieId, 'ERROR'));

@@ -35,12 +35,16 @@ const successGetGaleries = (
         if (allIds.length) {
             const previousGalerieId = allIds[allIds.length - 1];
             const previous = byId[previousGalerieId].hiddenName || '';
-            const oldsAllIds = getState().galeries.allIds[name] || [];
+
+            let oldsAllIds: string[];
+            if (action.meta.refresh) oldsAllIds = [];
+            else oldsAllIds = getState().galeries.allIds[name] || [];
             const newAllIds = combineGaleriesAllIds(
                 getState,
                 oldsAllIds,
                 allIds
             );
+
             dispatch(setGaleriesAllIds(newAllIds, name));
             dispatch(updateGaleriesEnd(allIds.length < 20, name));
             dispatch(updateGaleriesPrevious(previous, name));

@@ -12,6 +12,7 @@ const dispatchGetGalerie: (
         apiRequest({
             meta: {
                 entity: GALERIES,
+                query: { galerieId },
                 method: 'GET',
                 url: `${END_POINT.GALERIES}/${galerieId}`,
             },

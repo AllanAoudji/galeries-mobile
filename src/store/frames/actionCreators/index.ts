@@ -24,6 +24,7 @@ import {
     FRAMES_PREVIOUS_RESET,
     FRAMES_PREVIOUS_UPDATE,
     FRAMES_PUT,
+    FRAMES_REFRESH,
     FRAMES_RESET,
     FRAMES_STATUS_RESET,
     FRAMES_STATUS_UPDATE,
@@ -66,6 +67,18 @@ export const putFrame: (
     meta: { query: { frameId } },
     payload,
     type: FRAMES_PUT,
+});
+export const refreshFrames: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: FRAMES_REFRESH,
+});
+export const refreshGalerieFrames: (galerieId: string) => Store.Action = (
+    galerieId
+) => ({
+    meta: { query: { galerieId } },
+    payload: {},
+    type: FRAMES_REFRESH,
 });
 export const removeFramesAllIds: (payload: string) => Store.Action = (
     payload

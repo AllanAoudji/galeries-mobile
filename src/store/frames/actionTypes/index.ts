@@ -13,6 +13,7 @@ import {
     POST,
     PREVIOUS,
     PUT,
+    REFRESH,
     REMOVE,
     RESET,
     SET,
@@ -45,6 +46,7 @@ export const FRAMES_POST = `${FRAMES} ${POST}`;
 export const FRAMES_PREVIOUS_RESET = `${FRAMES}${PREVIOUS} ${RESET}`;
 export const FRAMES_PREVIOUS_UPDATE = `${FRAMES}${PREVIOUS} ${UPDATE}`;
 export const FRAMES_PUT = `${FRAMES} ${PUT}`;
+export const FRAMES_REFRESH = `${FRAMES} ${REFRESH}`;
 export const FRAMES_RESET = `${FRAMES} ${RESET}`;
 export const FRAMES_STATUS_RESET = `${FRAMES}${STATUS} ${RESET}`;
 export const FRAMES_STATUS_UPDATE = `${FRAMES}${STATUS} ${UPDATE}`;

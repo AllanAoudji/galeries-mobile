@@ -5,21 +5,20 @@ import {
 } from '#store/galeries/actionTypes';
 
 const initialState: Store.Status = 'PENDING';
-const galeriesLoadingPostReducer = (
+const galeriesLoadingDeleteReducer = (
     state = initialState,
     action: Store.Action
 ) => {
     switch (action.type) {
-        case GALERIES_LOADING_DELETE_RESET: {
+        case GALERIES_LOADING_DELETE_RESET:
             return initialState;
-        }
-        case GALERIES_LOADING_DELETE_UPDATE: {
-            if (checkIfStatus(action.payload)) return action.payload;
-            return state;
-        }
+        case GALERIES_LOADING_DELETE_UPDATE:
+            if (!checkIfStatus(action.payload)) return state;
+            return action.payload;
+
         default:
             return state;
     }
 };
 
-export default galeriesLoadingPostReducer;
+export default galeriesLoadingDeleteReducer;

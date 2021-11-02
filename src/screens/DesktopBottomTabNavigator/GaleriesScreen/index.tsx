@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withTiming } from 'react-native-reanimated';
@@ -53,12 +54,14 @@ const GaleriesScreen = () => {
         []
     );
 
-    React.useEffect(() => {
-        if (galeriesNameStatus === 'PENDING') {
-            dispatch(getGaleries(filterGaleriesName));
-            if (filterGaleriesName !== '') setSearchFinished(false);
-        }
-    }, [filterGaleriesName, galeriesNameStatus]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (galeriesNameStatus === 'PENDING') {
+                dispatch(getGaleries(filterGaleriesName));
+                if (filterGaleriesName !== '') setSearchFinished(false);
+            }
+        }, [filterGaleriesName, galeriesNameStatus])
+    );
 
     return (
         <Container>
