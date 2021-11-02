@@ -23,6 +23,12 @@ const refreshFramesMiddleware: Middleware<{}, Store.Reducer> =
 
             dispatch(updateFramesStatus('REFRESH'));
             dispatchRefreshFrames(dispatch);
+        } else {
+            const status = getState().frames.status[galerieId] || 'PENDING';
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
+
+            dispatch(updateFramesStatus('REFRESH'));
         }
     };
 

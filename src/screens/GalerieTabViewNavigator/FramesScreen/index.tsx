@@ -6,7 +6,6 @@ import Animated from 'react-native-reanimated';
 import {
     AddButton,
     BottomLoader,
-    EmptyMessage,
     FullScreenLoader,
     GalerieTabbarScreenContainer,
 } from '#components';
@@ -16,6 +15,7 @@ import {
     selectCurrentGalerieFramesStatus,
 } from '#store/frames';
 
+import EmptyScrollView from './EmptyScrollView';
 import Frames from './Frames';
 
 type Props = {
@@ -77,9 +77,13 @@ const FramesScreen = ({
                             scrollY={scrollY}
                         />
                     ) : (
-                        <EmptyMessage
-                            pt={paddingTop}
-                            text="This galerie doesn't have frame yet. Click on the + button to post a new one"
+                        <EmptyScrollView
+                            current={current}
+                            editScrollY={editScrollY}
+                            galerie={galerie}
+                            maxScroll={maxScroll}
+                            paddingTop={paddingTop}
+                            scrollY={scrollY}
                         />
                     )}
                     <AddButton

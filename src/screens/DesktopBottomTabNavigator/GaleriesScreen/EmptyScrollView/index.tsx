@@ -1,29 +1,23 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import {
-    RefreshControl,
-    ScrollView,
-    useWindowDimensions,
-    View,
-} from 'react-native';
-import Animated from 'react-native-reanimated';
+import { RefreshControl, useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components';
 
+import { EmptyMessage } from '#components';
 import {
     refreshGaleries,
     selectGaleriesFilterName,
     selectGaleriesNameStatus,
 } from '#store/galeries';
-import { EmptyMessage } from '#components';
+
+import { InnerContainer, StyledAnimatedScrollView } from './styles';
 
 type Props = {
     innerPaddingTop: number;
     outerPaddingTop: number;
     scrollHandler: any;
 };
-
-const AnimatedScrollView = Animated.createAnimatedComponent<any>(ScrollView);
 
 const EmptyScrollView = ({
     innerPaddingTop,
@@ -60,8 +54,8 @@ const EmptyScrollView = ({
     );
 
     return (
-        <AnimatedScrollView
-            style={{ flex: 1, paddingTop: outerPaddingTop - innerPaddingTop }}
+        <StyledAnimatedScrollView
+            paddingTop={outerPaddingTop - innerPaddingTop}
             onScroll={scrollHandler}
             showsVerticalScrollIndicator={false}
             refreshControl={
@@ -74,10 +68,10 @@ const EmptyScrollView = ({
                 />
             }
         >
-            <View style={{ height: dimension.height + innerPaddingTop }}>
+            <InnerContainer height={dimension.height + innerPaddingTop}>
                 <EmptyMessage text="no galerie found" />
-            </View>
-        </AnimatedScrollView>
+            </InnerContainer>
+        </StyledAnimatedScrollView>
     );
 };
 

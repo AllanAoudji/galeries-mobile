@@ -48,7 +48,9 @@ const successGetFrames = (
         : undefined;
 
     if (galerieId) {
-        const oldAllIds = getState().frames.allIds[galerieId] || [];
+        let oldAllIds: string[];
+        if (action.meta.refresh) oldAllIds = [];
+        else oldAllIds = getState().frames.allIds[galerieId] || [];
         const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
 
         dispatch(setGalerieFramesAllIds(galerieId, newAllIds));
@@ -60,7 +62,6 @@ const successGetFrames = (
         let oldAllIds: string[];
         if (action.meta.refresh) oldAllIds = [];
         else oldAllIds = getState().frames.allIds[''] || [];
-
         const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
 
         dispatch(setFramesAllIds(newAllIds));

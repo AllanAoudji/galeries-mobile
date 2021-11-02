@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
@@ -52,9 +53,11 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
     }, []);
     const keyExtractor = React.useCallback((data: string) => data, []);
 
-    React.useEffect(() => {
-        if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
-    }, [loading, refreshing]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
+        }, [loading, refreshing])
+    );
 
     return (
         <AnimatedFlatList
