@@ -2,7 +2,6 @@ import * as React from 'react';
 import { LayoutChangeEvent } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import Footer from './Footer';
 import Header from './Header';
 
 type Props = {
@@ -21,7 +20,6 @@ const GalerieInformations = ({
     return (
         <Animated.View onLayout={onLayout}>
             <Header galerie={galerie} maxScroll={maxScroll} scrollY={scrollY} />
-            <Footer galerie={galerie} />
         </Animated.View>
     );
 };

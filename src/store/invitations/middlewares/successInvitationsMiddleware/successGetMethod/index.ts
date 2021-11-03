@@ -53,7 +53,9 @@ const successGetMethod = (
 
     if (galerieId) {
         if (invitation === undefined) {
-            const oldAllIds = getState().invitations.allIds[galerieId] || [];
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else oldAllIds = getState().invitations.allIds[galerieId] || [];
             const newAllIds = combineInvitationsAllIds(
                 getState,
                 oldAllIds,

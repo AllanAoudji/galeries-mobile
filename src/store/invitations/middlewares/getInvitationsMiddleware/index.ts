@@ -25,7 +25,9 @@ const getInvitationsMiddleware: Middleware<{}, Store.Reducer> =
             const end = getState().invitations.end[galerieId] || false;
             const status =
                 getState().invitations.status[galerieId] || 'PENDING';
-            if (end || status.includes('LOADING')) return;
+            if (end) return;
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
 
             const newStatus: Store.Status =
                 status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';
