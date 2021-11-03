@@ -398,6 +398,7 @@ declare global {
                 userId: string;
             };
             type Galerie = {
+                adminId: string | null;
                 allowNotification: boolean;
                 createdAt: Date;
                 defaultCoverPicture: string;

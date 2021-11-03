@@ -48,6 +48,7 @@ export const DRAG_AND_DROP_UTILS = {
 };
 
 export const END_POINT = {
+    ADMIN: '/admin',
     ALLOW_NOTIFICATION: '/allowNotification',
     BETA: '/beta',
     BLACKLISTS: '/blackLists',

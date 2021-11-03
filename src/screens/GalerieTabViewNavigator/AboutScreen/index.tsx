@@ -12,8 +12,14 @@ import Animated, {
     useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 
-import { GLOBAL_STYLE } from '#helpers/constants';
 import { GalerieTabbarScreenContainer } from '#components';
+import { GLOBAL_STYLE } from '#helpers/constants';
+
+import Admin from './Admin';
+import CreatedAt from './CreatedAt';
+import Description from './Description';
+
+import { Container } from './styles';
 
 type Props = {
     current: boolean;
@@ -24,7 +30,7 @@ type Props = {
     scrollY: Animated.SharedValue<number>;
 };
 
-const DescriptionScreen = ({
+const AboutScreen = ({
     current,
     editScrollY,
     galerie,
@@ -85,7 +91,13 @@ const DescriptionScreen = ({
                     // @ts-ignore
                     ref={scrollViewRef}
                     showsVerticalScrollIndicator={false}
-                ></Animated.ScrollView>
+                >
+                    <Container>
+                        <Description galerie={galerie} />
+                        <Admin galerie={galerie} />
+                        <CreatedAt galerie={galerie} />
+                    </Container>
+                </Animated.ScrollView>
             )}
         </GalerieTabbarScreenContainer>
     );
@@ -107,4 +119,4 @@ const style: ({
     },
 }));
 
-export default DescriptionScreen;
+export default AboutScreen;

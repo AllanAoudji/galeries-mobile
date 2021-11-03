@@ -16,7 +16,7 @@ import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize } from '#hooks';
 import { resetGaleriesCurrent, selectCurrentGalerie } from '#store/galeries';
 
-import DescriptionScreen from './DescriptionScreen';
+import AboutScreen from './AboutScreen';
 import FramesScreen from './FramesScreen';
 import GalerieBlackListsScreen from './GalerieBlackListsScreen';
 import Header from './Header';
@@ -34,13 +34,13 @@ const adminRoleRoutes = [
     { key: 'users', title: 'Users' },
     { key: 'galerieBlackLists', title: 'Black Lists' },
     { key: 'invitations', title: 'Invitations' },
-    { key: 'description', title: 'Description' },
+    { key: 'about', title: 'About' },
     { key: 'options', title: 'Options' },
 ];
 const userRoleRoutes = [
     { key: 'frames', title: 'Frames' },
     { key: 'users', title: 'Users' },
-    { key: 'description', title: 'Description' },
+    { key: 'about', title: 'About' },
     { key: 'options', title: 'Options' },
 ];
 
@@ -98,7 +98,7 @@ const GalerieTabViewNavigator = () => {
                 setCurrentRoute('invitations');
                 break;
             case 4:
-                setCurrentRoute('description');
+                setCurrentRoute('about');
                 break;
             case 5:
                 setCurrentRoute('options');
@@ -116,7 +116,7 @@ const GalerieTabViewNavigator = () => {
                 setCurrentRoute('users');
                 break;
             case 2:
-                setCurrentRoute('description');
+                setCurrentRoute('about');
                 break;
             case 3:
                 setCurrentRoute('options');
@@ -147,10 +147,10 @@ const GalerieTabViewNavigator = () => {
             route: Route;
         }) => {
             switch (route.key) {
-                case 'description':
+                case 'about':
                     return (
-                        <DescriptionScreen
-                            current={currentRoute === 'description'}
+                        <AboutScreen
+                            current={currentRoute === 'about'}
                             editScrollY={editScrollY}
                             galerie={galerie}
                             maxScroll={maxScroll}
