@@ -35,6 +35,7 @@ const getGalerieBlackListsMiddleware: Middleware<{}, Store.Reducer> =
             const status =
                 getState().galerieBlackLists.status[galerieId] || 'PENDING';
             if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
 
             const newStatus: Store.Status =
                 status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';

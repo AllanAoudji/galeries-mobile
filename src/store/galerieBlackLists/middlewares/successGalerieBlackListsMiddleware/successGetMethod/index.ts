@@ -15,15 +15,7 @@ const successGetMethod = (
     getState: () => Store.Reducer,
     action: Store.Action
 ) => {
-    const galerieId = action.meta.query
-        ? action.meta.query.galerieId
-        : undefined;
-    if (!galerieId) return;
-
-    if (typeof action.payload.data !== 'object') {
-        dispatch(updateGalerieBlackListsStatus(galerieId, 'ERROR'));
-        return;
-    }
+    if (typeof action.payload.data !== 'object') return;
 
     const allIds: string[] = [];
     const byId: { [key: string]: Store.Models.GalerieBlackList } = {};
@@ -40,24 +32,38 @@ const successGetMethod = (
 
     dispatch(setGalerieBlackListsById(byId));
 
+    const galerieId = action.meta.query
+        ? action.meta.query.galerieId
+        : undefined;
     const previousGalerieBlackListId =
         allIds.length > 0 ? allIds[allIds.length - 1] : undefined;
     const previous = previousGalerieBlackListId
         ? byId[previousGalerieBlackListId].autoIncrementId
         : undefined;
 
-    const oldAllIds = getState().galerieBlackLists.allIds[galerieId] || [];
-    const newAllIds = combineGalerieBlackListsAllIds(
-        getState,
-        oldAllIds,
-        allIds
-    );
+    if (galerieId) {
+        if (galerieBlackList === undefined) {
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else
+                oldAllIds =
+                    getState().galerieBlackLists.allIds[galerieId] || [];
+            const newAllIds = combineGalerieBlackListsAllIds(
+                getState,
+                oldAllIds,
+                allIds
+            );
 
-    dispatch(setGalerieBlackListsAllIds(galerieId, newAllIds));
-    dispatch(updateGalerieBlackLitstsEnd(galerieId, allIds.length < 20));
-    if (previous)
-        dispatch(updateGalerieBlackListsPrevious(galerieId, previous));
-    dispatch(updateGalerieBlackListsStatus(galerieId, 'SUCCESS'));
+            dispatch(setGalerieBlackListsAllIds(galerieId, newAllIds));
+            dispatch(
+                updateGalerieBlackLitstsEnd(galerieId, allIds.length < 20)
+            );
+            if (previous)
+                dispatch(updateGalerieBlackListsPrevious(galerieId, previous));
+        }
+
+        dispatch(updateGalerieBlackListsStatus(galerieId, 'SUCCESS'));
+    }
 
     allIds.forEach((id) => {
         const createdBy = getState().users.byId[byId[id].createdById];

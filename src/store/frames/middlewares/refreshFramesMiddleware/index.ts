@@ -4,7 +4,10 @@ import {
     dispatchRefreshGalerieFrames,
     dispatchRefreshFrames,
 } from '#store/dispatchers';
-import { updateFramesStatus } from '#store/frames/actionCreators';
+import {
+    updateFramesStatus,
+    updateGalerieFramesStatus,
+} from '#store/frames/actionCreators';
 import { FRAMES_REFRESH } from '#store/frames/actionTypes';
 
 const refreshFramesMiddleware: Middleware<{}, Store.Reducer> =
@@ -24,7 +27,7 @@ const refreshFramesMiddleware: Middleware<{}, Store.Reducer> =
             if (status.includes('LOADING')) return;
             if (status === 'REFRESH') return;
 
-            dispatch(updateFramesStatus('REFRESH'));
+            dispatch(updateGalerieFramesStatus(galerieId, 'REFRESH'));
             dispatchRefreshGalerieFrames(dispatch, galerieId);
         } else {
             const status = getState().frames.status[''] || 'PENDING';

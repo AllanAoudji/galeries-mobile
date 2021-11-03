@@ -1,28 +1,25 @@
 import { Dispatch } from 'redux';
 
 import { END_POINT } from '#helpers/constants';
-import { apiRequest } from '#store/api/actionCreators';
+import { apiRequest } from '#store/api';
 import { GALERIE_BLACKLISTS } from '#store/genericActionTypes';
 
-const dispatchGetGalerieBlackLists = (
+const dispatchRefreshGalerieBlackLists: (
     dispatch: Dispatch<Store.Action>,
-    galerieId: string,
-    previous?: string
-) => {
-    let query = '?';
-    if (previous) query = `${query}previous=${previous}`;
-
+    galerieId: string
+) => void = (dispatch, galerieId) => {
     dispatch(
         apiRequest({
             meta: {
                 entity: GALERIE_BLACKLISTS,
                 method: 'GET',
                 query: { galerieId },
-                url: `${END_POINT.GALERIES}/${galerieId}${END_POINT.BLACKLISTS}${query}`,
+                refresh: true,
+                url: `${END_POINT.GALERIES}/${galerieId}${END_POINT.BLACKLISTS}`,
             },
             payload: {},
         })
     );
 };
 
-export default dispatchGetGalerieBlackLists;
+export default dispatchRefreshGalerieBlackLists;

@@ -32,7 +32,7 @@ export const selectCurrentGalerieGalerieBlackListsStatus = createSelector(
         return galerieBlackListstStatus[galeriesCurrent] || 'PENDING';
     }
 );
-export const selectGalerieBlackLists = (galerieBlackListId?: string | null) =>
+export const selectGalerieBlackList = (galerieBlackListId?: string | null) =>
     createSelector([galerieBlackListsByIdSelector], (galerieBlackListsById) => {
         if (!galerieBlackListId) return undefined;
         return galerieBlackListsById[galerieBlackListId];

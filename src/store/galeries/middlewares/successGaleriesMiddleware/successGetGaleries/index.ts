@@ -17,10 +17,11 @@ const successGetGaleries = (
     getState: () => Store.Reducer,
     action: Store.Action
 ) => {
+    if (typeof action.payload.data !== 'object') return;
+
     const allIds: string[] = [];
     const byId: { [key: string]: Store.Models.Galerie } = {};
     const { galerie, galeries } = action.payload.data;
-    const name = action.meta.query ? action.meta.query.name : undefined;
     if (galeries && Array.isArray(galeries))
         galeries.forEach((g: Store.Models.Galerie) => {
             allIds.push(g.id);
@@ -30,12 +31,18 @@ const successGetGaleries = (
         allIds.push(galerie.id);
         byId[galerie.id] = galerie;
     }
-    dispatch(setGaleriesById(byId));
-    if (name !== undefined) {
-        if (allIds.length) {
-            const previousGalerieId = allIds[allIds.length - 1];
-            const previous = byId[previousGalerieId].hiddenName || '';
 
+    dispatch(setGaleriesById(byId));
+
+    const name = action.meta.query ? action.meta.query.name : undefined;
+    const previousFrameId =
+        allIds.length > 0 ? allIds[allIds.length - 1] : undefined;
+    const previous = previousFrameId
+        ? byId[previousFrameId].hiddenName
+        : undefined;
+
+    if (name !== undefined) {
+        if (galerie === undefined) {
             let oldsAllIds: string[];
             if (action.meta.refresh) oldsAllIds = [];
             else oldsAllIds = getState().galeries.allIds[name] || [];
@@ -47,10 +54,12 @@ const successGetGaleries = (
 
             dispatch(setGaleriesAllIds(newAllIds, name));
             dispatch(updateGaleriesEnd(allIds.length < 20, name));
-            dispatch(updateGaleriesPrevious(previous, name));
+            if (previous) dispatch(updateGaleriesPrevious(previous, name));
         }
+
         dispatch(updateGaleriesStatusName('SUCCESS', name));
     }
+
     allIds.forEach((id) => {
         dispatch(updateGaleriesStatusId('SUCCESS', id));
 

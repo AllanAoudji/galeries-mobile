@@ -1,17 +1,11 @@
 import * as React from 'react';
-import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Animated, {
-    runOnJS,
-    useAnimatedReaction,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import {
     BottomLoader,
-    EmptyMessage,
     FullScreenLoader,
     GalerieTabbarScreenContainer,
-    Typography,
 } from '#components';
 import {
     getGalerieBlackLists,
@@ -19,21 +13,27 @@ import {
     selectCurrentGalerieGalerieBlackListsStatus,
 } from '#store/galerieBlackLists';
 
+import EmptyScrollView from './EmptyScrollView';
+import GalerieBlackLists from './GalerieBlackLists';
+
 type Props = {
     current: boolean;
+    editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
+    maxScroll: number;
     paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
 const GalerieBlackListsScreen = ({
     current,
+    editScrollY,
     galerie,
+    maxScroll,
     paddingTop,
     scrollY,
 }: Props) => {
     const dispatch = useDispatch();
-    const flatListRef = React.useRef<FlatList | null>(null);
 
     const galerieBlackListsAllIds = useSelector(
         selectCurrentGalerieGalerieBlackListsAllIds
@@ -53,25 +53,6 @@ const GalerieBlackListsScreen = ({
         [galerieBlackListsStatus]
     );
 
-    const setInitialScroll = React.useCallback(
-        (newScrollY: number) => {
-            if (flatListRef.current && !current) {
-                flatListRef.current.scrollToOffset({
-                    animated: false,
-                    offset: newScrollY,
-                });
-            }
-        },
-        [current]
-    );
-    useAnimatedReaction(
-        () => scrollY.value,
-        (newScrollY) => {
-            runOnJS(setInitialScroll)(newScrollY);
-        },
-        [current]
-    );
-
     React.useEffect(() => {
         if (
             galerieBlackListsStatus &&
@@ -87,11 +68,23 @@ const GalerieBlackListsScreen = ({
                 <>
                     {galerieBlackListsAllIds &&
                     galerieBlackListsAllIds.length > 0 ? (
-                        <Typography>galerie blacklist</Typography>
+                        <GalerieBlackLists
+                            allIds={galerieBlackListsAllIds}
+                            current={current}
+                            editScrollY={editScrollY}
+                            galerie={galerie}
+                            maxScroll={maxScroll}
+                            paddingTop={paddingTop}
+                            scrollY={scrollY}
+                        />
                     ) : (
-                        <EmptyMessage
-                            pt={paddingTop}
-                            text="No other has been black listed from this galerie."
+                        <EmptyScrollView
+                            current={current}
+                            editScrollY={editScrollY}
+                            galerie={galerie}
+                            maxScroll={maxScroll}
+                            paddingTop={paddingTop}
+                            scrollY={scrollY}
                         />
                     )}
                 </>

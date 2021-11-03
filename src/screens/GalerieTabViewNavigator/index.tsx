@@ -26,6 +26,7 @@ import AbsoluteHeader from './AbsoluteHeader';
 
 import { Container } from './styles';
 import { FullScreenLoader } from '#components';
+import { selectFramesLoadingPost } from '#store/frames';
 
 const adminRoleRoutes = [
     { key: 'frames', title: 'Frames' },
@@ -44,7 +45,9 @@ const GalerieTabViewNavigator = () => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
+
     const galerie = useSelector(selectCurrentGalerie);
+    const framesLoadingPost = useSelector(selectFramesLoadingPost);
 
     const { onLayout: onLayoutContainer, size: sizeContainer } =
         useComponentSize();
@@ -137,7 +140,9 @@ const GalerieTabViewNavigator = () => {
                     return (
                         <GalerieBlackListsScreen
                             current={currentRoute === 'galerieBlackLists'}
+                            editScrollY={editScrollY}
                             galerie={galerie}
+                            maxScroll={maxScroll}
                             paddingTop={
                                 sizeContainer ? sizeContainer.height : 0
                             }
@@ -244,6 +249,11 @@ const GalerieTabViewNavigator = () => {
                 );
             };
         }, [])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (framesLoadingPost === 'SUCCESS') editScrollY(0);
+        }, [framesLoadingPost])
     );
     React.useEffect(() => {
         if (!galerie) {

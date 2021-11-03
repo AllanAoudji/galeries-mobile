@@ -44,7 +44,7 @@ const successGetUsers = (
         const previousUserId = allIds[allIds.length - 1];
         const previous = byId[previousUserId].userName || '';
 
-        if (galerieId) {
+        if (galerieId && user === undefined) {
             let oldAllIds: string[];
             if (action.meta.refresh) oldAllIds = [];
             else oldAllIds = getState().users.allIds[galerieId] || [];
@@ -53,7 +53,7 @@ const successGetUsers = (
             dispatch(setGalerieUsersAllIds(galerieId, newAllIds));
             dispatch(updateGalerieUsersEnd(galerieId, allIds.length < 20));
             dispatch(updateGalerieUsersPrevious(galerieId, previous));
-        } else {
+        } else if (user === undefined) {
             let oldAllIds: string[];
             if (action.meta.refresh) oldAllIds = [];
             else oldAllIds = getState().users.allIds[''] || [];

@@ -2,6 +2,7 @@ import deleteGalerieBlackListsMiddleware from './deleteGalerieBlackListsMiddlewa
 import errorGalerieBlackListsMiddleware from './errorGalerieBlackListsMiddleware';
 import getGalerieBlackListsMiddleware from './getGalerieBlackListsMiddleware';
 import postGalerieBlackListsMiddleware from './postGalerieBlackListsMiddleware';
+import refreshGalerieBlackListsMiddleware from './refreshGalerieBlackListsMiddleware';
 import resetGalerieBlackListsMiddleware from './resetGalerieBlackListsMiddleware';
 import successGalerieBlackListsMiddleware from './successGalerieBlackListsMiddleware';
 
@@ -11,6 +12,7 @@ export const galerieBlackListsMiddlewares = [
     errorGalerieBlackListsMiddleware,
     getGalerieBlackListsMiddleware,
     postGalerieBlackListsMiddleware,
+    refreshGalerieBlackListsMiddleware,
     resetGalerieBlackListsMiddleware,
     successGalerieBlackListsMiddleware,
 ];

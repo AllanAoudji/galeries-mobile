@@ -52,13 +52,22 @@ const successGetMethod = (
         : undefined;
 
     if (galerieId) {
-        const oldAllIds = getState().invitations.allIds[galerieId] || [];
-        const newAllIds = combineInvitationsAllIds(getState, oldAllIds, allIds);
+        if (invitation === undefined) {
+            const oldAllIds = getState().invitations.allIds[galerieId] || [];
+            const newAllIds = combineInvitationsAllIds(
+                getState,
+                oldAllIds,
+                allIds
+            );
 
-        dispatch(setGalerieInvitationsAllIds(galerieId, newAllIds));
-        dispatch(updategalerieInvitationsEnd(galerieId, allIds.length < 20));
-        if (previous)
-            dispatch(updateGalerieInvitationsPrevious(galerieId, previous));
+            dispatch(setGalerieInvitationsAllIds(galerieId, newAllIds));
+            dispatch(
+                updategalerieInvitationsEnd(galerieId, allIds.length < 20)
+            );
+            if (previous)
+                dispatch(updateGalerieInvitationsPrevious(galerieId, previous));
+        }
+
         dispatch(updateGalerieInvitationsStatus(galerieId, 'SUCCESS'));
     }
 

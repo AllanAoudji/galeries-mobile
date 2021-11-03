@@ -48,25 +48,31 @@ const successGetFrames = (
         : undefined;
 
     if (galerieId) {
-        let oldAllIds: string[];
-        if (action.meta.refresh) oldAllIds = [];
-        else oldAllIds = getState().frames.allIds[galerieId] || [];
-        const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
+        if (frame === undefined) {
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else oldAllIds = getState().frames.allIds[galerieId] || [];
+            const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
 
-        dispatch(setGalerieFramesAllIds(galerieId, newAllIds));
-        dispatch(updateGalerieFramesEnd(galerieId, allIds.length < 20));
-        if (previous)
-            dispatch(updateGalerieFramesPrevious(galerieId, previous));
+            dispatch(setGalerieFramesAllIds(galerieId, newAllIds));
+            dispatch(updateGalerieFramesEnd(galerieId, allIds.length < 20));
+            if (previous)
+                dispatch(updateGalerieFramesPrevious(galerieId, previous));
+        }
+
         dispatch(updateGalerieFramesStatus(galerieId, 'SUCCESS'));
     } else {
-        let oldAllIds: string[];
-        if (action.meta.refresh) oldAllIds = [];
-        else oldAllIds = getState().frames.allIds[''] || [];
-        const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
+        if (frame === undefined) {
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else oldAllIds = getState().frames.allIds[''] || [];
+            const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
 
-        dispatch(setFramesAllIds(newAllIds));
-        dispatch(updateFramesEnd(allIds.length < 20));
-        if (previous) dispatch(updateFramesPrevious(previous));
+            dispatch(setFramesAllIds(newAllIds));
+            dispatch(updateFramesEnd(allIds.length < 20));
+            if (previous) dispatch(updateFramesPrevious(previous));
+        }
+
         dispatch(updateFramesStatus('SUCCESS'));
     }
 

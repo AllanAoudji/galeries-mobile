@@ -18,6 +18,7 @@ import {
     GALERIE_BLACKLISTS_POST,
     GALERIE_BLACKLISTS_PREVIOUS_RESET,
     GALERIE_BLACKLISTS_PREVIOUS_UPDATE,
+    GALERIE_BLACKLISTS_REFRESH,
     GALERIE_BLACKLISTS_RESET,
     GALERIE_BLACKLISTS_STATUS_UPDATE,
 } from '#store/galerieBlackLists/actionTypes';
@@ -52,6 +53,13 @@ export const postGalerieBlackList: (
     meta: { query: { galerieId, userId } },
     payload: {},
     type: GALERIE_BLACKLISTS_POST,
+});
+export const refreshGalerieBlackLists: (galerieId: string) => Store.Action = (
+    galerieId
+) => ({
+    meta: { query: { galerieId } },
+    payload: {},
+    type: GALERIE_BLACKLISTS_REFRESH,
 });
 export const removeGalerieBlackListsAllIds: (
     galerieId: string,
