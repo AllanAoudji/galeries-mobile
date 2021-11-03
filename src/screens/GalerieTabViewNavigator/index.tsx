@@ -16,6 +16,7 @@ import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize } from '#hooks';
 import { resetGaleriesCurrent, selectCurrentGalerie } from '#store/galeries';
 
+import DescriptionScreen from './DescriptionScreen';
 import FramesScreen from './FramesScreen';
 import GalerieBlackListsScreen from './GalerieBlackListsScreen';
 import Header from './Header';
@@ -33,11 +34,13 @@ const adminRoleRoutes = [
     { key: 'users', title: 'Users' },
     { key: 'galerieBlackLists', title: 'Black Lists' },
     { key: 'invitations', title: 'Invitations' },
+    { key: 'description', title: 'Description' },
     { key: 'options', title: 'Options' },
 ];
 const userRoleRoutes = [
     { key: 'frames', title: 'Frames' },
     { key: 'users', title: 'Users' },
+    { key: 'description', title: 'Description' },
     { key: 'options', title: 'Options' },
 ];
 
@@ -80,31 +83,52 @@ const GalerieTabViewNavigator = () => {
                     : adminRoleRoutes,
         });
 
+    const getCurrentAdminRoute = React.useCallback((index: number) => {
+        switch (index) {
+            case 0:
+                setCurrentRoute('frames');
+                break;
+            case 1:
+                setCurrentRoute('users');
+                break;
+            case 2:
+                setCurrentRoute('galerieBlackLists');
+                break;
+            case 3:
+                setCurrentRoute('invitations');
+                break;
+            case 4:
+                setCurrentRoute('description');
+                break;
+            case 5:
+                setCurrentRoute('options');
+                break;
+            default:
+                setCurrentRoute('frames');
+        }
+    }, []);
+    const getCurrentUserRoute = React.useCallback((index: number) => {
+        switch (index) {
+            case 0:
+                setCurrentRoute('frames');
+                break;
+            case 1:
+                setCurrentRoute('users');
+                break;
+            case 2:
+                setCurrentRoute('description');
+                break;
+            case 3:
+                setCurrentRoute('options');
+                break;
+            default:
+                setCurrentRoute('frames');
+        }
+    }, []);
     const onIndexChange = React.useCallback(
         (index: number) => {
-            switch (index) {
-                case 0:
-                    setCurrentRoute('frames');
-                    break;
-                case 1:
-                    setCurrentRoute('users');
-                    break;
-                case 2:
-                    if (galerie && galerie.role === 'user')
-                        setCurrentRoute('options');
-                    else setCurrentRoute('galerieBlackLists');
-                    break;
-                case 3:
-                    if (galerie && galerie.role === 'admin')
-                        setCurrentRoute('invitations');
-                    break;
-                case 4:
-                    if (galerie && galerie.role === 'admin')
-                        setCurrentRoute('options');
-                    break;
-                default:
-                    setCurrentRoute('frames');
-            }
+            if (galerie && galerie.role === 'user') getCurrentUserRoute(index);
+            else getCurrentAdminRoute(index);
             return setNavigationState({
                 index,
                 routes:
@@ -123,6 +147,19 @@ const GalerieTabViewNavigator = () => {
             route: Route;
         }) => {
             switch (route.key) {
+                case 'description':
+                    return (
+                        <DescriptionScreen
+                            current={currentRoute === 'description'}
+                            editScrollY={editScrollY}
+                            galerie={galerie}
+                            maxScroll={maxScroll}
+                            paddingTop={
+                                sizeContainer ? sizeContainer.height : 0
+                            }
+                            scrollY={scrollY}
+                        />
+                    );
                 case 'frames':
                     return (
                         <FramesScreen
