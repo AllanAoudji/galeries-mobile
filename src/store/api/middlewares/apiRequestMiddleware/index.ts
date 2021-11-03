@@ -124,8 +124,10 @@ const apiRequestMiddleware: Middleware<{}, Store.Reducer> =
                     });
                     apiRequestSuccessMiddleware(response, dispatch, action);
                 } catch (err) {
-                    if (axios.isAxiosError(err))
+                    if (axios.isAxiosError(err)) {
+                        console.log(err.response?.data);
                         apiRequestErrorMiddleware(err, dispatch, action);
+                    }
                 }
             }
         }

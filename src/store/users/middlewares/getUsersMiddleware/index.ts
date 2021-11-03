@@ -25,8 +25,9 @@ const getUsersMiddleware: Middleware<{}, Store.Reducer> =
         if (galerieId) {
             const end = getState().users.end[galerieId] || false;
             const status = getState().users.status[galerieId] || 'PENDING';
-
-            if (end || status.includes('LOADING')) return;
+            if (end) return;
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
 
             const newStatus: Store.Status =
                 status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';
@@ -40,8 +41,9 @@ const getUsersMiddleware: Middleware<{}, Store.Reducer> =
         } else {
             const end = getState().users.end[''] || false;
             const status = getState().users.status[''] || 'PENDING';
-
-            if (end || !status.includes('LOADING')) return;
+            if (end) return;
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
 
             const newStatus: Store.Status =
                 status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';

@@ -15,6 +15,7 @@ import {
     USERS_LOADING_DELETE_UPDATE,
     USERS_PREVIOUS_RESET,
     USERS_PREVIOUS_UPDATE,
+    USERS_REFRESH,
     USERS_RESET,
     USERS_STATUS_RESET,
     USERS_STATUS_UPDATE,
@@ -44,6 +45,18 @@ export const getUsers: () => Store.Action = () => ({
     meta: {},
     payload: {},
     type: USERS_GET,
+});
+export const refreshUsers: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: USERS_REFRESH,
+});
+export const refreshGalerieUsers: (galerieId: string) => Store.Action = (
+    galerieId
+) => ({
+    meta: { query: { galerieId } },
+    payload: {},
+    type: USERS_REFRESH,
 });
 export const removeGalerieUserAllIds: (
     galerieId: string,

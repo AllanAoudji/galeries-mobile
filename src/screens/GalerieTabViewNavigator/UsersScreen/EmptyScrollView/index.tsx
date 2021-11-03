@@ -10,14 +10,14 @@ import Animated, {
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
-import {
-    refreshGalerieFrames,
-    selectCurrentGalerieFramesStatus,
-} from '#store/frames';
-
 import { EmptyMessage } from '#components';
 
 import { InnerContainer, StyledAnimatedScrollView } from './styles';
+
+import {
+    refreshGalerieUsers,
+    selectCurrentGalerieUsersStatus,
+} from '#store/users';
 
 type Props = {
     current: boolean;
@@ -42,7 +42,7 @@ const EmptyScrollView = ({
 
     const scrollViewRef = React.useRef<ScrollView | null>(null);
 
-    const loading = useSelector(selectCurrentGalerieFramesStatus);
+    const loading = useSelector(selectCurrentGalerieUsersStatus);
 
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -57,7 +57,7 @@ const EmptyScrollView = ({
 
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (galerie) dispatch(refreshGalerieFrames(galerie.id));
+        if (galerie) dispatch(refreshGalerieUsers(galerie.id));
     }, [galerie]);
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
@@ -109,7 +109,7 @@ const EmptyScrollView = ({
             showsVerticalScrollIndicator={false}
         >
             <InnerContainer height={dimension.height + maxScroll}>
-                <EmptyMessage text="this galerie doesn't have frame yet. Click on the + button to post a new one" />
+                <EmptyMessage text="no other user follow this galerie yet." />
             </InnerContainer>
         </StyledAnimatedScrollView>
     );

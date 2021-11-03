@@ -10,7 +10,6 @@ import {
     GalerieTabbarScreenContainer,
     FullScreenLoader,
     BottomLoader,
-    EmptyMessage,
 } from '#components';
 import {
     getGalerieUsers,
@@ -18,6 +17,7 @@ import {
     selectCurrentGalerieUsersStatus,
 } from '#store/users';
 
+import EmptyScrollView from './EmptyScrollView';
 import Users from './Users';
 
 type Props = {
@@ -91,9 +91,13 @@ const UsersScreen = ({
                             scrollY={scrollY}
                         />
                     ) : (
-                        <EmptyMessage
-                            pt={paddingTop}
-                            text="No other user follow this galerie yet."
+                        <EmptyScrollView
+                            current={current}
+                            editScrollY={editScrollY}
+                            galerie={galerie}
+                            maxScroll={maxScroll}
+                            scrollY={scrollY}
+                            paddingTop={paddingTop}
                         />
                     )}
                 </>

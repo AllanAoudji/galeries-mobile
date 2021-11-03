@@ -13,6 +13,7 @@ import {
     REMOVE,
     DELETE,
     LOADING_DELETE,
+    REFRESH,
 } from '#store/genericActionTypes';
 
 export const USERS_ALL_IDS_REMOVE = `${USERS}${ALL_IDS} ${REMOVE}`;
@@ -31,6 +32,7 @@ export const USERS_LOADING_DELETE_RESET = `${USERS}${LOADING_DELETE} ${RESET}`;
 export const USERS_LOADING_DELETE_UPDATE = `${USERS}${LOADING_DELETE} ${UPDATE}`;
 export const USERS_PREVIOUS_RESET = `${USERS}${PREVIOUS} ${RESET}`;
 export const USERS_PREVIOUS_UPDATE = `${USERS}${PREVIOUS} ${UPDATE}`;
+export const USERS_REFRESH = `${USERS} ${REFRESH}`;
 export const USERS_RESET = `${USERS} ${RESET}`;
 export const USERS_STATUS_RESET = `${USERS}${STATUS} ${RESET}`;
 export const USERS_STATUS_UPDATE = `${USERS}${STATUS} ${UPDATE}`;

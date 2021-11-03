@@ -1,7 +1,9 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
     ListRenderItemInfo,
+    RefreshControl,
     StyleProp,
     StyleSheet,
     useWindowDimensions,
@@ -12,11 +14,11 @@ import Animated, {
     useAnimatedReaction,
     useAnimatedScrollHandler,
 } from 'react-native-reanimated';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from 'styled-components/native';
 
-import { AnimatedFlatList } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { getGalerieUsers } from '#store/users';
+import { getGalerieUsers, selectCurrentGalerieUsersStatus } from '#store/users';
 
 import RenderItem from './RenderItem';
 
@@ -30,6 +32,7 @@ type Props = {
     scrollY: Animated.SharedValue<number>;
 };
 
+const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 const renderItem = ({ index, item }: ListRenderItemInfo<string>) => (
     <RenderItem index={index} item={item} />
 );
@@ -45,9 +48,22 @@ const Users = ({
 }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
+    const loading = useSelector(selectCurrentGalerieUsersStatus);
+
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+    const colors = React.useMemo(
+        () => [
+            theme.colors.primary,
+            theme.colors['primary-dark'],
+            theme.colors['primary-light'],
+        ],
+        []
+    );
     const styleProps = React.useMemo(
         () => ({
             minHeight: dimension.height + maxScroll,
@@ -59,6 +75,9 @@ const Users = ({
     const handleEndReach = React.useCallback(() => {
         if (galerie) dispatch(getGalerieUsers(galerie.id));
     }, [galerie]);
+    const handleRefresh = React.useCallback(() => {
+        setRefreshing(true);
+    }, []);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
@@ -88,6 +107,12 @@ const Users = ({
         [editScrollY, current]
     );
 
+    useFocusEffect(
+        React.useCallback(() => {
+            if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
+        }, [loading, refreshing])
+    );
+
     return (
         <AnimatedFlatList
             contentContainerStyle={
@@ -101,6 +126,15 @@ const Users = ({
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
             ref={flatListRef}
+            refreshControl={
+                <RefreshControl
+                    colors={colors}
+                    onRefresh={handleRefresh}
+                    progressViewOffset={paddingTop}
+                    progressBackgroundColor={theme.colors['secondary-light']}
+                    refreshing={refreshing}
+                />
+            }
             removeClippedSubviews={true}
             renderItem={renderItem}
             scrollEventThrottle={4}

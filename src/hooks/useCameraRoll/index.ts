@@ -11,7 +11,7 @@ const useCameraRoll = () => {
         if (!loading) {
             setLoading(true);
             const response = await MediaLibrary.getAssetsAsync({
-                first: 30,
+                first: 60,
                 mediaType: ['photo'],
                 ...(!!after && { after }),
             });

@@ -48,5 +48,8 @@ export { default as dispatchPutGaleriePicture } from './dispatchPutGaleriePictur
 export { default as dispatchPutGalerieUserRole } from './dispatchPutGalerieUserRole';
 export { default as dispatchRefreshFrames } from './dispatchRefreshFrames';
 export { default as dispatchRefreshGaleries } from './dispatchRefreshGaleries';
+export { default as dispatchRefreshGalerieFrames } from './dispatchRefreshGalerieFrames';
+export { default as dispatchRefreshGalerieUsers } from './dispatchRefreshGalerieUsers';
+export { default as dispatchRefreshUsers } from './dispatchRefreshUsers';
 export { default as dispatchSuccessNotification } from './dispatchSuccessNotification';
 export { default as dispatchUnsubscribeGalerie } from './dispatchUnsubscribeGalerie';

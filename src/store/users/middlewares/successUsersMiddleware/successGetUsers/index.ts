@@ -45,14 +45,18 @@ const successGetUsers = (
         const previous = byId[previousUserId].userName || '';
 
         if (galerieId) {
-            const oldAllIds = getState().users.allIds[galerieId] || [];
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else oldAllIds = getState().users.allIds[galerieId] || [];
             const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
 
             dispatch(setGalerieUsersAllIds(galerieId, newAllIds));
             dispatch(updateGalerieUsersEnd(galerieId, allIds.length < 20));
             dispatch(updateGalerieUsersPrevious(galerieId, previous));
         } else {
-            const oldAllIds = getState().users.allIds[''] || [];
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else oldAllIds = getState().users.allIds[''] || [];
             const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
 
             dispatch(setUsersAllIds(newAllIds));

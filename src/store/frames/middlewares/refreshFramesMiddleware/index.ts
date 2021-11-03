@@ -1,8 +1,11 @@
 import { Middleware } from 'redux';
 
-import { dispatchRefreshFrames } from '#store/dispatchers';
-import { FRAMES_REFRESH } from '#store/frames/actionTypes';
+import {
+    dispatchRefreshGalerieFrames,
+    dispatchRefreshFrames,
+} from '#store/dispatchers';
 import { updateFramesStatus } from '#store/frames/actionCreators';
+import { FRAMES_REFRESH } from '#store/frames/actionTypes';
 
 const refreshFramesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -16,19 +19,20 @@ const refreshFramesMiddleware: Middleware<{}, Store.Reducer> =
             ? action.meta.query.galerieId
             : undefined;
 
-        if (!galerieId) {
+        if (galerieId) {
+            const status = getState().frames.status[galerieId] || 'PENDING';
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
+
+            dispatch(updateFramesStatus('REFRESH'));
+            dispatchRefreshGalerieFrames(dispatch, galerieId);
+        } else {
             const status = getState().frames.status[''] || 'PENDING';
             if (status.includes('LOADING')) return;
             if (status === 'REFRESH') return;
 
             dispatch(updateFramesStatus('REFRESH'));
             dispatchRefreshFrames(dispatch);
-        } else {
-            const status = getState().frames.status[galerieId] || 'PENDING';
-            if (status.includes('LOADING')) return;
-            if (status === 'REFRESH') return;
-
-            dispatch(updateFramesStatus('REFRESH'));
         }
     };
 
