@@ -8,13 +8,14 @@ import {
     FullScreenLoader,
     BottomLoader,
     AddButton,
-    EmptyMessage,
 } from '#components';
 import {
     getGalerieInvitations,
     selectCurrentGalerieInvitationsAllIds,
     selectCurrentGalerieInvitationsStatus,
 } from '#store/invitations';
+
+import EmptyScrollView from './EmptyScrollView';
 import Invitations from './Invitations';
 
 type Props = {
@@ -87,9 +88,13 @@ const InvitationsScreen = ({
                             scrollY={scrollY}
                         />
                     ) : (
-                        <EmptyMessage
-                            pt={paddingTop}
-                            text="This galerie doesn't have invitation yet. Click on the + button to post a new one."
+                        <EmptyScrollView
+                            current={current}
+                            editScrollY={editScrollY}
+                            galerie={galerie}
+                            maxScroll={maxScroll}
+                            paddingTop={paddingTop}
+                            scrollY={scrollY}
                         />
                     )}
                     <AddButton

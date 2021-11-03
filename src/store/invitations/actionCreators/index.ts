@@ -51,7 +51,7 @@ export const postInvitations: (
     payload,
     type: INVITATIONS_POST,
 });
-export const refreshGalerieInvitation: (galerieId: string) => Store.Action = (
+export const refreshGalerieInvitations: (galerieId: string) => Store.Action = (
     galerieId
 ) => ({
     meta: { query: { galerieId } },
