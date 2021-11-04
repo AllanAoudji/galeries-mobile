@@ -36,7 +36,9 @@ export const getGalerieUsers: (galerieId: string) => Store.Action = (
     payload: {},
     type: USERS_GET,
 });
-export const getUserId: (payload: string) => Store.Action = (payload) => ({
+export const getUserId: (payload?: string | null) => Store.Action = (
+    payload
+) => ({
     meta: {},
     payload,
     type: USERS_GET,

@@ -6,6 +6,7 @@ import {
     LIKES,
     POST,
     PREVIOUS,
+    REFRESH,
     REMOVE,
     RESET,
     SET,
@@ -23,6 +24,7 @@ export const LIKES_GET = `${LIKES} ${GET}`;
 export const LIKES_POST = `${LIKES} ${POST}`;
 export const LIKES_PREVIOUS_RESET = `${LIKES}${PREVIOUS} ${RESET}`;
 export const LIKES_PREVIOUS_SET = `${LIKES}${PREVIOUS} ${SET}`;
+export const LIKES_REFRESH = `${LIKES} ${REFRESH}`;
 export const LIKES_RESET = `${LIKES} ${RESET}`;
 export const LIKES_STATUS_RESET = `${LIKES}${STATUS} ${RESET}`;
 export const LIKES_STATUS_SET = `${LIKES}${STATUS} ${SET}`;
