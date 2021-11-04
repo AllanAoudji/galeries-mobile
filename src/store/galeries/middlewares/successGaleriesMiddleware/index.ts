@@ -25,7 +25,7 @@ const successGaleriesMiddleware: Middleware<{}, Store.Reducer> =
                 successGetGaleries(dispatch, getState, action);
                 break;
             case 'POST':
-                successPostGaleries(dispatch, action);
+                successPostGaleries(dispatch, getState, action);
                 break;
             case 'PUT':
                 successPutGalerie(dispatch, getState, action);

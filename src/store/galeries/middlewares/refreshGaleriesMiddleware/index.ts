@@ -1,8 +1,8 @@
 import { Middleware } from 'redux';
 
-import { GALERIES_REFRESH } from '#store/galeries/actionTypes';
 import { dispatchRefreshGaleries } from '#store/dispatchers';
 import { updateGaleriesStatusName } from '#store/galeries/actionCreators';
+import { GALERIES_REFRESH } from '#store/galeries/actionTypes';
 
 const refreshGaleriesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

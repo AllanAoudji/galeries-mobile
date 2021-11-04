@@ -104,7 +104,7 @@ export const setLikesPrevious: (
     payload,
     type: LIKES_PREVIOUS_SET,
 });
-export const setLikesStatus: (
+export const updateLikesStatus: (
     frameId: string,
     payload: Store.Status
 ) => Store.Action = (frameId, payload) => ({

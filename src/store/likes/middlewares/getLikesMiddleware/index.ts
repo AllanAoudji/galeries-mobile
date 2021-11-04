@@ -1,7 +1,7 @@
 import { Middleware } from 'redux';
 
 import { dispatchGetFrameLikes, dispatchGetLike } from '#store/dispatchers';
-import { setLikesStatus } from '#store/likes/actionCreators';
+import { updateLikesStatus } from '#store/likes/actionCreators';
 import { LIKES_GET } from '#store/likes/actionTypes';
 
 const getLikesMiddleware: Middleware<{}, Store.Reducer> =
@@ -20,13 +20,15 @@ const getLikesMiddleware: Middleware<{}, Store.Reducer> =
             const end = getState().likes.end[frameId] || false;
             const status = getState().likes.status[frameId] || 'PENDING';
 
-            if (end || status.includes('LOADING')) return;
+            if (end) return;
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
 
             const previous = getState().likes.previous[frameId];
             const newStatus =
                 status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';
 
-            dispatch(setLikesStatus(frameId, newStatus));
+            dispatch(updateLikesStatus(frameId, newStatus));
             dispatchGetFrameLikes(dispatch, frameId, previous);
         } else if (action.payload === 'string')
             dispatchGetLike(dispatch, action.payload);

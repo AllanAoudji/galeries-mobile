@@ -5,9 +5,10 @@ import {
     setLikesById,
     setLikesEnd,
     setLikesPrevious,
-    setLikesStatus,
+    updateLikesStatus,
 } from '#store/likes/actionCreators';
 import { combineLikesAllIds } from '#store/combineAllIds';
+import { getUserId } from '#store/users';
 
 const successGetLikes = (
     dispatch: Dispatch<Store.Action>,
@@ -32,7 +33,9 @@ const successGetLikes = (
 
     dispatch(setLikesById(byId));
 
-    const oldAllIds = getState().likes.allIds[frameId] || [];
+    let oldAllIds: string[];
+    if (action.meta.refresh) oldAllIds = [];
+    else oldAllIds = getState().likes.allIds[frameId] || [];
     const newAllIds = combineLikesAllIds(getState, oldAllIds, allIds);
     const previousLikeId =
         allIds.length > 0 ? allIds[allIds.length - 1] : undefined;
@@ -43,7 +46,13 @@ const successGetLikes = (
     dispatch(setLikesAllIds(frameId, newAllIds));
     dispatch(setLikesEnd(frameId, allIds.length < 20));
     if (previous) dispatch(setLikesPrevious(frameId, previous));
-    dispatch(setLikesStatus(frameId, 'SUCCESS'));
+    dispatch(updateLikesStatus(frameId, 'SUCCESS'));
+
+    allIds.forEach((id) => {
+        const user = getState().users.byId[byId[id].userId];
+
+        if (!user) dispatch(getUserId(byId[id].userId));
+    });
 };
 
 export default successGetLikes;

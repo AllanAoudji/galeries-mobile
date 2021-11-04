@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+
 import {
     resetGaleriesAllIds,
     resetGaleriesCurrent,
@@ -11,9 +12,12 @@ import {
     updateGaleriesLoadingPost,
     updateGaleriesStatusId,
 } from '#store/galeries/actionCreators';
+import { getGalerieCurrentCoverPicture } from '#store/galeriePictures/actionCreators';
+import { getUserId } from '#store/users/actionCreators';
 
 const successPostGaleries = (
     dispatch: Dispatch<Store.Action>,
+    getState: () => Store.Reducer,
     action: Store.Action
 ) => {
     const { galerie } = action.payload.data;
@@ -30,6 +34,18 @@ const successPostGaleries = (
         dispatch(updateGaleriesStatusId('SUCCESS', galerie.id));
     }
     dispatch(updateGaleriesLoadingPost('SUCCESS'));
+
+    if (galerie) {
+        const coverPicture = getState().galeriePictures.id[galerie.id];
+
+        if (coverPicture === undefined)
+            dispatch(getGalerieCurrentCoverPicture(galerie.id));
+
+        if (galerie.adminId) {
+            const adminId = getState().users.allIds[galerie.adminId];
+            if (!adminId) dispatch(getUserId(adminId));
+        }
+    }
 };
 
 export default successPostGaleries;
