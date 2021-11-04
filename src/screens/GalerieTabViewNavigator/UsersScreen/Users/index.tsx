@@ -18,17 +18,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { getGalerieUsers, selectCurrentGalerieUsersStatus } from '#store/users';
+import {
+    getGalerieUsers,
+    refreshGalerieUsers,
+    selectCurrentGalerieUsersStatus,
+} from '#store/users';
 
 import RenderItem from './RenderItem';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 type Props = {
     allIds: string[];
     current: boolean;
     editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
-    maxScroll: number;
-    paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
@@ -37,15 +40,7 @@ const renderItem = ({ index, item }: ListRenderItemInfo<string>) => (
     <RenderItem index={index} item={item} />
 );
 
-const Users = ({
-    allIds,
-    current,
-    editScrollY,
-    galerie,
-    maxScroll,
-    paddingTop,
-    scrollY,
-}: Props) => {
+const Users = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -66,10 +61,9 @@ const Users = ({
     );
     const styleProps = React.useMemo(
         () => ({
-            minHeight: dimension.height + maxScroll,
-            paddingTop,
+            minHeight: dimension.height + GalerieTabViewMaxScroll,
         }),
-        []
+        [dimension]
     );
 
     const handleEndReach = React.useCallback(() => {
@@ -77,7 +71,8 @@ const Users = ({
     }, [galerie]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-    }, []);
+        if (galerie) dispatch(refreshGalerieUsers(galerie.id));
+    }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
@@ -130,7 +125,10 @@ const Users = ({
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={paddingTop}
+                    progressViewOffset={
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_MENU
+                    }
                     progressBackgroundColor={theme.colors['secondary-light']}
                     refreshing={refreshing}
                 />
@@ -143,20 +141,15 @@ const Users = ({
     );
 };
 
-const style: ({
-    minHeight,
-    paddingTop,
-}: {
-    minHeight: number;
-    paddingTop: number;
-}) => {
+const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ minHeight, paddingTop }) => ({
+} = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
         minHeight,
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-        paddingTop,
+        paddingTop:
+            GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+            GLOBAL_STYLE.GALERIE_TAB_BAR_MENU,
     },
 }));
-
 export default React.memo(Users);

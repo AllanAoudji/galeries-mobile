@@ -50,7 +50,9 @@ const successGetComments = (
 
     if (frameId) {
         if (comment === undefined) {
-            const oldAllIds = getState().comments.allIds[frameId] || [];
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else oldAllIds = getState().comments.allIds[frameId] || [];
             const newAllIds = combineCommentsAllIds(
                 getState,
                 oldAllIds,

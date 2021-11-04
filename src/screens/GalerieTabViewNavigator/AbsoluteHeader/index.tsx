@@ -5,10 +5,11 @@ import Animated, {
     interpolate,
     useAnimatedStyle,
 } from 'react-native-reanimated';
-
 import { useDispatch } from 'react-redux';
+
 import { Pictogram } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 import { Container } from './styles';
 
@@ -16,11 +17,10 @@ import AbsoluteGalerieCoverPicture from './AbsoluteGalerieCoverPicture';
 import { resetGaleriesCurrent } from '#store/galeries';
 
 type Props = {
-    maxScroll: number;
     scrollY: Animated.SharedValue<number>;
 };
 
-const AbsoluteHeader = ({ maxScroll, scrollY }: Props) => {
+const AbsoluteHeader = ({ scrollY }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
@@ -36,11 +36,11 @@ const AbsoluteHeader = ({ maxScroll, scrollY }: Props) => {
     const style = useAnimatedStyle(() => {
         const opacity = interpolate(
             scrollY.value,
-            [0, maxScroll / 2, maxScroll],
+            [0, GalerieTabViewMaxScroll / 2, GalerieTabViewMaxScroll],
             [0, 0, 1]
         );
         return { opacity };
-    }, [maxScroll]);
+    }, []);
 
     return (
         <Container paddingTop={StatusBar.currentHeight}>

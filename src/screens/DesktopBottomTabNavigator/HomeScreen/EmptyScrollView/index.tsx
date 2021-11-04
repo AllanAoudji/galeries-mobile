@@ -8,13 +8,13 @@ import { EmptyMessage } from '#components';
 import { refreshFrames, selectFramesStatus } from '#store/frames';
 
 import { InnerContainer, StyledAnimatedScrollView } from './styles';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
-    paddingTop: number;
     scrollHandler: any;
 };
 
-const EmptyScrollView = ({ paddingTop, scrollHandler }: Props) => {
+const EmptyScrollView = ({ scrollHandler }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -50,14 +50,16 @@ const EmptyScrollView = ({ paddingTop, scrollHandler }: Props) => {
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={paddingTop}
+                    progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
                     progressBackgroundColor={theme.colors['secondary-light']}
                     refreshing={refreshing}
                 />
             }
             showsVerticalScrollIndicator={false}
         >
-            <InnerContainer height={dimension.height + paddingTop}>
+            <InnerContainer
+                height={dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+            >
                 <EmptyMessage text="no frames found" />
             </InnerContainer>
         </StyledAnimatedScrollView>

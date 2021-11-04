@@ -18,24 +18,17 @@ import {
     refreshGalerieUsers,
     selectCurrentGalerieUsersStatus,
 } from '#store/users';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
     current: boolean;
     editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
-    maxScroll: number;
-    paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
-const EmptyScrollView = ({
-    current,
-    editScrollY,
-    galerie,
-    maxScroll,
-    paddingTop,
-    scrollY,
-}: Props) => {
+const EmptyScrollView = ({ current, editScrollY, galerie, scrollY }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -101,14 +94,17 @@ const EmptyScrollView = ({
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={paddingTop}
+                    progressViewOffset={
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_MENU
+                    }
                     progressBackgroundColor={theme.colors['secondary-light']}
                     refreshing={refreshing}
                 />
             }
             showsVerticalScrollIndicator={false}
         >
-            <InnerContainer height={dimension.height + maxScroll}>
+            <InnerContainer height={dimension.height + GalerieTabViewMaxScroll}>
                 <EmptyMessage text="no other user follow this galerie yet." />
             </InnerContainer>
         </StyledAnimatedScrollView>

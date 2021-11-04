@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, StatusBar } from 'react-native';
 import { Easing } from 'react-native-reanimated';
 
 import convertPixelToNum from '#helpers/convertPixelToNum';
@@ -102,11 +102,15 @@ export const FIELD_REQUIREMENT = {
 
 export const GLOBAL_STYLE = {
     BOTTOM_TAB_HEIGHT: 65,
+    COMMENTS_FOOTER_HEIGHT: 82,
     FRAME_COVER_PICTURE_SIZE: 45,
+    FRAME_GALLERY_HEADER: 66 + (StatusBar.currentHeight || 0),
     GALERIE_MODAL_HEIGHT: 239,
-    GALERIE_TAB_BAR_COVER_PICTURE: 200,
-    HEADER_TAB_HEIGHT: 95,
+    GALERIE_TAB_BAR_COVER_PICTURE: 180,
+    GALERIE_TAB_BAR_MENU: 67,
+    HEADER_TAB_HEIGHT: 50 + (StatusBar.currentHeight || 0),
     INVITATION_CARD_HEIGHT: 95,
+    SEARCH_BAR_HEIGHT: 62 + (StatusBar.currentHeight || 0),
     TOP_LEFT_PICTOGRAM_HEIGHT: 60,
 };
 

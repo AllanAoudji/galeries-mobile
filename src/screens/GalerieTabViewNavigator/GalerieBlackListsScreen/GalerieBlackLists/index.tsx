@@ -24,14 +24,13 @@ import {
 } from '#store/galerieBlackLists';
 
 import RenderItem from './RenderItem';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 type Props = {
     allIds: string[];
     current: boolean;
     editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
-    maxScroll: number;
-    paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
@@ -45,8 +44,6 @@ const GalerieBlackLists = ({
     current,
     editScrollY,
     galerie,
-    maxScroll,
-    paddingTop,
     scrollY,
 }: Props) => {
     const dimension = useWindowDimensions();
@@ -69,10 +66,9 @@ const GalerieBlackLists = ({
     );
     const styleProps = React.useMemo(
         () => ({
-            minHeight: dimension.height + maxScroll,
-            paddingTop,
+            minHeight: dimension.height + GalerieTabViewMaxScroll,
         }),
-        []
+        [dimension]
     );
 
     const handleEndReach = React.useCallback(() => {
@@ -133,7 +129,10 @@ const GalerieBlackLists = ({
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={paddingTop}
+                    progressViewOffset={
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_MENU
+                    }
                     progressBackgroundColor={theme.colors['secondary-light']}
                     refreshing={refreshing}
                 />
@@ -146,19 +145,15 @@ const GalerieBlackLists = ({
     );
 };
 
-const style: ({
-    minHeight,
-    paddingTop,
-}: {
-    minHeight: number;
-    paddingTop: number;
-}) => {
+const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ minHeight, paddingTop }) => ({
+} = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
         minHeight,
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-        paddingTop,
+        paddingTop:
+            GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+            GLOBAL_STYLE.GALERIE_TAB_BAR_MENU,
     },
 }));
 

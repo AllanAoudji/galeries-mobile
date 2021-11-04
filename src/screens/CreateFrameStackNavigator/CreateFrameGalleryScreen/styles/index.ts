@@ -1,12 +1,14 @@
 import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 const AddPicturesButtonContainer = styled.View`
-    align-items: center;
+    align-items: flex-end;
     flex-direction: row;
     justify-content: space-between;
+    height: ${() => `${GLOBAL_STYLE.FRAME_GALLERY_HEADER}px`};
     padding: ${({ theme }) =>
-        `${theme.spacings.smallest} ${theme.spacings.small} 0`};
+        `0 ${theme.spacings.small} ${theme.spacings.smallest}`};
 `;
 const ButtonContainer = styled.View`
     width: 25%;
@@ -17,7 +19,6 @@ const Container = styled.View`
 `;
 const Header = styled(Animated.View)`
     background-color: ${({ theme }) => theme.colors['secondary-light']};
-    padding-bottom: ${({ theme }) => theme.spacings.smallest};
     position: absolute;
     width: 100%;
     z-index: 10;

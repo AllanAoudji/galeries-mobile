@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { BottomLoader, DefaultHeader, FullScreenLoader } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
+import { useHideHeaderOnScroll } from '#hooks';
 import {
     getFrames,
     selectFramesAllIds,
@@ -24,19 +24,13 @@ const HomeScreen = () => {
     const framesAllIds = useSelector(selectFramesAllIds);
     const framesStatus = useSelector(selectFramesStatus);
 
-    const { onLayout, size } = useComponentSize();
     const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
         GLOBAL_STYLE.HEADER_TAB_HEIGHT
     );
 
-    const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
     const showBottomLoader = React.useMemo(
         () => framesStatus === 'LOADING',
         [framesStatus]
-    );
-    const showFrames = React.useMemo(
-        () => framesAllIds.length > 0 && !!paddingTop,
-        [framesAllIds, paddingTop]
     );
     const showFullScreenLoader = React.useMemo(
         () => framesStatus === 'PENDING' || framesStatus === 'INITIAL_LOADING',
@@ -51,24 +45,13 @@ const HomeScreen = () => {
 
     return (
         <Container>
-            <Header
-                onLayout={onLayout}
-                style={containerStyle}
-                width={dimension.width}
-            >
+            <Header style={containerStyle} width={dimension.width}>
                 <DefaultHeader />
             </Header>
-            {showFrames ? (
-                <Frames
-                    allIds={framesAllIds}
-                    paddingTop={paddingTop}
-                    scrollHandler={scrollHandler}
-                />
+            {framesAllIds.length > 0 ? (
+                <Frames allIds={framesAllIds} scrollHandler={scrollHandler} />
             ) : (
-                <EmptyScrollView
-                    paddingTop={paddingTop}
-                    scrollHandler={scrollHandler}
-                />
+                <EmptyScrollView scrollHandler={scrollHandler} />
             )}
             <FullScreenLoader show={showFullScreenLoader} />
             <BottomLoader show={showBottomLoader} bottom="huge" />

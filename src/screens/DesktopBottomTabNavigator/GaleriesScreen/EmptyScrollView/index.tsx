@@ -12,18 +12,13 @@ import {
 } from '#store/galeries';
 
 import { InnerContainer, StyledAnimatedScrollView } from './styles';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
-    innerPaddingTop: number;
-    outerPaddingTop: number;
     scrollHandler: any;
 };
 
-const EmptyScrollView = ({
-    innerPaddingTop,
-    outerPaddingTop,
-    scrollHandler,
-}: Props) => {
+const EmptyScrollView = ({ scrollHandler }: Props) => {
     const dispatch = useDispatch();
     const dimension = useWindowDimensions();
     const theme = useTheme();
@@ -55,20 +50,21 @@ const EmptyScrollView = ({
 
     return (
         <StyledAnimatedScrollView
-            paddingTop={outerPaddingTop - innerPaddingTop}
             onScroll={scrollHandler}
             showsVerticalScrollIndicator={false}
             refreshControl={
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={outerPaddingTop}
+                    progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
                     progressBackgroundColor={theme.colors['secondary-light']}
                     refreshing={refreshing}
                 />
             }
         >
-            <InnerContainer height={dimension.height + innerPaddingTop}>
+            <InnerContainer
+                height={dimension.height + GLOBAL_STYLE.SEARCH_BAR_HEIGHT}
+            >
                 <EmptyMessage text="no galerie found" />
             </InnerContainer>
         </StyledAnimatedScrollView>

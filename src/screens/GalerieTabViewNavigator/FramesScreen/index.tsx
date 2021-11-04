@@ -22,19 +22,10 @@ type Props = {
     current: boolean;
     editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
-    maxScroll: number;
-    paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
-const FramesScreen = ({
-    current,
-    editScrollY,
-    galerie,
-    maxScroll,
-    paddingTop,
-    scrollY,
-}: Props) => {
+const FramesScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
     const dispatch = useDispatch();
@@ -64,35 +55,29 @@ const FramesScreen = ({
 
     return (
         <GalerieTabbarScreenContainer>
-            {!!paddingTop && (
-                <>
-                    {framesAllIds && framesAllIds.length > 0 ? (
-                        <Frames
-                            allIds={framesAllIds}
-                            editScrollY={editScrollY}
-                            current={current}
-                            galerie={galerie}
-                            maxScroll={maxScroll}
-                            paddingTop={paddingTop}
-                            scrollY={scrollY}
-                        />
-                    ) : (
-                        <EmptyScrollView
-                            current={current}
-                            editScrollY={editScrollY}
-                            galerie={galerie}
-                            maxScroll={maxScroll}
-                            paddingTop={paddingTop}
-                            scrollY={scrollY}
-                        />
-                    )}
-                    <AddButton
-                        bottom="largest"
-                        right="normal"
-                        onPress={handlePressAddGalerie}
+            <>
+                {framesAllIds && framesAllIds.length > 0 ? (
+                    <Frames
+                        allIds={framesAllIds}
+                        editScrollY={editScrollY}
+                        current={current}
+                        galerie={galerie}
+                        scrollY={scrollY}
                     />
-                </>
-            )}
+                ) : (
+                    <EmptyScrollView
+                        current={current}
+                        editScrollY={editScrollY}
+                        galerie={galerie}
+                        scrollY={scrollY}
+                    />
+                )}
+                <AddButton
+                    bottom="largest"
+                    right="normal"
+                    onPress={handlePressAddGalerie}
+                />
+            </>
             <FullScreenLoader show={showFullScreenLoader} />
             <BottomLoader show={showBottomLoader} bottom="huge" />
         </GalerieTabbarScreenContainer>

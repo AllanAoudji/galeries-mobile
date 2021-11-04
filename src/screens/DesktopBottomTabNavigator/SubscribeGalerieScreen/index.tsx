@@ -29,10 +29,11 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
         null
     );
 
+    const [fetching, setFetching] = React.useState<boolean>(false);
+
     const handleBarCodeScanned: BarCodeScannedCallback = React.useCallback(
         ({ data }) => {
             if (notification) return;
-            if (loading.includes('LOADING') || loading === 'SUCCESS') return;
             const code = data.split(PRE_CODE)[1];
             if (!code) {
                 dispatch(
@@ -42,9 +43,12 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
                     })
                 );
             }
-            dispatch(postGalerieSubscribe({ code }));
+            if (!fetching) {
+                setFetching(true);
+                dispatch(postGalerieSubscribe({ code }));
+            }
         },
-        [loading, notification]
+        [fetching, loading, notification]
     );
     const handlePressBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
@@ -71,7 +75,14 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
                 dispatch(resetGaleriesLoadingPost());
                 navigation.navigate('Galerie');
             }
+            if (loading === 'ERROR') setFetching(false);
         }, [loading])
+    );
+
+    useFocusEffect(
+        React.useCallback(() => {
+            setFetching(false);
+        }, [])
     );
 
     return (

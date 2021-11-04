@@ -1,15 +1,15 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
     FlatList,
     ListRenderItemInfo,
-    StyleProp,
     StyleSheet,
-    useWindowDimensions,
-    ViewStyle,
     RefreshControl,
+    useWindowDimensions,
+    StyleProp,
+    ViewStyle,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Animated, {
     runOnJS,
@@ -20,18 +20,18 @@ import { useTheme } from 'styled-components/native';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import {
     getGalerieFrames,
+    refreshGalerieFrames,
     selectCurrentGalerieFramesStatus,
 } from '#store/frames';
 
 import RenderItem from './RenderItem';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 type Props = {
     allIds: string[];
     current: boolean;
     editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
-    maxScroll: number;
-    paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
@@ -40,15 +40,7 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Frames = ({
-    allIds,
-    current,
-    editScrollY,
-    galerie,
-    maxScroll,
-    paddingTop,
-    scrollY,
-}: Props) => {
+const Frames = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -69,10 +61,9 @@ const Frames = ({
     );
     const styleProps = React.useMemo(
         () => ({
-            minHeight: dimension.height + maxScroll,
-            paddingTop,
+            minHeight: dimension.height + GalerieTabViewMaxScroll,
         }),
-        []
+        [dimension]
     );
 
     const handleEndReach = React.useCallback(() => {
@@ -80,7 +71,8 @@ const Frames = ({
     }, [galerie]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-    }, []);
+        if (galerie) dispatch(refreshGalerieFrames(galerie.id));
+    }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
@@ -133,7 +125,10 @@ const Frames = ({
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={paddingTop}
+                    progressViewOffset={
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_MENU
+                    }
                     progressBackgroundColor={theme.colors['secondary-light']}
                     refreshing={refreshing}
                 />
@@ -146,19 +141,15 @@ const Frames = ({
     );
 };
 
-const style: ({
-    minHeight,
-    paddingTop,
-}: {
-    minHeight: number;
-    paddingTop: number;
-}) => {
+const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ minHeight, paddingTop }) => ({
+} = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
         minHeight,
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-        paddingTop,
+        paddingTop:
+            GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+            GLOBAL_STYLE.GALERIE_TAB_BAR_MENU,
     },
 }));
 

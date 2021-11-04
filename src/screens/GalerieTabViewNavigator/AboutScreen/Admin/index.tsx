@@ -30,8 +30,9 @@ const Admin = ({ galerie }: Props) => {
         React.useCallback(() => {
             if (!fetchUser) {
                 setFetchUser(true);
-                if (!user && galerie.adminId)
+                if (!user && galerie.adminId) {
                     dispatch(getUserId(galerie.adminId));
+                }
             }
         }, [fetchUser, galerie, user])
     );

@@ -1,5 +1,6 @@
 import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 type ContainerProps = {
     paddingTop: number | undefined;
@@ -7,6 +8,7 @@ type ContainerProps = {
 
 const Container = styled(Animated.View)<ContainerProps>`
     align-items: center;
+    height: ${() => `${GLOBAL_STYLE.HEADER_TAB_HEIGHT}px`};
     background-color: ${({ theme }) => theme.colors['secondary-light']};
     flex-direction: row;
     justify-content: space-between;

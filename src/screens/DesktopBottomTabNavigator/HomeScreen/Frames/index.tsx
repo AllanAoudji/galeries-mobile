@@ -19,7 +19,6 @@ import RenderItem from './RenderItem';
 
 type Props = {
     allIds: string[];
-    paddingTop: number;
     scrollHandler: any;
 };
 
@@ -28,7 +27,7 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
+const Frames = ({ allIds, scrollHandler }: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -44,7 +43,6 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
         ],
         []
     );
-    const styleProps = React.useMemo(() => ({ paddingTop }), [paddingTop]);
 
     const handleEndReach = React.useCallback(() => dispatch(getFrames()), []);
     const handleRefresh = React.useCallback(() => {
@@ -62,7 +60,7 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
     return (
         <AnimatedFlatList
             contentContainerStyle={
-                style(styleProps).animatedFlatListContentContainerStyle
+                style().animatedFlatListContentContainerStyle
             }
             data={allIds}
             style={{ flex: 1 }}
@@ -77,7 +75,7 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={paddingTop}
+                    progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
                     progressBackgroundColor={theme.colors['secondary-light']}
                     refreshing={refreshing}
                 />
@@ -91,12 +89,12 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
     );
 };
 
-const style: ({ paddingTop }: { paddingTop: number }) => {
+const style: () => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ paddingTop }) => ({
+} = StyleSheet.create(() => ({
     animatedFlatListContentContainerStyle: {
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-        paddingTop,
+        paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
     },
 }));
 

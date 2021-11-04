@@ -5,6 +5,7 @@ import {
     RefreshControl,
     StyleProp,
     StyleSheet,
+    useWindowDimensions,
     ViewStyle,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,8 +25,6 @@ import { StyledAnimatedFlatList } from './styles';
 
 type Props = {
     allIds: string[];
-    innerPaddingTop: number;
-    outerPaddingTop: number;
     scrollHandler: any;
 };
 
@@ -33,12 +32,8 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Galeries = ({
-    allIds,
-    innerPaddingTop,
-    outerPaddingTop,
-    scrollHandler,
-}: Props) => {
+const Galeries = ({ allIds, scrollHandler }: Props) => {
+    const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -57,8 +52,13 @@ const Galeries = ({
         []
     );
     const styleProps = React.useMemo(
-        () => ({ innerPaddingTop }),
-        [innerPaddingTop]
+        () => ({
+            minHeight:
+                dimension.height +
+                GLOBAL_STYLE.HEADER_TAB_HEIGHT -
+                GLOBAL_STYLE.SEARCH_BAR_HEIGHT,
+        }),
+        []
     );
 
     const handleEndReached = React.useCallback(() => {
@@ -69,16 +69,16 @@ const Galeries = ({
         setRefreshing(true);
         dispatch(refreshGaleries(filterGaleriesName));
     }, [filterGaleriesName]);
+    const handleScrollBeginDrag = React.useCallback(
+        () => Keyboard.dismiss(),
+        []
+    );
     const getItemLayout = React.useCallback(
         (_, index) => ({
             length: GLOBAL_STYLE.GALERIE_MODAL_HEIGHT,
             offset: GLOBAL_STYLE.GALERIE_MODAL_HEIGHT * index,
             index,
         }),
-        []
-    );
-    const handleScrollBeginDrag = React.useCallback(
-        () => Keyboard.dismiss(),
         []
     );
     const keyExtractor = React.useCallback((item: string) => item, []);
@@ -89,7 +89,6 @@ const Galeries = ({
 
     return (
         <StyledAnimatedFlatList
-            marginTop={outerPaddingTop - innerPaddingTop}
             contentContainerStyle={
                 style(styleProps).animatedFlatListContentContainerStyle
             }
@@ -108,7 +107,7 @@ const Galeries = ({
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={innerPaddingTop}
+                    progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
                     progressBackgroundColor={theme.colors.secondary}
                     refreshing={refreshing}
                 />
@@ -123,12 +122,13 @@ const Galeries = ({
     );
 };
 
-const style: ({ innerPaddingTop }: { innerPaddingTop: number }) => {
+const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ innerPaddingTop }) => ({
+} = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-        paddingTop: innerPaddingTop,
+        paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
+        minHeight,
     },
 }));
 

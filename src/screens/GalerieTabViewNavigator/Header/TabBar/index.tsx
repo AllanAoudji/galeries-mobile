@@ -9,7 +9,8 @@ import { DefaultTheme, useTheme } from 'styled-components/native';
 
 import convertPixelToNum from '#helpers/convertPixelToNum';
 
-import { Container, TabbarStyled } from './styles';
+import { TabbarStyled } from './styles';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 const TabBar = (
     props: SceneRendererProps & {
@@ -21,16 +22,14 @@ const TabBar = (
     const styleProps = React.useMemo(() => ({ theme }), [theme]);
 
     return (
-        <Container>
-            <TabbarStyled
-                indicatorStyle={style(styleProps).indicatorStyle}
-                labelStyle={style(styleProps).labelStyle}
-                pressColor="transparent"
-                tabStyle={style(styleProps).tabStyle}
-                scrollEnabled
-                {...props}
-            />
-        </Container>
+        <TabbarStyled
+            indicatorStyle={style(styleProps).indicatorStyle}
+            labelStyle={style(styleProps).labelStyle}
+            pressColor="transparent"
+            tabStyle={style(styleProps).tabStyle}
+            scrollEnabled
+            {...props}
+        />
     );
 };
 
@@ -48,12 +47,14 @@ const style: ({ theme }: { theme: DefaultTheme }) => {
         fontSize: convertPixelToNum(theme.font.sizes[18]),
         fontFamily: theme.font.families.roman,
         textTransform: 'capitalize',
-        paddingHorizontal: 10,
+        marginVertical: 15,
     },
     tabStyle: {
-        justifyContent: 'flex-start',
         padding: 0,
         width: 120,
+        alignItems: 'center',
+        height: GLOBAL_STYLE.GALERIE_TAB_BAR_MENU,
+        justifyContent: 'center',
     },
 }));
 

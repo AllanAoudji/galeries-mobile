@@ -18,24 +18,17 @@ import {
 import { EmptyMessage } from '#components';
 
 import { InnerContainer, StyledAnimatedScrollView } from './styles';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
     current: boolean;
     editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
-    maxScroll: number;
-    paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
-const EmptyScrollView = ({
-    current,
-    editScrollY,
-    galerie,
-    maxScroll,
-    paddingTop,
-    scrollY,
-}: Props) => {
+const EmptyScrollView = ({ current, editScrollY, galerie, scrollY }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -101,14 +94,17 @@ const EmptyScrollView = ({
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={paddingTop}
                     progressBackgroundColor={theme.colors['secondary-light']}
+                    progressViewOffset={
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_MENU
+                    }
                     refreshing={refreshing}
                 />
             }
             showsVerticalScrollIndicator={false}
         >
-            <InnerContainer height={dimension.height + maxScroll}>
+            <InnerContainer height={dimension.height + GalerieTabViewMaxScroll}>
                 <EmptyMessage text="this galerie doesn't have frame yet. Click on the + button to post a new one" />
             </InnerContainer>
         </StyledAnimatedScrollView>

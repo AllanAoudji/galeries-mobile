@@ -116,11 +116,19 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         else {
             closeBottomSheet();
             navigation.navigate('CreateGalerie');
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(resetGaleriesCurrent());
+            });
         }
     }, [keyboardShown]);
     const handleGaleriesPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
-        else navigation.navigate('Galeries');
+        else {
+            navigation.navigate('Galeries');
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(resetGaleriesCurrent());
+            });
+        }
     }, [keyboardShown]);
     const handleHomePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
@@ -158,6 +166,9 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         else {
             closeBottomSheet();
             navigation.navigate('SubscribeGalerie');
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(resetGaleriesCurrent());
+            });
         }
     }, [keyboardShown]);
 

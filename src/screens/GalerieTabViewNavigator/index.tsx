@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { BackHandler, StatusBar } from 'react-native';
+import { BackHandler } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import {
     NavigationState,
@@ -10,10 +10,11 @@ import {
 } from 'react-native-tab-view';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { FullScreenLoader } from '#components';
 import { UnsubscribeGalerieProvider } from '#contexts/UnsubscribeGalerieContext';
 import clamp from '#helpers/clamp';
-import { GLOBAL_STYLE } from '#helpers/constants';
-import { useComponentSize } from '#hooks';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
+import { selectFramesLoadingPost } from '#store/frames';
 import { resetGaleriesCurrent, selectCurrentGalerie } from '#store/galeries';
 
 import AboutScreen from './AboutScreen';
@@ -26,8 +27,6 @@ import UsersScreen from './UsersScreen';
 import AbsoluteHeader from './AbsoluteHeader';
 
 import { Container } from './styles';
-import { FullScreenLoader } from '#components';
-import { selectFramesLoadingPost } from '#store/frames';
 
 const adminRoleRoutes = [
     { key: 'frames', title: 'Frames' },
@@ -52,26 +51,12 @@ const GalerieTabViewNavigator = () => {
     const galerie = useSelector(selectCurrentGalerie);
     const framesLoadingPost = useSelector(selectFramesLoadingPost);
 
-    const { onLayout: onLayoutContainer, size: sizeContainer } =
-        useComponentSize();
-    const { onLayout: onLayoutInfo, size: sizeInfo } = useComponentSize();
-
-    const maxScroll = React.useMemo(
-        () =>
-            (sizeInfo ? sizeInfo.height : 0) -
-            (StatusBar.currentHeight || 0) -
-            GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT,
-        [sizeInfo]
-    );
     const scrollY = useSharedValue(0);
-    const editScrollY = React.useCallback(
-        (offsetY: number) => {
-            'worklet';
+    const editScrollY = React.useCallback((offsetY: number) => {
+        'worklet';
 
-            scrollY.value = clamp(offsetY, 0, maxScroll);
-        },
-        [maxScroll]
-    );
+        scrollY.value = clamp(offsetY, 0, GalerieTabViewMaxScroll);
+    }, []);
 
     const [currentRoute, setCurrentRoute] = React.useState<string>('frames');
     const [navigationState, setNavigationState] =
@@ -153,10 +138,6 @@ const GalerieTabViewNavigator = () => {
                             current={currentRoute === 'about'}
                             editScrollY={editScrollY}
                             galerie={galerie}
-                            maxScroll={maxScroll}
-                            paddingTop={
-                                sizeContainer ? sizeContainer.height : 0
-                            }
                             scrollY={scrollY}
                         />
                     );
@@ -166,10 +147,6 @@ const GalerieTabViewNavigator = () => {
                             current={currentRoute === 'frames'}
                             editScrollY={editScrollY}
                             galerie={galerie}
-                            maxScroll={maxScroll}
-                            paddingTop={
-                                sizeContainer ? sizeContainer.height : 0
-                            }
                             scrollY={scrollY}
                         />
                     );
@@ -179,10 +156,6 @@ const GalerieTabViewNavigator = () => {
                             current={currentRoute === 'galerieBlackLists'}
                             editScrollY={editScrollY}
                             galerie={galerie}
-                            maxScroll={maxScroll}
-                            paddingTop={
-                                sizeContainer ? sizeContainer.height : 0
-                            }
                             scrollY={scrollY}
                         />
                     );
@@ -192,10 +165,6 @@ const GalerieTabViewNavigator = () => {
                             current={currentRoute === 'invitations'}
                             editScrollY={editScrollY}
                             galerie={galerie}
-                            maxScroll={maxScroll}
-                            paddingTop={
-                                sizeContainer ? sizeContainer.height : 0
-                            }
                             scrollY={scrollY}
                         />
                     );
@@ -204,11 +173,7 @@ const GalerieTabViewNavigator = () => {
                         <OptionsScreen
                             current={currentRoute === 'options'}
                             editScrollY={editScrollY}
-                            maxScroll={maxScroll}
                             galerie={galerie}
-                            paddingTop={
-                                sizeContainer ? sizeContainer.height : 0
-                            }
                             scrollY={scrollY}
                         />
                     );
@@ -217,10 +182,7 @@ const GalerieTabViewNavigator = () => {
                         <UsersScreen
                             current={currentRoute === 'users'}
                             editScrollY={editScrollY}
-                            maxScroll={maxScroll}
-                            paddingTop={
-                                sizeContainer ? sizeContainer.height : 0
-                            }
+                            galerie={galerie}
                             scrollY={scrollY}
                         />
                     );
@@ -228,24 +190,15 @@ const GalerieTabViewNavigator = () => {
                     return null;
             }
         },
-        [currentRoute, editScrollY, galerie, maxScroll, sizeContainer]
+        [currentRoute, editScrollY, galerie]
     );
     const renderTabBar = React.useCallback(
         (
             props: SceneRendererProps & {
                 navigationState: NavigationState<Route>;
             }
-        ) => (
-            <Header
-                galerie={galerie}
-                maxScroll={maxScroll}
-                onLayoutContainer={onLayoutContainer}
-                onLayoutInfo={onLayoutInfo}
-                scrollY={scrollY}
-                {...props}
-            />
-        ),
-        [galerie, maxScroll, onLayoutContainer, onLayoutInfo]
+        ) => <Header galerie={galerie} scrollY={scrollY} {...props} />,
+        [galerie]
     );
 
     useFocusEffect(
@@ -306,7 +259,7 @@ const GalerieTabViewNavigator = () => {
     return (
         <UnsubscribeGalerieProvider>
             <Container>
-                <AbsoluteHeader maxScroll={maxScroll} scrollY={scrollY} />
+                <AbsoluteHeader scrollY={scrollY} />
                 <TabView
                     navigationState={navigationState}
                     onIndexChange={onIndexChange}

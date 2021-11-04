@@ -11,7 +11,7 @@ import {
 } from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { useCameraRoll, useComponentSize, useHideHeaderOnScroll } from '#hooks';
+import { useCameraRoll, useHideHeaderOnScroll } from '#hooks';
 
 import {
     AddPicturesButtonContainer,
@@ -35,8 +35,7 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
 
     const { getPhotos, loading, photos } = useCameraRoll();
     const { containerStyle, headerStyle, scrollHandler } =
-        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT, true);
-    const { onLayout, size } = useComponentSize();
+        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT);
 
     const [firstLoad, setFirstLoad] = React.useState<boolean>(true);
 
@@ -67,7 +66,7 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
 
     return (
         <Container>
-            <Header onLayout={onLayout} style={containerStyle}>
+            <Header style={containerStyle}>
                 <DefaultHeader style={headerStyle} variant="secondary" />
                 <AddPicturesButtonContainer>
                     <ButtonContainer>
@@ -85,9 +84,7 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
                 </AddPicturesButtonContainer>
             </Header>
             <AnimatedFlatList
-                contentContainerStyle={
-                    style({ size }).animatedFlatListContentContainer
-                }
+                contentContainerStyle={style().animatedFlatListContentContainer}
                 data={photos}
                 extraData={photos}
                 keyExtractor={keyExtractor}
@@ -106,18 +103,12 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
     );
 };
 
-const style: ({
-    size,
-}: {
-    size: {
-        height: number;
-        width: number;
-    } | null;
-}) => {
+const style: () => {
     animatedFlatListContentContainer: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ size }) => ({
+} = StyleSheet.create(() => ({
     animatedFlatListContentContainer: {
-        paddingTop: size ? size.height : 0,
+        paddingTop:
+            GLOBAL_STYLE.HEADER_TAB_HEIGHT + GLOBAL_STYLE.FRAME_GALLERY_HEADER,
     },
 }));
 

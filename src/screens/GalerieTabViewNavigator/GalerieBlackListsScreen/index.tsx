@@ -20,8 +20,6 @@ type Props = {
     current: boolean;
     editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
-    maxScroll: number;
-    paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
@@ -29,8 +27,6 @@ const GalerieBlackListsScreen = ({
     current,
     editScrollY,
     galerie,
-    maxScroll,
-    paddingTop,
     scrollY,
 }: Props) => {
     const dispatch = useDispatch();
@@ -64,30 +60,21 @@ const GalerieBlackListsScreen = ({
 
     return (
         <GalerieTabbarScreenContainer>
-            {!!paddingTop && (
-                <>
-                    {galerieBlackListsAllIds &&
-                    galerieBlackListsAllIds.length > 0 ? (
-                        <GalerieBlackLists
-                            allIds={galerieBlackListsAllIds}
-                            current={current}
-                            editScrollY={editScrollY}
-                            galerie={galerie}
-                            maxScroll={maxScroll}
-                            paddingTop={paddingTop}
-                            scrollY={scrollY}
-                        />
-                    ) : (
-                        <EmptyScrollView
-                            current={current}
-                            editScrollY={editScrollY}
-                            galerie={galerie}
-                            maxScroll={maxScroll}
-                            paddingTop={paddingTop}
-                            scrollY={scrollY}
-                        />
-                    )}
-                </>
+            {galerieBlackListsAllIds && galerieBlackListsAllIds.length > 0 ? (
+                <GalerieBlackLists
+                    allIds={galerieBlackListsAllIds}
+                    current={current}
+                    editScrollY={editScrollY}
+                    galerie={galerie}
+                    scrollY={scrollY}
+                />
+            ) : (
+                <EmptyScrollView
+                    current={current}
+                    editScrollY={editScrollY}
+                    galerie={galerie}
+                    scrollY={scrollY}
+                />
             )}
             <FullScreenLoader show={showFullScreenLoader} />
             <BottomLoader show={showBottomLoader} bottom="huge" />

@@ -39,30 +39,30 @@ const successGetUsers = (
         byId[user.id] = user;
     }
 
-    if (allIds.length) {
-        dispatch(setUsersById(byId));
-        const previousUserId = allIds[allIds.length - 1];
-        const previous = byId[previousUserId].userName || '';
+    dispatch(setUsersById(byId));
 
-        if (galerieId && user === undefined) {
-            let oldAllIds: string[];
-            if (action.meta.refresh) oldAllIds = [];
-            else oldAllIds = getState().users.allIds[galerieId] || [];
-            const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
+    const previousUserId =
+        allIds.length > 0 ? allIds[allIds.length - 1] : undefined;
+    const previous = previousUserId ? byId[previousUserId].userName : undefined;
 
-            dispatch(setGalerieUsersAllIds(galerieId, newAllIds));
-            dispatch(updateGalerieUsersEnd(galerieId, allIds.length < 20));
-            dispatch(updateGalerieUsersPrevious(galerieId, previous));
-        } else if (user === undefined) {
-            let oldAllIds: string[];
-            if (action.meta.refresh) oldAllIds = [];
-            else oldAllIds = getState().users.allIds[''] || [];
-            const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
+    if (galerieId && user === undefined) {
+        let oldAllIds: string[];
+        if (action.meta.refresh) oldAllIds = [];
+        else oldAllIds = getState().users.allIds[galerieId] || [];
+        const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
 
-            dispatch(setUsersAllIds(newAllIds));
-            dispatch(updateUsersEnd(allIds.length < 20));
-            dispatch(updateUsersPrevious(previous));
-        }
+        dispatch(setGalerieUsersAllIds(galerieId, newAllIds));
+        dispatch(updateGalerieUsersEnd(galerieId, allIds.length < 20));
+        if (previous) dispatch(updateGalerieUsersPrevious(galerieId, previous));
+    } else if (user === undefined) {
+        let oldAllIds: string[];
+        if (action.meta.refresh) oldAllIds = [];
+        else oldAllIds = getState().users.allIds[''] || [];
+        const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
+
+        dispatch(setUsersAllIds(newAllIds));
+        dispatch(updateUsersEnd(allIds.length < 20));
+        if (previous) dispatch(updateUsersPrevious(previous));
     }
 
     if (galerieId) dispatch(updateGalerieUsersStatus(galerieId, 'SUCCESS'));
