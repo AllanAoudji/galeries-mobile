@@ -112,6 +112,7 @@ export const GLOBAL_STYLE = {
     INVITATION_CARD_HEIGHT: 95,
     SEARCH_BAR_HEIGHT: 62 + (StatusBar.currentHeight || 0),
     TOP_LEFT_PICTOGRAM_HEIGHT: 60,
+    USER_CARD_HEIGHT: 65,
 };
 
 export const PRE_CODE = 'GALERIE_INVITATION ';

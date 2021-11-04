@@ -3,8 +3,8 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { UserCard } from '#components';
-import { getUserId, selectUser } from '#store/users';
 import { selectLike } from '#store/likes';
+import { getUserId, selectUser } from '#store/users';
 
 type Props = {
     index: number;

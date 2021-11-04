@@ -1,22 +1,27 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
+    FlatList,
     ListRenderItemInfo,
+    RefreshControl,
+    StatusBar,
     StyleProp,
     StyleSheet,
+    useWindowDimensions,
     ViewStyle,
 } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from 'styled-components/native';
 
-import {
-    AnimatedFlatList,
-    BottomLoader,
-    DefaultHeader,
-    EmptyMessage,
-    FullScreenLoader,
-} from '#components';
+import { BottomLoader, DefaultHeader, FullScreenLoader } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
-import { getFrameLikes, selectCurrentFrameLikesStatus } from '#store/likes';
+import { useHideHeaderOnScroll } from '#hooks';
+import {
+    getFrameLikes,
+    refreshFrameLikes,
+    selectCurrentFrameLikesStatus,
+} from '#store/likes';
 
 import RenderItem from './RenderItem';
 
@@ -27,69 +32,124 @@ type Props = {
     frameId: string;
 };
 
+const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 const renderItem = ({ index, item }: ListRenderItemInfo<string>) => {
     return <RenderItem index={index} item={item} />;
 };
 
 const Likes = ({ allIds, frameId }: Props) => {
+    const dimension = useWindowDimensions();
     const dispatch = useDispatch();
-    const { onLayout, size } = useComponentSize();
+    const theme = useTheme();
+
     const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
         GLOBAL_STYLE.HEADER_TAB_HEIGHT
     );
 
-    const status = useSelector(selectCurrentFrameLikesStatus);
+    const loading = useSelector(selectCurrentFrameLikesStatus);
 
-    const paddingTop = React.useMemo(() => (size ? size.height : 0), [size]);
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+    const colors = React.useMemo(
+        () => [
+            theme.colors.primary,
+            theme.colors['primary-dark'],
+            theme.colors['primary-light'],
+        ],
+        []
+    );
+    const styleProps = React.useMemo(
+        () => ({
+            minHeight: dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT,
+        }),
+        []
+    );
 
     const handleEndReach = React.useCallback(() => {
-        if (status && !status.includes('LOADING'))
+        if (loading && !loading.includes('LOADING') && loading !== 'REFRESH')
             dispatch(getFrameLikes(frameId));
-    }, [frameId]);
+    }, [frameId, loading]);
+    const handleRefresh = React.useCallback(() => {
+        if (loading && !loading.includes('LOADING') && loading !== 'REFRESH') {
+            setRefreshing(true);
+            dispatch(refreshFrameLikes(frameId));
+        }
+    }, [frameId, loading]);
+    const getItemLayout = React.useCallback(
+        (_, index) => ({
+            length: GLOBAL_STYLE.USER_CARD_HEIGHT,
+            offset: GLOBAL_STYLE.USER_CARD_HEIGHT * index,
+            index,
+        }),
+        []
+    );
     const keyExtractor = React.useCallback((item: string) => item, []);
 
-    const styleProps = React.useMemo(() => ({ paddingTop }), [paddingTop]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
+        }, [loading, refreshing])
+    );
 
-    React.useEffect(() => {
-        if (!status || status === 'PENDING') dispatch(getFrameLikes(frameId));
-    }, [frameId, status]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!loading || loading === 'PENDING')
+                dispatch(getFrameLikes(frameId));
+        }, [frameId, loading])
+    );
+
+    if (!allIds) return null;
 
     return (
         <Container>
-            <Header onLayout={onLayout} style={containerStyle}>
+            <Header style={containerStyle}>
                 <DefaultHeader title="likes" variant="secondary" />
             </Header>
-            {allIds ? (
-                <AnimatedFlatList
-                    contentContainerStyle={
-                        style(styleProps).animatedFlatListContentContainerStyle
-                    }
-                    data={allIds}
-                    keyExtractor={keyExtractor}
-                    maxToRenderPerBatch={4}
-                    onEndReached={handleEndReach}
-                    onEndReachedThreshold={0.2}
-                    onScroll={scrollHandler}
-                    removeClippedSubviews={true}
-                    renderItem={renderItem}
-                    scrollEventThrottle={4}
-                    showsVerticalScrollIndicator={false}
-                />
-            ) : (
-                <EmptyMessage text="no user have likes this frame" />
-            )}
-            <FullScreenLoader show={status === 'INITIAL_LOADING'} />
-            <BottomLoader show={status === 'LOADING'} />
+            <AnimatedFlatList
+                contentContainerStyle={
+                    style(styleProps).animatedFlatListContentContainerStyle
+                }
+                data={allIds}
+                extraData={allIds}
+                getItemLayout={getItemLayout}
+                initialNumToRender={10}
+                keyExtractor={keyExtractor}
+                maxToRenderPerBatch={3}
+                onEndReached={handleEndReach}
+                onEndReachedThreshold={0.2}
+                onScroll={scrollHandler}
+                refreshControl={
+                    <RefreshControl
+                        colors={colors}
+                        onRefresh={handleRefresh}
+                        progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+                        progressBackgroundColor={
+                            theme.colors['secondary-light']
+                        }
+                        refreshing={refreshing}
+                    />
+                }
+                removeClippedSubviews={true}
+                renderItem={renderItem}
+                scrollEventThrottle={4}
+                showsVerticalScrollIndicator={false}
+                updateCellsBatchingPeriod={1}
+                windowSize={41}
+            />
+            <FullScreenLoader show={loading === 'INITIAL_LOADING'} />
+            <BottomLoader show={loading === 'LOADING'} />
         </Container>
     );
 };
 
-const style: ({ paddingTop }: { paddingTop: number }) => {
+const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ paddingTop }) => ({
+} = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
+        marginTop: StatusBar.currentHeight || 0,
+        minHeight,
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-        paddingTop,
+        paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
     },
 }));
 

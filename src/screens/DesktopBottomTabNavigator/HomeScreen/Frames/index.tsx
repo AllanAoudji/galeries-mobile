@@ -4,6 +4,7 @@ import {
     FlatList,
     ListRenderItemInfo,
     RefreshControl,
+    StatusBar,
     StyleProp,
     StyleSheet,
     ViewStyle,
@@ -63,7 +64,6 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
                 style().animatedFlatListContentContainerStyle
             }
             data={allIds}
-            style={{ flex: 1 }}
             extraData={allIds}
             initialNumToRender={3}
             keyExtractor={keyExtractor}
@@ -80,6 +80,7 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
                     refreshing={refreshing}
                 />
             }
+            removeClippedSubviews={true}
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}
@@ -93,6 +94,7 @@ const style: () => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
 } = StyleSheet.create(() => ({
     animatedFlatListContentContainerStyle: {
+        marginTop: StatusBar.currentHeight || 0,
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
         paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
     },
