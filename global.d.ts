@@ -549,6 +549,7 @@ declare global {
             | 'logout-right'
             | 'moderation-fill'
             | 'moderation-stroke'
+            | 'new'
             | 'moderator-role'
             | 'option-horizontal'
             | 'option-vertical'

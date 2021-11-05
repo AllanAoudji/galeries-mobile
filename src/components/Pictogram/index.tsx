@@ -28,6 +28,7 @@ import LogoutRight from './LogoutRight';
 import ModerationFill from './ModerationFill';
 import ModerationStroke from './ModerationStroke';
 import ModeratorRole from './ModeratorRole';
+import New from './New';
 import OptionHorizontal from './OptionHorizontal';
 import OptionVertical from './OptionVertical';
 import Plus from './Plus';
@@ -97,6 +98,7 @@ const variants = {
     'moderation-fill': ModerationFill,
     'moderation-stroke': ModerationStroke,
     'moderator-role': ModeratorRole,
+    new: New,
     'option-horizontal': OptionHorizontal,
     'option-vertical': OptionVertical,
     plus: Plus,

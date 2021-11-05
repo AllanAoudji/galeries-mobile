@@ -11,6 +11,7 @@ import {
 import { getGalerieCurrentCoverPicture } from '#store/galeriePictures/actionCreators';
 import { combineGaleriesAllIds } from '#store/combineAllIds';
 import { getGalerieUsers } from '#store/users';
+import { dispatchRefreshGalerieFrames } from '#store/dispatchers';
 
 const successGetGaleries = (
     dispatch: Dispatch<Store.Action>,
@@ -65,12 +66,18 @@ const successGetGaleries = (
 
         const coverPictureStatus =
             getState().galeriePictures.status[id] || 'PENDING';
-        if (coverPictureStatus === 'PENDING')
+        if (coverPictureStatus === 'PENDING' || action.meta.refresh)
             dispatch(getGalerieCurrentCoverPicture(id));
 
         const usersStatus = getState().users.status[id] || 'PENDING';
-        if (usersStatus === 'PENDING') dispatch(getGalerieUsers(id));
+        if (usersStatus === 'PENDING' || action.meta.refresh)
+            dispatch(getGalerieUsers(id));
+
+        const galerieFrames = getState().frames.allIds[id];
+        if (galerieFrames !== undefined && byId[id].hasNewFrames)
+            dispatchRefreshGalerieFrames(dispatch, id);
     });
+    if (galerie) dispatch(getGalerieCurrentCoverPicture(galerie.id));
 };
 
 export default successGetGaleries;

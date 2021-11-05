@@ -3,9 +3,12 @@ import * as React from 'react';
 import { useDispatch } from 'react-redux';
 
 import GalerieCoverPicture from '#components/GalerieCoverPicture';
+import { GLOBAL_STYLE } from '#helpers/constants';
 import { getGalerieId, updateGaleriesCurrent } from '#store/galeries';
 
 import Footer from './Footer';
+import HasNewFrames from './HasNewFrames';
+import Role from './Role';
 
 import { Container } from './styles';
 
@@ -30,7 +33,12 @@ const GalerieCard = ({ galerie }: Props) => {
 
     return (
         <Container onPress={handlePress}>
-            <GalerieCoverPicture galerie={galerie} height={140} />
+            <GalerieCoverPicture
+                galerie={galerie}
+                height={GLOBAL_STYLE.GALERIE_CARD_COVER_PICTURE_HEIGHT}
+            />
+            <Role galerie={galerie} />
+            <HasNewFrames galerie={galerie} />
             <Footer galerie={galerie} />
         </Container>
     );

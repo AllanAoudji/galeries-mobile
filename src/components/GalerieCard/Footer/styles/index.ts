@@ -1,7 +1,12 @@
 import styled from 'styled-components/native';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 const Container = styled.View`
-    height: 74px;
+    height: ${() =>
+        `${
+            GLOBAL_STYLE.GALERIE_CARD_HEIGHT -
+            GLOBAL_STYLE.GALERIE_CARD_COVER_PICTURE_HEIGHT
+        }px`};
     padding: ${({ theme }) =>
         `${theme.spacings.smallest} ${theme.spacings.small} 0`};
 `;
