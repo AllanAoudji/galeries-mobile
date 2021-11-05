@@ -40,7 +40,6 @@ export default function App() {
 }
 
 // TODO:
-// Comments refresh
 // GalerieCard role and hasNewFrames
 // BlackListCard
 // UsersBlackList Screen

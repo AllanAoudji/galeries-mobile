@@ -7,6 +7,7 @@ import {
     StatusBar,
     StyleProp,
     StyleSheet,
+    useWindowDimensions,
     ViewStyle,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,6 +30,7 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
 );
 
 const Frames = ({ allIds, scrollHandler }: Props) => {
+    const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -42,6 +44,12 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
             theme.colors['primary-dark'],
             theme.colors['primary-light'],
         ],
+        []
+    );
+    const styleProps = React.useMemo(
+        () => ({
+            minHeight: dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT,
+        }),
         []
     );
 
@@ -61,7 +69,7 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
     return (
         <AnimatedFlatList
             contentContainerStyle={
-                style().animatedFlatListContentContainerStyle
+                style(styleProps).animatedFlatListContentContainerStyle
             }
             data={allIds}
             extraData={allIds}
@@ -90,11 +98,12 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
     );
 };
 
-const style: () => {
+const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(() => ({
+} = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
         marginTop: StatusBar.currentHeight || 0,
+        minHeight,
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
         paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
     },

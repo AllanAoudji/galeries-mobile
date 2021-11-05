@@ -4,22 +4,30 @@ import { RefreshControl, useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
-import { EmptyMessage } from '#components';
+import {
+    refreshFrameComments,
+    selectFrameCommentsStatus,
+} from '#store/comments';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { refreshFrames, selectFramesStatus } from '#store/frames';
+import { EmptyMessage } from '#components';
 
 import { InnerContainer, StyledAnimatedScrollView } from './styles';
 
 type Props = {
+    frameId: string;
     scrollHandler: any;
 };
 
-const EmptyScrollView = ({ scrollHandler }: Props) => {
+const EmptyScrollView = ({ frameId, scrollHandler }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const theme = useTheme();
 
-    const loading = useSelector(selectFramesStatus);
+    const loadingSelector = React.useMemo(
+        () => selectFrameCommentsStatus(frameId),
+        [frameId]
+    );
+    const loading = useSelector(loadingSelector);
 
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -35,9 +43,9 @@ const EmptyScrollView = ({ scrollHandler }: Props) => {
     const handleRefresh = React.useCallback(() => {
         if (!loading.includes('LOADING') && loading !== 'REFRESH') {
             setRefreshing(true);
-            dispatch(refreshFrames());
+            dispatch(refreshFrameComments(frameId));
         }
-    }, [loading]);
+    }, [frameId, loading]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -62,7 +70,10 @@ const EmptyScrollView = ({ scrollHandler }: Props) => {
             <InnerContainer
                 height={dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT}
             >
-                <EmptyMessage text="no frames found" />
+                <EmptyMessage
+                    text="this frame do not have comment yet..."
+                    pb={GLOBAL_STYLE.COMMENTS_FOOTER_HEIGHT}
+                />
             </InnerContainer>
         </StyledAnimatedScrollView>
     );
