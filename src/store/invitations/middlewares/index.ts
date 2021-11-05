@@ -2,6 +2,7 @@ import deleteFramesMiddleware from './deleteFramesMiddleware';
 import errorInvitationsMiddleware from './errorInvitationsMiddleware';
 import getInvitationsMiddleware from './getInvitationsMiddleware';
 import postInvitationsMiddleware from './postInvitationsMiddleware';
+import refreshInvitationsMiddleware from './refreshInvitationsMiddleware';
 import resetInvitationsMiddleware from './resetInvitationsMiddleware';
 import successInvitationsMiddleware from './successInvitationsMiddleware';
 
@@ -11,6 +12,7 @@ export const invitationsMiddlewares = [
     errorInvitationsMiddleware,
     getInvitationsMiddleware,
     postInvitationsMiddleware,
+    refreshInvitationsMiddleware,
     resetInvitationsMiddleware,
     successInvitationsMiddleware,
 ];

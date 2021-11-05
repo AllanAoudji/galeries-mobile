@@ -1,3 +1,4 @@
+import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 type InnerContainerProps = {
@@ -14,11 +15,11 @@ const Button = styled.View`
     justify-content: center;
     padding: 0 15px;
 `;
-const Container = styled.Pressable`
-    bottom: 0;
+const Container = styled(Animated.View)`
     position: absolute;
     width: 100%;
     z-index: 1;
+    height: 100px;
 `;
 const InnerContainer = styled.Pressable<InnerContainerProps>`
     align-items: center;
@@ -29,7 +30,7 @@ const InnerContainer = styled.Pressable<InnerContainerProps>`
     bottom: 0;
     display: flex;
     flex-direction: row;
-    height: 100px;
+    height: 100%;
     justify-content: space-between;
     padding: 20px 25px 30px;
     position: absolute;

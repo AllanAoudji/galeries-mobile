@@ -1,7 +1,9 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
     ListRenderItemInfo,
+    RefreshControl,
     StyleProp,
     StyleSheet,
     useWindowDimensions,
@@ -12,52 +14,64 @@ import Animated, {
     useAnimatedReaction,
     useAnimatedScrollHandler,
 } from 'react-native-reanimated';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from 'styled-components/native';
 
-import { AnimatedFlatList } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { getGalerieUsers } from '#store/users';
+import {
+    getGalerieUsers,
+    refreshGalerieUsers,
+    selectCurrentGalerieUsersStatus,
+} from '#store/users';
 
 import RenderItem from './RenderItem';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 type Props = {
     allIds: string[];
     current: boolean;
     editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
-    maxScroll: number;
-    paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
-const renderItem = ({ item }: ListRenderItemInfo<string>) => (
-    <RenderItem item={item} />
+const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
+const renderItem = ({ index, item }: ListRenderItemInfo<string>) => (
+    <RenderItem index={index} item={item} />
 );
 
-const Users = ({
-    allIds,
-    current,
-    editScrollY,
-    galerie,
-    maxScroll,
-    paddingTop,
-    scrollY,
-}: Props) => {
+const Users = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
+    const loading = useSelector(selectCurrentGalerieUsersStatus);
+
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+    const colors = React.useMemo(
+        () => [
+            theme.colors.primary,
+            theme.colors['primary-dark'],
+            theme.colors['primary-light'],
+        ],
+        []
+    );
     const styleProps = React.useMemo(
         () => ({
-            minHeight: dimension.height + maxScroll,
-            paddingTop,
+            minHeight: dimension.height + GalerieTabViewMaxScroll,
         }),
-        []
+        [dimension]
     );
 
     const handleEndReach = React.useCallback(() => {
         if (galerie) dispatch(getGalerieUsers(galerie.id));
+    }, [galerie]);
+    const handleRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        if (galerie) dispatch(refreshGalerieUsers(galerie.id));
     }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(
@@ -88,6 +102,12 @@ const Users = ({
         [editScrollY, current]
     );
 
+    useFocusEffect(
+        React.useCallback(() => {
+            if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
+        }, [loading, refreshing])
+    );
+
     return (
         <AnimatedFlatList
             contentContainerStyle={
@@ -101,6 +121,18 @@ const Users = ({
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
             ref={flatListRef}
+            refreshControl={
+                <RefreshControl
+                    colors={colors}
+                    onRefresh={handleRefresh}
+                    progressViewOffset={
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+                        GLOBAL_STYLE.GALERIE_TAB_BAR_MENU
+                    }
+                    progressBackgroundColor={theme.colors['secondary-light']}
+                    refreshing={refreshing}
+                />
+            }
             removeClippedSubviews={true}
             renderItem={renderItem}
             scrollEventThrottle={4}
@@ -109,20 +141,15 @@ const Users = ({
     );
 };
 
-const style: ({
-    minHeight,
-    paddingTop,
-}: {
-    minHeight: number;
-    paddingTop: number;
-}) => {
+const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ minHeight, paddingTop }) => ({
+} = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
         minHeight,
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-        paddingTop,
+        paddingTop:
+            GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+            GLOBAL_STYLE.GALERIE_TAB_BAR_MENU,
     },
 }));
-
 export default React.memo(Users);

@@ -8,21 +8,20 @@ import {
     FullScreenLoader,
     BottomLoader,
     AddButton,
-    EmptyMessage,
 } from '#components';
 import {
     getGalerieInvitations,
     selectCurrentGalerieInvitationsAllIds,
     selectCurrentGalerieInvitationsStatus,
 } from '#store/invitations';
+
+import EmptyScrollView from './EmptyScrollView';
 import Invitations from './Invitations';
 
 type Props = {
     current: boolean;
     editScrollY: (offsetY: number) => void;
-    maxScroll: number;
     galerie?: Store.Models.Galerie;
-    paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
@@ -30,8 +29,6 @@ const InvitationsScreen = ({
     current,
     editScrollY,
     galerie,
-    maxScroll,
-    paddingTop,
     scrollY,
 }: Props) => {
     const dispatch = useDispatch();
@@ -74,31 +71,27 @@ const InvitationsScreen = ({
 
     return (
         <GalerieTabbarScreenContainer>
-            {!!paddingTop && (
-                <>
-                    {invitationsAllIds && invitationsAllIds.length > 0 ? (
-                        <Invitations
-                            allIds={invitationsAllIds}
-                            editScrollY={editScrollY}
-                            current={current}
-                            galerie={galerie}
-                            maxScroll={maxScroll}
-                            paddingTop={paddingTop}
-                            scrollY={scrollY}
-                        />
-                    ) : (
-                        <EmptyMessage
-                            pt={paddingTop}
-                            text="This galerie doesn't have invitation yet. Click on the + button to post a new one."
-                        />
-                    )}
-                    <AddButton
-                        bottom="largest"
-                        right="normal"
-                        onPress={handlePressAddGalerie}
-                    />
-                </>
+            {invitationsAllIds && invitationsAllIds.length > 0 ? (
+                <Invitations
+                    allIds={invitationsAllIds}
+                    editScrollY={editScrollY}
+                    current={current}
+                    galerie={galerie}
+                    scrollY={scrollY}
+                />
+            ) : (
+                <EmptyScrollView
+                    current={current}
+                    editScrollY={editScrollY}
+                    galerie={galerie}
+                    scrollY={scrollY}
+                />
             )}
+            <AddButton
+                bottom="largest"
+                right="normal"
+                onPress={handlePressAddGalerie}
+            />
             <FullScreenLoader show={showFullScreenLoader} />
             <BottomLoader show={showBottomLoader} bottom="huge" />
         </GalerieTabbarScreenContainer>

@@ -1,0 +1,25 @@
+import { Dispatch } from 'redux';
+
+import { END_POINT } from '#helpers/constants';
+import { apiRequest } from '#store/api/actionCreators';
+import { LIKES } from '#store/genericActionTypes';
+
+const dispatchRefetchFrameLikes = (
+    dispatch: Dispatch<Store.Action>,
+    frameId: string
+) => {
+    dispatch(
+        apiRequest({
+            meta: {
+                entity: LIKES,
+                method: 'GET',
+                query: { frameId },
+                refresh: true,
+                url: `${END_POINT.FRAMES}/${frameId}${END_POINT.LIKES}`,
+            },
+            payload: {},
+        })
+    );
+};
+
+export default dispatchRefetchFrameLikes;

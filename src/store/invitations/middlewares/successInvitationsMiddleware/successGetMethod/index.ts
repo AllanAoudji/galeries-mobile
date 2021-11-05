@@ -20,7 +20,10 @@ const successGetMethod = (
         : undefined;
     if (!galerieId) return;
     const galerie = getState().galeries.byId[galerieId];
-    if (!galerie) return;
+    if (!galerie) {
+        dispatch(updateGalerieInvitationsStatus(galerieId, 'ERROR'));
+        return;
+    }
 
     if (typeof action.payload.data !== 'object') {
         dispatch(updateGalerieInvitationsStatus(galerieId, 'ERROR'));
@@ -49,13 +52,24 @@ const successGetMethod = (
         : undefined;
 
     if (galerieId) {
-        const oldAllIds = getState().invitations.allIds[galerieId] || [];
-        const newAllIds = combineInvitationsAllIds(getState, oldAllIds, allIds);
+        if (invitation === undefined) {
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else oldAllIds = getState().invitations.allIds[galerieId] || [];
+            const newAllIds = combineInvitationsAllIds(
+                getState,
+                oldAllIds,
+                allIds
+            );
 
-        dispatch(setGalerieInvitationsAllIds(galerieId, newAllIds));
-        dispatch(updategalerieInvitationsEnd(galerieId, allIds.length < 20));
-        if (previous)
-            dispatch(updateGalerieInvitationsPrevious(galerieId, previous));
+            dispatch(setGalerieInvitationsAllIds(galerieId, newAllIds));
+            dispatch(
+                updategalerieInvitationsEnd(galerieId, allIds.length < 20)
+            );
+            if (previous)
+                dispatch(updateGalerieInvitationsPrevious(galerieId, previous));
+        }
+
         dispatch(updateGalerieInvitationsStatus(galerieId, 'SUCCESS'));
     }
 

@@ -2,21 +2,29 @@ import * as React from 'react';
 import {
     Keyboard,
     ListRenderItemInfo,
+    RefreshControl,
     StyleProp,
     StyleSheet,
+    useWindowDimensions,
     ViewStyle,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from 'styled-components/native';
 
-import { AnimatedFlatList } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { getGaleries, selectGaleriesNameStatus } from '#store/galeries';
+import {
+    getGaleries,
+    refreshGaleries,
+    selectGaleriesFilterName,
+    selectGaleriesNameStatus,
+} from '#store/galeries';
 
 import RenderItem from './RenderItem';
 
+import { StyledAnimatedFlatList } from './styles';
+
 type Props = {
     allIds: string[];
-    paddingTop: number;
     scrollHandler: any;
 };
 
@@ -24,18 +32,47 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
+const Galeries = ({ allIds, scrollHandler }: Props) => {
+    const dimension = useWindowDimensions();
     const dispatch = useDispatch();
+    const theme = useTheme();
 
+    const filterGaleriesName = useSelector(selectGaleriesFilterName);
     const galeriesNameStatus = useSelector(selectGaleriesNameStatus);
+    const loading = useSelector(selectGaleriesNameStatus);
 
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+    const colors = React.useMemo(
+        () => [
+            theme.colors.primary,
+            theme.colors['primary-dark'],
+            theme.colors['primary-light'],
+        ],
+        []
+    );
     const styleProps = React.useMemo(
         () => ({
-            paddingTop,
+            minHeight:
+                dimension.height +
+                GLOBAL_STYLE.HEADER_TAB_HEIGHT -
+                GLOBAL_STYLE.SEARCH_BAR_HEIGHT,
         }),
-        [paddingTop]
+        []
     );
 
+    const handleEndReached = React.useCallback(() => {
+        if (galeriesNameStatus === 'ERROR' || galeriesNameStatus === 'SUCCESS')
+            dispatch(getGaleries(filterGaleriesName));
+    }, [filterGaleriesName, galeriesNameStatus]);
+    const handleRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        dispatch(refreshGaleries(filterGaleriesName));
+    }, [filterGaleriesName]);
+    const handleScrollBeginDrag = React.useCallback(
+        () => Keyboard.dismiss(),
+        []
+    );
     const getItemLayout = React.useCallback(
         (_, index) => ({
             length: GLOBAL_STYLE.GALERIE_MODAL_HEIGHT,
@@ -44,18 +81,14 @@ const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
         }),
         []
     );
-    const handleEndReached = React.useCallback(() => {
-        if (galeriesNameStatus === 'ERROR' || galeriesNameStatus === 'SUCCESS')
-            dispatch(getGaleries());
-    }, [galeriesNameStatus]);
-    const handleScrollBeginDrag = React.useCallback(
-        () => Keyboard.dismiss(),
-        []
-    );
     const keyExtractor = React.useCallback((item: string) => item, []);
 
+    React.useEffect(() => {
+        if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
+    }, [loading, refreshing]);
+
     return (
-        <AnimatedFlatList
+        <StyledAnimatedFlatList
             contentContainerStyle={
                 style(styleProps).animatedFlatListContentContainerStyle
             }
@@ -70,6 +103,15 @@ const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
             onScrollBeginDrag={handleScrollBeginDrag}
+            refreshControl={
+                <RefreshControl
+                    colors={colors}
+                    onRefresh={handleRefresh}
+                    progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+                    progressBackgroundColor={theme.colors.secondary}
+                    refreshing={refreshing}
+                />
+            }
             removeClippedSubviews={true}
             renderItem={renderItem}
             scrollEventThrottle={4}
@@ -80,12 +122,13 @@ const Galeries = ({ allIds, paddingTop, scrollHandler }: Props) => {
     );
 };
 
-const style: ({ paddingTop }: { paddingTop: number }) => {
+const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ paddingTop }) => ({
+} = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
-        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT + 15,
-        paddingTop: paddingTop + 30,
+        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+        paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
+        minHeight,
     },
 }));
 

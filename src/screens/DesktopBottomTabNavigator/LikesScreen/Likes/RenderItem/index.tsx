@@ -1,15 +1,17 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { UserCard } from '#components';
-import { getUserId, selectUser } from '#store/users';
 import { selectLike } from '#store/likes';
+import { getUserId, selectUser } from '#store/users';
 
 type Props = {
+    index: number;
     item: string;
 };
 
-const RenderItem = ({ item }: Props) => {
+const RenderItem = ({ index, item }: Props) => {
     const dispatch = useDispatch();
 
     const likeSelector = React.useMemo(() => selectLike(item), [item]);
@@ -19,16 +21,23 @@ const RenderItem = ({ item }: Props) => {
 
     const [loading, setLoading] = React.useState<boolean>(false);
 
-    React.useEffect(() => {
-        if (!user && !loading) {
-            setLoading(true);
-            dispatch(getUserId(item));
-        }
-    }, [loading, user]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!user && !loading) {
+                setLoading(true);
+                dispatch(getUserId(like ? like.userId : undefined));
+            }
+        }, [like, loading, user])
+    );
 
     if (!user) return null;
 
-    return <UserCard user={user} />;
+    return (
+        <UserCard
+            color={index % 2 ? 'secondary' : 'secondary-light'}
+            user={user}
+        />
+    );
 };
 
 export default React.memo(RenderItem);

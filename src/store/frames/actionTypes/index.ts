@@ -13,6 +13,7 @@ import {
     POST,
     PREVIOUS,
     PUT,
+    REFRESH,
     REMOVE,
     RESET,
     SET,
@@ -29,9 +30,9 @@ export const FRAMES_BY_ID_SET = `${FRAMES}${BY_ID} ${SET}`;
 export const FRAMES_BY_ID_UPDATE = `${FRAMES}${BY_ID} ${UPDATE}`;
 export const FRAMES_CURRENT_RESET = `${FRAMES}${CURRENT} ${RESET}`;
 export const FRAMES_CURRENT_UPDATE = `${FRAMES}${CURRENT} ${UPDATE}`;
+export const FRAMES_DELETE = `${FRAMES} ${DELETE}`;
 export const FRAMES_END_RESET = `${FRAMES}${END} ${RESET}`;
 export const FRAMES_END_UPDATE = `${FRAMES}${END} ${UPDATE}`;
-export const FRAMES_DELETE = `${FRAMES} ${DELETE}`;
 export const FRAMES_FIELDS_ERROR_RESET = `${FRAMES}${FIELDS_ERROR} ${RESET}`;
 export const FRAMES_FIELDS_ERROR_UPDATE = `${FRAMES}${FIELDS_ERROR} ${UPDATE}`;
 export const FRAMES_GET = `${FRAMES} ${GET}`;
@@ -45,6 +46,7 @@ export const FRAMES_POST = `${FRAMES} ${POST}`;
 export const FRAMES_PREVIOUS_RESET = `${FRAMES}${PREVIOUS} ${RESET}`;
 export const FRAMES_PREVIOUS_UPDATE = `${FRAMES}${PREVIOUS} ${UPDATE}`;
 export const FRAMES_PUT = `${FRAMES} ${PUT}`;
+export const FRAMES_REFRESH = `${FRAMES} ${REFRESH}`;
 export const FRAMES_RESET = `${FRAMES} ${RESET}`;
 export const FRAMES_STATUS_RESET = `${FRAMES}${STATUS} ${RESET}`;
 export const FRAMES_STATUS_UPDATE = `${FRAMES}${STATUS} ${UPDATE}`;

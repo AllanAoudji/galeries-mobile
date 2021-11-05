@@ -21,27 +21,34 @@ const PROFILE_PICTURE_SIZE = {
     small: 30,
     normal: 34,
     large: 50,
+    huge: 170,
 };
 const INNER_CONTAINER_BORDER_WIDTH = {
     small: 2,
     normal: 2,
     large: 3,
+    huge: 7,
 };
-const CONTAINER_BORDER_WIDTH = 3;
+const CONTAINER_BORDER_WIDTH = {
+    small: 3,
+    normal: 3,
+    large: 3,
+    huge: 7,
+};
 
 const Container = styled.View<ContainerProps>`
     border-color: ${({ theme }) => theme.colors['secondary-light']};
     border-radius: ${({ border, size }) =>
         `${
             PROFILE_PICTURE_SIZE[size] +
-            (border ? CONTAINER_BORDER_WIDTH * 2 : 0) / 2
+            (border ? CONTAINER_BORDER_WIDTH[size] * 2 : 0) / 2
         }px`};
-    border-width: ${({ border }) =>
-        border ? `${CONTAINER_BORDER_WIDTH}px` : 0};
+    border-width: ${({ border, size }) =>
+        border ? `${CONTAINER_BORDER_WIDTH[size]}px` : 0};
     height: ${({ border, size }) =>
         `${
             PROFILE_PICTURE_SIZE[size] +
-            (border ? CONTAINER_BORDER_WIDTH * 2 : 0)
+            (border ? CONTAINER_BORDER_WIDTH[size] * 2 : 0)
         }px`};
     margin-bottom: ${({ mb, theme }) => (mb ? theme.spacings[mb] : 0)};
     margin-left: ${({ ml, theme }) => (ml ? theme.spacings[ml] : 0)};
@@ -50,7 +57,7 @@ const Container = styled.View<ContainerProps>`
     width: ${({ border, size }) =>
         `${
             PROFILE_PICTURE_SIZE[size] +
-            (border ? CONTAINER_BORDER_WIDTH * 2 : 0)
+            (border ? CONTAINER_BORDER_WIDTH[size] * 2 : 0)
         }px`};
 `;
 const ImageStyled = styled.Image<ImageStyleProps>`

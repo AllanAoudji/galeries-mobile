@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as React from 'react';
 import {
-    LayoutChangeEvent,
     NativeSyntheticEvent,
     TextInputContentSizeChangeEventData,
 } from 'react-native';
@@ -31,7 +30,6 @@ import {
 type Props = {
     frameId?: string;
     loading: Store.Status;
-    onLayout: (event: LayoutChangeEvent) => void;
     onSuccess: () => void;
 };
 
@@ -40,7 +38,7 @@ const initialValues = {
     body: '',
 };
 
-const Form = ({ frameId, loading, onLayout, onSuccess }: Props) => {
+const Form = ({ frameId, loading, onSuccess }: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -125,7 +123,7 @@ const Form = ({ frameId, loading, onLayout, onSuccess }: Props) => {
     );
 
     return (
-        <Container onLayout={onLayout}>
+        <Container>
             <CurrentComment />
             <FormContainer>
                 <TextInputStyled

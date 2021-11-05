@@ -1,29 +1,32 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
     ListRenderItemInfo,
+    RefreshControl,
+    StatusBar,
     StyleProp,
     StyleSheet,
+    useWindowDimensions,
     ViewStyle,
 } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from 'styled-components/native';
 
-import {
-    AnimatedFlatList,
-    BottomLoader,
-    DefaultHeader,
-    EmptyMessage,
-} from '#components';
+import { BottomLoader, DefaultHeader } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
+import { useHideHeaderOnScroll } from '#hooks';
 import {
     getFrameComments,
+    refreshFrameComments,
     selectCommentCurrent,
     selectCommentsLoadingPost,
     selectCurrentFrameCommentsStatus,
+    selectFrameCommentsStatus,
 } from '#store/comments';
 
+import EmptyScrollView from './EmptyScrollView';
 import Form from './Form';
 import RenderItem from './RenderItem';
 
@@ -34,36 +37,47 @@ type CommentsProps = {
     frameId: string;
 };
 
+const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
+
 const Comments = ({ allIds, frameId }: CommentsProps) => {
+    const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.CommentsNavigationProp>();
+    const theme = useTheme();
+
+    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
+        GLOBAL_STYLE.HEADER_TAB_HEIGHT
+    );
 
     const currentComment = useSelector(selectCommentCurrent);
     const currentFrameCommentsStatus = useSelector(
         selectCurrentFrameCommentsStatus
     );
     const loading = useSelector(selectCommentsLoadingPost);
+    const statusSelector = React.useMemo(
+        () => selectFrameCommentsStatus(frameId),
+        [frameId]
+    );
+    const status = useSelector(statusSelector);
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
-    const { onLayout: headerOnLayout, size: headerSize } = useComponentSize();
-    const { onLayout: footerOnLayout, size: footerSize } = useComponentSize();
-    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
-        GLOBAL_STYLE.HEADER_TAB_HEIGHT
-    );
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
-    const paddingBottom = React.useMemo(
-        () => (footerSize ? footerSize.height : 0),
-        [footerSize]
-    );
-    const paddingTop = React.useMemo(
-        () => (headerSize ? headerSize.height : 0),
-        [headerSize]
+    const colors = React.useMemo(
+        () => [
+            theme.colors.primary,
+            theme.colors['primary-dark'],
+            theme.colors['primary-light'],
+        ],
+        []
     );
     const styleProps = React.useMemo(
-        () => ({ paddingBottom, paddingTop }),
-        [paddingBottom, paddingTop]
+        () => ({
+            minHeight: dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT,
+        }),
+        []
     );
 
     const handleEndReach = React.useCallback(
@@ -76,6 +90,10 @@ const Comments = ({ allIds, frameId }: CommentsProps) => {
             else navigation.navigate('Home');
         }
     }, [loading, navigation]);
+    const handleRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        dispatch(refreshFrameComments(frameId));
+    }, [frameId]);
     const handleSuccess = React.useCallback(() => {
         if (flatListRef.current && !currentComment)
             flatListRef.current.scrollToOffset({ offset: 0 });
@@ -86,52 +104,64 @@ const Comments = ({ allIds, frameId }: CommentsProps) => {
         []
     );
 
+    useFocusEffect(
+        React.useCallback(() => {
+            if (status === 'SUCCESS' && refreshing) setRefreshing(false);
+        }, [status, refreshing])
+    );
+
     return (
         <Container>
-            <Header onLayout={headerOnLayout} style={containerStyle}>
+            <Header style={containerStyle}>
                 <DefaultHeader
                     onPress={handlePress}
                     title="comments"
                     variant="secondary"
                 />
             </Header>
-            {!!paddingTop && (
-                <>
-                    {!!paddingBottom && (
-                        <>
-                            {allIds.length > 0 ? (
-                                <AnimatedFlatList
-                                    contentContainerStyle={
-                                        style(styleProps)
-                                            .animatedFlatListContentContainerStyle
-                                    }
-                                    data={allIds}
-                                    extraData={allIds}
-                                    initialNumToRender={15}
-                                    keyExtractor={keyExtractor}
-                                    maxToRenderPerBatch={15}
-                                    onScroll={scrollHandler}
-                                    onEndReached={handleEndReach}
-                                    onEndReachedThreshold={0.2}
-                                    ref={flatListRef}
-                                    removeClippedSubviews
-                                    renderItem={renderItem}
-                                    scrollEventThrottle={4}
-                                    showsVerticalScrollIndicator={false}
-                                />
-                            ) : (
-                                <EmptyMessage text="This frame do not have comment yet..." />
-                            )}
-                        </>
-                    )}
-                    <Form
-                        frameId={frameId}
-                        loading={loading}
-                        onLayout={footerOnLayout}
-                        onSuccess={handleSuccess}
-                    />
-                </>
+            {allIds.length > 0 ? (
+                <AnimatedFlatList
+                    contentContainerStyle={
+                        style(styleProps).animatedFlatListContentContainerStyle
+                    }
+                    data={allIds}
+                    extraData={allIds}
+                    initialNumToRender={15}
+                    keyExtractor={keyExtractor}
+                    maxToRenderPerBatch={15}
+                    onEndReached={handleEndReach}
+                    onEndReachedThreshold={0.2}
+                    onScroll={scrollHandler}
+                    ref={flatListRef}
+                    refreshControl={
+                        <RefreshControl
+                            colors={colors}
+                            onRefresh={handleRefresh}
+                            progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+                            progressBackgroundColor={
+                                theme.colors['secondary-light']
+                            }
+                            refreshing={refreshing}
+                        />
+                    }
+                    removeClippedSubviews
+                    renderItem={renderItem}
+                    scrollEventThrottle={4}
+                    showsVerticalScrollIndicator={false}
+                    updateCellsBatchingPeriod={1}
+                    windowSize={41}
+                />
+            ) : (
+                <EmptyScrollView
+                    frameId={frameId}
+                    scrollHandler={scrollHandler}
+                />
             )}
+            <Form
+                frameId={frameId}
+                loading={loading}
+                onSuccess={handleSuccess}
+            />
             <BottomLoader
                 bottom="huge"
                 show={currentFrameCommentsStatus === 'LOADING'}
@@ -140,18 +170,14 @@ const Comments = ({ allIds, frameId }: CommentsProps) => {
     );
 };
 
-const style: ({
-    paddingBottom,
-    paddingTop,
-}: {
-    paddingBottom: number;
-    paddingTop: number;
-}) => {
+const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ paddingBottom, paddingTop }) => ({
+} = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
-        paddingBottom: paddingBottom + 15,
-        paddingTop: paddingTop + 30,
+        marginTop: StatusBar.currentHeight || 0,
+        minHeight,
+        paddingBottom: GLOBAL_STYLE.COMMENTS_FOOTER_HEIGHT,
+        paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
     },
 }));
 

@@ -6,6 +6,7 @@ import {
     resetUsersAllIds,
     resetUsersById,
     resetUsersEnd,
+    resetUsersLoadingDelete,
     resetUsersPrevious,
     resetUsersStatus,
 } from '#store/users/actionCreators';
@@ -22,6 +23,7 @@ const resetUsersMiddleware: Middleware<{}, Store.Reducer> =
         dispatch(resetUsersById());
         dispatch(resetUserCurrent());
         dispatch(resetUsersEnd());
+        dispatch(resetUsersLoadingDelete());
         dispatch(resetUsersPrevious());
         dispatch(resetUsersStatus());
     };

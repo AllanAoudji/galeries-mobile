@@ -13,11 +13,11 @@ import { Container, Thumb, Track } from './styles';
 
 type Props = {
     disabled?: boolean;
-    onChange: () => void;
     mb?: keyof Style.Spacings;
     ml?: keyof Style.Spacings;
     mr?: keyof Style.Spacings;
     mt?: keyof Style.Spacings;
+    onChange: () => void;
     pb?: keyof Style.Spacings;
     pl?: keyof Style.Spacings;
     pr?: keyof Style.Spacings;
@@ -27,11 +27,11 @@ type Props = {
 
 const CustomSwitch = ({
     disabled = false,
-    onChange,
     mb,
     ml,
     mr,
     mt,
+    onChange,
     pb,
     pl,
     pr,

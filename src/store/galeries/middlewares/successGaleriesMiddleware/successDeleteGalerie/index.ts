@@ -17,7 +17,6 @@ const successDeleteGalerie = (
 ) => {
     const { galerieId } = action.payload.data;
     if (typeof galerieId === 'string') {
-        dispatch(resetFrames());
         dispatch(removeGaleriesById(galerieId));
         dispatch(resetGaleriesAllIds());
         dispatch(resetGaleriesCurrent());
@@ -25,6 +24,7 @@ const successDeleteGalerie = (
         dispatch(resetGaleriesPrevious());
         dispatch(resetGaleriesStatusId());
         dispatch(resetGaleriesStatusName());
+        dispatch(resetFrames());
     }
     dispatch(updateGaleriesLoadingDelete('SUCCESS'));
 };

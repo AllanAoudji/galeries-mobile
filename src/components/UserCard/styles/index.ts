@@ -1,21 +1,24 @@
 import styled from 'styled-components/native';
 
-const PROFILE_PICTURE_CONTAINER_SIZE = 50;
+import { GLOBAL_STYLE } from '#helpers/constants';
 
-const Container = styled.View`
+type ContainerStyle = {
+    color: keyof Style.Colors;
+};
+
+const Container = styled.View<ContainerStyle>`
     align-items: center;
+    background-color: ${({ color, theme }) => theme.colors[color]};
     flex-direction: row;
-    padding: ${({ theme }) =>
-        `${theme.spacings.smallest} ${theme.spacings.small}`};
+    height: ${() => `${GLOBAL_STYLE.USER_CARD_HEIGHT}px`};
+    padding: ${({ theme }) => `0 ${theme.spacings.small}`};
 `;
 const InfoContainer = styled.View`
-    margin-left: ${({ theme }) => theme.spacings.small};
+    margin-left: ${({ theme }) => theme.spacings.smallest};
 `;
-const ProfilePictureContainer = styled.View`
-    background-color: ${({ theme }) => theme.colors.primary};
-    border-radius: ${() => `${PROFILE_PICTURE_CONTAINER_SIZE / 2}px`};
-    height: ${() => `${PROFILE_PICTURE_CONTAINER_SIZE}px`};
-    width: ${() => `${PROFILE_PICTURE_CONTAINER_SIZE}px`};
+const UserNameContainer = styled.View`
+    align-items: center;
+    flex-direction: row;
 `;
 
-export { Container, InfoContainer, ProfilePictureContainer };
+export { Container, InfoContainer, UserNameContainer };

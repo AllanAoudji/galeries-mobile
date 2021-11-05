@@ -18,6 +18,7 @@ import {
     COMMENTS_POST,
     COMMENTS_PREVIOUS_RESET,
     COMMENTS_PREVIOUS_UPDATE,
+    COMMENTS_REFRESH,
     COMMENTS_RESET,
     COMMENTS_STATUS_RESET,
     COMMENTS_STATUS_UPDATE,
@@ -62,6 +63,13 @@ export const postCommentComment: (
     meta: { query: { commentId } },
     payload,
     type: COMMENTS_POST,
+});
+export const refreshFrameComments: (frameId: string) => Store.Action = (
+    frameId
+) => ({
+    meta: { query: { frameId } },
+    payload: {},
+    type: COMMENTS_REFRESH,
 });
 export const resetComments: () => Store.Action = () => ({
     meta: {},

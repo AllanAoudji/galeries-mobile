@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, StatusBar } from 'react-native';
 import { Easing } from 'react-native-reanimated';
 
 import convertPixelToNum from '#helpers/convertPixelToNum';
@@ -48,8 +48,10 @@ export const DRAG_AND_DROP_UTILS = {
 };
 
 export const END_POINT = {
+    ADMIN: '/admin',
     ALLOW_NOTIFICATION: '/allowNotification',
     BETA: '/beta',
+    BLACKLISTS: '/blackLists',
     COMMENTS: '/comments',
     COVER_PICTURE: '/coverPicture',
     CURRENT_PROFILE_PICTURE: '/currentProfilePicture',
@@ -58,12 +60,14 @@ export const END_POINT = {
     GALERIES: '/galeries',
     INVITATIONS: '/invitations',
     LIKES: '/likes',
-    LOGIN: 'login',
+    LOGIN: '/login',
     LOGOUT: '/logout',
     ME: '/me',
     PROFILE_PICTURES: '/profilePictures',
     REFRESH_TOKEN: '/refreshToken/',
     SIGNIN: '/signin',
+    SUBSCRIBE: '/subscribe',
+    UNSUBSCRIBE: '/unsubscribe',
     USERS: '/users',
 };
 
@@ -98,10 +102,17 @@ export const FIELD_REQUIREMENT = {
 
 export const GLOBAL_STYLE = {
     BOTTOM_TAB_HEIGHT: 65,
+    COMMENTS_FOOTER_HEIGHT: 82,
     FRAME_COVER_PICTURE_SIZE: 45,
+    FRAME_GALLERY_HEADER: 66 + (StatusBar.currentHeight || 0),
     GALERIE_MODAL_HEIGHT: 239,
-    GALERIE_TAB_BAR_COVER_PICTURE: 200,
-    HEADER_TAB_HEIGHT: 95,
+    GALERIE_TAB_BAR_COVER_PICTURE: 180,
+    GALERIE_TAB_BAR_MENU: 67,
+    HEADER_TAB_HEIGHT: 50 + (StatusBar.currentHeight || 0),
     INVITATION_CARD_HEIGHT: 95,
+    SEARCH_BAR_HEIGHT: 62 + (StatusBar.currentHeight || 0),
     TOP_LEFT_PICTOGRAM_HEIGHT: 60,
+    USER_CARD_HEIGHT: 65,
 };
+
+export const PRE_CODE = 'GALERIE_INVITATION ';

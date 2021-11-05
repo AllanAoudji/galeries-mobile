@@ -25,6 +25,7 @@ import {
     GALERIES_PREVIOUS_RESET,
     GALERIES_PREVIOUS_UPDATE,
     GALERIES_PUT,
+    GALERIES_REFRESH,
     GALERIES_RESET,
     GALERIES_STATUS_ID_RESET,
     GALERIES_STATUS_ID_UPDATE,
@@ -61,6 +62,12 @@ export const postGalerie: (payload: {
     payload,
     type: GALERIES_POST,
 });
+export const postGalerieSubscribe: (payload: { code: string }) => Store.Action =
+    (payload) => ({
+        meta: {},
+        payload,
+        type: GALERIES_POST,
+    });
 export const putGalerie: (
     galerieId: string,
     payload: {
@@ -78,6 +85,11 @@ export const putGalerieNotification: (galerieId: string) => Store.Action = (
     meta: { query: { galerieId } },
     payload: {},
     type: GALERIES_PUT,
+});
+export const refreshGaleries: (name?: string) => Store.Action = (name) => ({
+    meta: { query: { name: name || '' } },
+    payload: {},
+    type: GALERIES_REFRESH,
 });
 export const removeGaleriesById: (payload: string) => Store.Action = (
     payload
@@ -165,6 +177,13 @@ export const setGaleriesById: (payload: {
     meta: {},
     payload,
     type: GALERIES_BY_ID_SET,
+});
+export const unsubscribeGalerie: (galerieId: string) => Store.Action = (
+    galerieId
+) => ({
+    meta: { query: { galerieId } },
+    payload: {},
+    type: GALERIES_DELETE,
 });
 export const updateGaleriesFieldsError: (payload: {
     description?: string;

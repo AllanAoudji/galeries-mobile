@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withTiming } from 'react-native-reanimated';
@@ -5,14 +6,11 @@ import { withTiming } from 'react-native-reanimated';
 import {
     BottomLoader,
     DefaultHeader,
-    EmptyMessage,
     FullScreenLoader,
     SearchBar,
 } from '#components';
 import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
-import { useComponentSize, useHideHeaderOnScroll } from '#hooks';
-
-import { Container, Header, SearchBarContainer } from './styles';
+import { useHideHeaderOnScroll } from '#hooks';
 import {
     getGaleries,
     selectGaleriesAllIds,
@@ -21,7 +19,10 @@ import {
     updateGaleriesFilterName,
 } from '#store/galeries';
 
+import EmptyScrollView from './EmptyScrollView';
 import Galeries from './Galeries';
+
+import { Container, Header, SearchBarContainer } from './styles';
 
 const GaleriesScreen = () => {
     const dispatch = useDispatch();
@@ -30,17 +31,11 @@ const GaleriesScreen = () => {
     const galeriesAllIds = useSelector(selectGaleriesAllIds);
     const galeriesNameStatus = useSelector(selectGaleriesNameStatus);
 
-    const { onLayout, size } = useComponentSize();
     const { containerStyle, headerStyle, scrollHandler, translateY } =
-        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT, true);
+        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT);
 
     const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
     const [value, setValue] = React.useState<string>(filterGaleriesName);
-
-    const paddingTop = React.useMemo(
-        () => (size ? size.height : undefined),
-        [size]
-    );
 
     const handleChangeText = React.useCallback((e: string) => {
         dispatch(updateGaleriesFilterName(e.trim()));
@@ -53,16 +48,18 @@ const GaleriesScreen = () => {
         []
     );
 
-    React.useEffect(() => {
-        if (galeriesNameStatus === 'PENDING') {
-            dispatch(getGaleries(filterGaleriesName));
-            if (filterGaleriesName !== '') setSearchFinished(false);
-        }
-    }, [filterGaleriesName, galeriesNameStatus]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (galeriesNameStatus === 'PENDING') {
+                dispatch(getGaleries(filterGaleriesName));
+                if (filterGaleriesName !== '') setSearchFinished(false);
+            }
+        }, [filterGaleriesName, galeriesNameStatus])
+    );
 
     return (
         <Container>
-            <Header onLayout={onLayout} style={containerStyle}>
+            <Header style={containerStyle}>
                 <DefaultHeader style={headerStyle} title="galeries" />
                 <SearchBarContainer>
                     <SearchBar
@@ -75,14 +72,13 @@ const GaleriesScreen = () => {
                     />
                 </SearchBarContainer>
             </Header>
-            {!!galeriesAllIds && galeriesAllIds.length > 0 && paddingTop ? (
+            {!!galeriesAllIds && galeriesAllIds.length > 0 ? (
                 <Galeries
                     allIds={galeriesAllIds}
-                    paddingTop={paddingTop}
                     scrollHandler={scrollHandler}
                 />
             ) : (
-                <EmptyMessage pt={paddingTop} text="No galerie found" />
+                <EmptyScrollView scrollHandler={scrollHandler} />
             )}
             <FullScreenLoader
                 show={

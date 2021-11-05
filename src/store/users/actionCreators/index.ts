@@ -7,16 +7,28 @@ import {
     USERS_BY_ID_UPDATE,
     USERS_CURRENT_RESET,
     USERS_CURRENT_UPDATE,
+    USERS_DELETE,
     USERS_END_RESET,
     USERS_END_UPDATE,
     USERS_GET,
+    USERS_LOADING_DELETE_RESET,
+    USERS_LOADING_DELETE_UPDATE,
     USERS_PREVIOUS_RESET,
     USERS_PREVIOUS_UPDATE,
+    USERS_REFRESH,
     USERS_RESET,
     USERS_STATUS_RESET,
     USERS_STATUS_UPDATE,
 } from '#store/users/actionTypes';
 
+export const deleteGalerieUser: (
+    galerieId: string,
+    userId: string
+) => Store.Action = (galerieId, userId) => ({
+    meta: { query: { galerieId } },
+    payload: userId,
+    type: USERS_DELETE,
+});
 export const getGalerieUsers: (galerieId: string) => Store.Action = (
     galerieId
 ) => ({
@@ -24,7 +36,9 @@ export const getGalerieUsers: (galerieId: string) => Store.Action = (
     payload: {},
     type: USERS_GET,
 });
-export const getUserId: (payload: string) => Store.Action = (payload) => ({
+export const getUserId: (payload?: string | null) => Store.Action = (
+    payload
+) => ({
     meta: {},
     payload,
     type: USERS_GET,
@@ -34,9 +48,21 @@ export const getUsers: () => Store.Action = () => ({
     payload: {},
     type: USERS_GET,
 });
+export const refreshUsers: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: USERS_REFRESH,
+});
+export const refreshGalerieUsers: (galerieId: string) => Store.Action = (
+    galerieId
+) => ({
+    meta: { query: { galerieId } },
+    payload: {},
+    type: USERS_REFRESH,
+});
 export const removeGalerieUserAllIds: (
     galerieId: string,
-    payload: string[]
+    payload: string
 ) => Store.Action = (galerieId, payload) => ({
     meta: { query: { galerieId } },
     payload,
@@ -73,6 +99,11 @@ export const resetUsersEnd: () => Store.Action = () => ({
     meta: {},
     payload: {},
     type: USERS_END_RESET,
+});
+export const resetUsersLoadingDelete: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: USERS_LOADING_DELETE_RESET,
 });
 export const resetUsersPrevious: () => Store.Action = () => ({
     meta: {},
@@ -135,6 +166,12 @@ export const updateUsersEnd: (payload: boolean) => Store.Action = (
     payload,
     type: USERS_END_UPDATE,
 });
+export const updateUsersLoadingDelete: (payload: Store.Status) => Store.Action =
+    (payload) => ({
+        meta: {},
+        payload,
+        type: USERS_LOADING_DELETE_UPDATE,
+    });
 export const updateGalerieUsersPrevious: (
     galerieId: string,
     payload: string

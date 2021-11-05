@@ -26,7 +26,9 @@ const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
         if (frameId) {
             const end = getState().comments.end[frameId] || false;
             const status = getState().comments.status[frameId] || 'PENDING';
-            if (end || status.includes('LOADING')) return;
+            if (end) return;
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
 
             const previous = getState().comments.previous[frameId];
             const newStatus =

@@ -127,17 +127,21 @@ const successGetProfilePictures = async (
     if (!allIds.length || typeof id !== 'string') return;
 
     dispatch(setProfilePicturesById(byId));
-    if (allIds.length) {
-        const previousProfilePictureId = allIds[allIds.length - 1];
-        const previous = byId[previousProfilePictureId].autoIncrementId;
 
-        dispatch(setProfilePicturesAllId(allIds));
-        dispatch(updateProfilePicturesEnd(allIds.length < 20));
-        dispatch(updateProfilePicturesPrevious(previous));
-        dispatch(updateProfilePicturesStatus('', 'SUCCESS'));
-    } else if (id && userId) {
+    if (id && userId) {
         dispatch(updateProfilePicturesId(userId, id));
         dispatch(updateProfilePicturesStatus(userId, 'SUCCESS'));
+    } else {
+        if (profilePicture === undefined) {
+            const previousProfilePictureId = allIds[allIds.length - 1];
+            const previous = byId[previousProfilePictureId].autoIncrementId;
+
+            dispatch(setProfilePicturesAllId(allIds));
+            dispatch(updateProfilePicturesEnd(allIds.length < 20));
+            dispatch(updateProfilePicturesPrevious(previous));
+        }
+
+        dispatch(updateProfilePicturesStatus('', 'SUCCESS'));
     }
 };
 

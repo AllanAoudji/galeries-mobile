@@ -13,8 +13,8 @@ const framesLoadingPutReducer = (
         case FRAMES_LOADING_PUT_RESET:
             return initialState;
         case FRAMES_LOADING_PUT_UPDATE:
-            if (checkIfStatus(action.payload)) return action.payload;
-            return state;
+            if (!checkIfStatus(action.payload)) return state;
+            return action.payload;
         default:
             return state;
     }

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
 import {
     interpolate,
     runOnJS,
@@ -21,15 +20,20 @@ import {
 } from './styles';
 
 type Props = {
+    content?: React.ComponentType;
     handleClose: () => void;
     onPressDelete: () => void;
     open: boolean;
     title: string;
 };
 
-const DeleteModal = ({ handleClose, onPressDelete, open, title }: Props) => {
-    const dimension = useWindowDimensions();
-
+const DeleteModal = ({
+    content: Content,
+    handleClose,
+    onPressDelete,
+    open,
+    title,
+}: Props) => {
     const [display, setDisplay] = React.useState<boolean>(open);
 
     const visible = useSharedValue(display ? 1 : 0);
@@ -65,10 +69,11 @@ const DeleteModal = ({ handleClose, onPressDelete, open, title }: Props) => {
     if (!display) return null;
 
     return (
-        <Overlay height={dimension.height} style={style}>
+        <Overlay style={style}>
             <Background onPress={handleClose} />
             <Modal>
                 <Typography fontSize={24}>{title}</Typography>
+                {Content && <Content />}
                 <ButtonsContainer>
                     <ButtonContainer>
                         <CustomButton

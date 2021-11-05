@@ -13,6 +13,7 @@ import {
     POST,
     PREVIOUS,
     PUT,
+    REFRESH,
     REMOVE,
     RESET,
     SET,
@@ -47,6 +48,7 @@ export const GALERIES_POST = `${GALERIES} ${POST}`;
 export const GALERIES_PREVIOUS_RESET = `${GALERIES}${PREVIOUS} ${RESET}`;
 export const GALERIES_PREVIOUS_UPDATE = `${GALERIES}${PREVIOUS} ${UPDATE}`;
 export const GALERIES_PUT = `${GALERIES} ${PUT}`;
+export const GALERIES_REFRESH = `${GALERIES} ${REFRESH}`;
 export const GALERIES_RESET = `${GALERIES} ${RESET}`;
 export const GALERIES_STATUS_ID_RESET = `${GALERIES}${STATUS_ID} ${RESET}`;
 export const GALERIES_STATUS_ID_UPDATE = `${GALERIES}${STATUS_ID} ${UPDATE}`;

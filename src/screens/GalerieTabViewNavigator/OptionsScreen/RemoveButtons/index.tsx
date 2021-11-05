@@ -10,7 +10,7 @@ type Props = {
 const RemoveButtons = ({ galerie }: Props) => {
     if (galerie.role === 'admin')
         return <DeleteGalerieButton galerie={galerie} />;
-    return <UnsubscribeButton />;
+    return <UnsubscribeButton galerie={galerie} />;
 };
 
 export default RemoveButtons;

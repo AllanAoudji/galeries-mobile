@@ -52,7 +52,10 @@ declare global {
                 Likes: undefined;
                 Notifications: undefined;
                 Profile: undefined;
+                ProfilePicture: undefined;
+                SubscribeGalerie: undefined;
                 UpdateFrame: undefined;
+                UserScreen: undefined;
             };
             type CommentsNavigationProp = BottomTabNavigationProp<
                 ParamList,
@@ -107,10 +110,19 @@ declare global {
                 ParamList,
                 'Profile'
             >;
+            type ProfilePictureNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'ProfilePicture'
+            >;
+            type SubscribeGalerieNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'SubscribeGalerie'
+            >;
             type UpdateFrameProp = BottomTabNavigationProp<
                 ParamList,
                 'UpdateFrame'
             >;
+            type UserScreen = BottomTabNavigationProp<ParamList, 'UserScreen'>;
         }
         namespace DesktopDrawer {
             type ParamList = {
@@ -178,7 +190,9 @@ declare global {
             | '[FORGOT YOUR PASSWORD]'
             | '[FRAMES]'
             | '[GALERIES]'
+            | '[GALERIE BLACKLISTS]'
             | '[GALERIE PICTURES]'
+            | '[GALERIE ROLES]'
             | '[INVITATIONS]'
             | '[LIKES]'
             | '[LOADING]'
@@ -195,6 +209,7 @@ declare global {
             entity?: Entity;
             method?: Method;
             params?: string;
+            refresh?: boolean;
             query?: { [key: string]: string };
             url?: string;
         };
@@ -253,6 +268,18 @@ declare global {
                     id: { [key: string]: Store.Status };
                 };
             };
+            galerieBlackLists: {
+                allIds: { [key: string]: string[] };
+                byId: { [key: string]: Store.Models.GalerieBlackList };
+                current: string | null;
+                end: { [key: string]: boolean };
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                };
+                previous: { [key: string]: string };
+                status: { [key: string]: Store.Status };
+            };
             galeriePictures: {
                 allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.GaleriePicture };
@@ -261,6 +288,12 @@ declare global {
                     put: Store.Status;
                 };
                 status: { [key: string]: Store.Status };
+            };
+            galerieRoles: {
+                byId: { [key: string]: { [key: string]: Store.Role } };
+                loading: {
+                    put: Store.Status;
+                };
             };
             invitations: {
                 allIds: { [key: string]: string[] };
@@ -324,6 +357,9 @@ declare global {
                 byId: { [key: string]: Store.Models.User };
                 current: string | null;
                 end: { [key: string]: boolean };
+                loading: {
+                    delete: Store.Status;
+                };
                 previous: { [key: string]: string };
                 status: { [key: string]: Store.Status };
             };
@@ -334,6 +370,7 @@ declare global {
             | 'INITIAL_LOADING'
             | 'LOADING'
             | 'PENDING'
+            | 'REFRESH'
             | 'SUCCESS';
         namespace Models {
             type Comment = {
@@ -361,6 +398,7 @@ declare global {
                 userId: string;
             };
             type Galerie = {
+                adminId: string | null;
                 allowNotification: boolean;
                 createdAt: Date;
                 defaultCoverPicture: string;
@@ -371,6 +409,15 @@ declare global {
                 name: string;
                 numOfUsers: number;
                 role: Role;
+            };
+            type GalerieBlackList = {
+                autoIncrementId: string;
+                createdAt: string;
+                createdById: string;
+                galerieId: string;
+                id: string;
+                userId: string;
+                updatedAt: string;
             };
             type GaleriePicture = {
                 createdAt: string;
@@ -477,6 +524,7 @@ declare global {
         type Pictograms =
             | 'add/subscribe-fill'
             | 'add/subscribe-stroke'
+            | 'admin-role'
             | 'arrow-left'
             | 'arrow-right'
             | 'camera-fill'
@@ -501,6 +549,7 @@ declare global {
             | 'logout-right'
             | 'moderation-fill'
             | 'moderation-stroke'
+            | 'moderator-role'
             | 'option-horizontal'
             | 'option-vertical'
             | 'plus'
@@ -534,7 +583,7 @@ declare global {
             type Button = 'fill' | 'stroke';
             type Logo = 'large' | 'largest' | 'normal' | 'small' | 'smallest';
             type Pictogram = 'large' | 'normal' | 'small';
-            type ProfilePicture = 'small' | 'normal' | 'large';
+            type ProfilePicture = 'small' | 'normal' | 'large' | 'huge';
         }
     }
 }

@@ -26,8 +26,7 @@ const DeleteFrameButton = ({ frame, me }: Props) => {
     }, [frame]);
 
     if (!galerie || !me) return null;
-    if (galerie.role === 'user') return null;
-    if (frame.userId !== me.id) return null;
+    if (galerie.role === 'user' && frame.userId !== me.id) return null;
 
     return (
         <Button onPress={handlePress}>

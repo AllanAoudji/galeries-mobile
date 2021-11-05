@@ -11,6 +11,7 @@ const dispatchDeleteInvitation: (
     dispatch(
         apiRequest({
             meta: {
+                query: { invitationId },
                 entity: INVITATIONS,
                 method: 'DELETE',
                 url: `${END_POINT.INVITATIONS}/${invitationId}`,

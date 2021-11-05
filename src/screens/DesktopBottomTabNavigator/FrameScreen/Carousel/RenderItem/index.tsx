@@ -9,6 +9,7 @@ import {
 } from '#store/galeriePictures';
 
 import { Container, ImageStyled } from './styles';
+import { selectGalerie } from '#store/galeries';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -24,7 +25,11 @@ const RenderItem = ({ frame, item, onPress }: Props) => {
         [frame]
     );
     const coverPictureId = useSelector(coverPictureIdSelector);
-
+    const galerieSelector = React.useMemo(
+        () => selectGalerie(frame.galerieId),
+        [frame]
+    );
+    const galerie = useSelector(galerieSelector);
     const galeriePictureSelector = React.useMemo(
         () => selectGaleriePicture(item),
         [item]
@@ -55,11 +60,13 @@ const RenderItem = ({ frame, item, onPress }: Props) => {
                     bottom: 45,
                 }}
             >
-                <CoverPictureBookMark
-                    frame={frame}
-                    galeriePictureId={item}
-                    coverPictureId={coverPictureId}
-                />
+                {galerie && galerie.role !== 'user' && (
+                    <CoverPictureBookMark
+                        frame={frame}
+                        galeriePictureId={item}
+                        coverPictureId={coverPictureId}
+                    />
+                )}
             </View>
         </Container>
     );

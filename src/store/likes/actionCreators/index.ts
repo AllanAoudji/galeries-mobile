@@ -10,6 +10,7 @@ import {
     LIKES_POST,
     LIKES_PREVIOUS_RESET,
     LIKES_PREVIOUS_SET,
+    LIKES_REFRESH,
     LIKES_RESET,
     LIKES_STATUS_RESET,
     LIKES_STATUS_SET,
@@ -29,6 +30,13 @@ export const postLike: (frameId: string) => Store.Action = (frameId) => ({
     meta: { query: { frameId } },
     payload: {},
     type: LIKES_POST,
+});
+export const refreshFrameLikes: (frameId: string) => Store.Action = (
+    frameId
+) => ({
+    meta: { query: { frameId } },
+    payload: {},
+    type: LIKES_REFRESH,
 });
 export const removeLikesById: (payload: string) => Store.Action = (
     payload
@@ -96,7 +104,7 @@ export const setLikesPrevious: (
     payload,
     type: LIKES_PREVIOUS_SET,
 });
-export const setLikesStatus: (
+export const updateLikesStatus: (
     frameId: string,
     payload: Store.Status
 ) => Store.Action = (frameId, payload) => ({

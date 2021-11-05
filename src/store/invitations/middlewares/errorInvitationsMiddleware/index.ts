@@ -9,7 +9,7 @@ import errorGetMethod from './errorGetMethod';
 import errorPostMethod from './errorPostMethod';
 
 const errorInvitationsMiddleware: Middleware<{}, Store.Reducer> =
-    ({ dispatch }) =>
+    ({ dispatch, getState }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
@@ -18,13 +18,13 @@ const errorInvitationsMiddleware: Middleware<{}, Store.Reducer> =
 
         switch (action.meta.method) {
             case 'DELETE':
-                errorDeleteMethod(dispatch, action);
+                errorDeleteMethod(dispatch, getState, action);
                 break;
             case 'GET':
-                errorGetMethod(dispatch, action);
+                errorGetMethod(dispatch, getState, action);
                 break;
             case 'POST':
-                errorPostMethod(dispatch, action);
+                errorPostMethod(dispatch, getState, action);
                 break;
             default:
                 errorDefaultMethod(dispatch);

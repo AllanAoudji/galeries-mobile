@@ -16,6 +16,7 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
+
         if (action.type !== FRAMES_GET) return;
 
         const galerieId = action.meta.query
@@ -27,7 +28,9 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
         else if (galerieId) {
             const end = getState().frames.end[galerieId] || false;
             const status = getState().frames.status[galerieId] || 'PENDING';
-            if (end || status.includes('LOADING')) return;
+            if (end) return;
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
 
             const newStatus: Store.Status =
                 status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';
@@ -38,7 +41,9 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
         } else {
             const end = getState().frames.end[''];
             const status = getState().frames.status[''] || 'PENDING';
-            if (end || status.includes('LOADING')) return;
+            if (end) return;
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
 
             const newStatus: Store.Status =
                 status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';

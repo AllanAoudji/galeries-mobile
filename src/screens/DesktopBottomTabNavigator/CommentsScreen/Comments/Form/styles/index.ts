@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+import { GLOBAL_STYLE } from '#helpers/constants';
+
 type TextInputStyledProps = {
     height: number;
     loading: boolean;
@@ -12,6 +14,7 @@ const Container = styled.View`
     padding-left: ${({ theme }) => theme.spacings.small};
     position: absolute;
     right: 0;
+    min-height: ${() => `${GLOBAL_STYLE.COMMENTS_FOOTER_HEIGHT}px`};
 `;
 const FormContainer = styled.View`
     align-items: center;

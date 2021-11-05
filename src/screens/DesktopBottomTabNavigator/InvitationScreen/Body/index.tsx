@@ -6,6 +6,7 @@ import QRCode from 'react-native-qrcode-svg';
 import { useTheme } from 'styled-components';
 
 import { Pictogram, Typography } from '#components';
+import { PRE_CODE } from '#helpers/constants';
 
 import {
     Container,
@@ -54,7 +55,7 @@ const Body = ({ invitation }: Props) => {
                     backgroundColor={theme.colors.secondary}
                     color={theme.colors.black}
                     size={150}
-                    value={invitation.code}
+                    value={`${PRE_CODE}${invitation.code}`}
                 />
             </Pressable>
             <InformationsContainer>

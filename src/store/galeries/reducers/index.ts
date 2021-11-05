@@ -10,8 +10,6 @@ import galeriesLoadingReducer from './galeriesLoadingReducer';
 import galeriesPreviousReducer from './galeriesPreviousReducer';
 import galeriesStatusReducer from './galeriesStatusReducer';
 
-// TODO: loading reducers
-
 // eslint-disable-next-line import/prefer-default-export
 export const galeriesReducer = combineReducers({
     allIds: galeriesAllIdsReducer,

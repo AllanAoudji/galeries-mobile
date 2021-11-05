@@ -10,7 +10,6 @@ import {
     GalerieTabbarScreenContainer,
     FullScreenLoader,
     BottomLoader,
-    EmptyMessage,
 } from '#components';
 import {
     getGalerieUsers,
@@ -18,25 +17,17 @@ import {
     selectCurrentGalerieUsersStatus,
 } from '#store/users';
 
+import EmptyScrollView from './EmptyScrollView';
 import Users from './Users';
 
 type Props = {
     current: boolean;
     editScrollY: (offsetY: number) => void;
     galerie?: Store.Models.Galerie;
-    maxScroll: number;
-    paddingTop: number;
     scrollY: Animated.SharedValue<number>;
 };
 
-const UsersScreen = ({
-    current,
-    editScrollY,
-    galerie,
-    maxScroll,
-    paddingTop,
-    scrollY,
-}: Props) => {
+const UsersScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
     const dispatch = useDispatch();
     const flatListRef = React.useRef<FlatList | null>(null);
 
@@ -78,25 +69,21 @@ const UsersScreen = ({
 
     return (
         <GalerieTabbarScreenContainer>
-            {!!paddingTop && (
-                <>
-                    {usersAllIds && usersAllIds.length > 0 ? (
-                        <Users
-                            allIds={usersAllIds}
-                            current={current}
-                            editScrollY={editScrollY}
-                            galerie={galerie}
-                            maxScroll={maxScroll}
-                            paddingTop={paddingTop}
-                            scrollY={scrollY}
-                        />
-                    ) : (
-                        <EmptyMessage
-                            pt={paddingTop}
-                            text="No other user follow this galerie yet."
-                        />
-                    )}
-                </>
+            {usersAllIds && usersAllIds.length > 0 ? (
+                <Users
+                    allIds={usersAllIds}
+                    current={current}
+                    editScrollY={editScrollY}
+                    galerie={galerie}
+                    scrollY={scrollY}
+                />
+            ) : (
+                <EmptyScrollView
+                    current={current}
+                    editScrollY={editScrollY}
+                    galerie={galerie}
+                    scrollY={scrollY}
+                />
             )}
             <FullScreenLoader show={showFullScreenLoader} />
             <BottomLoader show={showBottomLoader} bottom="huge" />

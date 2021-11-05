@@ -5,6 +5,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { GalerieCoverPicture, Pictogram, Typography } from '#components';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 import {
     Container,
@@ -15,27 +16,26 @@ import {
 
 type Props = {
     galerie?: Store.Models.Galerie;
-    maxScroll: number;
     scrollY: Animated.SharedValue<number>;
 };
 
-const Header = ({ galerie, maxScroll, scrollY }: Props) => {
+const Header = ({ galerie, scrollY }: Props) => {
     const containerStyle = useAnimatedStyle(() => {
         const borderBottomRightRadius = interpolate(
             scrollY.value,
-            [0, maxScroll / 2, maxScroll],
+            [0, GalerieTabViewMaxScroll / 2, GalerieTabViewMaxScroll],
             [45, 45, 0]
         );
         return { borderBottomRightRadius };
-    }, [maxScroll]);
+    }, []);
     const titleContainerStyle = useAnimatedStyle(() => {
         const opacity = interpolate(
             scrollY.value,
-            [0, maxScroll / 2, maxScroll],
+            [0, GalerieTabViewMaxScroll / 2, GalerieTabViewMaxScroll],
             [1, 1, 0]
         );
         return { opacity };
-    }, [maxScroll]);
+    }, []);
 
     return (
         <Container style={containerStyle}>

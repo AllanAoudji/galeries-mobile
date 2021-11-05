@@ -13,8 +13,8 @@ export const DeleteFrameModalContext = React.createContext<{
 export const DeleteFrameModalProvider: React.FC<{}> = ({ children }) => {
     const dispatch = useDispatch();
 
-    const [openModal, setOpenModal] = React.useState<boolean>(false);
     const [currentFrame, setCurrentFrame] = React.useState<string | null>(null);
+    const [openModal, setOpenModal] = React.useState<boolean>(false);
 
     const handleCloseModal = React.useCallback(() => {
         setCurrentFrame(null);

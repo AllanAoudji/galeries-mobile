@@ -14,13 +14,6 @@ const LikesScreen = ({ navigation }: Props) => {
     const currentFrame = useSelector(selectCurrentFrame);
     const currentFrameLikesAllIds = useSelector(selectCurrentFrameLikesAllIds);
 
-    React.useEffect(() => {
-        if (!currentFrame) {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.navigate('Home');
-        }
-    }, [currentFrame, navigation]);
-
     useFocusEffect(
         React.useCallback(() => {
             if (!currentFrame) {
@@ -28,6 +21,13 @@ const LikesScreen = ({ navigation }: Props) => {
                 else navigation.navigate('Home');
             }
         }, [])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (currentFrameLikesAllIds && currentFrameLikesAllIds.length < 1)
+                if (navigation.canGoBack()) navigation.goBack();
+                else navigation.navigate('Home');
+        }, [currentFrameLikesAllIds])
     );
 
     if (!currentFrame) return null;

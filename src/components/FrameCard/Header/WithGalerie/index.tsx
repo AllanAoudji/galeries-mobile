@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProfilePicture from '#components/ProfilePicture';
 import GalerieCoverPicture from '#components/GalerieCoverPicture';
 import Typography from '#components/Typography';
-import { selectGalerie, updateGaleriesCurrent } from '#store/galeries';
+import {
+    getGalerieId,
+    selectGalerie,
+    updateGaleriesCurrent,
+} from '#store/galeries';
 import { selectUser } from '#store/users';
 
 import {
@@ -39,6 +43,7 @@ const WithGalerie = ({ frame }: Props) => {
 
     const handlePressGalerie = React.useCallback(() => {
         dispatch(updateGaleriesCurrent(frame.galerieId));
+        dispatch(getGalerieId(frame.galerieId));
         navigation.navigate('Galerie');
     }, [navigation]);
 

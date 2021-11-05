@@ -1,40 +1,75 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
+    FlatList,
     ListRenderItemInfo,
+    RefreshControl,
+    StatusBar,
     StyleProp,
     StyleSheet,
+    useWindowDimensions,
     ViewStyle,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Animated from 'react-native-reanimated';
 
+import { useTheme } from 'styled-components/native';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { AnimatedFlatList } from '#components';
-import { getFrames } from '#store/frames';
+import { getFrames, refreshFrames, selectFramesStatus } from '#store/frames';
 
 import RenderItem from './RenderItem';
 
 type Props = {
     allIds: string[];
-    paddingTop: number;
     scrollHandler: any;
 };
 
+const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
+const Frames = ({ allIds, scrollHandler }: Props) => {
+    const dimension = useWindowDimensions();
     const dispatch = useDispatch();
+    const theme = useTheme();
 
-    const paddingTopStyle = React.useMemo(() => ({ paddingTop }), [paddingTop]);
+    const loading = useSelector(selectFramesStatus);
+
+    const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+    const colors = React.useMemo(
+        () => [
+            theme.colors.primary,
+            theme.colors['primary-dark'],
+            theme.colors['primary-light'],
+        ],
+        []
+    );
+    const styleProps = React.useMemo(
+        () => ({
+            minHeight: dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT,
+        }),
+        []
+    );
 
     const handleEndReach = React.useCallback(() => dispatch(getFrames()), []);
+    const handleRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        dispatch(refreshFrames());
+    }, []);
     const keyExtractor = React.useCallback((data: string) => data, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
+        }, [loading, refreshing])
+    );
 
     return (
         <AnimatedFlatList
             contentContainerStyle={
-                style(paddingTopStyle).animatedFlatListContentContainerStyle
+                style(styleProps).animatedFlatListContentContainerStyle
             }
             data={allIds}
             extraData={allIds}
@@ -44,6 +79,16 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
+            refreshControl={
+                <RefreshControl
+                    colors={colors}
+                    onRefresh={handleRefresh}
+                    progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+                    progressBackgroundColor={theme.colors['secondary-light']}
+                    refreshing={refreshing}
+                />
+            }
+            removeClippedSubviews={true}
             renderItem={renderItem}
             scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}
@@ -53,12 +98,14 @@ const Frames = ({ allIds, paddingTop, scrollHandler }: Props) => {
     );
 };
 
-const style: ({ paddingTop }: { paddingTop: number }) => {
+const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ paddingTop }) => ({
+} = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
+        marginTop: StatusBar.currentHeight || 0,
+        minHeight,
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-        paddingTop,
+        paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
     },
 }));
 

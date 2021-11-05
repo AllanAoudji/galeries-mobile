@@ -18,6 +18,7 @@ import {
     INVITATIONS_POST,
     INVITATIONS_PREVIOUS_RESET,
     INVITATIONS_PREVIOUS_UPDATE,
+    INVITATIONS_REFRESH,
     INVITATIONS_RESET,
     INVITATIONS_STATUS_RESET,
     INVITATIONS_STATUS_UPDATE,
@@ -49,6 +50,13 @@ export const postInvitations: (
     meta: { query: { galerieId } },
     payload,
     type: INVITATIONS_POST,
+});
+export const refreshGalerieInvitations: (galerieId: string) => Store.Action = (
+    galerieId
+) => ({
+    meta: { query: { galerieId } },
+    payload: {},
+    type: INVITATIONS_REFRESH,
 });
 export const removeGalerieInvitationsAllIds: (
     galerieId: string,

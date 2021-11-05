@@ -16,7 +16,7 @@ const WithoutGalerie = ({ frame }: Props) => {
     return (
         <>
             <ProfilePicture mr="smallest" user={user} />
-            <Typography fontFamily="light">posted by</Typography>
+            <Typography fontFamily="light">posted by </Typography>
             <Typography>{user ? user.pseudonym : 'user not found'}</Typography>
         </>
     );

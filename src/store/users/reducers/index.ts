@@ -4,6 +4,7 @@ import usersAllIdsReducer from './usersAllIdsReducer';
 import usersByIdReducer from './usersByIdReducer';
 import usersCurrentReducer from './usersCurrentReducer';
 import usersEndReducer from './usersEndReducer';
+import usersLoadingReducer from './usersLoadingReducer';
 import usersPreviousReducer from './usersPreviousReducer';
 import usersStatusReducer from './usersStatusReducer';
 
@@ -13,6 +14,7 @@ export const usersReducer = combineReducers({
     byId: usersByIdReducer,
     current: usersCurrentReducer,
     end: usersEndReducer,
+    loading: usersLoadingReducer,
     previous: usersPreviousReducer,
     status: usersStatusReducer,
 });

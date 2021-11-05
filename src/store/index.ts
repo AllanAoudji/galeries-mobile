@@ -6,6 +6,11 @@ import { commentsMiddlewares, commentsReducer } from './comments';
 import { forgotYourPasswordReducer } from './forgotYourPassword';
 import { framesMiddlewares, framesReducer } from './frames';
 import { galeriesMiddleware, galeriesReducer } from './galeries';
+import {
+    galerieBlackListsMiddlewares,
+    galerieBlackListsReducer,
+} from './galerieBlackLists';
+import { galerieRolesMiddlewares, galerieRolesReducer } from './galerieRoles';
 import { invitationsMiddlewares, invitationsReducer } from './invitations';
 import {
     galeriePicturesMiddlwares,
@@ -15,6 +20,7 @@ import { likesMiddlewares, likesReducers } from './likes';
 import { loginMiddlewares, loginReducer } from './login';
 import { logoutMiddlewares, logoutReducer } from './logout';
 import { meMiddlewares, meReducer } from './me';
+import { notificationReducer } from './notification';
 import {
     profilePicturesMiddlewares,
     profilePicturesReducer,
@@ -27,18 +33,19 @@ const reducers = combineReducers({
     forgotYourPassword: forgotYourPasswordReducer,
     frames: framesReducer,
     galeries: galeriesReducer,
+    galerieBlackLists: galerieBlackListsReducer,
     galeriePictures: galeriePicturesReducer,
+    galerieRoles: galerieRolesReducer,
     invitations: invitationsReducer,
     likes: likesReducers,
     login: loginReducer,
     logout: logoutReducer,
     me: meReducer,
+    notification: notificationReducer,
     profilePictures: profilePicturesReducer,
     signin: signinReducer,
     users: usersReducer,
 });
-
-// GaleriePictures AllIds should by { [frameId: string]: string[] }
 
 export default createStore(
     reducers,
@@ -47,7 +54,9 @@ export default createStore(
             ...commentsMiddlewares,
             ...framesMiddlewares,
             ...galeriesMiddleware,
+            ...galerieBlackListsMiddlewares,
             ...galeriePicturesMiddlwares,
+            ...galerieRolesMiddlewares,
             ...invitationsMiddlewares,
             ...likesMiddlewares,
             ...loginMiddlewares,

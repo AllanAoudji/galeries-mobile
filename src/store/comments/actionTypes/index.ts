@@ -15,6 +15,7 @@ import {
     STATUS,
     END,
     PREVIOUS,
+    REFRESH,
 } from '#store/genericActionTypes';
 
 export const COMMENTS_ALL_IDS_RESET = `${COMMENTS}${ALL_IDS} ${RESET}`;
@@ -36,6 +37,7 @@ export const COMMENTS_LOADING_POST_UPDATE = `${COMMENTS}${LOADING_POST} ${UPDATE
 export const COMMENTS_POST = `${COMMENTS} ${POST}`;
 export const COMMENTS_PREVIOUS_RESET = `${COMMENTS}${PREVIOUS} ${RESET}`;
 export const COMMENTS_PREVIOUS_UPDATE = `${COMMENTS}${PREVIOUS} ${UPDATE}`;
+export const COMMENTS_REFRESH = `${COMMENTS} ${REFRESH}`;
 export const COMMENTS_RESET = `${COMMENTS} ${RESET}`;
 export const COMMENTS_STATUS_RESET = `${COMMENTS}${STATUS} ${RESET}`;
 export const COMMENTS_STATUS_UPDATE = `${COMMENTS}${STATUS} ${UPDATE}`;
