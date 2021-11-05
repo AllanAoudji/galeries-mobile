@@ -40,14 +40,20 @@ export default function App() {
 }
 
 // TODO:
-// Clean form when not focused
-// Should have a ui.reducer
-// with galerieIdSelected
-// when click on a galerieModal )>
-// dispatch(setGalerieIdSelected(id))
-// and a selector
-// return byId(state.ui.galerieIdSelector)
-// so no need route.params.id
-
-// post comment comment return sequelize error
-// comment.numOfComment === {} when get Comments
+// Comments refresh
+// GalerieCard role and hasNewFrames
+// BlackListCard
+// UsersBlackList Screen
+// Check if delete/blackList user delete all is likes/frame/invitation/comments are deleted
+// Check if allow to delete Galerie if user is subscribe to it.
+// Reports
+// Notifications Screen
+// Profile Screen
+// Form Scrollable
+// Change email/password/delete account
+// Tickets
+// Show ticket
+// BetaKey
+// Better post frame
+// Update galerie
+// Forgot password
