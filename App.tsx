@@ -40,7 +40,6 @@ export default function App() {
 }
 
 // TODO:
-// GalerieCard role and hasNewFrames
 // BlackListCard
 // UsersBlackList Screen
 // Check if delete/blackList user delete all is likes/frame/invitation/comments are deleted

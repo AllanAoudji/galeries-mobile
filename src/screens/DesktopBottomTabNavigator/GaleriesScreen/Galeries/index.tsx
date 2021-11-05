@@ -75,8 +75,8 @@ const Galeries = ({ allIds, scrollHandler }: Props) => {
     );
     const getItemLayout = React.useCallback(
         (_, index) => ({
-            length: GLOBAL_STYLE.GALERIE_MODAL_HEIGHT,
-            offset: GLOBAL_STYLE.GALERIE_MODAL_HEIGHT * index,
+            length: GLOBAL_STYLE.GALERIE_CARD_HEIGHT,
+            offset: GLOBAL_STYLE.GALERIE_CARD_HEIGHT * index,
             index,
         }),
         []

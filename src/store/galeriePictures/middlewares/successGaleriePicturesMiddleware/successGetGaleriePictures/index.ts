@@ -15,6 +15,7 @@ const successGetGaleriePictures = async (
     getState: () => Store.Reducer,
     action: Store.Action
 ) => {
+    console.log(action);
     if (
         typeof action.payload !== 'object' &&
         typeof action.payload.data !== 'object'
@@ -145,6 +146,7 @@ const successGetGaleriePictures = async (
         (typeof id === 'string' || id === null) &&
         typeof galerieId === 'string'
     ) {
+        console.log('should dispatch cover picture');
         dispatch(updateGaleriePicturesStatus(galerieId, 'SUCCESS'));
         dispatch(updateGaleriePicturesId(galerieId, id));
     }
