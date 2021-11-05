@@ -53,6 +53,7 @@ const RenderItem = ({ index, item }: Props) => {
         <Pressable onPress={handlePress}>
             <UserCard
                 color={index % 2 ? 'secondary' : 'secondary-light'}
+                galerie={galerie}
                 role={role}
                 user={user}
             />

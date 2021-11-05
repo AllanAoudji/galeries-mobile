@@ -16,9 +16,15 @@ const Container = styled.View<ContainerStyle>`
 const InfoContainer = styled.View`
     margin-left: ${({ theme }) => theme.spacings.smallest};
 `;
+const InnerContainer = styled.View`
+    align-items: center;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+`;
 const UserNameContainer = styled.View`
     align-items: center;
     flex-direction: row;
 `;
 
-export { Container, InfoContainer, UserNameContainer };
+export { Container, InfoContainer, InnerContainer, UserNameContainer };

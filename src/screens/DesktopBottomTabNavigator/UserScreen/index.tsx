@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import { DeleteGalerieUserModalProvider } from '#contexts/DeleteGalerieUserModalContext';
 import { selectCurrentGalerie } from '#store/galeries';
 import { selectCurrentUser } from '#store/users';
 
@@ -31,12 +30,10 @@ const UserScreen = ({ navigation }: Props) => {
     if (!galerie || !user) return null;
 
     return (
-        <DeleteGalerieUserModalProvider>
-            <Container>
-                <Header galerie={galerie} user={user} />
-                <Body galerie={galerie} user={user} />
-            </Container>
-        </DeleteGalerieUserModalProvider>
+        <Container>
+            <Header galerie={galerie} user={user} />
+            <Body galerie={galerie} user={user} />
+        </Container>
     );
 };
 
