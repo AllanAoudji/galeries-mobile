@@ -25,6 +25,7 @@ import ProfilePictureScreen from './ProfilePictureScreen';
 import SubscribeGalerieScreen from './SubscribeGalerieScreen';
 import TabBar from './TabBar';
 import UpdateFrameScreen from './UpdateFrameScreen';
+import UserGalerieBlackListScreen from './UserGalerieBlackListScreen';
 import UserScreen from './UserScreen';
 
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
@@ -87,6 +88,10 @@ const DesktopBottomTabNavigator = () => {
                 name="SubscribeGalerie"
             />
             <Tab.Screen component={UpdateFrameScreen} name="UpdateFrame" />
+            <Tab.Screen
+                component={UserGalerieBlackListScreen}
+                name="UserGalerieBlackList"
+            />
             <Tab.Screen component={UserScreen} name="UserScreen" />
         </Tab.Navigator>
     );
