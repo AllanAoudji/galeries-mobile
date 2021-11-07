@@ -23,4 +23,4 @@ const ReportProfilePictureButton = ({ hide }: Props) => {
     );
 };
 
-export default React.memo(ReportProfilePictureButton);
+export default ReportProfilePictureButton;

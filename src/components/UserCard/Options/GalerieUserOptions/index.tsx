@@ -60,7 +60,7 @@ const GalerieUserOptions = ({ galerie, role, user }: Props) => {
                 <ChangeRoleButtom
                     galerie={galerie}
                     role={role}
-                    hide={!hideChangeRoleButton}
+                    hide={hideChangeRoleButton}
                     user={user}
                 />
                 <DeleteBanButton
@@ -82,10 +82,9 @@ const GalerieUserOptions = ({ galerie, role, user }: Props) => {
         user,
     ]);
 
-    const handlePress = React.useCallback(
-        () => openBottomSheet(bottomSheetContent),
-        [bottomSheetContent]
-    );
+    const handlePress = React.useCallback(() => {
+        openBottomSheet(bottomSheetContent);
+    }, [bottomSheetContent, openBottomSheet]);
 
     if (hideOptionsPictogram) return null;
 
@@ -95,6 +94,7 @@ const GalerieUserOptions = ({ galerie, role, user }: Props) => {
             pb="smallest"
             pl="small"
             pt="smallest"
+            pr="small"
             size="small"
             variant="option-vertical"
         />

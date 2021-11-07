@@ -28,4 +28,4 @@ const DeleteBanButton = ({ galerie, hide, user }: Props) => {
     return <BottomSheetButton onPress={handlePress} title="delete/ban user" />;
 };
 
-export default React.memo(DeleteBanButton);
+export default DeleteBanButton;

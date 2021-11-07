@@ -11,7 +11,7 @@ const Container = styled.View<ContainerStyle>`
     background-color: ${({ color, theme }) => theme.colors[color]};
     flex-direction: row;
     height: ${() => `${GLOBAL_STYLE.USER_CARD_HEIGHT}px`};
-    padding: ${({ theme }) => `0 ${theme.spacings.small}`};
+    padding-left: ${({ theme }) => theme.spacings.small};
 `;
 const InfoContainer = styled.View`
     margin-left: ${({ theme }) => theme.spacings.smallest};

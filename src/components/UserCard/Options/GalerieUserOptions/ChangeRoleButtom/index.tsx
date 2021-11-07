@@ -34,4 +34,4 @@ const ChangeRoleBottom = ({ galerie, hide, role, user }: Props) => {
     );
 };
 
-export default React.memo(ChangeRoleBottom);
+export default ChangeRoleBottom;
