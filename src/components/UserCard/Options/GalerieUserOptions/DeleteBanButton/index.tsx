@@ -8,26 +8,24 @@ import { selectUsersLoadingDelete } from '#store/users';
 
 type Props = {
     galerie: Store.Models.Galerie;
-    role: Store.Role;
+    hide: boolean;
     user: Store.Models.User;
 };
 
-const DeleteBanButton = ({ galerie, role, user }: Props) => {
+const DeleteBanButton = ({ galerie, hide, user }: Props) => {
     const { closeBottomSheet } = React.useContext(BottomSheetContext);
     const { handleOpenModal } = React.useContext(DeleteGalerieUserModalContext);
 
     const loading = useSelector(selectUsersLoadingDelete);
-
-    if (galerie.role === 'user') return null;
-    if (role === 'admin') return null;
-    if (role === 'moderator' && galerie.role === 'moderator') return null;
 
     const handlePress = React.useCallback(() => {
         closeBottomSheet();
         if (!loading.includes('LOADING')) handleOpenModal(galerie.id, user.id);
     }, [galerie, loading, user]);
 
+    if (hide) return null;
+
     return <BottomSheetButton onPress={handlePress} title="delete/ban user" />;
 };
 
-export default DeleteBanButton;
+export default React.memo(DeleteBanButton);

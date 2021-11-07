@@ -92,7 +92,7 @@ const successGetGaleriePictures = async (
             if (cropedImage.exists) cropedImageCashed = cropedImage.uri;
             else {
                 const newImage = await FileSystem.downloadAsync(
-                    galeriePicture.cropedImage.id,
+                    galeriePicture.cropedImage.signedUrl,
                     cropedImagePath
                 );
                 cropedImageCashed = newImage.uri;
@@ -103,7 +103,7 @@ const successGetGaleriePictures = async (
             if (originalImage.exists) originalImageCashed = originalImage.uri;
             else {
                 const newImage = await FileSystem.downloadAsync(
-                    galeriePicture.originalImage.id,
+                    galeriePicture.originalImage.signedUrl,
                     originalImagePath
                 );
                 originalImageCashed = newImage.uri;

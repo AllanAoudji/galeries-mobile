@@ -8,10 +8,11 @@ import { putGalerieUserRole } from '#store/galerieRoles';
 type Props = {
     galerie: Store.Models.Galerie;
     user: Store.Models.User;
+    hide: boolean;
     role: Store.Role;
 };
 
-const ChangeRoleBottom = ({ galerie, user, role }: Props) => {
+const ChangeRoleBottom = ({ galerie, hide, role, user }: Props) => {
     const dispatch = useDispatch();
 
     const { closeBottomSheet } = React.useContext(BottomSheetContext);
@@ -21,8 +22,7 @@ const ChangeRoleBottom = ({ galerie, user, role }: Props) => {
         dispatch(putGalerieUserRole(galerie.id, user.id));
     }, [galerie, user]);
 
-    if (galerie.role !== 'admin') return null;
-    if (role === 'admin') return null;
+    if (hide) return null;
 
     return (
         <BottomSheetButton
@@ -34,4 +34,4 @@ const ChangeRoleBottom = ({ galerie, user, role }: Props) => {
     );
 };
 
-export default ChangeRoleBottom;
+export default React.memo(ChangeRoleBottom);

@@ -72,6 +72,9 @@ const FrameScreen = ({ navigation }: Props) => {
     );
     useFocusEffect(React.useCallback(() => () => handleHideOptions(), []));
 
+    // TODO:
+    // Need to clean current index when not focus
+
     if (!currentFrame) return null;
 
     return (
