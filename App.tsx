@@ -46,10 +46,8 @@ export default function App() {
 }
 
 // TODO:
-// BlackListCard
-// UsersBlackList Screen
-// Check if delete/blackList user delete all is likes/frame/invitation/comments are deleted
-// Check if allow to delete Galerie if user is subscribe to it.
+// Update galerie (and find a solution for scrollable form)
+// normalize screen with buttons
 // Reports
 // Notifications Screen
 // Profile Screen
