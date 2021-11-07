@@ -1,6 +1,6 @@
 import * as React from 'react';
-
 import { useSelector } from 'react-redux';
+
 import Pictogram from '#components/Pictogram';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 
@@ -93,8 +93,8 @@ const GalerieUserOptions = ({ galerie, role, user }: Props) => {
             onPress={handlePress}
             pb="smallest"
             pl="small"
-            pt="smallest"
             pr="small"
+            pt="smallest"
             size="small"
             variant="option-vertical"
         />

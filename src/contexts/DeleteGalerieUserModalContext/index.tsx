@@ -59,15 +59,15 @@ export const DeleteGalerieUserModalProvider: React.FC<{}> = ({ children }) => {
     const [openModal, setOpenModal] = React.useState<boolean>(false);
 
     const handleCloseModal = React.useCallback(() => {
-        setCurrentUser(null);
         setCurrentGalerie(null);
+        setCurrentUser(null);
         setOpenModal(false);
         setBlackListUser(false);
     }, []);
     const handleOpenModal = React.useCallback(
         (galerieId: string, userId: string) => {
-            setCurrentUser(userId);
             setCurrentGalerie(galerieId);
+            setCurrentUser(userId);
             setOpenModal(true);
         },
         []

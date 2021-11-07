@@ -23,7 +23,14 @@ const Options = ({ galerie, galerieBlackList, role, user }: Props) => {
 
     if (galerie && role)
         return <GalerieUserOptions galerie={galerie} role={role} user={user} />;
-    return <GalerieBlackListOptions />;
+    if (galerieBlackList)
+        return (
+            <GalerieBlackListOptions
+                galerieBlackList={galerieBlackList}
+                user={user}
+            />
+        );
+    return null;
 };
 
 export default Options;

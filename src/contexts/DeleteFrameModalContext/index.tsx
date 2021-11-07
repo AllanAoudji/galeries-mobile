@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { deleteFrame } from '#store/frames';
 import DeleteModal from '#components/DeleteModal';
+import { deleteFrame } from '#store/frames';
 
 export const DeleteFrameModalContext = React.createContext<{
     handleOpenModal: (frameId: string) => void;

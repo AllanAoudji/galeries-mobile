@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { Notification } from '#components';
 import { BottomSheetProvider } from '#contexts/BottomSheetContext';
 import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
+import { DeleteGalerieBlackListModalProvider } from '#contexts/DeleteGalerieBlackListModalContext';
 import { DeleteGalerieUserModalProvider } from '#contexts/DeleteGalerieUserModalContext';
 import { DeleteInvitationModalProvider } from '#contexts/DeleteInvitationModalContext';
 import ThemeProvider from '#contexts/ThemeContext';
@@ -25,15 +26,17 @@ export default function App() {
                 <Loader>
                     <NavigationContainer>
                         <DeleteFrameModalProvider>
-                            <DeleteGalerieUserModalProvider>
-                                <DeleteInvitationModalProvider>
-                                    <BottomSheetProvider>
-                                        <RootStackNavigator />
-                                        <Notification />
-                                        <StatusBar style="auto" />
-                                    </BottomSheetProvider>
-                                </DeleteInvitationModalProvider>
-                            </DeleteGalerieUserModalProvider>
+                            <DeleteGalerieBlackListModalProvider>
+                                <DeleteGalerieUserModalProvider>
+                                    <DeleteInvitationModalProvider>
+                                        <BottomSheetProvider>
+                                            <RootStackNavigator />
+                                            <Notification />
+                                            <StatusBar style="auto" />
+                                        </BottomSheetProvider>
+                                    </DeleteInvitationModalProvider>
+                                </DeleteGalerieUserModalProvider>
+                            </DeleteGalerieBlackListModalProvider>
                         </DeleteFrameModalProvider>
                     </NavigationContainer>
                 </Loader>
