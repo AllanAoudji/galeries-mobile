@@ -9,6 +9,8 @@ import { Provider } from 'react-redux';
 import { Notification } from '#components';
 import { BottomSheetProvider } from '#contexts/BottomSheetContext';
 import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
+import { DeleteGalerieBlackListModalProvider } from '#contexts/DeleteGalerieBlackListModalContext';
+import { DeleteGalerieUserModalProvider } from '#contexts/DeleteGalerieUserModalContext';
 import { DeleteInvitationModalProvider } from '#contexts/DeleteInvitationModalContext';
 import ThemeProvider from '#contexts/ThemeContext';
 import Loader from '#helpers/Loader';
@@ -24,13 +26,17 @@ export default function App() {
                 <Loader>
                     <NavigationContainer>
                         <DeleteFrameModalProvider>
-                            <DeleteInvitationModalProvider>
-                                <BottomSheetProvider>
-                                    <RootStackNavigator />
-                                    <Notification />
-                                    <StatusBar style="auto" />
-                                </BottomSheetProvider>
-                            </DeleteInvitationModalProvider>
+                            <DeleteGalerieBlackListModalProvider>
+                                <DeleteGalerieUserModalProvider>
+                                    <DeleteInvitationModalProvider>
+                                        <BottomSheetProvider>
+                                            <RootStackNavigator />
+                                            <Notification />
+                                            <StatusBar style="auto" />
+                                        </BottomSheetProvider>
+                                    </DeleteInvitationModalProvider>
+                                </DeleteGalerieUserModalProvider>
+                            </DeleteGalerieBlackListModalProvider>
                         </DeleteFrameModalProvider>
                     </NavigationContainer>
                 </Loader>
@@ -40,10 +46,8 @@ export default function App() {
 }
 
 // TODO:
-// BlackListCard
-// UsersBlackList Screen
-// Check if delete/blackList user delete all is likes/frame/invitation/comments are deleted
-// Check if allow to delete Galerie if user is subscribe to it.
+// Update galerie (and find a solution for scrollable form)
+// normalize screen with buttons
 // Reports
 // Notifications Screen
 // Profile Screen

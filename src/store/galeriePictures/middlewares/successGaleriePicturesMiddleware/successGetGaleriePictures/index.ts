@@ -15,7 +15,6 @@ const successGetGaleriePictures = async (
     getState: () => Store.Reducer,
     action: Store.Action
 ) => {
-    console.log(action);
     if (
         typeof action.payload !== 'object' &&
         typeof action.payload.data !== 'object'
@@ -93,7 +92,7 @@ const successGetGaleriePictures = async (
             if (cropedImage.exists) cropedImageCashed = cropedImage.uri;
             else {
                 const newImage = await FileSystem.downloadAsync(
-                    galeriePicture.cropedImage.id,
+                    galeriePicture.cropedImage.signedUrl,
                     cropedImagePath
                 );
                 cropedImageCashed = newImage.uri;
@@ -104,7 +103,7 @@ const successGetGaleriePictures = async (
             if (originalImage.exists) originalImageCashed = originalImage.uri;
             else {
                 const newImage = await FileSystem.downloadAsync(
-                    galeriePicture.originalImage.id,
+                    galeriePicture.originalImage.signedUrl,
                     originalImagePath
                 );
                 originalImageCashed = newImage.uri;
@@ -146,7 +145,6 @@ const successGetGaleriePictures = async (
         (typeof id === 'string' || id === null) &&
         typeof galerieId === 'string'
     ) {
-        console.log('should dispatch cover picture');
         dispatch(updateGaleriePicturesStatus(galerieId, 'SUCCESS'));
         dispatch(updateGaleriePicturesId(galerieId, id));
     }

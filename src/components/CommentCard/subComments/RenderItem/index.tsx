@@ -8,6 +8,8 @@ import { selectUser } from '#store/users';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
 import { DeleteCommentModalContext } from '#contexts/DeleteCommentModalContext';
+import { selectMeId } from '#store/me';
+import { selectGalerie } from '#store/galeries';
 
 type Props = {
     item: string;
@@ -16,6 +18,12 @@ type Props = {
 const RenderItem = ({ item }: Props) => {
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
+    const galerieSelector = React.useMemo(
+        () => selectGalerie(comment ? comment.galerieId : null),
+        [comment]
+    );
+    const galerie = useSelector(galerieSelector);
+    const meId = useSelector(selectMeId);
     const userSelector = React.useMemo(
         () => selectUser(comment.userId),
         [comment.userId]
@@ -37,12 +45,22 @@ const RenderItem = ({ item }: Props) => {
 
     const bottomSheetContent = React.useCallback(() => {
         return (
-            <BottomSheetButton
-                onPress={handleBottomSheetDelete}
-                title="delete comment"
-            />
+            <>
+                {(user && user.id === meId) ||
+                (galerie && galerie.role !== 'user') ? (
+                    <BottomSheetButton
+                        onPress={handleBottomSheetDelete}
+                        title="delete comment"
+                    />
+                ) : (
+                    <BottomSheetButton
+                        onPress={handleBottomSheetDelete}
+                        title="report comment"
+                    />
+                )}
+            </>
         );
-    }, []);
+    }, [user, galerie, meId]);
     const handlePress = React.useCallback(() => {
         setCommentSelected(comment.id);
         openBottomSheet(bottomSheetContent);

@@ -2,6 +2,7 @@ import deleteCommentsMiddleware from './deleteCommentsMiddleware';
 import errorCommentsMiddleware from './errorCommentsMiddleware';
 import getCommentsMiddleware from './getCommentsMiddleware';
 import postCommentMiddleware from './postCommentMiddleware';
+import refreshCommentsMiddleware from './refreshCommentsMiddleware';
 import resetCommentsMiddleware from './resetCommentsMiddleware';
 import successCommentsMiddleware from './successCommentsMiddleware';
 
@@ -11,6 +12,7 @@ export const commentsMiddlewares = [
     errorCommentsMiddleware,
     getCommentsMiddleware,
     postCommentMiddleware,
+    refreshCommentsMiddleware,
     resetCommentsMiddleware,
     successCommentsMiddleware,
 ];

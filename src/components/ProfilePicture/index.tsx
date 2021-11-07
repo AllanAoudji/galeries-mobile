@@ -12,6 +12,7 @@ import { Container, ImageStyled, InnerContainer } from './styles';
 
 type Props = {
     border?: boolean;
+    borderColor?: keyof Style.Colors;
     mb?: keyof Style.Spacings;
     ml?: keyof Style.Spacings;
     mr?: keyof Style.Spacings;
@@ -21,6 +22,7 @@ type Props = {
 };
 type ProfilePictureWithUserProps = {
     border?: boolean;
+    borderColor?: keyof Style.Colors;
     mb?: keyof Style.Spacings;
     ml?: keyof Style.Spacings;
     mr?: keyof Style.Spacings;
@@ -35,6 +37,7 @@ const DEFAULT_PROFILE_PICTURE = Image.resolveAssetSource(
 
 const ProfilePictureWithUser = ({
     border = false,
+    borderColor = 'secondary-light',
     mb,
     ml,
     mr,
@@ -67,7 +70,15 @@ const ProfilePictureWithUser = ({
     );
 
     return (
-        <Container border={border} mb={mb} ml={ml} mr={mr} mt={mt} size={size}>
+        <Container
+            border={border}
+            borderColor={borderColor}
+            mb={mb}
+            ml={ml}
+            mr={mr}
+            mt={mt}
+            size={size}
+        >
             <InnerContainer
                 border={borderProp}
                 containerBorder={border}
@@ -81,6 +92,7 @@ const ProfilePictureWithUser = ({
 
 const ProfilePicture = ({
     border = false,
+    borderColor = 'secondary-light',
     mb,
     ml,
     mr,
@@ -97,6 +109,7 @@ const ProfilePicture = ({
         return (
             <Container
                 border={border}
+                borderColor={borderColor}
                 mb={mb}
                 ml={ml}
                 mr={mr}
@@ -113,6 +126,7 @@ const ProfilePicture = ({
         <ProfilePictureWithUser
             user={user}
             border={border}
+            borderColor={borderColor}
             mb={mb}
             ml={ml}
             mr={mr}

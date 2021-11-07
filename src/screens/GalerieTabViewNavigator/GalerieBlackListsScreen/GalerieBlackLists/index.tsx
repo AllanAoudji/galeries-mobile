@@ -35,8 +35,8 @@ type Props = {
 };
 
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
-const renderItem = ({ item }: ListRenderItemInfo<string>) => (
-    <RenderItem item={item} />
+const renderItem = ({ index, item }: ListRenderItemInfo<string>) => (
+    <RenderItem item={item} index={index} />
 );
 
 const GalerieBlackLists = ({

@@ -55,36 +55,22 @@ export const selectMeCurrentProfilePictureStatus = createSelector(
 );
 export const selectProfilePicturesAllIds = (state: Store.Reducer) =>
     state.profilePictures.allIds;
-export const selectProfilePicture: (
-    profilePictureId: string
-) => OutputSelector<
-    Store.Reducer,
-    Store.Models.ProfilePicture,
-    (res: {
-        [key: string]: Store.Models.ProfilePicture;
-    }) => Store.Models.ProfilePicture | undefined
-> = (profilePictureId: string) =>
-    createSelector(
-        [profliePicturesById],
-        (profilePicturesById) => profilePicturesById[profilePictureId]
-    );
+export const selectProfilePicture = (profilePictureId?: string | null) =>
+    createSelector([profliePicturesById], (profilePicturesById) => {
+        if (!profilePictureId) return undefined;
+        return profilePicturesById[profilePictureId];
+    });
 export const selectProfilePicturesStatus = (profilePictureId: string) =>
     createSelector(
         [profilePicturesStatusSelector],
         (profliePicturesStatus) =>
             profliePicturesStatus[profilePictureId] || 'PENDING'
     );
-export const selectUserCurrentProfilePictureId: (
-    userId: string
-) => OutputSelector<
-    Store.Reducer,
-    string,
-    (res: { [key: string]: string }) => string | undefined
-> = (userId: string) =>
-    createSelector(
-        [profilePicturesIdSelector],
-        (profilePicturesId) => profilePicturesId[userId]
-    );
+export const selectUserCurrentProfilePictureId = (userId?: string | null) =>
+    createSelector([profilePicturesIdSelector], (profilePicturesId) => {
+        if (!userId) return undefined;
+        return profilePicturesId[userId];
+    });
 export const selectUserCurrentProfilePictureStatus: (
     userId: string
 ) => OutputSelector<

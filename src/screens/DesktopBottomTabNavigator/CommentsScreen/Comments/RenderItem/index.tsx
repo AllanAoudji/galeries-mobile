@@ -8,6 +8,7 @@ import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
 import { selectMeId } from '#store/me';
 import { selectUser } from '#store/users';
 import { DeleteCommentModalContext } from '#contexts/DeleteCommentModalContext';
+import { selectGalerie } from '#store/galeries';
 
 type Props = {
     item: string;
@@ -22,6 +23,11 @@ const RenderItem = ({ item }: Props) => {
 
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
+    const galerieSelector = React.useMemo(
+        () => selectGalerie(comment ? comment.galerieId : null),
+        [comment]
+    );
+    const galerie = useSelector(galerieSelector);
     const userSelector = React.useMemo(
         () => selectUser(comment.userId),
         [comment.userId]
@@ -56,7 +62,8 @@ const RenderItem = ({ item }: Props) => {
                     onPress={handleBottomSheetPressReply}
                     title={`reply to ${userPseudonym}`}
                 />
-                {user && meId === user.id ? (
+                {(user && meId === user.id) ||
+                (galerie && galerie.role !== 'user') ? (
                     <BottomSheetButton
                         onPress={handleBottomSheetDelete}
                         title="delete comment"
@@ -69,7 +76,7 @@ const RenderItem = ({ item }: Props) => {
                 )}
             </>
         );
-    }, []);
+    }, [user, galerie, meId, userPseudonym]);
     const handlePress = React.useCallback((commentId: string) => {
         setCommentSelected(commentId);
         openBottomSheet(bottomSheetContent);
