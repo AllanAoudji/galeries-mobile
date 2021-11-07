@@ -11,7 +11,6 @@ const refreshCommentsMiddleware: Middleware<{}, Store.Reducer> =
         next(action);
 
         if (action.type !== COMMENTS_REFRESH) return;
-        console.log(action);
 
         const frameId = action.meta.query
             ? action.meta.query.frameId

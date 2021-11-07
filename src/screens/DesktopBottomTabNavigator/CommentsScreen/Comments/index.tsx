@@ -92,7 +92,6 @@ const Comments = ({ allIds, frameId }: CommentsProps) => {
     }, [loading, navigation]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        console.log('test');
         dispatch(refreshFrameComments(frameId));
     }, [frameId]);
     const handleSuccess = React.useCallback(() => {

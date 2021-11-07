@@ -1,16 +1,15 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-
 import { useSelector } from 'react-redux';
 
-import { View } from 'react-native';
-import { Container } from './styles';
 import { selectGalerie } from '#store/galeries';
 import { selectcurrentGalerieBlackList } from '#store/galerieBlackLists';
 
 import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
+
+import { BodyFooterContainer, Container } from './styles';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.UserScreen;
@@ -51,16 +50,10 @@ const UserGalerieBlackListScreen = ({ navigation }: Props) => {
     return (
         <Container>
             <Header galerieBlackList={galerieBlackList} />
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'space-between',
-                    marginHorizontal: 45,
-                }}
-            >
+            <BodyFooterContainer>
                 <Body galerieBlackList={galerieBlackList} />
                 <Footer galerieBlackList={galerieBlackList} />
-            </View>
+            </BodyFooterContainer>
         </Container>
     );
 };
