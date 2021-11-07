@@ -93,6 +93,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
             currentRouteName === 'ProfilePicture' ||
             currentRouteName === 'SubscribeGalerie' ||
             currentRouteName === 'UpdateFrame' ||
+            currentRouteName === 'UserGalerieBlackList' ||
             currentRouteName === 'UserScreen',
         [currentRouteName]
     );

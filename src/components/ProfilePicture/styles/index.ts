@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 type ContainerProps = {
     size: Style.Variant.ProfilePicture;
     border: boolean;
+    borderColor: keyof Style.Colors;
     mb?: keyof Style.Spacings;
     ml?: keyof Style.Spacings;
     mr?: keyof Style.Spacings;
@@ -37,7 +38,7 @@ const CONTAINER_BORDER_WIDTH = {
 };
 
 const Container = styled.View<ContainerProps>`
-    border-color: ${({ theme }) => theme.colors['secondary-light']};
+    border-color: ${({ borderColor, theme }) => theme.colors[borderColor]};
     border-radius: ${({ border, size }) =>
         `${
             PROFILE_PICTURE_SIZE[size] +

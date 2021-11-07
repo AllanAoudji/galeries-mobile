@@ -384,6 +384,7 @@ declare global {
                 commentId: string | null;
                 createdAt: string;
                 frameId: string;
+                galerieId: string;
                 id: string;
                 level: number;
                 numOfComments: number;
@@ -418,7 +419,7 @@ declare global {
             type GalerieBlackList = {
                 autoIncrementId: string;
                 createdAt: string;
-                createdById: string;
+                createdById?: string;
                 galerieId: string;
                 id: string;
                 userId: string;
