@@ -88,7 +88,7 @@ const CommentCard = ({
             setNumOfComments(commentsAllIds.length);
             setShowComments(true);
         }
-    }, [comment, commentsAllIds]);
+    }, [comment, commentsAllIds, showComments]);
 
     return (
         <>

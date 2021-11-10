@@ -2,6 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
+    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StatusBar,
@@ -34,7 +35,7 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
-    const loading = useSelector(selectFramesStatus);
+    const status = useSelector(selectFramesStatus);
 
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -53,17 +54,25 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
         []
     );
 
-    const handleEndReach = React.useCallback(() => dispatch(getFrames()), []);
+    const handleEndReach = React.useCallback(() => {
+        if (status.includes('LOADING') || status === 'REFRESH')
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(getFrames());
+            });
+    }, []);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        dispatch(refreshFrames());
-    }, []);
+        if (status.includes('LOADING') || status === 'REFRESH')
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(refreshFrames());
+            });
+    }, [status]);
     const keyExtractor = React.useCallback((data: string) => data, []);
 
     useFocusEffect(
         React.useCallback(() => {
-            if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
-        }, [loading, refreshing])
+            if (status === 'SUCCESS' && refreshing) setRefreshing(false);
+        }, [status, refreshing])
     );
 
     return (

@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { ImageSourcePropType, useWindowDimensions, View } from 'react-native';
+import { ImageSourcePropType, useWindowDimensions } from 'react-native';
 
-import { CoverPictureBookMark } from '#components';
-import {
-    selectGalerieCoverPictureId,
-    selectGaleriePicture,
-} from '#store/galeriePictures';
+import { selectGaleriePicture } from '#store/galeriePictures';
+
+import BookMark from './BookMark';
 
 import { Container, ImageStyled } from './styles';
-import { selectGalerie } from '#store/galeries';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -20,16 +17,6 @@ type Props = {
 const RenderItem = ({ frame, item, onPress }: Props) => {
     const dimension = useWindowDimensions();
 
-    const coverPictureIdSelector = React.useMemo(
-        () => selectGalerieCoverPictureId(frame.galerieId),
-        [frame]
-    );
-    const coverPictureId = useSelector(coverPictureIdSelector);
-    const galerieSelector = React.useMemo(
-        () => selectGalerie(frame.galerieId),
-        [frame]
-    );
-    const galerie = useSelector(galerieSelector);
     const galeriePictureSelector = React.useMemo(
         () => selectGaleriePicture(item),
         [item]
@@ -53,21 +40,7 @@ const RenderItem = ({ frame, item, onPress }: Props) => {
                 source={source}
                 width={dimension.width}
             />
-            <View
-                style={{
-                    position: 'absolute',
-                    left: 15,
-                    bottom: 45,
-                }}
-            >
-                {galerie && galerie.role !== 'user' && (
-                    <CoverPictureBookMark
-                        frame={frame}
-                        galeriePictureId={item}
-                        coverPictureId={coverPictureId}
-                    />
-                )}
-            </View>
+            <BookMark frame={frame} galeriePictureId={item} />
         </Container>
     );
 };

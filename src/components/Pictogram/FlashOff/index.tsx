@@ -47,4 +47,4 @@ const FlashOff = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default FlashOff;
+export default React.memo(FlashOff);

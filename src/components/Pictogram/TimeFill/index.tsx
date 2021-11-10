@@ -43,4 +43,4 @@ const TimeFill = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default TimeFill;
+export default React.memo(TimeFill);

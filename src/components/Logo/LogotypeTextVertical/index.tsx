@@ -212,4 +212,4 @@ const LogotypeTextVertical = ({ size = 'normal' }: Props) => (
     </Svg>
 );
 
-export default LogotypeTextVertical;
+export default React.memo(LogotypeTextVertical);

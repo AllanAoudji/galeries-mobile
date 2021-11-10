@@ -9,12 +9,13 @@ import Animated, {
     interpolate,
     useAnimatedStyle,
 } from 'react-native-reanimated';
+
 import { selectGaleriePicture } from '#store/galeriePictures';
 
 type Props = {
     current: Animated.SharedValue<number>;
-    item: string;
     index: number;
+    item: string;
 };
 
 const RenderItem = ({ current, index, item }: Props) => {
@@ -31,13 +32,13 @@ const RenderItem = ({ current, index, item }: Props) => {
             index * dimension.width,
             (index + 1) * dimension.width,
         ],
-        [index]
+        [dimension, index]
     );
 
     const style = useAnimatedStyle(() => {
         const opacity = interpolate(current.value, inputRange, [0, 0.7, 0]);
         return { opacity };
-    });
+    }, [inputRange]);
 
     const source: ImageSourcePropType = React.useMemo(
         () => ({
@@ -45,7 +46,7 @@ const RenderItem = ({ current, index, item }: Props) => {
                 ? galeriePicture.originalImage.cachedSignedUrl
                 : '',
         }),
-        []
+        [galeriePicture]
     );
 
     return (

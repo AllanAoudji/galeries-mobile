@@ -59,4 +59,4 @@ const GaleriesFill = ({
     );
 };
 
-export default GaleriesFill;
+export default React.memo(GaleriesFill);

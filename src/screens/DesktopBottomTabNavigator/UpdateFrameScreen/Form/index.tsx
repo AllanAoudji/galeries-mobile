@@ -3,6 +3,8 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { CustomButton, CustomTextInput } from '#components';
+import { FIELD_REQUIREMENT } from '#helpers/constants';
 import { putFrameSchema } from '#helpers/schemas';
 import {
     putFrame,
@@ -12,14 +14,7 @@ import {
     updateFramesFieldsError,
 } from '#store/frames';
 
-import { ButtonsContainer, Container } from './styles';
-import {
-    CustomButton,
-    CustomTextInput,
-    DefaultHeader,
-    FormContainer,
-} from '#components';
-import { FIELD_REQUIREMENT } from '#helpers/constants';
+import { ButtonContainer, Container, ScrollViewStyle } from './styles';
 
 type Props = {
     description: string;
@@ -85,46 +80,43 @@ const Form = ({ description, frameId }: Props) => {
     );
 
     return (
-        <>
-            <DefaultHeader
-                onPress={handlePressGoBack}
-                variant="secondary"
-                title="update frame"
-            />
-            <FormContainer>
-                <Container>
-                    <CustomTextInput
-                        error={descriptionError}
-                        label="description"
-                        loading={loading.includes('LOADING')}
-                        maxLength={
-                            FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH
-                        }
-                        multiline
-                        onBlur={formik.handleBlur('description')}
-                        onChangeText={handleChangeDescriptionText}
-                        optional
-                        touched={formik.touched.description || false}
-                        value={formik.values.description}
-                    />
-                </Container>
-                <ButtonsContainer>
+        <Container>
+            <ScrollViewStyle
+                keyboardShouldPersistTaps="handled"
+                overScrollMode="never"
+                showsVerticalScrollIndicator={false}
+            >
+                <CustomTextInput
+                    error={descriptionError}
+                    label="description"
+                    loading={loading.includes('LOADING')}
+                    maxLength={FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH}
+                    multiline
+                    mt="normal"
+                    onBlur={formik.handleBlur('description')}
+                    onChangeText={handleChangeDescriptionText}
+                    optional
+                    touched={formik.touched.description || false}
+                    value={formik.values.description}
+                />
+                <ButtonContainer>
                     <CustomButton
                         disable={disableButton}
                         loading={loading.includes('LOADING')}
                         mb="smallest"
+                        mt="normal"
                         onPress={formik.handleSubmit}
                         title="post frame"
                     />
                     <CustomButton
                         disable={loading.includes('LOADING')}
                         onPress={handlePressGoBack}
-                        title="return"
+                        title="cancel"
                         variant="stroke"
                     />
-                </ButtonsContainer>
-            </FormContainer>
-        </>
+                </ButtonContainer>
+            </ScrollViewStyle>
+        </Container>
     );
 };
 

@@ -3,7 +3,7 @@ import moment from 'moment';
 import * as React from 'react';
 import { Pressable } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components/native';
 
 import { Pictogram, Typography } from '#components';
 import { PRE_CODE } from '#helpers/constants';
@@ -45,7 +45,7 @@ const Body = ({ invitation }: Props) => {
 
     const handlePress = React.useCallback(
         () => navigation.navigate('InvitationQRCode'),
-        []
+        [navigation]
     );
 
     return (

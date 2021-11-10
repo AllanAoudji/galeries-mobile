@@ -43,4 +43,4 @@ const ArrowLeft = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default ArrowLeft;
+export default React.memo(ArrowLeft);

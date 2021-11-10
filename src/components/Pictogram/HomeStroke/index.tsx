@@ -47,4 +47,4 @@ const HomeStroke = ({
     );
 };
 
-export default HomeStroke;
+export default React.memo(HomeStroke);

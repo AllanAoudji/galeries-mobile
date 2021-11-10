@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+
 import { GLOBAL_STYLE } from '#helpers/constants';
 import convertPixelToNum from '#helpers/convertPixelToNum';
 

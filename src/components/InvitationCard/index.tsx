@@ -3,13 +3,13 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ProfilePicture from '#components/ProfilePicture';
+import { updateInvitationsCurrent } from '#store/invitations';
 import { selectUser } from '#store/users';
 
-import User from './User';
 import Informations from './Informations';
+import User from './User';
 
 import { Container, InnerContainer } from './styles';
-import { updateInvitationsCurrent } from '#store/invitations';
 
 type Props = {
     invitation?: Store.Models.Invitation;
@@ -29,13 +29,13 @@ const InvitationCard = ({ invitation }: Props) => {
     const handlePress = React.useCallback(() => {
         dispatch(updateInvitationsCurrent(invitation ? invitation.id : null));
         navigation.navigate('Invitation');
-    }, []);
+    }, [invitation, navigation]);
 
     if (!invitation) return null;
 
     return (
         <Container onPress={handlePress}>
-            <ProfilePicture user={user} mr="smallest" />
+            <ProfilePicture mr="smallest" user={user} />
             <InnerContainer>
                 <User invitation={invitation} user={user} />
                 <Informations invitation={invitation} />

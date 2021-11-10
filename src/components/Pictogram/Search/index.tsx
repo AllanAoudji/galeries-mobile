@@ -22,11 +22,7 @@ const defaultWidth = {
     small: 15,
 };
 
-const AddSubscribeFill = ({
-    color = 'black',
-    customSize,
-    size = 'normal',
-}: Props) => {
+const Search = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     const theme = useTheme();
     const height = React.useMemo(() => {
         if (customSize) return customSize.height;
@@ -47,4 +43,4 @@ const AddSubscribeFill = ({
     );
 };
 
-export default AddSubscribeFill;
+export default React.memo(Search);

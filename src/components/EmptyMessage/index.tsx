@@ -25,4 +25,4 @@ const EmptyMessage = ({ pb, pt, text }: Props) => {
     );
 };
 
-export default EmptyMessage;
+export default React.memo(EmptyMessage);

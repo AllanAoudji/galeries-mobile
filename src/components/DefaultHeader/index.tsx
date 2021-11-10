@@ -1,6 +1,6 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { StatusBar, ViewProps } from 'react-native';
+import { Keyboard, StatusBar, ViewProps } from 'react-native';
 
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
@@ -9,13 +9,17 @@ import { GLOBAL_STYLE } from '#helpers/constants';
 import { Container } from './styles';
 
 type Props = {
+    color?: keyof Style.Colors;
     onPress?: () => void;
+    textColor?: keyof Style.Colors;
     title?: string;
     variant?: 'primary' | 'secondary';
 };
 
 const DefaultHeader = ({
+    color = 'secondary-light',
     onPress,
+    textColor = 'primary',
     title,
     variant = 'primary',
     ...rest
@@ -24,23 +28,24 @@ const DefaultHeader = ({
 
     const pictogramVariant = React.useMemo(
         () =>
-            variant === 'secondary' && navigation.canGoBack()
+            navigation.canGoBack() && variant === 'secondary'
                 ? 'arrow-left'
                 : 'hamburger-menu',
-        [variant]
+        [navigation, variant]
     );
 
     const handlePressPictogram = React.useCallback(() => {
-        if (variant === 'secondary' && navigation.canGoBack()) {
+        Keyboard.dismiss();
+        if (navigation.canGoBack() && variant === 'secondary') {
             if (onPress) onPress();
             else navigation.goBack();
         } else navigation.dispatch(DrawerActions.openDrawer());
-    }, [variant]);
+    }, [navigation, variant]);
 
     return (
-        <Container paddingTop={StatusBar.currentHeight} {...rest}>
+        <Container color={color} paddingTop={StatusBar.currentHeight} {...rest}>
             <Pictogram
-                color="primary"
+                color={textColor}
                 height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
                 onPress={handlePressPictogram}
                 pl="small"
@@ -48,7 +53,7 @@ const DefaultHeader = ({
                 variant={pictogramVariant}
             />
             {!!title && (
-                <Typography color="primary" fontFamily="light" fontSize={24}>
+                <Typography color={textColor} fontFamily="light" fontSize={24}>
                     {title.toLowerCase()}
                 </Typography>
             )}

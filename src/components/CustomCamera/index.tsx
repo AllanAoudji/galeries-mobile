@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import { Camera } from 'expo-camera';
 import { CameraType, FlashMode } from 'expo-camera/build/Camera.types';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -6,26 +7,15 @@ import {
     BackHandler,
     ImageSourcePropType,
     Platform,
-    StatusBar,
     useWindowDimensions,
 } from 'react-native';
 
-import Pictogram from '#components/Pictogram';
-import { GLOBAL_STYLE } from '#helpers/constants';
+import ReturnButton from '#components/ReturnButton';
 
-import {
-    ActionsContainer,
-    BackButtonContainer,
-    BottomContainer,
-    CameraStyled,
-    Container,
-    ImageStyled,
-    InnerTakePictureButton,
-    SavePicturesButton,
-    SwitchFlashModeButtonContainer,
-    SwitchTypeButtonContainer,
-    TakePictureButton,
-} from './styles';
+import Footer from './Footer';
+import SwitchFlashModeButton from './SwitchFlashModeButton';
+
+import { CameraStyled, Container, ImageStyled } from './styles';
 
 type Props = {
     onPressBack?: () => void;
@@ -36,6 +26,7 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
     const dimension = useWindowDimensions();
 
     const cameraRef = React.useRef<Camera | null>(null);
+    const mounted = React.useRef<boolean>(false);
 
     const [flashMode, setFlashMode] = React.useState<FlashMode>(
         Camera.Constants.FlashMode.off
@@ -46,13 +37,6 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
         Camera.Constants.Type.back
     );
 
-    const flashVariant = React.useMemo(
-        () =>
-            flashMode !== Camera.Constants.FlashMode.off
-                ? 'flash-off'
-                : 'flash-on',
-        [flashMode]
-    );
     const source: ImageSourcePropType = React.useMemo(
         () => ({
             uri: snapShot || '',
@@ -92,10 +76,8 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                     uri,
                     [{ flip: ImageManipulator.FlipType.Horizontal }]
                 );
-                setSnapshot(photoFliped.uri);
-            } else {
-                setSnapshot(uri);
-            }
+                if (mounted.current) setSnapshot(photoFliped.uri);
+            } else if (mounted.current) setSnapshot(uri);
         }
     }, [cameraRef, snapShot, type]);
 
@@ -103,21 +85,29 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
         if (Platform.OS === 'android')
             setMargins((dimension.height - (4 / 3) * dimension.width) / 2);
     }, [dimension, Platform]);
+    useFocusEffect(
+        React.useCallback(() => {
+            let BackHandlerListerner: any;
+            if (snapShot)
+                BackHandlerListerner = BackHandler.addEventListener(
+                    'hardwareBackPress',
+                    () => {
+                        setSnapshot(null);
+                        return true;
+                    }
+                );
+            else if (BackHandlerListerner) BackHandlerListerner.remove();
+            return () => {
+                if (BackHandlerListerner) BackHandlerListerner.remove();
+            };
+        }, [snapShot])
+    );
     React.useEffect(() => {
-        let BackHandlerListerner: any;
-        if (snapShot)
-            BackHandlerListerner = BackHandler.addEventListener(
-                'hardwareBackPress',
-                () => {
-                    setSnapshot(null);
-                    return true;
-                }
-            );
-        else if (BackHandlerListerner) BackHandlerListerner.remove();
+        mounted.current = true;
         return () => {
-            if (BackHandlerListerner) BackHandlerListerner.remove();
+            mounted.current = false;
         };
-    }, [snapShot]);
+    }, []);
 
     return (
         <Container>
@@ -128,55 +118,19 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                 type={type}
             />
             {!!snapShot && <ImageStyled margins={margins} source={source} />}
-            {!!onPressBack && (
-                <BackButtonContainer paddingTop={StatusBar.currentHeight}>
-                    <Pictogram
-                        color="secondary-light"
-                        height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
-                        onPress={handlePressBack}
-                        pl="small"
-                        pr="small"
-                        variant="arrow-left"
-                    />
-                </BackButtonContainer>
-            )}
+            {!!onPressBack && <ReturnButton onPress={handlePressBack} />}
             {!snapShot && type === Camera.Constants.Type.back && (
-                <SwitchFlashModeButtonContainer
-                    paddingTop={StatusBar.currentHeight}
-                >
-                    <Pictogram
-                        color="secondary-light"
-                        onPress={handlePressSwitchFlashMode}
-                        height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
-                        variant={flashVariant}
-                        pl="small"
-                        pr="small"
-                        width={80}
-                    />
-                </SwitchFlashModeButtonContainer>
+                <SwitchFlashModeButton
+                    flashMode={flashMode}
+                    onPress={handlePressSwitchFlashMode}
+                />
             )}
-            <BottomContainer>
-                <ActionsContainer>
-                    {!snapShot ? (
-                        <TakePictureButton onPress={handleTakePicture}>
-                            <InnerTakePictureButton />
-                        </TakePictureButton>
-                    ) : (
-                        <SavePicturesButton onPress={handleSavePictureUri}>
-                            <Pictogram color="primary" variant="valid" />
-                        </SavePicturesButton>
-                    )}
-                </ActionsContainer>
-                {!snapShot && (
-                    <SwitchTypeButtonContainer onPress={handlePressSwitchType}>
-                        <Pictogram
-                            color="secondary-light"
-                            size="large"
-                            variant="switch"
-                        />
-                    </SwitchTypeButtonContainer>
-                )}
-            </BottomContainer>
+            <Footer
+                onPressSavePicture={handleSavePictureUri}
+                onPressSwitchType={handlePressSwitchType}
+                onPressTakePicture={handleTakePicture}
+                snapShot={snapShot}
+            />
         </Container>
     );
 };

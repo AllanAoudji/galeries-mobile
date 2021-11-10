@@ -1,15 +1,13 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { FlatList } from 'react-native';
-import Animated, {
-    runOnJS,
-    useAnimatedReaction,
-} from 'react-native-reanimated';
+import { InteractionManager } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-    GalerieTabbarScreenContainer,
-    FullScreenLoader,
     BottomLoader,
+    FullScreenLoader,
+    GalerieTabbarScreenContainer,
 } from '#components';
 import {
     getGalerieUsers,
@@ -29,7 +27,6 @@ type Props = {
 
 const UsersScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
     const dispatch = useDispatch();
-    const flatListRef = React.useRef<FlatList | null>(null);
 
     const usersAllIds = useSelector(selectCurrentGalerieUsersAllIds);
     const usersStatus = useSelector(selectCurrentGalerieUsersStatus);
@@ -43,23 +40,13 @@ const UsersScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
         [usersStatus]
     );
 
-    const setInitialScroll = React.useCallback(
-        (newScrollY: number) => {
-            if (flatListRef.current && !current) {
-                flatListRef.current.scrollToOffset({
-                    animated: false,
-                    offset: newScrollY,
+    useFocusEffect(
+        React.useCallback(() => {
+            if (usersStatus && usersStatus === 'PENDING' && galerie)
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch(getGalerieUsers(galerie.id));
                 });
-            }
-        },
-        [current]
-    );
-    useAnimatedReaction(
-        () => scrollY.value,
-        (newScrollY) => {
-            runOnJS(setInitialScroll)(newScrollY);
-        },
-        [current]
+        }, [galerie, usersStatus])
     );
 
     React.useEffect(() => {

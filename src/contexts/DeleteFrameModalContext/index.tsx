@@ -5,9 +5,13 @@ import DeleteModal from '#components/DeleteModal';
 import { deleteFrame } from '#store/frames';
 
 export const DeleteFrameModalContext = React.createContext<{
+    handleCloseModal: () => void;
     handleOpenModal: (frameId: string) => void;
+    openModal: boolean;
 }>({
+    handleCloseModal: () => {},
     handleOpenModal: () => {},
+    openModal: false,
 });
 
 export const DeleteFrameModalProvider: React.FC<{}> = ({ children }) => {
@@ -29,7 +33,9 @@ export const DeleteFrameModalProvider: React.FC<{}> = ({ children }) => {
     }, [currentFrame]);
 
     return (
-        <DeleteFrameModalContext.Provider value={{ handleOpenModal }}>
+        <DeleteFrameModalContext.Provider
+            value={{ handleCloseModal, handleOpenModal, openModal }}
+        >
             {children}
             <DeleteModal
                 handleClose={handleCloseModal}

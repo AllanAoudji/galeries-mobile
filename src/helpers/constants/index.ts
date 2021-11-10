@@ -6,7 +6,7 @@ import theme from '#helpers/theme';
 
 const { width } = Dimensions.get('window');
 
-const SIZE = (width - convertPixelToNum(theme.spacings.normal) * 2) / 3;
+const SIZE = (width - convertPixelToNum(theme.spacings.large) * 2) / 3;
 const COL = 3;
 
 export const ANIMATIONS = {
@@ -78,10 +78,10 @@ export const ERROR_MESSAGE = {
     FIELD_MAX_LENGTH: (number: number) =>
         `should have a maximum length of ${number}`,
     FIELD_MIN_LENGTH: (number: number) =>
-        `should have a maximum length of ${number}`,
+        `should have a minimum length of ${number}`,
     FIELD_SHOULD_BE_AN_EMAIL: 'should be a valid email',
     FIELD_SHOULD_BE_A_PASSWORD:
-        'need at least on lowercase, one uppercase, one number and one special char',
+        'need at least on lowercase, one uppercase, one number and one special charneed at least on lowercase, one uppercase, one number and one special char',
     FIELD_SHOULD_MATCH: (type: 'password') => `must match ${type}`,
     METHOD_NOT_FOUND: 'Method not found',
     USER_SHOULD_NOT_BE_AUTHENTICATED: 'you are already authenticated',
@@ -108,6 +108,7 @@ export const GLOBAL_STYLE = {
     GALERIE_CARD_HEIGHT: 249,
     GALERIE_CARD_COVER_PICTURE_HEIGHT: 170,
     GALERIE_TAB_BAR_COVER_PICTURE: 180,
+    GALERIE_TAB_BAR_COVER_PICTURE_TEXT_MARGIN: 50,
     GALERIE_TAB_BAR_MENU: 67,
     HEADER_TAB_HEIGHT: 50 + (StatusBar.currentHeight || 0),
     INVITATION_CARD_HEIGHT: 95,

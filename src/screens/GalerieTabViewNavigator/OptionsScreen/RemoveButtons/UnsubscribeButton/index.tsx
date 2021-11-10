@@ -21,6 +21,8 @@ const UnsubscribeButton = ({ galerie }: Props) => {
     return (
         <CustomButton
             loading={loading.includes('LOADING')}
+            ml="smallest"
+            mr="smallest"
             mt="large"
             onPress={handlePress}
             title="unsubscribe from this galerie"

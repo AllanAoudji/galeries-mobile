@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 
 const Container = styled.Pressable`
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
     justify-content: space-between;
 `;
 

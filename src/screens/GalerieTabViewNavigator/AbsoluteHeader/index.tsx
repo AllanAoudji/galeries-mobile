@@ -10,11 +10,11 @@ import { useDispatch } from 'react-redux';
 import { Pictogram } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
+import { resetGaleriesCurrent } from '#store/galeries';
 
 import { Container } from './styles';
 
 import AbsoluteGalerieCoverPicture from './AbsoluteGalerieCoverPicture';
-import { resetGaleriesCurrent } from '#store/galeries';
 
 type Props = {
     scrollY: Animated.SharedValue<number>;
@@ -57,4 +57,4 @@ const AbsoluteHeader = ({ scrollY }: Props) => {
     );
 };
 
-export default AbsoluteHeader;
+export default React.memo(AbsoluteHeader);

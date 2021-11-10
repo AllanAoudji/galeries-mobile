@@ -24,7 +24,7 @@ const UserScreen = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
-        }, [galerie, user])
+        }, [galerie, navigation, user])
     );
 
     if (!galerie || !user) return null;

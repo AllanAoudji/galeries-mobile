@@ -1,21 +1,22 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
+    FlatList,
     ListRenderItem,
     StyleSheet,
     useWindowDimensions,
     View,
 } from 'react-native';
-import {
+import Animated, {
     runOnJS,
     useAnimatedScrollHandler,
     useSharedValue,
 } from 'react-native-reanimated';
 
-import { AnimatedFlatList } from '#components';
-
 import CurrentIndex from './CurrentIndex';
-import RenderItem from './RenderItem';
 import RenderBackgroundItem from './RenderBackgroundItem';
+import RenderItem from './RenderItem';
+
 import { Container } from './styles';
 
 type Props = {
@@ -26,6 +27,7 @@ type Props = {
     setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
+const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 const keyExtractor: ((item: string, index: number) => string) | undefined = (
     item
 ) => item;
@@ -38,8 +40,10 @@ const Carousel = ({
     setCurrentIndex,
 }: Props) => {
     const dimension = useWindowDimensions();
-    const current = useSharedValue(0);
 
+    const ref = React.useRef<FlatList | null>(null);
+
+    const current = useSharedValue(0);
     const handleScroll = useAnimatedScrollHandler({
         onScroll: (e) => {
             const index = Math.round(e.contentOffset.x / dimension.width);
@@ -48,6 +52,14 @@ const Carousel = ({
         },
     });
 
+    const getItemLayout = React.useCallback(
+        (_, index) => ({
+            length: dimension.width,
+            offset: dimension.width * index,
+            index,
+        }),
+        []
+    );
     const renderItem: ListRenderItem<string> | null | undefined =
         React.useCallback(
             ({ item }) => {
@@ -57,6 +69,16 @@ const Carousel = ({
             },
             [frame]
         );
+
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                current.value = 0;
+                if (ref.current) ref.current.scrollToIndex({ index: 0 });
+            },
+            []
+        )
+    );
 
     return (
         <Container>
@@ -73,12 +95,23 @@ const Carousel = ({
             </View>
             <AnimatedFlatList
                 data={allIds}
+                decelerationRate="fast"
+                disableIntervalMomentum
                 extraData={allIds}
+                getItemLayout={getItemLayout}
                 horizontal
+                initialNumToRender={1}
                 keyExtractor={keyExtractor}
+                maxToRenderPerBatch={1}
                 onScroll={handleScroll}
+                overScrollMode="never"
                 pagingEnabled
+                ref={ref}
+                removeClippedSubviews
                 renderItem={renderItem}
+                showsHorizontalScrollIndicator={false}
+                snapToInterval={dimension.width}
+                windowSize={3}
             />
         </Container>
     );

@@ -98,4 +98,4 @@ const DeleteModal = ({
     );
 };
 
-export default DeleteModal;
+export default React.memo(DeleteModal);

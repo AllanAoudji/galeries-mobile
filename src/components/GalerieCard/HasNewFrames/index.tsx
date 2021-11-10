@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-import { Container } from './styles';
 import Pictogram from '#components/Pictogram';
+
+import { Container } from './styles';
 
 type Props = {
     galerie: Store.Models.Galerie;

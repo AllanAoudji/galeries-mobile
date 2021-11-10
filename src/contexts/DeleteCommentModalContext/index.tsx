@@ -5,18 +5,22 @@ import DeleteModal from '#components/DeleteModal';
 import { deleteComment } from '#store/comments';
 
 export const DeleteCommentModalContext = React.createContext<{
+    handleCloseModal: () => void;
     handleOpenModal: (commentId: string) => void;
+    openModal: boolean;
 }>({
+    handleCloseModal: () => {},
     handleOpenModal: () => {},
+    openModal: false,
 });
 
 export const DeleteCommentModalProvider: React.FC<{}> = ({ children }) => {
     const dispatch = useDispatch();
 
-    const [openModal, setOpenModal] = React.useState<boolean>(false);
     const [currentComment, setCurrentComment] = React.useState<string | null>(
         null
     );
+    const [openModal, setOpenModal] = React.useState<boolean>(false);
 
     const handleCloseModal = React.useCallback(() => {
         setCurrentComment(null);
@@ -31,7 +35,9 @@ export const DeleteCommentModalProvider: React.FC<{}> = ({ children }) => {
     }, [currentComment]);
 
     return (
-        <DeleteCommentModalContext.Provider value={{ handleOpenModal }}>
+        <DeleteCommentModalContext.Provider
+            value={{ handleCloseModal, handleOpenModal, openModal }}
+        >
             {children}
             <DeleteModal
                 handleClose={handleCloseModal}

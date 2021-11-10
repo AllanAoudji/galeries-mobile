@@ -13,13 +13,13 @@ type LinearGradientStyleProps = {
 
 const Container = styled(Animated.View)<ContainerProps>`
     align-items: stretch;
+    bottom: 0;
     flex-direction: row;
     height: ${() => `${GLOBAL_STYLE.BOTTOM_TAB_HEIGHT + 1}px`};
     justify-content: center;
     position: absolute;
     width: ${({ width }) => `${width}px`};
     z-index: 1;
-    bottom: 0;
 `;
 const IconContainer = styled.Pressable`
     align-items: center;

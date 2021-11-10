@@ -1,40 +1,40 @@
 import styled from 'styled-components/native';
 
 type ContainerProps = {
-    size: Style.Variant.ProfilePicture;
     border: boolean;
     borderColor: keyof Style.Colors;
     mb?: keyof Style.Spacings;
     ml?: keyof Style.Spacings;
     mr?: keyof Style.Spacings;
     mt?: keyof Style.Spacings;
+    size: Style.Variant.ProfilePicture;
 };
 type ImageStyleProps = {
     size: Style.Variant.ProfilePicture;
 };
 type InnerContainerProps = {
+    border: boolean;
     containerBorder: boolean;
     size: Style.Variant.ProfilePicture;
-    border: boolean;
 };
 
 const PROFILE_PICTURE_SIZE = {
-    small: 30,
-    normal: 34,
-    large: 50,
     huge: 170,
+    large: 50,
+    normal: 34,
+    small: 30,
 };
 const INNER_CONTAINER_BORDER_WIDTH = {
-    small: 2,
-    normal: 2,
-    large: 3,
     huge: 7,
+    large: 3,
+    normal: 2,
+    small: 2,
 };
 const CONTAINER_BORDER_WIDTH = {
-    small: 3,
-    normal: 3,
-    large: 3,
     huge: 7,
+    large: 3,
+    normal: 3,
+    small: 3,
 };
 
 const Container = styled.View<ContainerProps>`

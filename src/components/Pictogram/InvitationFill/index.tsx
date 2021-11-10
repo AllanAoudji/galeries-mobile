@@ -55,4 +55,4 @@ const InvitationFill = ({
     );
 };
 
-export default InvitationFill;
+export default React.memo(InvitationFill);

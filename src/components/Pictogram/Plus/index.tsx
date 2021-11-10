@@ -43,4 +43,4 @@ const Plus = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default Plus;
+export default React.memo(Plus);

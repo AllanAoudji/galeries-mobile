@@ -7,9 +7,11 @@ import {
     useSharedValue,
     withTiming,
 } from 'react-native-reanimated';
-import { useWindowDimensions } from 'react-native';
+import { BackHandler, useWindowDimensions } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
+
 import { ANIMATIONS } from '#helpers/constants';
+import { useComponentSize } from '#hooks';
 
 import {
     BottomSheetContainer,
@@ -19,7 +21,6 @@ import {
     InnerContainer,
     PressableWrapper,
 } from './styles';
-import { useComponentSize } from '#hooks';
 
 export const BottomSheetContext = React.createContext<{
     bottomSheetIsOpen: boolean;
@@ -110,6 +111,22 @@ export const BottomSheetProvider: React.FC<{}> = ({ children }) => {
         () => closeBottomSheet(),
         [closeBottomSheet]
     );
+
+    React.useEffect(() => {
+        let BackHandlerListerner: any;
+        if (content) {
+            BackHandlerListerner = BackHandler.addEventListener(
+                'hardwareBackPress',
+                () => {
+                    closeBottomSheet();
+                    return true;
+                }
+            );
+        } else if (BackHandlerListerner) BackHandlerListerner.remove();
+        return () => {
+            if (BackHandlerListerner) BackHandlerListerner.remove();
+        };
+    }, [closeBottomSheet, content]);
 
     return (
         <BottomSheetContext.Provider

@@ -8,9 +8,9 @@ type ContainerProps = {
 };
 
 const Container = styled.View<ContainerProps>`
-    justify-content: center;
     border-radius: ${({ borderRadius }) => `${borderRadius || 0}px`};
     height: ${({ height, size }) => `${height || size}px`};
+    justify-content: center;
     overflow: hidden;
     width: ${({ size, width }) => `${width || size}px`};
 `;

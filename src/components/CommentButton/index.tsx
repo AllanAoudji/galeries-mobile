@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux';
 
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
+import { updateFramesCurrent } from '#store/frames';
 
 import { Container } from './styles';
-import { updateFramesCurrent } from '#store/frames';
 
 type Props = {
     frame: Store.Models.Frame;

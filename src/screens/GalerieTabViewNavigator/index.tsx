@@ -254,6 +254,7 @@ const GalerieTabViewNavigator = () => {
     }, [galerie]);
 
     if (!galerie) return null;
+
     if (!navigationState) return <FullScreenLoader show />;
 
     return (

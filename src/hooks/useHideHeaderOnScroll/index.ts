@@ -9,18 +9,6 @@ import clamp from '#helpers/clamp';
 
 const useHideHeaderOnScroll = (headerHeight: number) => {
     const translateY = useSharedValue(0);
-
-    const scrollHandler = useAnimatedScrollHandler({
-        onBeginDrag: (e, ctx: { translate: number; position: number }) => {
-            ctx.position = e.contentOffset.y;
-            ctx.translate = translateY.value;
-        },
-        onScroll: (e, ctx) => {
-            const diff = e.contentOffset.y - ctx.position;
-            translateY.value = clamp(ctx.translate + diff, 0, headerHeight);
-        },
-    });
-
     const containerStyle = useAnimatedStyle(() => {
         const transform = interpolate(
             translateY.value,
@@ -35,9 +23,18 @@ const useHideHeaderOnScroll = (headerHeight: number) => {
             [0, headerHeight],
             [1, 0]
         );
-        return {
-            opacity,
-        };
+        return { opacity };
+    });
+
+    const scrollHandler = useAnimatedScrollHandler({
+        onBeginDrag: (e, ctx: { translate: number; position: number }) => {
+            ctx.position = e.contentOffset.y;
+            ctx.translate = translateY.value;
+        },
+        onScroll: (e, ctx) => {
+            const diff = e.contentOffset.y - ctx.position;
+            translateY.value = clamp(ctx.translate + diff, 0, headerHeight);
+        },
     });
 
     return {

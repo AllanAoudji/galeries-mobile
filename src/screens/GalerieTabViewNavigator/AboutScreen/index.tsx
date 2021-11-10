@@ -38,7 +38,7 @@ const AboutScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
         () => ({
             minHeight: dimension.height + GalerieTabViewMaxScroll,
         }),
-        []
+        [dimension]
     );
 
     const setInitialScroll = React.useCallback(
@@ -104,4 +104,4 @@ const style: ({ minHeight }: { minHeight: number }) => {
     },
 }));
 
-export default AboutScreen;
+export default React.memo(AboutScreen);

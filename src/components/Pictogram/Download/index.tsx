@@ -47,4 +47,4 @@ const Download = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default Download;
+export default React.memo(Download);

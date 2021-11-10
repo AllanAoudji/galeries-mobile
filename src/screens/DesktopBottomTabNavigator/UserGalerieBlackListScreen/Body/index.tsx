@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Typography, UserCard } from '#components';
 import { selectGalerie } from '#store/galeries';
 import { selectGalerieUserRole } from '#store/galerieRoles';
-import { selectUser, updateUserCurrent } from '#store/users';
 import { selectMe } from '#store/me';
+import { selectUser, updateUserCurrent } from '#store/users';
 
 import { BlackListedByContainer, Container, TitleContainer } from './styles';
 

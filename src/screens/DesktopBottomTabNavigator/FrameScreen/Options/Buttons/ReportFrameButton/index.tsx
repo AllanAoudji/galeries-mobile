@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
+import { Typography } from '#components';
 import { selectGalerie } from '#store/galeries';
 
 import { Button } from './styles';
-import { Typography } from '#components';
 
 type Props = {
     frame: Store.Models.Frame;

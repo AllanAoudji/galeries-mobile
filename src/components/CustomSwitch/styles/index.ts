@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
 import Animated from 'react-native-reanimated';
+import styled from 'styled-components/native';
 
 type ContainerProps = {
     disabled?: boolean;
@@ -12,12 +12,21 @@ type ContainerProps = {
     pr?: keyof Style.Spacings;
     pt?: keyof Style.Spacings;
 };
+type ThumbProps = {
+    size: number;
+    trackHeight: number;
+};
+type TrackProps = {
+    height: number;
+    thumbSize: number;
+    width: number;
+};
 
-const Track = styled(Animated.View)`
-    border-radius: 7px;
-    height: 14px;
-    width: 38px;
-    margin: 4px 0;
+const Track = styled(Animated.View)<TrackProps>`
+    border-radius: ${({ height }) => `${height / 2}px`};
+    height: ${({ height }) => `${height}px`};
+    margin: ${({ height, thumbSize }) => `${(thumbSize - height) / 2}px 0`};
+    width: ${({ width }) => `${width}px`};
 `;
 const Container = styled.Pressable<ContainerProps>`
     margin-bottom: ${({ mb, theme }) => (mb ? theme.spacings[mb] : 0)};
@@ -30,14 +39,13 @@ const Container = styled.Pressable<ContainerProps>`
     padding-right: ${({ pr, theme }) => (pr ? theme.spacings[pr] : 0)};
     padding-top: ${({ pt, theme }) => (pt ? theme.spacings[pt] : 0)};
 `;
-const Thumb = styled(Animated.View)`
+const Thumb = styled(Animated.View)<ThumbProps>`
     background-color: ${({ theme }) => theme.colors.primary};
-    border-radius: 12px;
-    height: 22px;
-    width: 22px;
+    border-radius: ${({ size }) => `${size / 2}px`};
+    height: ${({ size }) => `${size}px`};
     position: absolute;
-    top: -4px;
+    top: ${({ size, trackHeight }) => `-${(size - trackHeight) / 2}px`};
+    width: ${({ size }) => `${size}px`};
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export { Container, Thumb, Track };

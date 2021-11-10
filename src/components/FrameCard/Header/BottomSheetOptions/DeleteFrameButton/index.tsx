@@ -27,7 +27,7 @@ const DeleteFrameButton = ({ frame, me }: Props) => {
     }, [frame]);
 
     if (!galerie || !me) return null;
-    if (galerie.role === 'user' && frame.userId !== me.id) return null;
+    if (frame.userId !== me.id && galerie.role === 'user') return null;
 
     return <BottomSheetButton onPress={handlePress} title="delete frame..." />;
 };

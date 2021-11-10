@@ -25,9 +25,9 @@ const Active = styled.View<ActiveProps>`
 `;
 const Button = styled.View`
     align-items: center;
-    border-radius: 12px;
     background-color: ${({ theme }) => theme.colors['secondary-light']};
     border-color: ${({ theme }) => theme.colors.primary};
+    border-radius: 12px;
     border-width: 2px;
     height: 24px;
     justify-content: center;
@@ -45,5 +45,4 @@ const Container = styled.Pressable<ContainerProps>`
     padding-top: ${({ pt, theme }) => (pt ? theme.spacings[pt] : 0)};
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export { Active, Button, Container };

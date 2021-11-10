@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import { selectGalerie } from '#store/galeries';
 import { GalerieCard } from '#components';
+import { selectGalerie } from '#store/galeries';
 
 type Props = {
     item: string;

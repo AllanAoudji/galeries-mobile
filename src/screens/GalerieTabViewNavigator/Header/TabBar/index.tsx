@@ -7,10 +7,10 @@ import {
 } from 'react-native-tab-view';
 import { DefaultTheme, useTheme } from 'styled-components/native';
 
+import { GLOBAL_STYLE } from '#helpers/constants';
 import convertPixelToNum from '#helpers/convertPixelToNum';
 
 import { TabbarStyled } from './styles';
-import { GLOBAL_STYLE } from '#helpers/constants';
 
 const TabBar = (
     props: SceneRendererProps & {
@@ -44,17 +44,17 @@ const style: ({ theme }: { theme: DefaultTheme }) => {
     },
     labelStyle: {
         color: theme.colors.black,
-        fontSize: convertPixelToNum(theme.font.sizes[18]),
         fontFamily: theme.font.families.roman,
-        textTransform: 'capitalize',
+        fontSize: convertPixelToNum(theme.font.sizes[18]),
         marginVertical: 15,
+        textTransform: 'capitalize',
     },
     tabStyle: {
-        padding: 0,
-        width: 120,
         alignItems: 'center',
         height: GLOBAL_STYLE.GALERIE_TAB_BAR_MENU,
         justifyContent: 'center',
+        padding: 0,
+        width: 120,
     },
 }));
 

@@ -16,10 +16,10 @@ const Button = styled.View`
     padding: 0 15px;
 `;
 const Container = styled(Animated.View)`
+    height: 100px;
     position: absolute;
     width: 100%;
     z-index: 1;
-    height: 100px;
 `;
 const InnerContainer = styled.Pressable<InnerContainerProps>`
     align-items: center;

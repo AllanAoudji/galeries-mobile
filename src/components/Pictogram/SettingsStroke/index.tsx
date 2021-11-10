@@ -51,4 +51,4 @@ const SettingsStroke = ({
     );
 };
 
-export default SettingsStroke;
+export default React.memo(SettingsStroke);

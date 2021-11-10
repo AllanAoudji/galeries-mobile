@@ -2,6 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
+    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StyleProp,
@@ -20,6 +21,7 @@ import { useTheme } from 'styled-components/native';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import {
     getGalerieBlackLists,
+    refreshGalerieBlackLists,
     selectCurrentGalerieGalerieBlackListsStatus,
 } from '#store/galerieBlackLists';
 
@@ -72,11 +74,18 @@ const GalerieBlackLists = ({
     );
 
     const handleEndReach = React.useCallback(() => {
-        if (galerie) dispatch(getGalerieBlackLists(galerie.id));
+        if (galerie)
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(getGalerieBlackLists(galerie.id));
+            });
     }, [galerie]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-    }, []);
+        if (galerie)
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(refreshGalerieBlackLists(galerie.id));
+            });
+    }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
@@ -157,4 +166,4 @@ const style: ({ minHeight }: { minHeight: number }) => {
     },
 }));
 
-export default GalerieBlackLists;
+export default React.memo(GalerieBlackLists);

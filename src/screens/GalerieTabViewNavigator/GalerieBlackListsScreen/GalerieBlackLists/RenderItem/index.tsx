@@ -36,7 +36,7 @@ const RenderItem = ({ index, item }: Props) => {
     const handlePress = React.useCallback(() => {
         dispatch(updateGalerieBlackListsCurrent(item));
         navigation.navigate('UserGalerieBlackList');
-    }, [item]);
+    }, [item, navigation]);
 
     if (!user) return null;
 
@@ -51,4 +51,4 @@ const RenderItem = ({ index, item }: Props) => {
     );
 };
 
-export default RenderItem;
+export default React.memo(RenderItem);

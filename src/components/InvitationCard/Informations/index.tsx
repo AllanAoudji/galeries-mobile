@@ -12,19 +12,23 @@ type Props = {
 const Informations = ({ invitation }: Props) => {
     const expiration = React.useMemo(() => {
         if (!invitation.time) return null;
-        const now = moment(new Date());
+
         const end = moment(invitation.time);
+        const now = moment(new Date());
         const duration = moment.duration(end.diff(now));
+
         if (duration.asDays() >= 1) {
             return `${Math.floor(duration.asDays())} day${
                 !!(Math.floor(duration.asDays()) > 1) && 's'
             }`;
         }
+
         if (duration.asHours() >= 1) {
             return `${Math.floor(duration.asHours())} hour${
                 !!(Math.floor(duration.asHours()) > 1) && 's'
             }`;
         }
+
         return `${Math.floor(duration.asMinutes())} minute${
             !!(Math.floor(duration.asMinutes()) > 1) && 's'
         }`;

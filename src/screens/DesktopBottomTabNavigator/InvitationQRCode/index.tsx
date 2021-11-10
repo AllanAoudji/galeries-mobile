@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import QRCode from 'react-native-qrcode-svg';
 import { useWindowDimensions } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
 import { useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
@@ -27,7 +27,7 @@ const InvitationQRCode = ({ navigation }: Props) => {
 
     const size = React.useMemo(
         () => dimension.width - convertPixelToNum(theme.spacings.large) * 2,
-        []
+        [dimension, theme]
     );
 
     const handleHideOptions = React.useCallback(() => {
@@ -41,16 +41,10 @@ const InvitationQRCode = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
-        }, [invitation])
+        }, [invitation, navigation])
     );
 
-    useFocusEffect(
-        React.useCallback(() => {
-            return () => {
-                setShowOptions(false);
-            };
-        }, [])
-    );
+    useFocusEffect(React.useCallback(() => () => setShowOptions(false), []));
 
     return (
         <Container onPress={handleShowOptions}>

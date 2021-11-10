@@ -5,18 +5,16 @@ import {
     Keyboard,
     useWindowDimensions,
 } from 'react-native';
-import {
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
-} from 'react-native-reanimated';
+import { useDispatch } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
-import { useDispatch } from 'react-redux';
-import { BottomSheetButton, Pictogram } from '#components';
+import { Pictogram } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
-import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
 import { useKeyboard } from '#hooks';
+import { resetGaleriesCurrent } from '#store/galeries';
+
+import CreateGalerieButton from './CreateGalerieButton';
+import SubscribeGalerieButton from './SubscribeGalerieButton';
 
 import {
     Container,
@@ -24,7 +22,6 @@ import {
     LinearGradientStyle,
     PictogramContainer,
 } from './styles';
-import { resetGaleriesCurrent } from '#store/galeries';
 
 const customSize = {
     height: 28,
@@ -35,26 +32,19 @@ const location = [0, 0.8];
 const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     const dispatch = useDispatch();
     const dimension = useWindowDimensions();
-    const { keyboardShown } = useKeyboard();
     const theme = useTheme();
 
-    const { closeBottomSheet, openBottomSheet } =
-        React.useContext(BottomSheetContext);
+    const { keyboardShown } = useKeyboard();
 
-    const bottom = useSharedValue(0);
-    const style = useAnimatedStyle(() => {
-        return {
-            bottom: bottom.value,
-        };
-    }, []);
+    const { openBottomSheet } = React.useContext(BottomSheetContext);
 
     const color = React.useMemo(
         () => ['transparent', theme.colors['secondary-light']],
-        []
+        [theme]
     );
     const currentRouteName = React.useMemo(
         () => state.routes[state.index].name,
-        [state.index]
+        [state]
     );
     const galeriesVariant = React.useMemo(
         () =>
@@ -101,27 +91,11 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     const bottomSheetContent = React.useCallback(() => {
         return (
             <>
-                <BottomSheetButton
-                    onPress={handleCreateGaleriePress}
-                    title="create a new galerie"
-                />
-                <BottomSheetButton
-                    onPress={handleSubscribeGaleriePress}
-                    title="Subscribe to a galerie"
-                />
+                <CreateGalerieButton navigation={navigation} />
+                <SubscribeGalerieButton navigation={navigation} />
             </>
         );
-    }, []);
-    const handleCreateGaleriePress = React.useCallback(() => {
-        if (keyboardShown) Keyboard.dismiss();
-        else {
-            closeBottomSheet();
-            navigation.navigate('CreateGalerie');
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(resetGaleriesCurrent());
-            });
-        }
-    }, [keyboardShown]);
+    }, [navigation]);
     const handleGaleriesPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else {
@@ -130,7 +104,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
                 dispatch(resetGaleriesCurrent());
             });
         }
-    }, [keyboardShown]);
+    }, [keyboardShown, navigation]);
     const handleHomePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else {
@@ -139,7 +113,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
                 dispatch(resetGaleriesCurrent());
             });
         }
-    }, [keyboardShown]);
+    }, [keyboardShown, navigation]);
     const handleNotificationsPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else {
@@ -148,7 +122,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
                 dispatch(resetGaleriesCurrent());
             });
         }
-    }, [keyboardShown]);
+    }, [keyboardShown, navigation]);
     const handleProfilePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else {
@@ -157,35 +131,16 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
                 dispatch(resetGaleriesCurrent());
             });
         }
-    }, [keyboardShown]);
+    }, [keyboardShown, navigation]);
     const handleAddSubscribePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else openBottomSheet(bottomSheetContent);
-    }, [openBottomSheet, handleCreateGaleriePress, keyboardShown]);
-    const handleSubscribeGaleriePress = React.useCallback(() => {
-        if (keyboardShown) Keyboard.dismiss();
-        else {
-            closeBottomSheet();
-            navigation.navigate('SubscribeGalerie');
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(resetGaleriesCurrent());
-            });
-        }
-    }, [keyboardShown]);
-
-    React.useEffect(() => {
-        if (keyboardShown)
-            bottom.value = withTiming(
-                -GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-                ANIMATIONS.TIMING_CONFIG()
-            );
-        else bottom.value = withTiming(0, ANIMATIONS.TIMING_CONFIG());
-    }, [keyboardShown]);
+    }, [bottomSheetContent, openBottomSheet, keyboardShown]);
 
     if (showTabBar) return null;
 
     return (
-        <Container style={style} width={dimension.width}>
+        <Container width={dimension.width}>
             <LinearGradientStyle
                 colors={color}
                 locations={location}

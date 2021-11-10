@@ -21,7 +21,7 @@ const ShowQRCodeButton = ({ invitation }: Props) => {
         dispatch(updateInvitationsCurrent(invitation.id));
         navigation.navigate('InvitationQRCode');
         closeBottomSheet();
-    }, [invitation]);
+    }, [closeBottomSheet, invitation, navigation]);
 
     return <BottomSheetButton onPress={handlePress} title="show QRCode" />;
 };

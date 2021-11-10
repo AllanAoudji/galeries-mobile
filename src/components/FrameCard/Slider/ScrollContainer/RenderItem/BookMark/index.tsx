@@ -2,10 +2,10 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import CoverPictureBookMark from '#components/CoverPictureBookMark';
+import { selectGalerie } from '#store/galeries';
 import { selectGalerieCoverPictureId } from '#store/galeriePictures';
 
 import { Container } from './styles';
-import { selectGalerie } from '#store/galeries';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -18,7 +18,6 @@ const BookMark = ({ frame, galeriePictureId }: Props) => {
         [frame]
     );
     const coverPictureId = useSelector(coverPictureIdSelector);
-
     const galerieSelector = React.useMemo(
         () => selectGalerie(frame.galerieId),
         [frame]

@@ -19,7 +19,7 @@ const UpdateFrameButton = ({ frame, me }: Props) => {
     const handlePress = React.useCallback(() => {
         dispatch(updateFramesCurrent(frame.id));
         navigation.navigate('UpdateFrame');
-    }, []);
+    }, [frame, navigation]);
 
     if (!me) return null;
     if (me.id !== frame.userId) return null;

@@ -47,4 +47,4 @@ const EditFill = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default EditFill;
+export default React.memo(EditFill);

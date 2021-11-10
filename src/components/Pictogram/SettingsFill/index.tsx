@@ -47,4 +47,4 @@ const SettingsFill = ({
     );
 };
 
-export default SettingsFill;
+export default React.memo(SettingsFill);

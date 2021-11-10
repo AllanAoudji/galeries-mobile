@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+import { Dimensions } from 'react-native';
+
 type ContainerProps = {
     color: keyof Style.Colors;
 };
@@ -14,6 +16,7 @@ const Container = styled.View<ContainerProps>`
     position: absolute;
     right: 0;
     top: 0;
+    height: ${() => `${Dimensions.get('window').height}px`};
 `;
 
 // eslint-disable-next-line import/prefer-default-export

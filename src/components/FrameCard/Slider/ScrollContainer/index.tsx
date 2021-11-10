@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ListRenderItem, useWindowDimensions } from 'react-native';
-
-import { useSelector } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
+
 import { CurrentGaleriePictureContext } from '#contexts/CurrentGaleriePictureContext';
+import { selectFrameGaleriePicturesAllIds } from '#store/galeriePictures';
 
 import RenderItem from './RenderItem';
-import { selectFrameGaleriePicturesAllIds } from '#store/galeriePictures';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -53,10 +53,10 @@ const ScrollContainer = ({ frame }: Props) => {
             onScroll={handleScroll}
             overScrollMode="never"
             removeClippedSubviews
+            renderItem={renderItem}
             showsHorizontalScrollIndicator={false}
             snapToInterval={dimension.width}
             windowSize={3}
-            renderItem={renderItem}
         />
     );
 };

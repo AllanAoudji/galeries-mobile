@@ -7,9 +7,9 @@ const Container = styled.Pressable`
     border-radius: 5px;
     flex-direction: row;
     height: ${() => `${GLOBAL_STYLE.INVITATION_CARD_HEIGHT}px`};
+    margin: ${({ theme }) => `20px ${theme.spacings.small} 0`};
     padding: ${({ theme }) =>
         `${theme.spacings.smallest} 0 ${theme.spacings.smallest} ${theme.spacings.smallest}`};
-    margin: ${({ theme }) => `20px ${theme.spacings.small} 0`};
 `;
 const InnerContainer = styled.View`
     flex: 1;

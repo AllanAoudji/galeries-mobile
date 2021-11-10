@@ -1,9 +1,12 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
+import { BackHandler } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Pictogram from '#components/Pictogram';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { CurrentGaleriePictureContext } from '#contexts/CurrentGaleriePictureContext';
+import { DeleteFrameModalContext } from '#contexts/DeleteFrameModalContext';
 import { selectMe } from '#store/me';
 
 import DeleteFrameButton from './DeleteFrameButton';
@@ -18,6 +21,9 @@ type Props = {
 const BottomSheetOptions = ({ frame }: Props) => {
     const { openBottomSheet } = React.useContext(BottomSheetContext);
     const { currentIndex } = React.useContext(CurrentGaleriePictureContext);
+    const { handleCloseModal, openModal } = React.useContext(
+        DeleteFrameModalContext
+    );
 
     const me = useSelector(selectMe);
 
@@ -39,6 +45,27 @@ const BottomSheetOptions = ({ frame }: Props) => {
         openBottomSheet(bottomSheetContent);
     }, [bottomSheetContent]);
 
+    useFocusEffect(
+        React.useCallback(() => () => handleCloseModal(), [handleCloseModal])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            let BackHandlerListerner: any;
+            if (openModal)
+                BackHandlerListerner = BackHandler.addEventListener(
+                    'hardwareBackPress',
+                    () => {
+                        handleCloseModal();
+                        return true;
+                    }
+                );
+            else if (BackHandlerListerner) BackHandlerListerner.remove();
+            return () => {
+                if (BackHandlerListerner) BackHandlerListerner.remove();
+            };
+        }, [handleCloseModal, openModal])
+    );
+
     return (
         <Pictogram
             onPress={handlePress}
@@ -52,4 +79,4 @@ const BottomSheetOptions = ({ frame }: Props) => {
     );
 };
 
-export default BottomSheetOptions;
+export default React.memo(BottomSheetOptions);

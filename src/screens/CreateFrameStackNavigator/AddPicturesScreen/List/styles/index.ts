@@ -25,7 +25,7 @@ const AddPicture = styled.Pressable<AddPictureProps>`
 `;
 const Container = styled.View`
     height: ${() => `${DRAG_AND_DROP_UTILS.SIZE * 2}px`};
-    width: 100%;
+    margin: ${({ theme }) => `0 ${theme.spacings.smallest}`};
 `;
 
 export { AddPicture, Container };

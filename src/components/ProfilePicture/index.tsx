@@ -2,13 +2,14 @@ import * as React from 'react';
 import { Image, ImageSourcePropType } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import DefaultProfilePicture from '../../../assets/images/PP.jpg';
 import {
     selectProfilePicture,
     selectUserCurrentProfilePictureId,
 } from '#store/profilePictures';
 
 import { Container, ImageStyled, InnerContainer } from './styles';
+
+import DefaultProfilePicture from '../../../assets/images/PP.jpg';
 
 type Props = {
     border?: boolean;
@@ -52,7 +53,6 @@ const ProfilePictureWithUser = ({
     const currentProfilePictureId = useSelector(
         userCurrentProfilePictureIdSelector()
     );
-
     const profilePictureSelector = React.useCallback(
         () => selectProfilePicture(currentProfilePictureId),
         [currentProfilePictureId]
@@ -124,7 +124,6 @@ const ProfilePicture = ({
 
     return (
         <ProfilePictureWithUser
-            user={user}
             border={border}
             borderColor={borderColor}
             mb={mb}
@@ -132,6 +131,7 @@ const ProfilePicture = ({
             mr={mr}
             mt={mt}
             size={size}
+            user={user}
         />
     );
 };

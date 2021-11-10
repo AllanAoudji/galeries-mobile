@@ -1,13 +1,18 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {
+    NavigationProp,
+    useFocusEffect,
+    useNavigation,
+} from '@react-navigation/native';
 import * as React from 'react';
+import { InteractionManager } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Animated from 'react-native-reanimated';
 
 import {
-    GalerieTabbarScreenContainer,
-    FullScreenLoader,
-    BottomLoader,
     AddButton,
+    BottomLoader,
+    FullScreenLoader,
+    GalerieTabbarScreenContainer,
 } from '#components';
 import {
     getGalerieInvitations,
@@ -59,23 +64,22 @@ const InvitationsScreen = ({
             .navigate('CreateInvitation');
     }, [navigation]);
 
-    React.useEffect(() => {
-        if (
-            current &&
-            galerie &&
-            invitationsStatus &&
-            invitationsStatus === 'PENDING'
-        )
-            dispatch(getGalerieInvitations(galerie.id));
-    }, [current, galerie, invitationsStatus]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (galerie && invitationsStatus && invitationsStatus === 'PENDING')
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch(getGalerieInvitations(galerie.id));
+                });
+        }, [galerie, invitationsStatus])
+    );
 
     return (
         <GalerieTabbarScreenContainer>
             {invitationsAllIds && invitationsAllIds.length > 0 ? (
                 <Invitations
                     allIds={invitationsAllIds}
-                    editScrollY={editScrollY}
                     current={current}
+                    editScrollY={editScrollY}
                     galerie={galerie}
                     scrollY={scrollY}
                 />
@@ -89,11 +93,11 @@ const InvitationsScreen = ({
             )}
             <AddButton
                 bottom="largest"
-                right="normal"
                 onPress={handlePressAddGalerie}
+                right="normal"
             />
             <FullScreenLoader show={showFullScreenLoader} />
-            <BottomLoader show={showBottomLoader} bottom="huge" />
+            <BottomLoader bottom="huge" show={showBottomLoader} />
         </GalerieTabbarScreenContainer>
     );
 };

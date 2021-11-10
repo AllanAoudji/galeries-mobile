@@ -6,20 +6,20 @@ import {
     useWindowDimensions,
     ViewStyle,
 } from 'react-native';
-
 import Animated, {
     runOnJS,
     useAnimatedReaction,
     useAnimatedScrollHandler,
 } from 'react-native-reanimated';
+
 import { GalerieTabbarScreenContainer } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 import AllowNotification from './AllowNotification';
 import RemoveButtons from './RemoveButtons';
 
 import { Container } from './styles';
-import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 type Props = {
     current: boolean;
@@ -37,7 +37,7 @@ const OptionsScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
         () => ({
             minHeight: dimension.height + GalerieTabViewMaxScroll,
         }),
-        []
+        [dimension]
     );
 
     const setInitialScroll = React.useCallback(

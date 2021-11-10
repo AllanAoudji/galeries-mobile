@@ -2,12 +2,13 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
+    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StyleProp,
     StyleSheet,
-    useWindowDimensions,
     ViewStyle,
+    useWindowDimensions,
 } from 'react-native';
 import Animated, {
     runOnJS,
@@ -18,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 import {
     getGalerieUsers,
     refreshGalerieUsers,
@@ -25,7 +27,6 @@ import {
 } from '#store/users';
 
 import RenderItem from './RenderItem';
-import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 type Props = {
     allIds: string[];
@@ -57,7 +58,7 @@ const Users = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
             theme.colors['primary-dark'],
             theme.colors['primary-light'],
         ],
-        []
+        [theme]
     );
     const styleProps = React.useMemo(
         () => ({
@@ -67,11 +68,17 @@ const Users = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
     );
 
     const handleEndReach = React.useCallback(() => {
-        if (galerie) dispatch(getGalerieUsers(galerie.id));
+        if (galerie)
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(getGalerieUsers(galerie.id));
+            });
     }, [galerie]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (galerie) dispatch(refreshGalerieUsers(galerie.id));
+        if (galerie)
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(refreshGalerieUsers(galerie.id));
+            });
     }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(

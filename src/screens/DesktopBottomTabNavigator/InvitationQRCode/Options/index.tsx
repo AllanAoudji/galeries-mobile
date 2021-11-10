@@ -34,7 +34,7 @@ const Options = ({ onPress, show }: Props) => {
     const handlePressBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
-    }, []);
+    }, [navigation]);
 
     React.useEffect(() => {
         if (show) {
@@ -47,12 +47,13 @@ const Options = ({ onPress, show }: Props) => {
     }, [show]);
 
     useFocusEffect(
-        React.useCallback(() => {
-            return () => {
+        React.useCallback(
+            () => () => {
                 display.value = 0;
                 setOpen(false);
-            };
-        }, [])
+            },
+            []
+        )
     );
 
     if (!open) return null;
@@ -64,12 +65,12 @@ const Options = ({ onPress, show }: Props) => {
         >
             <InnerContainer onPress={onPress}>
                 <Pictogram
-                    variant="arrow-left"
                     color="white"
                     height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
                     onPress={handlePressBack}
                     pl="small"
                     pr="small"
+                    variant="arrow-left"
                 />
             </InnerContainer>
         </Container>

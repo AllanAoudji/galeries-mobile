@@ -47,4 +47,4 @@ const ModerationFill = ({
     );
 };
 
-export default ModerationFill;
+export default React.memo(ModerationFill);

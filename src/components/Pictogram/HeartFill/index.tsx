@@ -43,4 +43,4 @@ const HeartFill = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default HeartFill;
+export default React.memo(HeartFill);

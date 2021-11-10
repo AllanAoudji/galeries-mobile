@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Pressable, useWindowDimensions } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import { GalerieCoverPicture, ProfilePicture, ReturnButton } from '#components';
@@ -34,16 +34,16 @@ const Header = ({ galerie, user }: Props) => {
 
     const colors = React.useMemo(
         () => ['transparent', theme.colors['secondary-light']],
-        []
+        [theme]
     );
 
     const handlePressProfilePicture = React.useCallback(() => {
         if (currentProfilePictureId) navigation.navigate('ProfilePicture');
-    }, [currentProfilePictureId]);
+    }, [currentProfilePictureId, navigation]);
     const handlePressReturn = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
-    }, []);
+    }, [navigation]);
 
     return (
         <Container>
@@ -54,7 +54,7 @@ const Header = ({ galerie, user }: Props) => {
             </CoverPictureContainer>
             <ProfilePictureContainer width={dimension.width}>
                 <Pressable onPress={handlePressProfilePicture}>
-                    <ProfilePicture user={user} size="huge" border />
+                    <ProfilePicture border size="huge" user={user} />
                 </Pressable>
             </ProfilePictureContainer>
         </Container>

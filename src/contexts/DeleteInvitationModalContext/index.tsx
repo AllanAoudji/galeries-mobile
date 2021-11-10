@@ -1,22 +1,26 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { deleteInvitation } from '#store/invitations';
 import DeleteModal from '#components/DeleteModal';
+import { deleteInvitation } from '#store/invitations';
 
 export const DeleteInvitationModalContext = React.createContext<{
+    handleCloseModal: () => void;
     handleOpenModal: (invitationId: string) => void;
+    openModal: boolean;
 }>({
+    handleCloseModal: () => {},
     handleOpenModal: () => {},
+    openModal: false,
 });
 
 export const DeleteInvitationModalProvider: React.FC<{}> = ({ children }) => {
     const dispatch = useDispatch();
 
-    const [openModal, setOpenModal] = React.useState<boolean>(false);
     const [currentInvitation, setCurrentInvitation] = React.useState<
         string | null
     >(null);
+    const [openModal, setOpenModal] = React.useState<boolean>(false);
 
     const handleCloseModal = React.useCallback(() => {
         setCurrentInvitation(null);
@@ -31,7 +35,9 @@ export const DeleteInvitationModalProvider: React.FC<{}> = ({ children }) => {
     }, [currentInvitation]);
 
     return (
-        <DeleteInvitationModalContext.Provider value={{ handleOpenModal }}>
+        <DeleteInvitationModalContext.Provider
+            value={{ handleCloseModal, handleOpenModal, openModal }}
+        >
             {children}
             <DeleteModal
                 handleClose={handleCloseModal}

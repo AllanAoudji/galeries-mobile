@@ -51,4 +51,4 @@ const ModerationStroke = ({
     );
 };
 
-export default ModerationStroke;
+export default React.memo(ModerationStroke);

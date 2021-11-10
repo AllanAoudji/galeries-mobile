@@ -68,4 +68,4 @@ const LogotypeStroke = ({ size = 'normal' }: Props) => (
     </Svg>
 );
 
-export default LogotypeStroke;
+export default React.memo(LogotypeStroke);

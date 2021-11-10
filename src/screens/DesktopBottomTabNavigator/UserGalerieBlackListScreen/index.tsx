@@ -33,7 +33,7 @@ const UserGalerieBlackListScreen = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
-        }, [galerieBlackList])
+        }, [galerieBlackList, navigation])
     );
 
     useFocusEffect(
@@ -42,7 +42,7 @@ const UserGalerieBlackListScreen = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
-        }, [galerie])
+        }, [galerie, navigation])
     );
 
     if (!galerieBlackList) return null;

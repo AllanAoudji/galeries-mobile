@@ -1,7 +1,8 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { InteractionManager } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
     AddButton,
@@ -26,9 +27,9 @@ type Props = {
 };
 
 const FramesScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
+    const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
-    const dispatch = useDispatch();
 
     const framesAllIds = useSelector(selectCurrentGalerieFramesAllIds);
     const framesStatus = useSelector(selectCurrentGalerieFramesStatus);
@@ -43,43 +44,43 @@ const FramesScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
     );
 
     const handlePressAddGalerie = React.useCallback(() => {
-        navigation
-            .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
-            .navigate('CreateFrame', { screen: 'AddPictures' });
+        navigation.navigate('CreateInvitation');
     }, [navigation]);
 
-    React.useEffect(() => {
-        if (framesStatus && framesStatus === 'PENDING' && galerie)
-            dispatch(getGalerieFrames(galerie.id));
-    }, [framesStatus, galerie]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (framesStatus && framesStatus === 'PENDING' && galerie)
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch(getGalerieFrames(galerie.id));
+                });
+        }, [framesStatus, galerie])
+    );
 
     return (
         <GalerieTabbarScreenContainer>
-            <>
-                {framesAllIds && framesAllIds.length > 0 ? (
-                    <Frames
-                        allIds={framesAllIds}
-                        editScrollY={editScrollY}
-                        current={current}
-                        galerie={galerie}
-                        scrollY={scrollY}
-                    />
-                ) : (
-                    <EmptyScrollView
-                        current={current}
-                        editScrollY={editScrollY}
-                        galerie={galerie}
-                        scrollY={scrollY}
-                    />
-                )}
-                <AddButton
-                    bottom="largest"
-                    right="normal"
-                    onPress={handlePressAddGalerie}
+            {framesAllIds && framesAllIds.length > 0 ? (
+                <Frames
+                    allIds={framesAllIds}
+                    current={current}
+                    editScrollY={editScrollY}
+                    galerie={galerie}
+                    scrollY={scrollY}
                 />
-            </>
+            ) : (
+                <EmptyScrollView
+                    current={current}
+                    editScrollY={editScrollY}
+                    galerie={galerie}
+                    scrollY={scrollY}
+                />
+            )}
+            <AddButton
+                bottom="largest"
+                onPress={handlePressAddGalerie}
+                right="normal"
+            />
             <FullScreenLoader show={showFullScreenLoader} />
-            <BottomLoader show={showBottomLoader} bottom="huge" />
+            <BottomLoader bottom="huge" show={showBottomLoader} />
         </GalerieTabbarScreenContainer>
     );
 };

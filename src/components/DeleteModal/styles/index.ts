@@ -13,9 +13,9 @@ const ButtonContainer = styled.View`
     width: 50%;
 `;
 const ButtonsContainer = styled.View`
-    margin-top: ${({ theme }) => theme.spacings.normal};
     flex-direction: row;
     justify-content: space-between;
+    margin-top: ${({ theme }) => theme.spacings.normal};
 `;
 const Modal = styled.View`
     background-color: ${({ theme }) => theme.colors['secondary-light']};

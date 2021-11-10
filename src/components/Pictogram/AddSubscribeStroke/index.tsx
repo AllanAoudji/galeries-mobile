@@ -51,4 +51,4 @@ const AddSubscribeStroke = ({
     );
 };
 
-export default AddSubscribeStroke;
+export default React.memo(AddSubscribeStroke);

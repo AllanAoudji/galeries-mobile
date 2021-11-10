@@ -13,7 +13,6 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
-
 import { ANIMATIONS, DRAG_AND_DROP_UTILS } from '#helpers/constants';
 
 import { Container } from './styles';

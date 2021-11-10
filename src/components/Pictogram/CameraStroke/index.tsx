@@ -51,4 +51,4 @@ const CameraStroke = ({
     );
 };
 
-export default CameraStroke;
+export default React.memo(CameraStroke);

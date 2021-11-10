@@ -15,23 +15,48 @@ import LangingScreen from './LandingScreen';
 import LoginScreen from './LoginScreen';
 import SigninScreen from './SigninScreen';
 import { selectMe } from '#store/me';
+import { selectLoginStatus } from '#store/login';
+import { selectSigninStatus } from '#store/signin';
+import { selectForgotYourPasswordStatus } from '#store/forgotYourPassword';
 
 const Stack = createStackNavigator<Screen.RootStack.ParamList>();
 
 const desktopOptions: StackNavigationOptions = {
     headerShown: false,
 };
-const forgotYourPasswordHeader = () => {
-    return <DefaultHeader title="forgot your password?" variant="secondary" />;
+const forgotYourPasswordHeader = ({ navigation }: StackHeaderProps) => {
+    const loading = useSelector(selectForgotYourPasswordStatus);
+    const handlePress = React.useCallback(() => {
+        if (loading.includes('loading')) return;
+        navigation.navigate('Landing');
+    }, [loading]);
+
+    return (
+        <DefaultHeader
+            color="primary-dark"
+            onPress={handlePress}
+            textColor="secondary-light"
+            title="forgot your password?"
+            variant="secondary"
+        />
+    );
 };
 const forgotYourPasswordOptions: StackNavigationOptions = {
     header: forgotYourPasswordHeader,
 };
 const landingOptions: StackNavigationOptions = { headerShown: false };
 const loginHeader = ({ navigation }: StackHeaderProps) => {
+    const loading = useSelector(selectLoginStatus);
+    const handlePress = React.useCallback(() => {
+        if (loading.includes('loading')) return;
+        navigation.navigate('Login');
+    }, [loading]);
+
     return (
         <DefaultHeader
-            onPress={() => navigation.navigate('Landing')}
+            color="primary-dark"
+            onPress={handlePress}
+            textColor="secondary-light"
             title="log-in"
             variant="secondary"
         />
@@ -44,9 +69,17 @@ const screenOptions: StackNavigationOptions = {
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 };
 const signinHeader = ({ navigation }: StackHeaderProps) => {
+    const loading = useSelector(selectSigninStatus);
+    const handlePress = React.useCallback(() => {
+        if (loading.includes('loading')) return;
+        navigation.navigate('Landing');
+    }, [loading]);
+
     return (
         <DefaultHeader
-            onPress={() => navigation.navigate('Landing')}
+            color="primary-dark"
+            onPress={handlePress}
+            textColor="secondary-light"
             title="sign-in"
             variant="secondary"
         />

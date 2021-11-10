@@ -18,7 +18,7 @@ const useKeyboard = () => {
         start: ScreenRect | undefined;
     }>(initialValue);
     const [keyboardHeight, setKeyboardHeight] = React.useState<number>(0);
-    const [shown, setShown] = React.useState(false);
+    const [shown, setShown] = React.useState<boolean>(false);
 
     const handleKeyboardDidHide: KeyboardEventListener = React.useCallback(
         (e) => {
@@ -64,16 +64,15 @@ const useKeyboard = () => {
     );
 
     React.useEffect(() => {
-        Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide);
-        Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow);
-        Keyboard.addListener('keyboardWillHide', handleKeyboardWillHide);
-        Keyboard.addListener('keyboardWillShow', handleKeyboardWillShow);
+        const subscriptions = [
+            Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide),
+            Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow),
+            Keyboard.addListener('keyboardWillHide', handleKeyboardWillHide),
+            Keyboard.addListener('keyboardWillShow', handleKeyboardWillShow),
+        ];
 
         return () => {
-            Keyboard.removeListener('keyboardDidHide', handleKeyboardDidHide);
-            Keyboard.removeListener('keyboardDidShow', handleKeyboardDidShow);
-            Keyboard.removeListener('keyboardWillHide', handleKeyboardWillHide);
-            Keyboard.removeListener('keyboardWillShow', handleKeyboardWillShow);
+            subscriptions.forEach((subscription) => subscription.remove());
         };
     }, []);
 

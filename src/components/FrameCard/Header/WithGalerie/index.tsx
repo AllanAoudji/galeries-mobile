@@ -2,9 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ProfilePicture from '#components/ProfilePicture';
 import GalerieCoverPicture from '#components/GalerieCoverPicture';
+import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
+import { GLOBAL_STYLE } from '#helpers/constants';
 import {
     getGalerieId,
     selectGalerie,
@@ -18,7 +19,6 @@ import {
     TextContainer,
     TextsContainer,
 } from './styles';
-import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -37,7 +37,6 @@ const WithGalerie = ({ frame }: Props) => {
         [frame]
     );
     const galerie = useSelector(galerieSelector);
-
     const userSelector = React.useMemo(() => selectUser(frame.userId), [frame]);
     const user = useSelector(userSelector);
 
@@ -63,17 +62,15 @@ const WithGalerie = ({ frame }: Props) => {
                 {!!galerie && (
                     <TextContainer onPress={handlePressGalerie} pb>
                         <Typography fontFamily="light">Posted on </Typography>
-                        <Typography>
-                            {galerie ? galerie.name : 'galerie not found'}
-                        </Typography>
+                        <Typography>{galerie.name}</Typography>
                     </TextContainer>
                 )}
-                <TextContainer>
-                    <Typography fontFamily="light">By </Typography>
-                    <Typography>
-                        {user ? user.pseudonym : 'user not found'}
-                    </Typography>
-                </TextContainer>
+                {!!user && (
+                    <TextContainer>
+                        <Typography fontFamily="light">By </Typography>
+                        <Typography>{user.pseudonym}</Typography>
+                    </TextContainer>
+                )}
             </TextsContainer>
         </>
     );

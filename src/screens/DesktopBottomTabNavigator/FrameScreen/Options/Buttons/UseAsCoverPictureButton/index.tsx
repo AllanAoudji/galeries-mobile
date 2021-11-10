@@ -25,13 +25,11 @@ const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
         [frame]
     );
     const coverPictureId = useSelector(coverPictureIdSelector);
-
     const galerieSelector = React.useMemo(
         () => selectGalerie(frame ? frame.galerieId : null),
         [frame]
     );
     const galerie = useSelector(galerieSelector);
-
     const galeriePicturesAllIdsSelector = React.useMemo(
         () => selectFrameGaleriePicturesAllIds(frame.id),
         [frame]

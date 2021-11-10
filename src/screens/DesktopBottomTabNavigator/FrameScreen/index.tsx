@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, InteractionManager } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
@@ -13,6 +13,7 @@ import {
 
 import Carousel from './Carousel';
 import Options from './Options';
+
 import { Container } from './styles';
 
 type Props = {
@@ -51,16 +52,19 @@ const FrameScreen = ({ navigation }: Props) => {
     const handlePressBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
-    }, []);
+    }, [navigation]);
 
     React.useEffect(() => {
         if (
+            currentFrame &&
+            !galeriePicturesAllIds &&
             (!galeriePicturesStatus ||
-                galeriePicturesStatus.includes('LOADING')) &&
-            currentFrame
+                galeriePicturesStatus.includes('LOADING'))
         )
-            dispatch(getFrameGaleriePictures(currentFrame.id));
-    }, [currentFrame, galeriePicturesStatus]);
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(getFrameGaleriePictures(currentFrame.id));
+            });
+    }, [currentFrame, galeriePicturesAllIds, galeriePicturesStatus]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -70,10 +74,15 @@ const FrameScreen = ({ navigation }: Props) => {
             }
         }, [currentFrame])
     );
-    useFocusEffect(React.useCallback(() => () => handleHideOptions(), []));
-
-    // TODO:
-    // Need to clean current index when not focus
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                handleHideOptions();
+                setCurrentIndex(0);
+            },
+            []
+        )
+    );
 
     if (!currentFrame) return null;
 
@@ -82,8 +91,8 @@ const FrameScreen = ({ navigation }: Props) => {
             {galeriePicturesAllIds ? (
                 <Carousel
                     allIds={galeriePicturesAllIds}
-                    frame={currentFrame}
                     currentIndex={currentIndex}
+                    frame={currentFrame}
                     onPress={handleShowOptions}
                     setCurrentIndex={setCurrentIndex}
                 />

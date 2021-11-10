@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
     KeyboardType,
     NativeSyntheticEvent,
-    Pressable,
     StyleProp,
     StyleSheet,
     TextInputFocusEventData,
@@ -21,6 +20,7 @@ import { ANIMATIONS } from '#helpers/constants';
 import normalizeError from '#helpers/normalizeError';
 
 import {
+    Container,
     ErrorContainer,
     LabelAnimation,
     LabelContainer,
@@ -34,6 +34,10 @@ type Props = {
     label?: string;
     loading?: boolean;
     maxLength?: number;
+    mb?: keyof Style.Spacings;
+    ml?: keyof Style.Spacings;
+    mr?: keyof Style.Spacings;
+    mt?: keyof Style.Spacings;
     multiline?: boolean;
     onBlur: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
     onChangeText: (text: string) => void;
@@ -44,18 +48,22 @@ type Props = {
     value: string;
 };
 
-const AFTER_ANIMATION_LABEL_FONT_SIZE = 10;
+const AFTER_ANIMATION_LABEL_FONT_SIZE = 12;
 const ANIMATION_TIMING = 100;
 const INITIAL_CONTAINER_OPACITY = 0.5;
 const INITIAL_LABEL_CONTAINER_OPACITY = 0.5;
-const INITIAL_LABEL_CONTAINER_TOP = 21;
-const INITIAL_LABEL_FONT_SIZE = 12;
+const INITIAL_LABEL_CONTAINER_TOP = 25;
+const INITIAL_LABEL_FONT_SIZE = 14;
 
 const CustomTextInput = ({
     editable = true,
     error,
     keyboardType = 'default',
     maxLength,
+    mb,
+    ml,
+    mr,
+    mt,
     multiline = false,
     label,
     loading = false,
@@ -150,7 +158,7 @@ const CustomTextInput = ({
     }, [hasFocus, value]);
 
     return (
-        <Pressable onPress={handleOnPress}>
+        <Container mb={mb} ml={ml} mr={mr} mt={mt} onPress={handleOnPress}>
             <Animated.View style={containerStyle}>
                 {label && (
                     <LabelContainer>
@@ -184,12 +192,17 @@ const CustomTextInput = ({
                     style={style({ multiline }).textInput}
                 />
                 <ErrorContainer>
-                    <Typography color="danger" fontFamily="bold" fontSize={11}>
-                        {error && touched ? normalizeError(error) : null}
+                    <Typography
+                        color="danger"
+                        fontFamily="bold"
+                        fontSize={11}
+                        textAlign="right"
+                    >
+                        {!!error && touched && normalizeError(error)}
                     </Typography>
                 </ErrorContainer>
             </Animated.View>
-        </Pressable>
+        </Container>
     );
 };
 

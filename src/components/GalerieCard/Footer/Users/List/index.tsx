@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { Container } from './styles';
-
 import UserContainer from './UserContainer';
+
+import { Container } from './styles';
 
 type Props = {
     allIds: string[];

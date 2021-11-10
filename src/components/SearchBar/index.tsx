@@ -46,7 +46,7 @@ const SearchBar = ({
             setValue(e);
             onChangeText(e);
         },
-        [onChangeText]
+        [onChangeText, onStopTyping]
     );
 
     const handleClear = React.useCallback(() => {

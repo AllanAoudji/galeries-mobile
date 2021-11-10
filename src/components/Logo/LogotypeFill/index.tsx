@@ -68,4 +68,4 @@ const LogotypeFill = ({ size = 'normal' }: Props) => (
     </Svg>
 );
 
-export default LogotypeFill;
+export default React.memo(LogotypeFill);

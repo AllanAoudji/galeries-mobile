@@ -23,7 +23,7 @@ const InvitationScreen = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
-        }, [invitation])
+        }, [invitation, navigation])
     );
 
     if (!invitation) return null;

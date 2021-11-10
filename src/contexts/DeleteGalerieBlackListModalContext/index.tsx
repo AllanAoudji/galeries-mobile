@@ -5,9 +5,13 @@ import DeleteModal from '#components/DeleteModal';
 import { deleteGalerieBlackList } from '#store/galerieBlackLists';
 
 export const DeleteGalerieBlackListModalContext = React.createContext<{
+    handleCloseModal: () => void;
     handleOpenModal: (galerieId: string, frameId: string) => void;
+    openModal: boolean;
 }>({
+    handleCloseModal: () => {},
     handleOpenModal: () => {},
+    openModal: false,
 });
 
 export const DeleteGalerieBlackListModalProvider: React.FC<{}> = ({
@@ -44,7 +48,7 @@ export const DeleteGalerieBlackListModalProvider: React.FC<{}> = ({
 
     return (
         <DeleteGalerieBlackListModalContext.Provider
-            value={{ handleOpenModal }}
+            value={{ handleCloseModal, handleOpenModal, openModal }}
         >
             {children}
             <DeleteModal

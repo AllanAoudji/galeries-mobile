@@ -27,7 +27,7 @@ const GalerieCard = ({ galerie }: Props) => {
             dispatch(getGalerieId(galerie.id));
             navigation.navigate('Galerie');
         }
-    }, [galerie]);
+    }, [galerie, navigation]);
 
     if (!galerie) return null;
 

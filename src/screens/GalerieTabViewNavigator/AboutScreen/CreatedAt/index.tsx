@@ -19,4 +19,4 @@ const CreatedAt = ({ galerie }: Props) => {
     );
 };
 
-export default CreatedAt;
+export default React.memo(CreatedAt);
