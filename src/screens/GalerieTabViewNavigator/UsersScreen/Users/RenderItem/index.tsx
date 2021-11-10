@@ -19,10 +19,8 @@ const RenderItem = ({ index, item }: Props) => {
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
 
     const galerie = useSelector(selectCurrentGalerie);
-
     const userSelector = React.useMemo(() => selectUser(item), [item]);
     const user = useSelector(userSelector);
-
     const roleSelector = React.useMemo(
         () =>
             selectGalerieUserRole(
@@ -38,7 +36,7 @@ const RenderItem = ({ index, item }: Props) => {
     const handlePress = React.useCallback(() => {
         dispatch(updateUserCurrent(item));
         navigation.navigate('UserScreen');
-    }, [item]);
+    }, [item, navigation]);
 
     React.useEffect(() => {
         if (!user && !loading) {

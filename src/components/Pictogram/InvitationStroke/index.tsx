@@ -47,4 +47,4 @@ const InvitationStroke = ({
     );
 };
 
-export default InvitationStroke;
+export default React.memo(InvitationStroke);

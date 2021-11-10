@@ -1,52 +1,21 @@
 import * as React from 'react';
-import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import CustomRadio from '#components/CustomRadio';
 import DeleteModal from '#components/DeleteModal';
-import Typography from '#components/Typography';
 import { deleteGalerieUser } from '#store/users';
 import { postGalerieBlackList } from '#store/galerieBlackLists';
 
+import Content from './Content';
+
 export const DeleteGalerieUserModalContext = React.createContext<{
+    handleCloseModal: () => void;
     handleOpenModal: (galerieId: string, userId: string) => void;
+    openModal: boolean;
 }>({
+    handleCloseModal: () => {},
     handleOpenModal: () => {},
+    openModal: false,
 });
-
-type Props = {
-    value: boolean;
-    onPress: () => void;
-};
-
-const Content = ({ onPress, value }: Props) => {
-    return (
-        <View style={{ paddingTop: 30 }}>
-            <Typography fontFamily="bold">Black list user?</Typography>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingTop: 15,
-                }}
-            >
-                <CustomRadio
-                    onChange={onPress}
-                    pt="smallest"
-                    pb="smallest"
-                    pr="small"
-                    value={value}
-                />
-                <View style={{ flex: 1 }}>
-                    <Typography>
-                        If you decide to black list this user, he is not gonna
-                        be able to subscribe to this galerie anymore
-                    </Typography>
-                </View>
-            </View>
-        </View>
-    );
-};
 
 export const DeleteGalerieUserModalProvider: React.FC<{}> = ({ children }) => {
     const dispatch = useDispatch();
@@ -59,13 +28,14 @@ export const DeleteGalerieUserModalProvider: React.FC<{}> = ({ children }) => {
     const [openModal, setOpenModal] = React.useState<boolean>(false);
 
     const handleCloseModal = React.useCallback(() => {
+        setBlackListUser(false);
         setCurrentGalerie(null);
         setCurrentUser(null);
         setOpenModal(false);
-        setBlackListUser(false);
     }, []);
     const handleOpenModal = React.useCallback(
         (galerieId: string, userId: string) => {
+            setBlackListUser(false);
             setCurrentGalerie(galerieId);
             setCurrentUser(userId);
             setOpenModal(true);
@@ -79,28 +49,28 @@ export const DeleteGalerieUserModalProvider: React.FC<{}> = ({ children }) => {
             else dispatch(deleteGalerieUser(currentGalerie, currentUser));
         }
     }, [blackListUser, currentUser]);
-
     const handlePressRadioButton = React.useCallback(
         () => setBlackListUser((prevState) => !prevState),
         []
     );
-
     const InnerContainer = React.useCallback(
         () => (
             <Content onPress={handlePressRadioButton} value={blackListUser} />
         ),
-        [blackListUser]
+        [blackListUser, handlePressRadioButton]
     );
 
     return (
-        <DeleteGalerieUserModalContext.Provider value={{ handleOpenModal }}>
+        <DeleteGalerieUserModalContext.Provider
+            value={{ handleCloseModal, handleOpenModal, openModal }}
+        >
             {children}
             <DeleteModal
-                handleClose={handleCloseModal}
                 content={InnerContainer}
+                handleClose={handleCloseModal}
                 onPressDelete={handlePressDelete}
                 open={openModal}
-                title={`Are tou sure to delete this user?`}
+                title="Are tou sure to delete this user?"
             />
         </DeleteGalerieUserModalContext.Provider>
     );

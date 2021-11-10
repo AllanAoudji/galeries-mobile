@@ -17,6 +17,7 @@ export const CurrentGaleriePictureContext = React.createContext<{
 
 export const CurrentGaleriePictureProvider: React.FC<{}> = ({ children }) => {
     const dimension = useWindowDimensions();
+
     const [currentIndex, setCurrentIndex] = React.useState<number>(0);
 
     const handleScroll = React.useCallback(

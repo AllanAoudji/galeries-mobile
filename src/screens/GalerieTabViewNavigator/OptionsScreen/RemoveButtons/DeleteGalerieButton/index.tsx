@@ -13,11 +13,13 @@ const DeleteGalerieButton = ({ galerie }: Props) => {
 
     const handlePress = React.useCallback(
         () => navigation.navigate('DeleteGalerie'),
-        [galerie]
+        [galerie, navigation]
     );
 
     return (
         <CustomButton
+            ml="smallest"
+            mr="smallest"
             mt="large"
             onPress={handlePress}
             title="delete this galerie"

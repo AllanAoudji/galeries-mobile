@@ -2,6 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
+    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StatusBar,
@@ -46,7 +47,7 @@ const Likes = ({ allIds, frameId }: Props) => {
         GLOBAL_STYLE.HEADER_TAB_HEIGHT
     );
 
-    const loading = useSelector(selectCurrentFrameLikesStatus);
+    const status = useSelector(selectCurrentFrameLikesStatus);
 
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -56,25 +57,28 @@ const Likes = ({ allIds, frameId }: Props) => {
             theme.colors['primary-dark'],
             theme.colors['primary-light'],
         ],
-        []
+        [theme]
     );
     const styleProps = React.useMemo(
         () => ({
             minHeight: dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT,
         }),
-        []
+        [dimension]
     );
 
     const handleEndReach = React.useCallback(() => {
-        if (loading && !loading.includes('LOADING') && loading !== 'REFRESH')
-            dispatch(getFrameLikes(frameId));
-    }, [frameId, loading]);
+        if (status && !status.includes('LOADING') && status !== 'REFRESH')
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(getFrameLikes(frameId));
+            });
+    }, [frameId, status]);
     const handleRefresh = React.useCallback(() => {
-        if (loading && !loading.includes('LOADING') && loading !== 'REFRESH') {
-            setRefreshing(true);
-            dispatch(refreshFrameLikes(frameId));
-        }
-    }, [frameId, loading]);
+        setRefreshing(true);
+        if (status && !status.includes('LOADING') && status !== 'REFRESH')
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(refreshFrameLikes(frameId));
+            });
+    }, [frameId, status]);
     const getItemLayout = React.useCallback(
         (_, index) => ({
             length: GLOBAL_STYLE.USER_CARD_HEIGHT,
@@ -87,15 +91,17 @@ const Likes = ({ allIds, frameId }: Props) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
-        }, [loading, refreshing])
+            if (status === 'SUCCESS' && refreshing) setRefreshing(false);
+        }, [status, refreshing])
     );
 
     useFocusEffect(
         React.useCallback(() => {
-            if (!loading || loading === 'PENDING')
-                dispatch(getFrameLikes(frameId));
-        }, [frameId, loading])
+            if (!status || status === 'PENDING')
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch(getFrameLikes(frameId));
+                });
+        }, [frameId, status])
     );
 
     if (!allIds) return null;
@@ -136,8 +142,8 @@ const Likes = ({ allIds, frameId }: Props) => {
                 updateCellsBatchingPeriod={1}
                 windowSize={41}
             />
-            <FullScreenLoader show={loading === 'INITIAL_LOADING'} />
-            <BottomLoader show={loading === 'LOADING'} />
+            <FullScreenLoader show={status === 'INITIAL_LOADING'} />
+            <BottomLoader show={status === 'LOADING'} />
         </Container>
     );
 };

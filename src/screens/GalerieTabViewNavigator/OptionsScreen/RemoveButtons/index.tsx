@@ -13,4 +13,4 @@ const RemoveButtons = ({ galerie }: Props) => {
     return <UnsubscribeButton galerie={galerie} />;
 };
 
-export default RemoveButtons;
+export default React.memo(RemoveButtons);

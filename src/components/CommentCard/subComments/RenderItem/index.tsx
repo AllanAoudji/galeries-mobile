@@ -1,70 +1,66 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
+import { BackHandler } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import BottomSheetButton from '#components/BottomSheetButton';
 import SubCommentCard from '#components/SubCommentCard';
+import { BottomSheetContext } from '#contexts/BottomSheetContext';
+import { DeleteCommentModalContext } from '#contexts/DeleteCommentModalContext';
+import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
 import { selectComment } from '#store/comments';
 import { selectUser } from '#store/users';
-import { BottomSheetContext } from '#contexts/BottomSheetContext';
-import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
-import { DeleteCommentModalContext } from '#contexts/DeleteCommentModalContext';
-import { selectMeId } from '#store/me';
-import { selectGalerie } from '#store/galeries';
+
+import DeleteReportButton from './DeleteReportButton';
 
 type Props = {
     item: string;
 };
 
 const RenderItem = ({ item }: Props) => {
-    const commentSelector = React.useMemo(() => selectComment(item), [item]);
-    const comment = useSelector(commentSelector);
-    const galerieSelector = React.useMemo(
-        () => selectGalerie(comment ? comment.galerieId : null),
-        [comment]
+    const { openBottomSheet } = React.useContext(BottomSheetContext);
+    const { handleCloseModal, openModal } = React.useContext(
+        DeleteCommentModalContext
     );
-    const galerie = useSelector(galerieSelector);
-    const meId = useSelector(selectMeId);
-    const userSelector = React.useMemo(
-        () => selectUser(comment.userId),
-        [comment.userId]
-    );
-    const user = useSelector(userSelector);
-
-    const { handleOpenModal } = React.useContext(DeleteCommentModalContext);
-
-    const { closeBottomSheet, openBottomSheet } =
-        React.useContext(BottomSheetContext);
     const { selectedComment, setCommentSelected } = React.useContext(
         SelectedCommentContext
     );
 
-    const handleBottomSheetDelete = React.useCallback(() => {
-        handleOpenModal(comment.id);
-        closeBottomSheet();
-    }, [comment]);
+    const commentSelector = React.useMemo(() => selectComment(item), [item]);
+    const comment = useSelector(commentSelector);
+    const userSelector = React.useMemo(
+        () => selectUser(comment.userId),
+        [comment]
+    );
+    const user = useSelector(userSelector);
 
     const bottomSheetContent = React.useCallback(() => {
-        return (
-            <>
-                {(user && user.id === meId) ||
-                (galerie && galerie.role !== 'user') ? (
-                    <BottomSheetButton
-                        onPress={handleBottomSheetDelete}
-                        title="delete comment"
-                    />
-                ) : (
-                    <BottomSheetButton
-                        onPress={handleBottomSheetDelete}
-                        title="report comment"
-                    />
-                )}
-            </>
-        );
-    }, [user, galerie, meId]);
+        return <DeleteReportButton comment={comment} user={user} />;
+    }, [comment, user]);
     const handlePress = React.useCallback(() => {
         setCommentSelected(comment.id);
         openBottomSheet(bottomSheetContent);
     }, [comment]);
+
+    useFocusEffect(
+        React.useCallback(() => () => handleCloseModal(), [handleCloseModal])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            let BackHandlerListerner: any;
+            if (openModal)
+                BackHandlerListerner = BackHandler.addEventListener(
+                    'hardwareBackPress',
+                    () => {
+                        handleCloseModal();
+                        return true;
+                    }
+                );
+            else if (BackHandlerListerner) BackHandlerListerner.remove();
+            return () => {
+                if (BackHandlerListerner) BackHandlerListerner.remove();
+            };
+        }, [handleCloseModal, openModal])
+    );
 
     if (!comment || !user) return null;
 

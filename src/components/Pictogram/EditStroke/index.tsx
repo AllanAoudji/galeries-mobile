@@ -51,4 +51,4 @@ const EditStroke = ({
     );
 };
 
-export default EditStroke;
+export default React.memo(EditStroke);

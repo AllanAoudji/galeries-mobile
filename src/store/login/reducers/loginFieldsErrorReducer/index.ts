@@ -20,14 +20,15 @@ const loginFieldsErrorReducer = (
         case LOGIN_FIELDS_ERROR_UPDATE:
             if (
                 typeof action.payload === 'object' &&
-                (typeof action.payload.description === 'string' ||
-                    typeof action.payload.name === 'string')
+                (typeof action.payload.password === 'string' ||
+                    typeof action.payload.userNameOrEmail === 'string')
             )
                 return {
                     ...state,
                     ...action.payload,
                 };
             return state;
+
         default:
             return state;
     }

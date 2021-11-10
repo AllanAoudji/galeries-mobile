@@ -47,4 +47,4 @@ const Upload = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default Upload;
+export default React.memo(Upload);

@@ -3,10 +3,10 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Typography, UserCard } from '#components';
+import { selectMe } from '#store/me';
 import { getUserId, selectUser, updateUserCurrent } from '#store/users';
 
 import { Container, TitleContainer } from './styles';
-import { selectMe } from '#store/me';
 
 type Props = {
     galerie: Store.Models.Galerie;
@@ -44,7 +44,7 @@ const Admin = ({ galerie }: Props) => {
             dispatch(updateUserCurrent(user.id));
             navigation.navigate('UserScreen');
         }
-    }, [me, user]);
+    }, [me, navigation, user]);
 
     if (!user) return null;
 
@@ -53,9 +53,9 @@ const Admin = ({ galerie }: Props) => {
             <TitleContainer>
                 <Typography>CURRENT ADMINISTRATOR:</Typography>
             </TitleContainer>
-            <UserCard user={user} color="secondary" />
+            <UserCard color="secondary" user={user} />
         </Container>
     );
 };
 
-export default Admin;
+export default React.memo(Admin);

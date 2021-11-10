@@ -8,6 +8,7 @@ import {
     StyleSheet,
     useWindowDimensions,
     ViewStyle,
+    InteractionManager,
 } from 'react-native';
 import Animated, {
     runOnJS,
@@ -18,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 import {
     getGalerieInvitations,
     refreshGalerieInvitations,
@@ -25,7 +27,6 @@ import {
 } from '#store/invitations';
 
 import RenderItem from './RenderItem';
-import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 type Props = {
     allIds: string[];
@@ -81,11 +82,17 @@ const Invitations = ({
         []
     );
     const handleEndReach = React.useCallback(() => {
-        if (galerie) dispatch(getGalerieInvitations(galerie.id));
+        if (galerie)
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(getGalerieInvitations(galerie.id));
+            });
     }, [galerie]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (galerie) dispatch(refreshGalerieInvitations(galerie.id));
+        if (galerie)
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(refreshGalerieInvitations(galerie.id));
+            });
     }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(
@@ -105,7 +112,7 @@ const Invitations = ({
         (newScrollY) => {
             runOnJS(setInitialScroll)(newScrollY);
         },
-        [current]
+        [setInitialScroll]
     );
     const scrollHandler = useAnimatedScrollHandler(
         {

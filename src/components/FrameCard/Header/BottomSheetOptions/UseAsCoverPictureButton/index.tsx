@@ -32,13 +32,11 @@ const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
         [frame]
     );
     const galerie = useSelector(galerieSelector);
-
     const galeriePicturesAllIdsSelector = React.useMemo(
         () => selectFrameGaleriePicturesAllIds(frame.id),
         [frame]
     );
     const galeriePicturesAllIds = useSelector(galeriePicturesAllIdsSelector);
-
     const galeriePictureSelector = React.useMemo(
         () =>
             selectGaleriePicture(
@@ -57,7 +55,7 @@ const UseAsCoverPictureButton = ({ currentIndex, frame }: Props) => {
             );
         }
         closeBottomSheet();
-    }, [currentIndex, frame, galeriePicturesAllIds]);
+    }, [closeBottomSheet, currentIndex, frame, galeriePicturesAllIds]);
 
     const text = React.useMemo(() => {
         if (

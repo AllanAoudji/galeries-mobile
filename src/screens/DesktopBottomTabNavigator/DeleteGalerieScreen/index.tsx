@@ -1,5 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
+import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SubGalerieScreenHeader } from '#components';
@@ -37,15 +38,26 @@ const DeleteGalerieScreen = ({ navigation }: Props) => {
     if (!galerie) return null;
 
     return (
-        <Container>
-            <SubGalerieScreenHeader
-                galerie={galerie}
-                subTitle="delete galerie"
-                title={galerie.name}
-            />
-            <Body galerie={galerie} />
-        </Container>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.keyboardAvoidingViewStyle}
+        >
+            <Container>
+                <SubGalerieScreenHeader
+                    galerie={galerie}
+                    subTitle="delete galerie"
+                    title={galerie.name}
+                />
+                <Body galerie={galerie} />
+            </Container>
+        </KeyboardAvoidingView>
     );
 };
+
+const styles = StyleSheet.create({
+    keyboardAvoidingViewStyle: {
+        flex: 1,
+    },
+});
 
 export default DeleteGalerieScreen;

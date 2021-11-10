@@ -47,4 +47,4 @@ const HeartStroke = ({
     );
 };
 
-export default HeartStroke;
+export default React.memo(HeartStroke);

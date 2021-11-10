@@ -1,82 +1,49 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
+import { BackHandler } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectComment, updateCommentsCurrent } from '#store/comments';
 
-import { BottomSheetButton, CommentCard } from '#components';
+import { CommentCard } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
-import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
-import { selectMeId } from '#store/me';
-import { selectUser } from '#store/users';
 import { DeleteCommentModalContext } from '#contexts/DeleteCommentModalContext';
-import { selectGalerie } from '#store/galeries';
+import { SelectedCommentContext } from '#contexts/SelectedCommentContext';
+import { selectComment, updateCommentsCurrent } from '#store/comments';
+import { selectUser } from '#store/users';
+
+import DeleteReportButton from './DeleteReportButton';
+import ReplyButton from './ReplyButton';
 
 type Props = {
     item: string;
 };
 
-const handlePressBottomSheetButton = () => {};
-
 const RenderItem = ({ item }: Props) => {
     const dispatch = useDispatch();
 
-    const { handleOpenModal } = React.useContext(DeleteCommentModalContext);
+    const { bottomSheetIsOpen, openBottomSheet } =
+        React.useContext(BottomSheetContext);
+    const { handleCloseModal, openModal } = React.useContext(
+        DeleteCommentModalContext
+    );
+    const { resetCommentSelected, selectedComment, setCommentSelected } =
+        React.useContext(SelectedCommentContext);
 
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
-    const galerieSelector = React.useMemo(
-        () => selectGalerie(comment ? comment.galerieId : null),
-        [comment]
-    );
-    const galerie = useSelector(galerieSelector);
     const userSelector = React.useMemo(
         () => selectUser(comment.userId),
         [comment.userId]
     );
     const user = useSelector(userSelector);
-    const meId = useSelector(selectMeId);
-
-    const { bottomSheetIsOpen, closeBottomSheet, openBottomSheet } =
-        React.useContext(BottomSheetContext);
-    const { resetCommentSelected, selectedComment, setCommentSelected } =
-        React.useContext(SelectedCommentContext);
-
-    const handleBottomSheetPressReply = React.useCallback(() => {
-        closeBottomSheet();
-        dispatch(updateCommentsCurrent(comment.id));
-    }, [comment]);
-    const handleBottomSheetDelete = React.useCallback(() => {
-        closeBottomSheet();
-        handleOpenModal(comment.id);
-    }, [comment]);
-
-    const userPseudonym = React.useMemo(() => {
-        if (!user) return 'userId';
-        if (meId === user.id) return 'me';
-        return user.pseudonym;
-    }, [user, meId]);
 
     const bottomSheetContent = React.useCallback(() => {
         return (
             <>
-                <BottomSheetButton
-                    onPress={handleBottomSheetPressReply}
-                    title={`reply to ${userPseudonym}`}
-                />
-                {(user && meId === user.id) ||
-                (galerie && galerie.role !== 'user') ? (
-                    <BottomSheetButton
-                        onPress={handleBottomSheetDelete}
-                        title="delete comment"
-                    />
-                ) : (
-                    <BottomSheetButton
-                        onPress={handlePressBottomSheetButton}
-                        title="report comment"
-                    />
-                )}
+                <ReplyButton comment={comment} user={user} />
+                <DeleteReportButton comment={comment} user={user} />
             </>
         );
-    }, [user, galerie, meId, userPseudonym]);
+    }, [comment, user]);
     const handlePress = React.useCallback((commentId: string) => {
         setCommentSelected(commentId);
         openBottomSheet(bottomSheetContent);
@@ -88,6 +55,24 @@ const RenderItem = ({ item }: Props) => {
     React.useEffect(() => {
         if (!bottomSheetIsOpen) resetCommentSelected();
     }, [bottomSheetIsOpen]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            let BackHandlerListerner: any;
+            if (openModal)
+                BackHandlerListerner = BackHandler.addEventListener(
+                    'hardwareBackPress',
+                    () => {
+                        handleCloseModal();
+                        return true;
+                    }
+                );
+            else if (BackHandlerListerner) BackHandlerListerner.remove();
+            return () => {
+                if (BackHandlerListerner) BackHandlerListerner.remove();
+            };
+        }, [handleCloseModal, openModal])
+    );
 
     return (
         <CommentCard

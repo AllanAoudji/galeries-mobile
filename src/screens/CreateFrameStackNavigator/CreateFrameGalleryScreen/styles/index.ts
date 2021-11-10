@@ -5,8 +5,8 @@ import { GLOBAL_STYLE } from '#helpers/constants';
 const AddPicturesButtonContainer = styled.View`
     align-items: flex-end;
     flex-direction: row;
-    justify-content: space-between;
     height: ${() => `${GLOBAL_STYLE.FRAME_GALLERY_HEADER}px`};
+    justify-content: space-between;
     padding: ${({ theme }) =>
         `0 ${theme.spacings.small} ${theme.spacings.smallest}`};
 `;

@@ -22,7 +22,7 @@ const defaultWidth = {
     small: 15,
 };
 
-const Plus = ({ color = 'black', customSize, size = 'normal' }: Props) => {
+const Quit = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     const theme = useTheme();
     const height = React.useMemo(() => {
         if (customSize) return customSize.height;
@@ -43,4 +43,4 @@ const Plus = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default Plus;
+export default React.memo(Quit);

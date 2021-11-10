@@ -18,9 +18,9 @@ const Container = styled.Pressable<ContainerProps>`
 const ImageStyled = styled.Image<ImageStyledProps>`
     border-radius: 16px;
     height: ${({ height, theme }) =>
-        `${height - convertPixelToNum(theme.spacings.small)}px`};
+        `${height - convertPixelToNum(theme.spacings.huge) * 2}px`};
     width: ${({ theme, width }) =>
-        `${width - convertPixelToNum(theme.spacings.small)}px`};
+        `${width - convertPixelToNum(theme.spacings.smallest) * 2}px`};
 `;
 
 export { Container, ImageStyled };

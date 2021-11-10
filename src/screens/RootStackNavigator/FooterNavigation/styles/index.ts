@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 
 const Container = styled.Pressable`
+    background-color: ${({ theme }) => theme.colors.secondary};
     bottom: 0;
     flex-direction: row;
     justify-content: center;

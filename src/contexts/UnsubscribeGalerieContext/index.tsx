@@ -5,18 +5,22 @@ import DeleteModal from '#components/DeleteModal';
 import { unsubscribeGalerie } from '#store/galeries';
 
 export const UnsubscribeGalerieContext = React.createContext<{
+    handleCloseModal: () => void;
     handleOpenModal: (galerieId: string) => void;
+    openModal: boolean;
 }>({
+    handleCloseModal: () => {},
     handleOpenModal: () => {},
+    openModal: false,
 });
 
 export const UnsubscribeGalerieProvider: React.FC<{}> = ({ children }) => {
     const dispatch = useDispatch();
 
-    const [openModal, setOpenModal] = React.useState<boolean>(false);
     const [currentGalerie, setCurrentGalerie] = React.useState<string | null>(
         null
     );
+    const [openModal, setOpenModal] = React.useState<boolean>(false);
 
     const handleCloseModal = React.useCallback(() => {
         setCurrentGalerie(null);
@@ -31,7 +35,9 @@ export const UnsubscribeGalerieProvider: React.FC<{}> = ({ children }) => {
     }, [currentGalerie]);
 
     return (
-        <UnsubscribeGalerieContext.Provider value={{ handleOpenModal }}>
+        <UnsubscribeGalerieContext.Provider
+            value={{ handleCloseModal, handleOpenModal, openModal }}
+        >
             {children}
             <DeleteModal
                 handleClose={handleCloseModal}

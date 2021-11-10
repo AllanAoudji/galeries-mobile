@@ -47,4 +47,4 @@ const AdminRole = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default AdminRole;
+export default React.memo(AdminRole);

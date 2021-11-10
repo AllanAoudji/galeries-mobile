@@ -26,4 +26,4 @@ const AbsoluteGalerieCoverPicture = ({ style }: Props) => {
     );
 };
 
-export default AbsoluteGalerieCoverPicture;
+export default React.memo(AbsoluteGalerieCoverPicture);

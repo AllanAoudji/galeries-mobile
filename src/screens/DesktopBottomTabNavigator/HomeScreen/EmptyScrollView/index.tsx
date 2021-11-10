@@ -1,6 +1,10 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { RefreshControl, useWindowDimensions } from 'react-native';
+import {
+    InteractionManager,
+    RefreshControl,
+    useWindowDimensions,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
@@ -19,7 +23,7 @@ const EmptyScrollView = ({ scrollHandler }: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
-    const loading = useSelector(selectFramesStatus);
+    const status = useSelector(selectFramesStatus);
 
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -33,16 +37,18 @@ const EmptyScrollView = ({ scrollHandler }: Props) => {
     );
 
     const handleRefresh = React.useCallback(() => {
-        if (!loading.includes('LOADING') && loading !== 'REFRESH') {
-            setRefreshing(true);
-            dispatch(refreshFrames());
+        setRefreshing(true);
+        if (!status.includes('LOADING') && status !== 'REFRESH') {
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(refreshFrames());
+            });
         }
-    }, [loading]);
+    }, [status]);
 
     useFocusEffect(
         React.useCallback(() => {
-            if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
-        }, [loading, refreshing])
+            if (status === 'SUCCESS' && refreshing) setRefreshing(false);
+        }, [status, refreshing])
     );
 
     return (

@@ -25,7 +25,7 @@ const DeleteInvitationButton = ({ invitation }: Props) => {
     const handlePress = React.useCallback(() => {
         handleOpenModal(invitation.id);
         closeBottomSheet();
-    }, [invitation]);
+    }, [closeBottomSheet, invitation]);
 
     if (!galerie || !me) return null;
     if (galerie.role === 'user') return null;

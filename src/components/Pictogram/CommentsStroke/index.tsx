@@ -22,7 +22,7 @@ const defaultWidth = {
     small: 15,
 };
 
-const AddSubscribeFill = ({
+const CommentsStroke = ({
     color = 'black',
     customSize,
     size = 'normal',
@@ -59,4 +59,4 @@ const AddSubscribeFill = ({
     );
 };
 
-export default AddSubscribeFill;
+export default React.memo(CommentsStroke);

@@ -45,4 +45,4 @@ const AllowNotification = ({ galerie }: Props) => {
     );
 };
 
-export default AllowNotification;
+export default React.memo(AllowNotification);

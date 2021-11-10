@@ -22,7 +22,7 @@ const defaultWidth = {
     small: 15,
 };
 
-const ProfileFill = ({
+const ProfileStroke = ({
     color = 'black',
     customSize,
     size = 'normal',
@@ -51,4 +51,4 @@ const ProfileFill = ({
     );
 };
 
-export default ProfileFill;
+export default React.memo(ProfileStroke);

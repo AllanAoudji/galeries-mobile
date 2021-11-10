@@ -7,9 +7,14 @@ import {
     withTiming,
 } from 'react-native-reanimated';
 import { useTheme } from 'styled-components/native';
+
 import { ANIMATIONS } from '#helpers/constants';
 
 import { Container, Thumb, Track } from './styles';
+
+const THUMB_SIZE = 22;
+const TRACK_HEIGHT = 14;
+const TRACK_WIDTH = 38;
 
 type Props = {
     disabled?: boolean;
@@ -43,11 +48,15 @@ const CustomSwitch = ({
     const status = useSharedValue(value ? 1 : 0);
 
     const thumbStyle = useAnimatedStyle(() => {
-        const left = interpolate(status.value, [0, 1], [0, 16]);
         const backgroundColor = interpolateColor(
             status.value,
             [0, 1],
             [theme.colors['primary-light'], theme.colors.primary]
+        );
+        const left = interpolate(
+            status.value,
+            [0, 1],
+            [0, TRACK_WIDTH - THUMB_SIZE]
         );
         return { left, backgroundColor };
     }, []);
@@ -81,8 +90,17 @@ const CustomSwitch = ({
             pr={pr}
             pt={pt}
         >
-            <Track style={trackStyle}>
-                <Thumb style={thumbStyle} />
+            <Track
+                height={TRACK_HEIGHT}
+                style={trackStyle}
+                thumbSize={THUMB_SIZE}
+                width={TRACK_WIDTH}
+            >
+                <Thumb
+                    size={THUMB_SIZE}
+                    style={thumbStyle}
+                    trackHeight={TRACK_HEIGHT}
+                />
             </Track>
         </Container>
     );

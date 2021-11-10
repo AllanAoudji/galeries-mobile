@@ -1,15 +1,22 @@
 import { NavigationProp, useFocusEffect } from '@react-navigation/native';
-import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
+import * as React from 'react';
+import {
+    BackHandler,
+    KeyboardAvoidingView,
+    Platform,
+    StyleSheet,
+} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { CustomButton, CustomTextInput, FormContainer } from '#components';
+import { CustomButton, CustomTextInput } from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
 import CheckImageExtension from '#helpers/CheckImageExtension';
-import { FIELD_REQUIREMENT } from '#helpers/constants';
+import { FIELD_REQUIREMENT, GLOBAL_STYLE } from '#helpers/constants';
 import { frameDescriptionSchema } from '#helpers/schemas';
 import {
     postFrame,
+    resetFramesFieldsError,
     resetFramesLoadingPost,
     selectFramesFieldsError,
     selectFramesLoadingPost,
@@ -17,7 +24,7 @@ import {
 } from '#store/frames';
 import { selectCurrentGalerie } from '#store/galeries';
 
-import { ButtonsContainer, Container } from './styles';
+import { ButtonContainer, Container, ScrollViewStyle } from './styles';
 
 type Props = {
     navigation: Screen.CreateFrameStack.AddDescriptionNavigationProp;
@@ -30,10 +37,11 @@ const initialValues = {
 const AddDescriptionScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
-    const currentGalerie = useSelector(selectCurrentGalerie);
-    const loading = useSelector(selectFramesLoadingPost);
-    const framesFieldsError = useSelector(selectFramesFieldsError);
     const { picturesUri, resetPictures } = React.useContext(CreateFrameContext);
+
+    const currentGalerie = useSelector(selectCurrentGalerie);
+    const framesFieldsError = useSelector(selectFramesFieldsError);
+    const loading = useSelector(selectFramesLoadingPost);
 
     const formik = useFormik({
         onSubmit: (values) => {
@@ -64,70 +72,116 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
         () => formik.errors.description || framesFieldsError.description,
         [formik.errors.description, framesFieldsError]
     );
-
     const disableButton = React.useMemo(() => {
-        const clientHasError =
-            formik.submitCount > 0 && !!formik.errors.description;
+        const clientHasError = !!formik.errors.description;
         const serverHasError = !!framesFieldsError.description;
         return clientHasError || serverHasError;
-    }, [formik.submitCount, formik.errors, framesFieldsError]);
+    }, [formik.errors, framesFieldsError]);
 
-    const handleChangeDescriptionText = React.useCallback((e: string) => {
-        dispatch(updateFramesFieldsError({ descritpion: '' }));
-        formik.setFieldError('description', '');
-        formik.setFieldValue('description', e);
-    }, []);
+    const handleChangeDescriptionText = React.useCallback(
+        (e: string) => {
+            if (framesFieldsError.description)
+                dispatch(updateFramesFieldsError({ descritpion: '' }));
+            if (formik.errors.description)
+                formik.setFieldError('description', '');
+            formik.setFieldValue('description', e);
+        },
+        [formik.errors, framesFieldsError]
+    );
     const handleReturn = React.useCallback(() => {
-        if (!loading) navigation.navigate('AddPictures');
-    }, [navigation]);
-    const successCallback = React.useCallback(() => {
-        resetPictures();
-        navigation
-            .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
-            .navigate('Galerie');
-    }, []);
-
-    React.useEffect(() => {
-        if (loading === 'SUCCESS') successCallback();
-    }, [loading]);
+        if (!loading.includes('LOADING')) navigation.navigate('AddPictures');
+    }, [loading, navigation]);
 
     useFocusEffect(
-        React.useCallback(() => () => dispatch(resetFramesLoadingPost()), [])
+        React.useCallback(() => {
+            if (loading === 'SUCCESS') {
+                resetPictures();
+                navigation
+                    .getParent<
+                        NavigationProp<Screen.DesktopBottomTab.ParamList>
+                    >()
+                    .navigate('Galerie');
+            }
+        }, [loading, navigation, resetPictures])
+    );
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                dispatch(resetFramesLoadingPost());
+                dispatch(resetFramesFieldsError());
+                formik.resetForm();
+            },
+            []
+        )
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            let BackHandlerListerner: any;
+            if (loading.includes('LOADING'))
+                BackHandlerListerner = BackHandler.addEventListener(
+                    'hardwareBackPress',
+                    () => true
+                );
+            else if (BackHandlerListerner) BackHandlerListerner.remove();
+            return () => {
+                if (BackHandlerListerner) BackHandlerListerner.remove();
+            };
+        }, [loading])
     );
 
     return (
-        <FormContainer>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+            style={styles.keyboardAvoidingViewStyle}
+        >
             <Container>
-                <CustomTextInput
-                    error={descriptionError}
-                    label="description"
-                    loading={loading.includes('LOADING')}
-                    maxLength={FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH}
-                    multiline
-                    onBlur={formik.handleBlur('description')}
-                    onChangeText={handleChangeDescriptionText}
-                    optional
-                    touched={formik.touched.description || false}
-                    value={formik.values.description}
-                />
+                <ScrollViewStyle
+                    keyboardShouldPersistTaps="handled"
+                    overScrollMode="never"
+                    showsVerticalScrollIndicator={false}
+                >
+                    <CustomTextInput
+                        error={descriptionError}
+                        label="description"
+                        loading={loading.includes('LOADING')}
+                        maxLength={
+                            FIELD_REQUIREMENT.FRAME_DESCRIPTION_MAX_LENGTH
+                        }
+                        mt="normal"
+                        multiline
+                        onBlur={formik.handleBlur('description')}
+                        onChangeText={handleChangeDescriptionText}
+                        optional
+                        touched={formik.touched.description || false}
+                        value={formik.values.description}
+                    />
+                    <ButtonContainer>
+                        <CustomButton
+                            disable={disableButton}
+                            onPress={formik.handleSubmit}
+                            loading={loading.includes('LOADING')}
+                            mb="smallest"
+                            mt="normal"
+                            title="post frame"
+                        />
+                        <CustomButton
+                            disable={loading.includes('LOADING')}
+                            title="cancel"
+                            onPress={handleReturn}
+                            variant="stroke"
+                        />
+                    </ButtonContainer>
+                </ScrollViewStyle>
             </Container>
-            <ButtonsContainer>
-                <CustomButton
-                    disable={disableButton}
-                    loading={loading.includes('LOADING')}
-                    mb="smallest"
-                    onPress={formik.handleSubmit}
-                    title="post frame"
-                />
-                <CustomButton
-                    disable={loading.includes('LOADING')}
-                    onPress={handleReturn}
-                    title="return"
-                    variant="stroke"
-                />
-            </ButtonsContainer>
-        </FormContainer>
+        </KeyboardAvoidingView>
     );
 };
+
+const styles = StyleSheet.create({
+    keyboardAvoidingViewStyle: {
+        flex: 1,
+    },
+});
 
 export default AddDescriptionScreen;

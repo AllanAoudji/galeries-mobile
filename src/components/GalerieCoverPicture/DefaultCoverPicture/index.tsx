@@ -1,5 +1,6 @@
 import { LinearGradientPoint } from 'expo-linear-gradient';
 import * as React from 'react';
+
 import normalizeDefaultCoverPicture from '#helpers/normalizeDefaultCoverPicture';
 
 import { LinearGradientStyled } from './style';

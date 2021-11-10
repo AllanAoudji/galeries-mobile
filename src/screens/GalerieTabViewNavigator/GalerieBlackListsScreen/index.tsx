@@ -1,7 +1,9 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
+import { InteractionManager } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Animated from 'react-native-reanimated';
 import {
     BottomLoader,
     FullScreenLoader,
@@ -49,14 +51,18 @@ const GalerieBlackListsScreen = ({
         [galerieBlackListsStatus]
     );
 
-    React.useEffect(() => {
-        if (
-            galerieBlackListsStatus &&
-            galerieBlackListsStatus === 'PENDING' &&
-            galerie
-        )
-            dispatch(getGalerieBlackLists(galerie.id));
-    }, [galerie, galerieBlackListsStatus]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (
+                galerieBlackListsStatus &&
+                galerieBlackListsStatus === 'PENDING' &&
+                galerie
+            )
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch(getGalerieBlackLists(galerie.id));
+                });
+        }, [galerieBlackListsStatus, galerie])
+    );
 
     return (
         <GalerieTabbarScreenContainer>
@@ -77,9 +83,9 @@ const GalerieBlackListsScreen = ({
                 />
             )}
             <FullScreenLoader show={showFullScreenLoader} />
-            <BottomLoader show={showBottomLoader} bottom="huge" />
+            <BottomLoader bottom="huge" show={showBottomLoader} />
         </GalerieTabbarScreenContainer>
     );
 };
 
-export default GalerieBlackListsScreen;
+export default React.memo(GalerieBlackListsScreen);

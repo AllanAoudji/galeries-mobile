@@ -7,5 +7,4 @@ const TitleContainer = styled.View`
     padding-bottom: 10px;
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export { Container, TitleContainer };

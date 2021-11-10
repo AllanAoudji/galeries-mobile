@@ -51,4 +51,4 @@ const LogoutLeft = ({
     );
 };
 
-export default LogoutLeft;
+export default React.memo(LogoutLeft);

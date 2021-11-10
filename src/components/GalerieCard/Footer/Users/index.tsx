@@ -18,7 +18,6 @@ const Users = ({ galerie }: Props) => {
         [galerie]
     );
     const galerieUsersAllIds = useSelector(galerieUsersAllIdsSelector);
-
     const galerieUsersStatusSelector = React.useMemo(
         () => selectGalerieUsersStatus(galerie.id),
         [galerie]

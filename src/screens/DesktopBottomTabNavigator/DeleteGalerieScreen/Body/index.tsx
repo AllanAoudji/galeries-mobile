@@ -1,32 +1,35 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as React from 'react';
-import { View } from 'react-native';
+import { BackHandler } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-    CustomButton,
-    CustomTextInput,
-    FormContainer,
-    Typography,
-} from '#components';
+import { CustomButton, CustomTextInput, Typography } from '#components';
 import { deleteGalerieSchema } from '#helpers/schemas';
 import {
     deleteGalerie,
+    resetGaleriesFieldsError,
+    resetGaleriesLoadingDelete,
     selectGaleriesFieldsError,
     selectGaleriesLoadingDelete,
     updateGaleriesFieldsError,
 } from '#store/galeries';
 
-import { Container, FieldsContainer, TypographyContainer } from './styles';
+import {
+    ButtonContainer,
+    Container,
+    FieldsContainer,
+    ScrollViewStyle,
+    TypographyContainer,
+} from './styles';
 
 type Props = {
     galerie: Store.Models.Galerie;
 };
 
 const initialValues = {
-    password: '',
     name: '',
+    password: '',
 };
 
 const Body = ({ galerie }: Props) => {
@@ -48,13 +51,11 @@ const Body = ({ galerie }: Props) => {
     });
 
     const disableButton = React.useMemo(() => {
-        const clientHasError =
-            formik.submitCount > 0 &&
-            (!!formik.errors.name || !!formik.errors.password);
+        const clientHasError = !!formik.errors.name || !!formik.errors.password;
         const serverHasError =
             !!galeriesFieldsError.name || !!galeriesFieldsError.password;
         return clientHasError || serverHasError;
-    }, [formik.submitCount, formik.errors, galeriesFieldsError]);
+    }, [formik.errors, galeriesFieldsError]);
     const nameError = React.useMemo(
         () => formik.errors.name || galeriesFieldsError.name,
         [formik.errors.name, galeriesFieldsError.name]
@@ -64,25 +65,62 @@ const Body = ({ galerie }: Props) => {
         [formik.errors.password || galeriesFieldsError.password]
     );
 
-    const handleChangeNameText = React.useCallback((e: string) => {
-        dispatch(updateGaleriesFieldsError({ name: '' }));
-        formik.setFieldError('name', '');
-        formik.setFieldValue('name', e);
-    }, []);
-    const handleChangePasswordText = React.useCallback((e: string) => {
-        dispatch(updateGaleriesFieldsError({ password: '' }));
-        formik.setFieldError('password', '');
-        formik.setFieldValue('password', e);
-    }, []);
-
+    const handleChangeNameText = React.useCallback(
+        (e: string) => {
+            if (galeriesFieldsError.name)
+                dispatch(updateGaleriesFieldsError({ name: '' }));
+            if (formik.errors.name) formik.setFieldError('name', '');
+            formik.setFieldValue('name', e);
+        },
+        [formik.errors, galeriesFieldsError]
+    );
+    const handleChangePasswordText = React.useCallback(
+        (e: string) => {
+            if (galeriesFieldsError.password)
+                dispatch(updateGaleriesFieldsError({ password: '' }));
+            if (formik.errors.password) formik.setFieldError('password', '');
+            formik.setFieldValue('password', e);
+        },
+        [formik.errors, galeriesFieldsError]
+    );
     const handlePressBack = React.useCallback(() => {
+        if (loading.includes('LOADING')) return;
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
     }, [navigation]);
 
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                dispatch(resetGaleriesLoadingDelete());
+                dispatch(resetGaleriesFieldsError());
+                formik.resetForm();
+            },
+            []
+        )
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            let BackHandlerListerner: any;
+            if (loading.includes('LOADING'))
+                BackHandlerListerner = BackHandler.addEventListener(
+                    'hardwareBackPress',
+                    () => true
+                );
+            else if (BackHandlerListerner) BackHandlerListerner.remove();
+            return () => {
+                if (BackHandlerListerner) BackHandlerListerner.remove();
+            };
+        }, [loading])
+    );
+
     return (
-        <FormContainer>
-            <Container>
+        <Container>
+            <ScrollViewStyle
+                keyboardShouldPersistTaps="handled"
+                overScrollMode="never"
+                showsVerticalScrollIndicator={false}
+            >
                 <FieldsContainer>
                     <TypographyContainer>
                         <Typography color="danger">
@@ -90,29 +128,27 @@ const Body = ({ galerie }: Props) => {
                             and your password.
                         </Typography>
                     </TypographyContainer>
-                    <View>
-                        <CustomTextInput
-                            error={nameError}
-                            label="name"
-                            loading={loading.includes('LOADING')}
-                            onBlur={formik.handleBlur('name')}
-                            onChangeText={handleChangeNameText}
-                            touched={formik.touched.name || false}
-                            value={formik.values.name}
-                        />
-                        <CustomTextInput
-                            error={passwordError}
-                            label="password"
-                            loading={loading.includes('LOADING')}
-                            onBlur={formik.handleBlur('password')}
-                            onChangeText={handleChangePasswordText}
-                            secureTextEntry
-                            touched={formik.touched.password || false}
-                            value={formik.values.password}
-                        />
-                    </View>
+                    <CustomTextInput
+                        error={nameError}
+                        label="name"
+                        loading={loading.includes('LOADING')}
+                        onBlur={formik.handleBlur('name')}
+                        onChangeText={handleChangeNameText}
+                        touched={formik.touched.name || false}
+                        value={formik.values.name}
+                    />
+                    <CustomTextInput
+                        error={passwordError}
+                        label="password"
+                        loading={loading.includes('LOADING')}
+                        onBlur={formik.handleBlur('password')}
+                        onChangeText={handleChangePasswordText}
+                        secureTextEntry
+                        touched={formik.touched.password || false}
+                        value={formik.values.password}
+                    />
                 </FieldsContainer>
-                <View>
+                <ButtonContainer>
                     <CustomButton
                         color="danger"
                         disable={disableButton}
@@ -127,9 +163,9 @@ const Body = ({ galerie }: Props) => {
                         variant="stroke"
                         title="return"
                     />
-                </View>
-            </Container>
-        </FormContainer>
+                </ButtonContainer>
+            </ScrollViewStyle>
+        </Container>
     );
 };
 

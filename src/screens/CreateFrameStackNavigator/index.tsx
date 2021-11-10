@@ -18,8 +18,10 @@ const Stack = createStackNavigator<Screen.CreateFrameStack.ParamList>();
 const addDescriptionHeader = () => {
     return (
         <DefaultHeader
-            variant="secondary"
+            color="primary-dark"
+            textColor="secondary-light"
             title="add a description (optional)"
+            variant="secondary"
         />
     );
 };

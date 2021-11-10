@@ -11,8 +11,8 @@ type Props = {
 };
 
 const FullScreenLoader = ({
-    color = 'primary',
     backgroundColor = 'secondary-light',
+    color = 'primary',
     show,
 }: Props) => {
     const theme = useTheme();
@@ -36,4 +36,4 @@ const style = StyleSheet.create({
     },
 });
 
-export default FullScreenLoader;
+export default React.memo(FullScreenLoader);

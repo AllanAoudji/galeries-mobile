@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { InteractionManager, useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BottomLoader, DefaultHeader, FullScreenLoader } from '#components';
@@ -39,7 +39,10 @@ const HomeScreen = () => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (framesStatus === 'PENDING') dispatch(getFrames());
+            if (framesStatus === 'PENDING')
+                InteractionManager.runAfterInteractions(() => {
+                    dispatch(getFrames());
+                });
         }, [framesStatus])
     );
 

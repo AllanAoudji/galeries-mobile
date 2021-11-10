@@ -19,7 +19,11 @@ const Item = ({ handlePress, isPicked, uri }: Props) => {
             picked={isPicked}
             size={dimension.width / 3}
         >
-            <ImageStyled picked={isPicked} source={source} />
+            <ImageStyled
+                picked={isPicked}
+                size={dimension.width / 3}
+                source={source}
+            />
             {isPicked && <IndexPickerContainer />}
         </ImageContainer>
     );

@@ -18,9 +18,9 @@ const errorLoginMiddleware: Middleware<{}, Store.Reducer> =
                 typeof action.payload === 'object' &&
                 (typeof action.payload.password === 'string' ||
                     typeof action.payload.userNameOrEmail === 'string')
-            )
+            ) {
                 dispatch(updateLoginFieldsError(action.payload));
-            else dispatchErrorNotification(dispatch, action);
+            } else dispatchErrorNotification(dispatch, action);
             dispatch(updateLoginStatus('ERROR'));
         }
     };

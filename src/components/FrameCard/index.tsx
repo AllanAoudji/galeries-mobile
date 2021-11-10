@@ -10,8 +10,8 @@ import Slider from './Slider';
 import { Container } from './styles';
 
 type Props = {
-    showGalerie?: boolean;
     frame?: Store.Models.Frame;
+    showGalerie?: boolean;
 };
 
 const FrameCard = ({ frame, showGalerie = false }: Props) => {

@@ -1,9 +1,10 @@
+import { useFocusEffect } from '@react-navigation/native';
 import { BarCodeScannedCallback, BarCodeScanner } from 'expo-barcode-scanner';
 import { StatusBar, StyleSheet } from 'react-native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useFocusEffect } from '@react-navigation/native';
+import { Pictogram } from '#components';
 import { GLOBAL_STYLE, PRE_CODE } from '#helpers/constants';
 import {
     postGalerieSubscribe,
@@ -13,7 +14,6 @@ import {
 import { selectNotification, updateNotification } from '#store/notification';
 
 import { BackButtonContainer, Container } from './styles';
-import { Pictogram } from '#components';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.SubscribeGalerieNavigationProp;
@@ -21,6 +21,8 @@ type Props = {
 
 const SubscribeGalerieScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
+
+    const mounted = React.useRef<boolean>(false);
 
     const notification = useSelector(selectNotification);
     const loading = useSelector(selectGaleriesLoadingPost);
@@ -48,27 +50,32 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
                 dispatch(postGalerieSubscribe({ code }));
             }
         },
-        [fetching, loading, notification]
+        [fetching, notification]
     );
     const handlePressBack = React.useCallback(() => {
-        if (navigation.canGoBack()) navigation.goBack();
-        else navigation.navigate('Home');
-    }, []);
-
-    React.useEffect(() => {
-        (async () => {
-            const { status } = await BarCodeScanner.requestPermissionsAsync();
-            setHasPermission(status === 'granted');
-        })();
-    }, []);
-
-    React.useEffect(() => {
-        if (hasPermission === false) {
+        if (!fetching) {
             if (navigation.canGoBack()) navigation.goBack();
             else navigation.navigate('Home');
         }
-    }, [hasPermission]);
+    }, [fetching, navigation]);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            (async () => {
+                const { status } =
+                    await BarCodeScanner.requestPermissionsAsync();
+                if (mounted.current) setHasPermission(status === 'granted');
+            })();
+        }, [])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (hasPermission === false) {
+                if (navigation.canGoBack()) navigation.goBack();
+                else navigation.navigate('Home');
+            }
+        }, [hasPermission, navigation])
+    );
     useFocusEffect(
         React.useCallback(() => {
             if (loading === 'SUCCESS') {
@@ -76,7 +83,7 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
                 navigation.navigate('Galerie');
             }
             if (loading === 'ERROR') setFetching(false);
-        }, [loading])
+        }, [loading, navigation])
     );
 
     useFocusEffect(
@@ -84,6 +91,13 @@ const SubscribeGalerieScreen = ({ navigation }: Props) => {
             setFetching(false);
         }, [])
     );
+
+    React.useEffect(() => {
+        mounted.current = true;
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
 
     return (
         <Container>

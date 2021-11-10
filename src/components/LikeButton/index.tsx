@@ -5,28 +5,28 @@ import { useDispatch } from 'react-redux';
 
 import Pictogram from '#components/Pictogram';
 import Typography from '#components/Typography';
+import { updateFramesCurrent } from '#store/frames';
 import { postLike } from '#store/likes';
 
 import { Container } from './styles';
-import { updateFramesCurrent } from '#store/frames';
 
 type Props = {
     frame: Store.Models.Frame;
 };
 
 const LikeButton = ({ frame }: Props) => {
+    const dispatch = useDispatch();
     const navigation = useNavigation<
         | Screen.DesktopBottomTab.FrameProp
         | Screen.DesktopBottomTab.HomeNavigationProp
     >();
-    const dispatch = useDispatch();
 
     const handlePress = React.useCallback(() => {
         if (frame.numOfLikes > 0) {
             dispatch(updateFramesCurrent(frame.id));
             navigation.navigate('Likes');
         }
-    }, [frame]);
+    }, [frame, navigation]);
     const handlePressLike = React.useCallback(() => {
         dispatch(postLike(frame.id));
     }, [frame]);

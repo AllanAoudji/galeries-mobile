@@ -175,4 +175,4 @@ const Text = ({ size = 'normal' }: Props) => (
     </Svg>
 );
 
-export default Text;
+export default React.memo(Text);

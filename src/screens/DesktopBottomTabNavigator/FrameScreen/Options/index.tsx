@@ -60,12 +60,13 @@ const Options = ({
     }, [show]);
 
     useFocusEffect(
-        React.useCallback(() => {
-            return () => {
+        React.useCallback(
+            () => () => {
                 display.value = 0;
                 setOpen(false);
-            };
-        }, [])
+            },
+            []
+        )
     );
 
     if (!open) return null;
@@ -78,12 +79,12 @@ const Options = ({
             <InnerContainer>
                 <HeaderContainer onPress={onPress}>
                     <Pictogram
-                        variant="arrow-left"
                         color="white"
                         height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
+                        onPress={onPressBack}
                         pl="small"
                         pr="small"
-                        onPress={onPressBack}
+                        variant="arrow-left"
                     />
                 </HeaderContainer>
                 <FooterContainer>

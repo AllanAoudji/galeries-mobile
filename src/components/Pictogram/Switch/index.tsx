@@ -47,4 +47,4 @@ const Switch = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default Switch;
+export default React.memo(Switch);

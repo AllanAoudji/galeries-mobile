@@ -16,12 +16,12 @@ const SubComments = ({ allIds, end, onPress }: Props) => {
     return (
         <Container>
             {allIds.map((id) => (
-                <RenderItem key={id} item={id} />
+                <RenderItem item={id} key={id} />
             ))}
-            {!end && allIds.length > 0 && (
+            {allIds.length > 0 && !end && (
                 <LoadMoreContainer onPress={onPress}>
                     <Separator />
-                    <Typography fontSize={12} color="primary">
+                    <Typography color="primary" fontSize={12}>
                         load more
                     </Typography>
                 </LoadMoreContainer>

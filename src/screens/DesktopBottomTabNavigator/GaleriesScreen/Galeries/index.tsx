@@ -1,5 +1,7 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
+    InteractionManager,
     Keyboard,
     ListRenderItemInfo,
     RefreshControl,
@@ -38,8 +40,7 @@ const Galeries = ({ allIds, scrollHandler }: Props) => {
     const theme = useTheme();
 
     const filterGaleriesName = useSelector(selectGaleriesFilterName);
-    const galeriesNameStatus = useSelector(selectGaleriesNameStatus);
-    const loading = useSelector(selectGaleriesNameStatus);
+    const status = useSelector(selectGaleriesNameStatus);
 
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -62,13 +63,18 @@ const Galeries = ({ allIds, scrollHandler }: Props) => {
     );
 
     const handleEndReached = React.useCallback(() => {
-        if (galeriesNameStatus === 'ERROR' || galeriesNameStatus === 'SUCCESS')
+        if (status.includes('LOADING') || status === 'REFRESH') return;
+        InteractionManager.runAfterInteractions(() => {
             dispatch(getGaleries(filterGaleriesName));
-    }, [filterGaleriesName, galeriesNameStatus]);
+        });
+    }, [filterGaleriesName, status]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        dispatch(refreshGaleries(filterGaleriesName));
-    }, [filterGaleriesName]);
+        if (status.includes('LOADING') || status === 'REFRESH') return;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(refreshGaleries(filterGaleriesName));
+        });
+    }, [filterGaleriesName, status]);
     const handleScrollBeginDrag = React.useCallback(
         () => Keyboard.dismiss(),
         []
@@ -83,9 +89,11 @@ const Galeries = ({ allIds, scrollHandler }: Props) => {
     );
     const keyExtractor = React.useCallback((item: string) => item, []);
 
-    React.useEffect(() => {
-        if (loading === 'SUCCESS' && refreshing) setRefreshing(false);
-    }, [loading, refreshing]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (status === 'SUCCESS' && refreshing) setRefreshing(false);
+        }, [status, refreshing])
+    );
 
     return (
         <StyledAnimatedFlatList
@@ -95,8 +103,8 @@ const Galeries = ({ allIds, scrollHandler }: Props) => {
             data={allIds}
             extraData={allIds}
             getItemLayout={getItemLayout}
-            keyExtractor={keyExtractor}
             initialNumToRender={5}
+            keyExtractor={keyExtractor}
             keyboardShouldPersistTaps="handled"
             maxToRenderPerBatch={4}
             onEndReached={handleEndReached}
@@ -107,8 +115,8 @@ const Galeries = ({ allIds, scrollHandler }: Props) => {
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
                     progressBackgroundColor={theme.colors.secondary}
+                    progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
                     refreshing={refreshing}
                 />
             }
@@ -126,9 +134,9 @@ const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
 } = StyleSheet.create(({ minHeight }) => ({
     animatedFlatListContentContainerStyle: {
+        minHeight,
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
         paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
-        minHeight,
     },
 }));
 

@@ -11,7 +11,8 @@ type TitleContainerProps = {
 const Container = styled.View`
     height: ${() => `${GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE}px`};
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: ${() =>
+        `${GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE_TEXT_MARGIN}px`};
 `;
 const CoverPictureContainer = styled.View`
     height: ${() => `${GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE}px`};
@@ -20,8 +21,8 @@ const CoverPictureContainer = styled.View`
 `;
 const LinearGradientStyle = styled(LinearGradient)`
     bottom: 0;
-    position: absolute;
     left: 0;
+    position: absolute;
     right: 0;
     top: 0;
     z-index: 1;
@@ -31,7 +32,8 @@ const TitleContainer = styled.View<TitleContainerProps>`
     background-color: ${({ theme }) => theme.colors['secondary-light']};
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    bottom: -50px;
+    bottom: ${() =>
+        `-${GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE_TEXT_MARGIN}px`};
     margin: ${({ theme }) => `0 ${theme.spacings.normal}`};
     padding: ${({ theme }) => theme.spacings.small};
     position: absolute;

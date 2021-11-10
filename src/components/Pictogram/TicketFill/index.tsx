@@ -47,4 +47,4 @@ const TicketFill = ({
     );
 };
 
-export default TicketFill;
+export default React.memo(TicketFill);

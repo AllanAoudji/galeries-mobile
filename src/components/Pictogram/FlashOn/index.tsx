@@ -43,4 +43,4 @@ const FlashOn = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default FlashOn;
+export default React.memo(FlashOn);

@@ -6,19 +6,19 @@ import { Container, LoaderContainer } from './styles';
 
 type Props = {
     backgroundColor?: keyof Style.Colors;
-    color?: keyof Style.Colors;
     bottom?: keyof Style.Spacings;
+    color?: keyof Style.Colors;
     show: boolean;
 };
 
 const BottomLoader = ({
     backgroundColor = 'primary',
-    color = 'secondary-light',
     bottom,
+    color = 'secondary-light',
     show,
 }: Props) => {
-    const theme = useTheme();
     const dimension = useWindowDimensions();
+    const theme = useTheme();
 
     if (!show) return null;
 

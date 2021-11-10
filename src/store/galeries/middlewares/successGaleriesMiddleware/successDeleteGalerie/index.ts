@@ -5,6 +5,7 @@ import {
     resetGaleriesAllIds,
     resetGaleriesCurrent,
     resetGaleriesEnd,
+    resetGaleriesFieldsError,
     resetGaleriesPrevious,
     resetGaleriesStatusId,
     resetGaleriesStatusName,
@@ -21,6 +22,7 @@ const successDeleteGalerie = (
         dispatch(resetGaleriesAllIds());
         dispatch(resetGaleriesCurrent());
         dispatch(resetGaleriesEnd());
+        dispatch(resetGaleriesFieldsError());
         dispatch(resetGaleriesPrevious());
         dispatch(resetGaleriesStatusId());
         dispatch(resetGaleriesStatusName());

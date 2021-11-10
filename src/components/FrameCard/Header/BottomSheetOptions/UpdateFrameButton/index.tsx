@@ -24,7 +24,7 @@ const UpdateFrameButton = ({ frame, me }: Props) => {
         dispatch(updateFramesCurrent(frame.id));
         navigation.navigate('UpdateFrame');
         closeBottomSheet();
-    }, [frame]);
+    }, [closeBottomSheet, navigation, frame]);
 
     if (!me) return null;
     if (me.id !== frame.userId) return null;

@@ -47,4 +47,4 @@ const ProfileFill = ({
     );
 };
 
-export default ProfileFill;
+export default React.memo(ProfileFill);

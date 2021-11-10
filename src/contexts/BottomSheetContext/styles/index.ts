@@ -8,22 +8,21 @@ type BottomSheetContainerProps = {
 };
 
 const BottomSheetContainer = styled(Animated.View)<BottomSheetContainerProps>`
+    bottom: 0;
+    height: ${({ height }) => `${height}px`};
+    left: 0;
     position: absolute;
     right: 0;
-    left: 0;
-    bottom: 0;
     z-index: 10;
-    height: ${({ height }) => `${height}px`};
 `;
 const Container = styled(Animated.View)`
+    background-color: rgba(0, 0, 0, 0.6);
+    bottom: 0;
+    left: 0;
     position: absolute;
     top: 0;
     right: 0;
-    left: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
 `;
-
 const Handle = styled.View`
     background-color: ${({ theme }) => theme.colors['secondary-dark']};
     border-radius: 100px;

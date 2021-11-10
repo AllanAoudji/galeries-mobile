@@ -30,9 +30,9 @@ const DesktopStack = () => {
 
     const displayScreen = React.useMemo(() => {
         return !!me && me.role === 'user' ? (
-            <Drawer.Screen name="SendTicket" component={SendTicketScreen} />
+            <Drawer.Screen component={SendTicketScreen} name="SendTicket" />
         ) : (
-            <Drawer.Screen name="Moderation" component={ModerationScreen} />
+            <Drawer.Screen component={ModerationScreen} name="Moderation" />
         );
     }, [me]);
 
@@ -42,8 +42,8 @@ const DesktopStack = () => {
             initialRouteName="Main"
             screenOptions={screenOptions}
         >
-            <Drawer.Screen name="Main" component={MainScreen} />
-            <Drawer.Screen name="Settings" component={SettingsScreen} />
+            <Drawer.Screen component={MainScreen} name="Main" />
+            <Drawer.Screen component={SettingsScreen} name="Settings" />
             {displayScreen}
         </Drawer.Navigator>
     );

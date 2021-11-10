@@ -4,7 +4,8 @@ import Pictogram from '#components/Pictogram';
 import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
 
-import Options from './Options';
+import BottomSheetOptions from './BottomSheetOptions';
+
 import {
     Container,
     InfoContainer,
@@ -13,17 +14,17 @@ import {
 } from './styles';
 
 type Props = {
-    galerieBlackList?: Store.Models.GalerieBlackList;
     color?: keyof Style.Colors;
     galerie?: Store.Models.Galerie;
+    galerieBlackList?: Store.Models.GalerieBlackList;
     role?: Store.Role;
     user: Store.Models.User;
 };
 
 const UserCard = ({
-    galerieBlackList,
     color = 'secondary-light',
     galerie,
+    galerieBlackList,
     role,
     user,
 }: Props) => {
@@ -51,7 +52,7 @@ const UserCard = ({
                     </UserNameContainer>
                     <Typography fontSize={14}>{user.userName}</Typography>
                 </InfoContainer>
-                <Options
+                <BottomSheetOptions
                     galerie={galerie}
                     galerieBlackList={galerieBlackList}
                     role={role}
@@ -62,4 +63,4 @@ const UserCard = ({
     );
 };
 
-export default UserCard;
+export default React.memo(UserCard);

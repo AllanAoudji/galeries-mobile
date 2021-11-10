@@ -13,7 +13,7 @@ const ViewMore = ({ commentFetcherText, onPress }: Props) => {
     return (
         <Container onPress={onPress}>
             <Separator />
-            <Typography fontSize={12} color="primary">
+            <Typography color="primary" fontSize={12}>
                 {commentFetcherText}
             </Typography>
         </Container>

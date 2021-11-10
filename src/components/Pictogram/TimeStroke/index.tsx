@@ -51,4 +51,4 @@ const TimeStroke = ({
     );
 };
 
-export default TimeStroke;
+export default React.memo(TimeStroke);

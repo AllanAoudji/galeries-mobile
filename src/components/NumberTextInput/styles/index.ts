@@ -19,15 +19,15 @@ const Container = styled.View<ContainerProps>`
 `;
 const TextInputStyled = styled.TextInput`
     background-color: ${({ theme }) => theme.colors.secondary};
-    border-bottom-width: 3px;
     border-bottom-color: ${({ theme }) => theme.colors.primary};
+    border-bottom-width: 3px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     font-family: ${({ theme }) => theme.font.families.roman};
     font-size: ${({ theme }) => theme.font.sizes[24]};
     height: ${({ theme }) => theme.spacings.normal};
-    padding: 0 5px;
     margin-right: ${({ theme }) => theme.spacings.smallest};
+    padding: 0 5px;
     text-align: right;
     width: 50px;
 `;

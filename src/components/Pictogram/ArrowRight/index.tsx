@@ -47,4 +47,4 @@ const ArrowRight = ({
     );
 };
 
-export default ArrowRight;
+export default React.memo(ArrowRight);

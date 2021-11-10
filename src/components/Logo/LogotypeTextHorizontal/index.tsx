@@ -212,4 +212,4 @@ const LogotypeTextHorizontal = ({ size = 'normal' }: Props) => (
     </Svg>
 );
 
-export default LogotypeTextHorizontal;
+export default React.memo(LogotypeTextHorizontal);

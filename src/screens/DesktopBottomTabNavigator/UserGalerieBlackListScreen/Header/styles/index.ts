@@ -19,8 +19,8 @@ const CoverPictureContainer = styled.View`
 `;
 const LinearGradientStyle = styled(LinearGradient)`
     bottom: 0;
-    position: absolute;
     left: 0;
+    position: absolute;
     right: 0;
     top: 0;
     z-index: 1;

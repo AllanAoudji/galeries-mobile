@@ -43,4 +43,4 @@ const HomeFill = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default HomeFill;
+export default React.memo(HomeFill);

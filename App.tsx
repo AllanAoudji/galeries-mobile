@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 
 import { Notification } from '#components';
 import { BottomSheetProvider } from '#contexts/BottomSheetContext';
+import { DeleteCommentModalProvider } from '#contexts/DeleteCommentModalContext';
 import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
 import { DeleteGalerieBlackListModalProvider } from '#contexts/DeleteGalerieBlackListModalContext';
 import { DeleteGalerieUserModalProvider } from '#contexts/DeleteGalerieUserModalContext';
@@ -27,15 +28,17 @@ export default function App() {
                     <NavigationContainer>
                         <DeleteFrameModalProvider>
                             <DeleteGalerieBlackListModalProvider>
-                                <DeleteGalerieUserModalProvider>
-                                    <DeleteInvitationModalProvider>
-                                        <BottomSheetProvider>
-                                            <RootStackNavigator />
-                                            <Notification />
-                                            <StatusBar style="auto" />
-                                        </BottomSheetProvider>
-                                    </DeleteInvitationModalProvider>
-                                </DeleteGalerieUserModalProvider>
+                                <DeleteCommentModalProvider>
+                                    <DeleteGalerieUserModalProvider>
+                                        <DeleteInvitationModalProvider>
+                                            <BottomSheetProvider>
+                                                <RootStackNavigator />
+                                                <Notification />
+                                                <StatusBar style="auto" />
+                                            </BottomSheetProvider>
+                                        </DeleteInvitationModalProvider>
+                                    </DeleteGalerieUserModalProvider>
+                                </DeleteCommentModalProvider>
                             </DeleteGalerieBlackListModalProvider>
                         </DeleteFrameModalProvider>
                     </NavigationContainer>
@@ -46,7 +49,7 @@ export default function App() {
 }
 
 // TODO:
-// Update galerie (and find a solution for scrollable form)
+// Add overScrollMode="never" on every scrollable element
 // normalize screen with buttons
 // Reports
 // Notifications Screen

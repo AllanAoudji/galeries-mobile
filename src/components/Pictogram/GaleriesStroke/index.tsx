@@ -59,4 +59,4 @@ const GaleriesStroke = ({
     );
 };
 
-export default GaleriesStroke;
+export default React.memo(GaleriesStroke);

@@ -6,6 +6,8 @@ import { useTheme } from 'styled-components/native';
 
 import { GalerieCoverPicture, ProfilePicture, ReturnButton } from '#components';
 import { selectGalerie } from '#store/galeries';
+import { selectUserCurrentProfilePictureId } from '#store/profilePictures';
+import { selectUser } from '#store/users';
 
 import {
     Container,
@@ -13,8 +15,6 @@ import {
     LinearGradientStyle,
     ProfilePictureContainer,
 } from './styles';
-import { selectUser } from '#store/users';
-import { selectUserCurrentProfilePictureId } from '#store/profilePictures';
 
 type Props = {
     galerieBlackList: Store.Models.GalerieBlackList;
@@ -50,13 +50,14 @@ const Header = ({ galerieBlackList }: Props) => {
 
     // TODO:
     // if long press, should open bottomsheet modal to report PP
+    const handleLongPressProfilePicture = React.useCallback(() => {}, []);
     const handlePressProfilePicture = React.useCallback(() => {
         if (currentProfilePictureId) navigation.navigate('ProfilePicture');
-    }, [currentProfilePictureId]);
+    }, [currentProfilePictureId, navigation]);
     const handlePressReturn = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
-    }, []);
+    }, [navigation]);
 
     return (
         <Container>
@@ -66,7 +67,10 @@ const Header = ({ galerieBlackList }: Props) => {
                 <GalerieCoverPicture galerie={galerie} />
             </CoverPictureContainer>
             <ProfilePictureContainer width={dimension.width}>
-                <Pressable onPress={handlePressProfilePicture}>
+                <Pressable
+                    onLongPress={handleLongPressProfilePicture}
+                    onPress={handlePressProfilePicture}
+                >
                     <ProfilePicture
                         border
                         borderColor="primary-light"

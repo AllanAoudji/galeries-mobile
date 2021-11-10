@@ -23,15 +23,13 @@ const Slider = ({ frame }: Props) => {
     );
     const status = useSelector(frameGaleriePicturesStatusSelector());
 
-    const galeriePicturesAreLoading = React.useMemo(
-        () => !status || status === 'PENDING' || status.includes('LOADING'),
-        [status]
-    );
+    // TODO:
+    // Need content to reload if error
 
     return (
         <>
             <Container size={dimension.width}>
-                {!galeriePicturesAreLoading ? (
+                {status && status === 'SUCCESS' ? (
                     <ScrollContainer frame={frame} />
                 ) : (
                     <Loader />

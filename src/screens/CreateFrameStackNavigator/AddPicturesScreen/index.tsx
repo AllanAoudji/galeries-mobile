@@ -1,32 +1,21 @@
-import { NavigationProp } from '@react-navigation/native';
-import { Camera } from 'expo-camera';
-import * as MediaLibrary from 'expo-media-library';
+import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { StatusBar } from 'react-native';
+import { BackHandler } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 import {
-    BottomSheetButton,
     CustomButton,
     DeleteModal,
-    Pictogram,
+    ReturnButton,
     Typography,
 } from '#components';
-import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
-import { GLOBAL_STYLE } from '#helpers/constants';
 
+import Header from './Header';
 import List from './List';
 import Tile from './Tile';
 
-import {
-    Body,
-    Container,
-    Header,
-    ReturnButtonContainer,
-    Separator,
-    TextContainer,
-} from './styles';
+import { Body, Container, TextContainer } from './styles';
 
 type Props = {
     navigation: Screen.CreateFrameStack.AddPicturesNavigationProp;
@@ -35,8 +24,6 @@ type Props = {
 const AddPicturesScreen = ({ navigation }: Props) => {
     const theme = useTheme();
 
-    const { closeBottomSheet, openBottomSheet } =
-        React.useContext(BottomSheetContext);
     const { picturesUri, removePictures, resetPictures } =
         React.useContext(CreateFrameContext);
 
@@ -47,7 +34,7 @@ const AddPicturesScreen = ({ navigation }: Props) => {
         null
     );
 
-    const containerColors = React.useMemo(
+    const colors = React.useMemo(
         () => [theme.colors.tertiary, theme.colors.primary],
         []
     );
@@ -75,86 +62,59 @@ const AddPicturesScreen = ({ navigation }: Props) => {
                 .navigate('Home');
         }
         resetPictures();
-    }, []);
-    const handleNavigateCamera = React.useCallback(() => {
-        (async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync();
-            if (status === 'granted') {
-                closeBottomSheet();
-                navigation.navigate('CreateFrameCamera');
-            }
-        })();
-    }, []);
+    }, [navigation]);
     const handleNavigateDescription = React.useCallback(() => {
         if (picturesUri.length > 0) navigation.navigate('AddDescription');
-    }, [picturesUri]);
-    const handleNavigateGallery = React.useCallback(() => {
-        (async () => {
-            const { status } = await MediaLibrary.requestPermissionsAsync();
-            if (status === 'granted') {
-                closeBottomSheet();
-                navigation.navigate('CreateFrameGallery');
-            }
-        })();
-    }, [closeBottomSheet]);
-
-    const bottomSheetContainer = React.useCallback(() => {
-        return (
-            <>
-                <BottomSheetButton
-                    onPress={handleNavigateCamera}
-                    pictogram="camera-fill"
-                    title="take a picture"
-                />
-                <BottomSheetButton
-                    onPress={handleNavigateGallery}
-                    pictogram="upload"
-                    title="upload a picture"
-                />
-            </>
-        );
-    }, []);
+    }, [navigation, picturesUri]);
 
     const handleOpenDeleteModal = React.useCallback((id: string) => {
         setOpenDeleteModal(true);
         setPictureToDelete(id);
     }, []);
-    const handleOpenSheet = React.useCallback(() => {
-        if (picturesUri.length < 6) openBottomSheet(bottomSheetContainer);
-    }, [
-        handleNavigateCamera,
-        handleNavigateGallery,
-        openBottomSheet,
-        picturesUri,
-    ]);
     const handleReturn = React.useCallback(() => {
         if (picturesUri.length) setOpenBackModal(true);
         else handleGoBack();
     }, [handleGoBack, picturesUri, setOpenBackModal]);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            let BackHandlerListerner: any;
+            if (openBackModal) {
+                BackHandlerListerner = BackHandler.addEventListener(
+                    'hardwareBackPress',
+                    () => {
+                        setOpenBackModal(false);
+                        resetPictures();
+                        return false;
+                    }
+                );
+            } else if (openDeleteModal) {
+                BackHandlerListerner = BackHandler.addEventListener(
+                    'hardwareBackPress',
+                    () => {
+                        setOpenDeleteModal(false);
+                        return true;
+                    }
+                );
+            } else if (picturesUri.length) {
+                BackHandlerListerner = BackHandler.addEventListener(
+                    'hardwareBackPress',
+                    () => {
+                        setOpenBackModal(true);
+                        return true;
+                    }
+                );
+            } else if (BackHandlerListerner) BackHandlerListerner.remove();
+            return () => {
+                if (BackHandlerListerner) BackHandlerListerner.remove();
+            };
+        }, [openBackModal, openDeleteModal, picturesUri, resetPictures])
+    );
+
     return (
-        <Container colors={containerColors}>
-            <ReturnButtonContainer paddingTop={StatusBar.currentHeight}>
-                <Pictogram
-                    color="secondary-light"
-                    height={GLOBAL_STYLE.TOP_LEFT_PICTOGRAM_HEIGHT}
-                    onPress={handleReturn}
-                    pl="small"
-                    pr="small"
-                    variant="arrow-left"
-                />
-            </ReturnButtonContainer>
-            <Header>
-                <Typography
-                    color="secondary-light"
-                    fontFamily="light"
-                    fontSize={36}
-                    textAlign="right"
-                >
-                    CREATE A FRAME
-                </Typography>
-                <Separator />
-            </Header>
+        <Container colors={colors}>
+            <ReturnButton onPress={handleReturn} />
+            <Header />
             <Body>
                 <TextContainer>
                     <Typography>
@@ -162,7 +122,7 @@ const AddPicturesScreen = ({ navigation }: Props) => {
                         drag'n'drop them to change the order
                     </Typography>
                 </TextContainer>
-                <List handlePressOpenSheet={handleOpenSheet}>
+                <List>
                     {picturesUri.map((pictureUri) => (
                         <Tile
                             id={pictureUri}

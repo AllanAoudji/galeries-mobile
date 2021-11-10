@@ -25,8 +25,8 @@ const NavigationButton = ({
     return (
         <Container onPress={onPress}>
             <Pictogram
-                customSize={customSize}
                 color="primary"
+                customSize={customSize}
                 pr="small"
                 variant={pictogram}
             />

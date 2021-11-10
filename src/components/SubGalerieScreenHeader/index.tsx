@@ -33,17 +33,20 @@ const SubGalerieScreenHeader = ({
     const navigation =
         useNavigation<Screen.DesktopBottomTab.InvitationNavigationProp>();
 
+    const colors = React.useMemo(
+        () => ['transparent', theme.colors['secondary-light']],
+        []
+    );
+
     const handlePressReturn = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
-    }, []);
+    }, [navigation]);
 
     return (
         <Container>
             <ReturnButton onPress={handlePressReturn} />
-            <LinearGradientStyle
-                colors={['transparent', theme.colors['secondary-light']]}
-            />
+            <LinearGradientStyle colors={colors} />
             <CoverPictureContainer>
                 <GalerieCoverPicture galerie={galerie} />
             </CoverPictureContainer>

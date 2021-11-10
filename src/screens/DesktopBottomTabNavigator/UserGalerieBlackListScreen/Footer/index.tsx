@@ -1,7 +1,6 @@
 import * as React from 'react';
-
 import { useSelector } from 'react-redux';
-import { Container } from './styles';
+
 import { CustomButton } from '#components';
 import { DeleteGalerieBlackListModalContext } from '#contexts/DeleteGalerieBlackListModalContext';
 import { selectGalerieBlackListsLoadingDelete } from '#store/galerieBlackLists';
@@ -20,7 +19,7 @@ const Footer = ({ galerieBlackList }: Props) => {
     const handlePress = React.useCallback(() => {
         if (!loading.includes('LOADING'))
             handleOpenModal(galerieBlackList.galerieId, galerieBlackList.id);
-    }, [galerieBlackList, loading]);
+    }, [galerieBlackList, handleOpenModal, loading]);
 
     return <CustomButton onPress={handlePress} title="unblacklist user" />;
 };

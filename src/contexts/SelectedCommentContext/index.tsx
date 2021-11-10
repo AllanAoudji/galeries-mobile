@@ -14,6 +14,7 @@ export const SelectCommentProvider: React.FC<{}> = ({ children }) => {
     const [selectedComment, setSelectedComment] = React.useState<string | null>(
         null
     );
+
     const setCommentSelected = React.useCallback(
         (commentId: string) => setSelectedComment(commentId),
         []

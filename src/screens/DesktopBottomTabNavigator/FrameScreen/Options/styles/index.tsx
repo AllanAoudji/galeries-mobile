@@ -36,7 +36,6 @@ const DescriptionContainer = styled.View`
         `0 ${theme.spacings.normal} ${theme.spacings.small}`};
 `;
 
-// eslint-disable-next-line import/prefer-default-export
 export {
     BottonContainer,
     Container,

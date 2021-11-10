@@ -51,4 +51,4 @@ const CameraFill = ({
     );
 };
 
-export default CameraFill;
+export default React.memo(CameraFill);

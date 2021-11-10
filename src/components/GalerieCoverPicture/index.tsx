@@ -45,7 +45,6 @@ const GalerieCoverPicture = ({
         () => size || dimension.width,
         [dimension, size]
     );
-
     const content = React.useMemo(() => {
         if (coverPicture)
             return (
@@ -57,7 +56,7 @@ const GalerieCoverPicture = ({
         if (galerie)
             return <DefaultCoverPicture galerie={galerie} size={currentSize} />;
         return <NotFoundCoverPicture size={currentSize} />;
-    }, [coverPicture, galerie, size]);
+    }, [coverPicture, currentSize, galerie, size]);
 
     return (
         <Container

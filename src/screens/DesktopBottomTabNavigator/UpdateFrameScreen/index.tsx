@@ -1,7 +1,9 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
+import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import { GLOBAL_STYLE } from '#helpers/constants';
 import { selectCurrentFrame } from '#store/frames';
 
 import Form from './Form';
@@ -25,11 +27,23 @@ const UpdateFrameScreen = ({ navigation }: Props) => {
     if (!currentFrame) return null;
 
     return (
-        <Form
-            description={currentFrame.description}
-            frameId={currentFrame.id}
-        />
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+            style={styles.keyboardAvoidingViewStyle}
+        >
+            <Form
+                description={currentFrame.description}
+                frameId={currentFrame.id}
+            />
+        </KeyboardAvoidingView>
     );
 };
+
+const styles = StyleSheet.create({
+    keyboardAvoidingViewStyle: {
+        flex: 1,
+    },
+});
 
 export default UpdateFrameScreen;

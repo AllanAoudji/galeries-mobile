@@ -11,9 +11,8 @@ import {
 
 import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
+import Head from './Head';
 import TabBar from './TabBar';
-
-import GalerieInformations from './GalerieInformations';
 
 import { Container } from './styles';
 
@@ -35,10 +34,10 @@ const Header = ({ galerie, scrollY, ...props }: Props) => {
 
     return (
         <Container style={containerStyle}>
-            <GalerieInformations galerie={galerie} scrollY={scrollY} />
+            <Head galerie={galerie} scrollY={scrollY} />
             <TabBar {...props} />
         </Container>
     );
 };
 
-export default Header;
+export default React.memo(Header);

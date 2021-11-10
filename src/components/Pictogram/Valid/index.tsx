@@ -43,4 +43,4 @@ const Valid = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default Valid;
+export default React.memo(Valid);

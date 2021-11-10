@@ -21,11 +21,11 @@ const Notification = () => {
     const dispatch = useDispatch();
     const notification = useSelector(selectNotification);
 
-    const value = useSharedValue(notification ? 1 : 0);
     const [hasNotification, setHasNotification] = React.useState<boolean>(
         !!notification
     );
 
+    const value = useSharedValue(notification ? 1 : 0);
     const style = useAnimatedStyle(() => {
         const bottom = interpolate(value.value, [0, 1], [-100, 0]);
         const scale = interpolate(value.value, [0, 1], [0.95, 1]);
@@ -37,6 +37,9 @@ const Notification = () => {
     }, []);
 
     const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+    const clearTimer = React.useCallback(() => {
+        if (timer.current) clearTimeout(timer.current);
+    }, []);
 
     const closeNotification = React.useCallback(() => {
         'worklet';
@@ -46,16 +49,12 @@ const Notification = () => {
             runOnJS(dispatch)(resetNotificationAction);
             runOnJS(setHasNotification)(false);
         });
-    }, []);
-
-    const clearTimer = React.useCallback(() => {
-        if (timer.current) clearTimeout(timer.current);
-    }, []);
+    }, [clearTimer]);
 
     const handlePress = React.useCallback(() => {
         clearTimer();
         closeNotification();
-    }, []);
+    }, [clearTimer]);
 
     React.useEffect(() => {
         if (notification) {
@@ -66,13 +65,13 @@ const Notification = () => {
                 closeNotification();
             }, CLOSE_NOTIFICATION_DELAY);
         }
-    }, [notification]);
+    }, [closeNotification, notification]);
 
     React.useEffect(
         () => () => {
             clearTimer();
         },
-        []
+        [clearTimer]
     );
 
     if (!hasNotification || !notification) return null;
@@ -97,4 +96,4 @@ const Notification = () => {
     );
 };
 
-export default Notification;
+export default React.memo(Notification);

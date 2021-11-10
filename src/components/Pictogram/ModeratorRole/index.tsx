@@ -51,4 +51,4 @@ const ModeratorRole = ({
     );
 };
 
-export default ModeratorRole;
+export default React.memo(ModeratorRole);

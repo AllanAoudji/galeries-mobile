@@ -20,23 +20,22 @@ type Props = {
 const ButtonsContainer = ({ galerie, role, user }: Props) => {
     const dispatch = useDispatch();
 
-    if (galerie.role === 'user') return null;
-
     const loadingGalerieRole = useSelector(selectGalerieUserRolesLoadingPut);
 
     const handlePressChangeRole = React.useCallback(() => {
-        if (!loadingGalerieRole.includes('loading')) {
-            dispatch(putGalerieUserRole(galerie.id, user.id));
-        }
-    }, [loadingGalerieRole, galerie, user]);
+        if (loadingGalerieRole.includes('loading')) return;
+        dispatch(putGalerieUserRole(galerie.id, user.id));
+    }, [galerie, loadingGalerieRole, user]);
+
+    if (galerie.role === 'user') return null;
 
     return (
         <Container>
             {galerie.role === 'admin' && !!role && (
                 <CustomButton
-                    onPress={handlePressChangeRole}
                     loading={loadingGalerieRole.includes('LOADING')}
                     mb="smallest"
+                    onPress={handlePressChangeRole}
                     title={`change role for ${
                         role === 'moderator' ? 'user' : 'moderator'
                     }`}

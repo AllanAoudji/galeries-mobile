@@ -43,4 +43,4 @@ const New = ({ color = 'black', customSize, size = 'normal' }: Props) => {
     );
 };
 
-export default New;
+export default React.memo(New);

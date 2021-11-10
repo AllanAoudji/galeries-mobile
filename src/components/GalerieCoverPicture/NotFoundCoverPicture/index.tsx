@@ -1,6 +1,6 @@
 import { LinearGradientPoint } from 'expo-linear-gradient';
 import * as React from 'react';
-import { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components/native';
 
 import { LinearGradientStyled } from './styles';
 

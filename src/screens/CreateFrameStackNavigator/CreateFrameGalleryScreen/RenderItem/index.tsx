@@ -7,21 +7,22 @@ import Item from './Item';
 
 type Props = {
     item: MediaLibrary.Asset;
+    numOfColumns: number;
 };
 
 const RenderItem = ({ item }: Props) => {
     const { addPictures, picturesUri, removePictures } =
         React.useContext(CreateFrameContext);
 
-    const handlePress = React.useCallback(() => {
-        if (picturesUri.includes(item.uri)) removePictures(item.uri);
-        else if (picturesUri.length < 6) addPictures(item.uri);
-    }, [addPictures, item, picturesUri, removePictures]);
-
     const isPicked = React.useMemo(
         () => picturesUri.includes(item.uri),
         [picturesUri]
     );
+
+    const handlePress = React.useCallback(() => {
+        if (picturesUri.includes(item.uri)) removePictures(item.uri);
+        else if (picturesUri.length < 6) addPictures(item.uri);
+    }, [addPictures, item, picturesUri, removePictures]);
 
     return (
         <Item handlePress={handlePress} isPicked={isPicked} uri={item.uri} />

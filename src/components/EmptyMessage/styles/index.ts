@@ -6,9 +6,9 @@ type ContainerProps = {
 };
 
 const Container = styled.View<ContainerProps>`
+    align-items: center;
     flex: 1;
     justify-content: center;
-    align-items: center;
     padding: ${({ pb, pt, theme }) =>
         `${pt || 0}px ${theme.spacings.normal} ${pb || 0}px`};
 `;

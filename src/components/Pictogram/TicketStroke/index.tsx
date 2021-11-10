@@ -59,4 +59,4 @@ const TicketStroke = ({
     );
 };
 
-export default TicketStroke;
+export default React.memo(TicketStroke);

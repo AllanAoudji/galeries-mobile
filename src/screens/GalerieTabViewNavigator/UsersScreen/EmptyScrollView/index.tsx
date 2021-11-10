@@ -1,6 +1,10 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { RefreshControl, useWindowDimensions } from 'react-native';
+import {
+    InteractionManager,
+    RefreshControl,
+    useWindowDimensions,
+} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated, {
     runOnJS,
@@ -11,15 +15,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import { EmptyMessage } from '#components';
-
-import { InnerContainer, StyledAnimatedScrollView } from './styles';
-
+import { GLOBAL_STYLE } from '#helpers/constants';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 import {
     refreshGalerieUsers,
     selectCurrentGalerieUsersStatus,
 } from '#store/users';
-import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
-import { GLOBAL_STYLE } from '#helpers/constants';
+
+import { InnerContainer, StyledAnimatedScrollView } from './styles';
 
 type Props = {
     current: boolean;
@@ -45,12 +48,15 @@ const EmptyScrollView = ({ current, editScrollY, galerie, scrollY }: Props) => {
             theme.colors['primary-dark'],
             theme.colors['primary-light'],
         ],
-        []
+        [theme]
     );
 
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (galerie) dispatch(refreshGalerieUsers(galerie.id));
+        if (galerie)
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(refreshGalerieUsers(galerie.id));
+            });
     }, [galerie]);
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
@@ -94,11 +100,11 @@ const EmptyScrollView = ({ current, editScrollY, galerie, scrollY }: Props) => {
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
+                    progressBackgroundColor={theme.colors['secondary-light']}
                     progressViewOffset={
                         GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
                         GLOBAL_STYLE.GALERIE_TAB_BAR_MENU
                     }
-                    progressBackgroundColor={theme.colors['secondary-light']}
                     refreshing={refreshing}
                 />
             }
@@ -111,4 +117,4 @@ const EmptyScrollView = ({ current, editScrollY, galerie, scrollY }: Props) => {
     );
 };
 
-export default EmptyScrollView;
+export default React.memo(EmptyScrollView);

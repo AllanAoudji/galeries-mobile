@@ -33,9 +33,9 @@ const successPostLikes = (
         if (likes[0]) {
             dispatch(removeLikesById(likes[0].id));
             const allIds = getState().likes.allIds[frameId];
-            if (!allIds.length) {
-                allIds.filter((id) => id !== likes[0].id);
-                dispatch(setLikesAllIds(frameId, allIds));
+            if (allIds.length) {
+                const newAllIds = allIds.filter((id) => id !== likes[0].id);
+                dispatch(setLikesAllIds(frameId, newAllIds));
             }
         }
     } else {

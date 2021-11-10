@@ -8,16 +8,18 @@ import {
     useWindowDimensions,
     StyleProp,
     ViewStyle,
+    InteractionManager,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-
 import Animated, {
     runOnJS,
     useAnimatedReaction,
     useAnimatedScrollHandler,
 } from 'react-native-reanimated';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
+
 import { GLOBAL_STYLE } from '#helpers/constants';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 import {
     getGalerieFrames,
     refreshGalerieFrames,
@@ -25,7 +27,6 @@ import {
 } from '#store/frames';
 
 import RenderItem from './RenderItem';
-import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
 type Props = {
     allIds: string[];
@@ -57,7 +58,7 @@ const Frames = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
             theme.colors['primary-dark'],
             theme.colors['primary-light'],
         ],
-        []
+        [theme]
     );
     const styleProps = React.useMemo(
         () => ({
@@ -67,11 +68,17 @@ const Frames = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
     );
 
     const handleEndReach = React.useCallback(() => {
-        if (galerie) dispatch(getGalerieFrames(galerie.id));
+        if (galerie)
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(getGalerieFrames(galerie.id));
+            });
     }, [galerie]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (galerie) dispatch(refreshGalerieFrames(galerie.id));
+        if (galerie)
+            InteractionManager.runAfterInteractions(() => {
+                dispatch(refreshGalerieFrames(galerie.id));
+            });
     }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(
@@ -91,7 +98,7 @@ const Frames = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
         (newScrollY) => {
             runOnJS(setInitialScroll)(newScrollY);
         },
-        [current]
+        [setInitialScroll]
     );
     const scrollHandler = useAnimatedScrollHandler(
         {
@@ -153,4 +160,4 @@ const style: ({ minHeight }: { minHeight: number }) => {
     },
 }));
 
-export default Frames;
+export default React.memo(Frames);

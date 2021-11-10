@@ -22,7 +22,7 @@ const defaultWidth = {
     small: 4,
 };
 
-const ModerationStroke = ({
+const OptionVertical = ({
     color = 'black',
     customSize,
     size = 'normal',
@@ -55,4 +55,4 @@ const ModerationStroke = ({
     );
 };
 
-export default ModerationStroke;
+export default React.memo(OptionVertical);

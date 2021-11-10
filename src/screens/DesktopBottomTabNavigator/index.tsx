@@ -31,14 +31,24 @@ import UserScreen from './UserScreen';
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 
 const createGalerieScreenHeader = () => (
-    <DefaultHeader title="create galerie" variant="secondary" />
+    <DefaultHeader
+        color="primary-dark"
+        textColor="secondary-light"
+        title="create galerie"
+        variant="secondary"
+    />
 );
 const createGalerieScreenOption: BottomTabNavigationOptions = {
     header: createGalerieScreenHeader,
     headerShown: true,
 };
 const createInvitationScreenHeader = () => (
-    <DefaultHeader title="create invitation" variant="secondary" />
+    <DefaultHeader
+        color="primary-dark"
+        textColor="secondary-light"
+        title="create invitation"
+        variant="secondary"
+    />
 );
 const createInvitationScreenOption: BottomTabNavigationOptions = {
     header: createInvitationScreenHeader,
@@ -46,6 +56,18 @@ const createInvitationScreenOption: BottomTabNavigationOptions = {
 };
 const screenOptions: BottomTabNavigationOptions = {
     headerShown: false,
+};
+const updateFrameScreenHeader = () => (
+    <DefaultHeader
+        color="primary-dark"
+        textColor="secondary-light"
+        title="create invitation"
+        variant="secondary"
+    />
+);
+const updateFrameScreenOption: BottomTabNavigationOptions = {
+    header: updateFrameScreenHeader,
+    headerShown: true,
 };
 const tabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
 
@@ -87,7 +109,11 @@ const DesktopBottomTabNavigator = () => {
                 component={SubscribeGalerieScreen}
                 name="SubscribeGalerie"
             />
-            <Tab.Screen component={UpdateFrameScreen} name="UpdateFrame" />
+            <Tab.Screen
+                component={UpdateFrameScreen}
+                name="UpdateFrame"
+                options={updateFrameScreenOption}
+            />
             <Tab.Screen
                 component={UserGalerieBlackListScreen}
                 name="UserGalerieBlackList"
