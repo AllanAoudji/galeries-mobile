@@ -6,4 +6,5 @@ export { default as forgotPassworSchema } from './forgotPassworSchema';
 export { default as frameDescriptionSchema } from './frameDescriptionSchema';
 export { default as loginSchema } from './loginSchema';
 export { default as putFrameSchema } from './putFrameSchema';
+export { default as putGalerieSchema } from './putGalerieSchema';
 export { default as signinSchema } from './signinSchema';

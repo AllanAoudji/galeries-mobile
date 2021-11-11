@@ -48,7 +48,7 @@ const Head = ({ galerie, scrollY }: Props) => {
                     <Typography
                         color="secondary-light"
                         fontFamily="bold"
-                        fontSize={36}
+                        fontSize={24}
                     >
                         {galerie ? galerie.name : ''}
                     </Typography>

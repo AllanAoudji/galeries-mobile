@@ -21,7 +21,7 @@ const UpdateFrameScreen = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
-        }, [currentFrame])
+        }, [currentFrame, navigation])
     );
 
     if (!currentFrame) return null;

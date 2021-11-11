@@ -16,6 +16,7 @@ const TitleContainer = styled(Animated.View)`
     padding-left: ${({ theme }) => theme.spacings.small};
     position: absolute;
     width: 100%;
+    padding-bottom: 5px;
 `;
 const TypographyContainer = styled.View`
     max-width: 80%;
