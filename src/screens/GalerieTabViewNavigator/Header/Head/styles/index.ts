@@ -8,16 +8,12 @@ const Container = styled(Animated.View)`
     justify-content: center;
     overflow: hidden;
 `;
-const EditPictogramContainer = styled.View`
-    padding-left: ${({ theme }) => theme.spacings.smallest};
-`;
 const TitleContainer = styled(Animated.View)`
     align-items: center;
     bottom: 0;
     flex-direction: row;
     justify-content: space-between;
-    padding: ${({ theme }) =>
-        `0 ${theme.spacings.small} ${theme.spacings.smallest}`};
+    padding-left: ${({ theme }) => theme.spacings.small};
     position: absolute;
     width: 100%;
 `;
@@ -25,9 +21,4 @@ const TypographyContainer = styled.View`
     max-width: 80%;
 `;
 
-export {
-    Container,
-    EditPictogramContainer,
-    TitleContainer,
-    TypographyContainer,
-};
+export { Container, TitleContainer, TypographyContainer };

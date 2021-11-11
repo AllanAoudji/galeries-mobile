@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import Animated, {
     interpolate,
@@ -7,12 +8,7 @@ import Animated, {
 import { GalerieCoverPicture, Pictogram, Typography } from '#components';
 import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 
-import {
-    Container,
-    EditPictogramContainer,
-    TitleContainer,
-    TypographyContainer,
-} from './styles';
+import { Container, TitleContainer, TypographyContainer } from './styles';
 
 type Props = {
     galerie?: Store.Models.Galerie;
@@ -20,6 +16,9 @@ type Props = {
 };
 
 const Head = ({ galerie, scrollY }: Props) => {
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
+
     const containerStyle = useAnimatedStyle(() => {
         const borderBottomRightRadius = interpolate(
             scrollY.value,
@@ -37,6 +36,10 @@ const Head = ({ galerie, scrollY }: Props) => {
         return { opacity };
     }, []);
 
+    const handlePressEdit = React.useCallback(() => {
+        navigation.navigate('UpdateGalerie');
+    }, [navigation]);
+
     return (
         <Container style={containerStyle}>
             <GalerieCoverPicture galerie={galerie} />
@@ -50,9 +53,15 @@ const Head = ({ galerie, scrollY }: Props) => {
                         {galerie ? galerie.name : ''}
                     </Typography>
                 </TypographyContainer>
-                <EditPictogramContainer>
-                    <Pictogram color="secondary-light" variant="edit-fill" />
-                </EditPictogramContainer>
+                <Pictogram
+                    color="secondary-light"
+                    pb="smallest"
+                    pl="smallest"
+                    pt="smallest"
+                    pr="small"
+                    onPress={handlePressEdit}
+                    variant="edit-fill"
+                />
             </TitleContainer>
         </Container>
     );

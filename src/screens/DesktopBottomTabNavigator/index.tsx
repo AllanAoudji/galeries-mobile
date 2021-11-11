@@ -25,6 +25,7 @@ import ProfilePictureScreen from './ProfilePictureScreen';
 import SubscribeGalerieScreen from './SubscribeGalerieScreen';
 import TabBar from './TabBar';
 import UpdateFrameScreen from './UpdateFrameScreen';
+import UpdateGalerieScreen from './UpdateGalerieScreen';
 import UserGalerieBlackListScreen from './UserGalerieBlackListScreen';
 import UserScreen from './UserScreen';
 
@@ -61,12 +62,24 @@ const updateFrameScreenHeader = () => (
     <DefaultHeader
         color="primary-dark"
         textColor="secondary-light"
-        title="create invitation"
+        title="update frame"
         variant="secondary"
     />
 );
 const updateFrameScreenOption: BottomTabNavigationOptions = {
     header: updateFrameScreenHeader,
+    headerShown: true,
+};
+const updateGalerieScreenHeader = () => (
+    <DefaultHeader
+        color="primary-dark"
+        textColor="secondary-light"
+        title="update galerie"
+        variant="secondary"
+    />
+);
+const updateGalerieScreenOption: BottomTabNavigationOptions = {
+    header: updateGalerieScreenHeader,
     headerShown: true,
 };
 const tabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
@@ -113,6 +126,11 @@ const DesktopBottomTabNavigator = () => {
                 component={UpdateFrameScreen}
                 name="UpdateFrame"
                 options={updateFrameScreenOption}
+            />
+            <Tab.Screen
+                component={UpdateGalerieScreen}
+                name="UpdateGalerie"
+                options={updateGalerieScreenOption}
             />
             <Tab.Screen
                 component={UserGalerieBlackListScreen}
