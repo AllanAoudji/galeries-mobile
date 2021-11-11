@@ -70,7 +70,11 @@ const EmptyScrollView = ({ scrollHandler }: Props) => {
             showsVerticalScrollIndicator={false}
         >
             <InnerContainer
-                height={dimension.height + GLOBAL_STYLE.SEARCH_BAR_HEIGHT}
+                height={
+                    dimension.height +
+                    GLOBAL_STYLE.HEADER_TAB_HEIGHT -
+                    GLOBAL_STYLE.SEARCH_BAR_HEIGHT
+                }
             >
                 <EmptyMessage text="no galerie found" />
             </InnerContainer>

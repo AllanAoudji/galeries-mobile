@@ -57,7 +57,7 @@ const OptionsScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
         (newScrollY) => {
             runOnJS(setInitialScroll)(newScrollY);
         },
-        [current]
+        [setInitialScroll]
     );
     const scrollHandler = useAnimatedScrollHandler(
         {
@@ -65,7 +65,7 @@ const OptionsScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
                 if (current) editScrollY(e.contentOffset.y);
             },
         },
-        [editScrollY, current]
+        [current, editScrollY]
     );
 
     if (!galerie) return null;

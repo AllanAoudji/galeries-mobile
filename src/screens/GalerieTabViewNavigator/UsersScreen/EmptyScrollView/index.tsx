@@ -75,7 +75,7 @@ const EmptyScrollView = ({ current, editScrollY, galerie, scrollY }: Props) => {
         (newScrollY) => {
             runOnJS(setInitialScroll)(newScrollY);
         },
-        [current]
+        [setInitialScroll]
     );
     const scrollHandler = useAnimatedScrollHandler(
         {

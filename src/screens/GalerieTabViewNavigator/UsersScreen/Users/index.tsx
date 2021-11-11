@@ -85,7 +85,6 @@ const Users = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
         (newScrollY: number) => {
             if (flatListRef.current && !current) {
                 flatListRef.current.scrollToOffset({
-                    animated: false,
                     offset: newScrollY,
                 });
             }
@@ -98,7 +97,7 @@ const Users = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
         (newScrollY) => {
             runOnJS(setInitialScroll)(newScrollY);
         },
-        [current]
+        [setInitialScroll]
     );
     const scrollHandler = useAnimatedScrollHandler(
         {
@@ -142,7 +141,6 @@ const Users = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
             }
             removeClippedSubviews={true}
             renderItem={renderItem}
-            scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}
         />
     );

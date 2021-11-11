@@ -62,10 +62,10 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
     }, []);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (status.includes('LOADING') || status === 'REFRESH')
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(refreshFrames());
-            });
+        if (status.includes('LOADING') || status === 'REFRESH') return;
+        InteractionManager.runAfterInteractions(() => {
+            dispatch(refreshFrames());
+        });
     }, [status]);
     const keyExtractor = React.useCallback((data: string) => data, []);
 

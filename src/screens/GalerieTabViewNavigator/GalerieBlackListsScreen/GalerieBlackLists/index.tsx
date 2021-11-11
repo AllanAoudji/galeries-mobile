@@ -91,7 +91,6 @@ const GalerieBlackLists = ({
         (newScrollY: number) => {
             if (flatListRef.current && !current) {
                 flatListRef.current.scrollToOffset({
-                    animated: false,
                     offset: newScrollY,
                 });
             }
@@ -104,7 +103,7 @@ const GalerieBlackLists = ({
         (newScrollY) => {
             runOnJS(setInitialScroll)(newScrollY);
         },
-        [current]
+        [setInitialScroll]
     );
     const scrollHandler = useAnimatedScrollHandler(
         {
@@ -112,7 +111,7 @@ const GalerieBlackLists = ({
                 if (current) editScrollY(e.contentOffset.y);
             },
         },
-        [editScrollY, current]
+        [current, editScrollY]
     );
 
     useFocusEffect(
@@ -148,7 +147,6 @@ const GalerieBlackLists = ({
             }
             removeClippedSubviews={true}
             renderItem={renderItem}
-            scrollEventThrottle={4}
             showsVerticalScrollIndicator={false}
         />
     );

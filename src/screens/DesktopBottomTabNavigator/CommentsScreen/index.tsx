@@ -19,7 +19,7 @@ import {
     selectCurrentFrameCommentsAllId,
     selectCurrentFrameCommentsStatus,
 } from '#store/comments';
-import { selectCurrentFrame } from '#store/frames';
+import { resetFramesCurrent, selectCurrentFrame } from '#store/frames';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { useHideHeaderOnScroll } from '#hooks';
 
@@ -63,10 +63,6 @@ const CommentScreen = ({ navigation }: Props) => {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
-            return () =>
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch(resetCommentsCurrent());
-                });
         }, [currentFrame])
     );
     useFocusEffect(
@@ -77,6 +73,11 @@ const CommentScreen = ({ navigation }: Props) => {
                 });
         }, [currentFrame, status])
     );
+    useFocusEffect(
+        React.useCallback(() => () => dispatch(resetFramesCurrent()), [])
+    );
+    // TODO:
+    // need a way to resetCurrentComment
 
     if (!currentFrame || status === 'INITIAL_LOADING' || status === 'PENDING')
         return <FullScreenLoader show />;

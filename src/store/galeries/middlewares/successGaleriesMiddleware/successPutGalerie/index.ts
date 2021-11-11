@@ -10,7 +10,6 @@ const successPutGalerie = (
     action: Store.Action
 ) => {
     const { allowNotification, description, name } = action.payload.data;
-    console.log(action);
 
     const galerieId = action.meta.query
         ? action.meta.query.galerieId

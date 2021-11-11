@@ -43,8 +43,10 @@ const FramesScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
         [framesStatus]
     );
 
-    const handlePressAddGalerie = React.useCallback(() => {
-        navigation.navigate('CreateInvitation');
+    const handlePressAddButton = React.useCallback(() => {
+        navigation.navigate('CreateFrame', {
+            screen: 'AddPictures',
+        });
     }, [navigation]);
 
     useFocusEffect(
@@ -76,7 +78,7 @@ const FramesScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
             )}
             <AddButton
                 bottom="largest"
-                onPress={handlePressAddGalerie}
+                onPress={handlePressAddButton}
                 right="normal"
             />
             <FullScreenLoader show={showFullScreenLoader} />
