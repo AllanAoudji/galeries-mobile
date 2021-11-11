@@ -53,6 +53,9 @@ declare global {
                 Notifications: undefined;
                 Profile: undefined;
                 ProfilePicture: undefined;
+                ReportComment: undefined;
+                ReportFrame: undefined;
+                ReportProfilePicture: undefined;
                 SubscribeGalerie: undefined;
                 UpdateFrame: undefined;
                 UpdateGalerie: undefined;
@@ -115,6 +118,18 @@ declare global {
             type ProfilePictureNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'ProfilePicture'
+            >;
+            type ReportCommentNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'ReportComment'
+            >;
+            type ReportFrameNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'ReportFrame'
+            >;
+            type ReportProfilePictureNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'ReportProfilePicture'
             >;
             type SubscribeGalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,

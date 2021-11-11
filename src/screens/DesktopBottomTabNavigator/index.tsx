@@ -22,6 +22,9 @@ import LikesScreen from './LikesScreen';
 import NotificationsScreen from './NotificationsScreen';
 import ProfileScreen from './ProfileScreen';
 import ProfilePictureScreen from './ProfilePictureScreen';
+import ReportCommentScreen from './ReportCommentScreen';
+import ReportFrameScreen from './ReportFrameScreen';
+import ReportProfilePictureScreen from './ReportProfilePictureScreen';
 import SubscribeGalerieScreen from './SubscribeGalerieScreen';
 import TabBar from './TabBar';
 import UpdateFrameScreen from './UpdateFrameScreen';
@@ -53,6 +56,42 @@ const createInvitationScreenHeader = () => (
 );
 const createInvitationScreenOption: BottomTabNavigationOptions = {
     header: createInvitationScreenHeader,
+    headerShown: true,
+};
+const reportCommentScreenHeader = () => (
+    <DefaultHeader
+        color="primary-dark"
+        textColor="secondary-light"
+        title="report comment"
+        variant="secondary"
+    />
+);
+const reportCommentScreenOption: BottomTabNavigationOptions = {
+    header: reportCommentScreenHeader,
+    headerShown: true,
+};
+const reportFrameScreenHeader = () => (
+    <DefaultHeader
+        color="primary-dark"
+        textColor="secondary-light"
+        title="report frame"
+        variant="secondary"
+    />
+);
+const reportFrameScreenOption: BottomTabNavigationOptions = {
+    header: reportFrameScreenHeader,
+    headerShown: true,
+};
+const reportProfilePictureScreenHeader = () => (
+    <DefaultHeader
+        color="primary-dark"
+        textColor="secondary-light"
+        title="report profile picture"
+        variant="secondary"
+    />
+);
+const reportProfilePictureScreenOption: BottomTabNavigationOptions = {
+    header: reportProfilePictureScreenHeader,
     headerShown: true,
 };
 const screenOptions: BottomTabNavigationOptions = {
@@ -117,6 +156,21 @@ const DesktopBottomTabNavigator = () => {
             <Tab.Screen
                 component={ProfilePictureScreen}
                 name="ProfilePicture"
+            />
+            <Tab.Screen
+                component={ReportCommentScreen}
+                name="ReportComment"
+                options={reportCommentScreenOption}
+            />
+            <Tab.Screen
+                component={ReportFrameScreen}
+                name="ReportFrame"
+                options={reportFrameScreenOption}
+            />
+            <Tab.Screen
+                component={ReportProfilePictureScreen}
+                name="ReportProfilePicture"
+                options={reportProfilePictureScreenOption}
             />
             <Tab.Screen
                 component={SubscribeGalerieScreen}
