@@ -53,15 +53,17 @@ const Head = ({ galerie, scrollY }: Props) => {
                         {galerie ? galerie.name : ''}
                     </Typography>
                 </TypographyContainer>
-                <Pictogram
-                    color="secondary-light"
-                    pb="smallest"
-                    pl="smallest"
-                    pt="smallest"
-                    pr="small"
-                    onPress={handlePressEdit}
-                    variant="edit-fill"
-                />
+                {(!galerie || galerie.role !== 'user') && (
+                    <Pictogram
+                        color="secondary-light"
+                        pb="smallest"
+                        pl="smallest"
+                        pt="smallest"
+                        pr="small"
+                        onPress={handlePressEdit}
+                        variant="edit-fill"
+                    />
+                )}
             </TitleContainer>
         </Container>
     );

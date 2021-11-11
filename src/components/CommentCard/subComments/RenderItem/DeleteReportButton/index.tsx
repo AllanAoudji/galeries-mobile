@@ -1,11 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import BottomSheetButton from '#components/BottomSheetButton';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { DeleteCommentModalContext } from '#contexts/DeleteCommentModalContext';
 import { selectGalerie } from '#store/galeries';
 import { selectMeId } from '#store/me';
+import { updateCommentsCurrent } from '#store/comments';
 
 type Props = {
     comment?: Store.Models.Comment;
@@ -13,6 +15,10 @@ type Props = {
 };
 
 const DeleteReportButton = ({ comment, user }: Props) => {
+    const dispatch = useDispatch();
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.CommentsNavigationProp>();
+
     const { closeBottomSheet } = React.useContext(BottomSheetContext);
     const { handleOpenModal } = React.useContext(DeleteCommentModalContext);
 
@@ -28,10 +34,14 @@ const DeleteReportButton = ({ comment, user }: Props) => {
             handleOpenModal(comment.id);
             closeBottomSheet();
         }
-    }, [comment, handleOpenModal]);
+    }, [closeBottomSheet, comment, handleOpenModal]);
     const handleBottomSheetReport = React.useCallback(() => {
         closeBottomSheet();
-    }, []);
+        if (comment) {
+            dispatch(updateCommentsCurrent(comment.id));
+            navigation.navigate('ReportComment');
+        }
+    }, [closeBottomSheet, comment, navigation]);
 
     if (!comment) return null;
     if (!galerie) return null;
