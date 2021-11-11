@@ -49,8 +49,6 @@ export default function App() {
 }
 
 // TODO:
-// Add overScrollMode="never" on every scrollable element
-// normalize screen with buttons
 // Reports
 // Notifications Screen
 // Profile Screen

@@ -9,7 +9,8 @@ const successPutGalerie = (
     getState: () => Store.Reducer,
     action: Store.Action
 ) => {
-    const { galerie, allowNotification } = action.payload.data;
+    const { allowNotification, description, name } = action.payload.data;
+    console.log(action);
 
     const galerieId = action.meta.query
         ? action.meta.query.galerieId
@@ -25,11 +26,12 @@ const successPutGalerie = (
         return;
     }
 
-    if (galerie && typeof galerie === 'object') {
+    if (typeof description === 'string' && typeof name === 'string') {
         dispatch(
             updateGaleriesById({
                 ...currentGalerie,
-                ...galerie,
+                description,
+                name,
             })
         );
     } else if (typeof allowNotification === 'boolean') {

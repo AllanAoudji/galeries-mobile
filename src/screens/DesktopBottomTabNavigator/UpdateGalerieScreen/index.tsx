@@ -4,27 +4,27 @@ import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { selectCurrentFrame } from '#store/frames';
+import { selectCurrentGalerie } from '#store/galeries';
 
 import Form from './Form';
 
 type Props = {
-    navigation: Screen.DesktopBottomTab.UpdateFrameProp;
+    navigation: Screen.DesktopBottomTab.UpdateGalerieNavigationProp;
 };
 
-const UpdateFrameScreen = ({ navigation }: Props) => {
-    const currentFrame = useSelector(selectCurrentFrame);
+const UpdateGalerieScreen = ({ navigation }: Props) => {
+    const currentGalerie = useSelector(selectCurrentGalerie);
 
     useFocusEffect(
         React.useCallback(() => {
-            if (!currentFrame) {
+            if (!currentGalerie) {
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
-        }, [currentFrame, navigation])
+        }, [currentGalerie])
     );
 
-    if (!currentFrame) return null;
+    if (!currentGalerie) return null;
 
     return (
         <KeyboardAvoidingView
@@ -32,10 +32,7 @@ const UpdateFrameScreen = ({ navigation }: Props) => {
             keyboardVerticalOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
             style={styles.keyboardAvoidingViewStyle}
         >
-            <Form
-                description={currentFrame.description}
-                frameId={currentFrame.id}
-            />
+            <Form galerie={currentGalerie} />
         </KeyboardAvoidingView>
     );
 };
@@ -46,4 +43,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default UpdateFrameScreen;
+export default UpdateGalerieScreen;

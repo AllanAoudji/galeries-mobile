@@ -17,7 +17,11 @@ const AbsoluteGalerieCoverPicture = ({ style }: Props) => {
         <Container style={style}>
             {galerie && (
                 <TextContainer>
-                    <Typography color="secondary-light" fontSize={24}>
+                    <Typography
+                        color="secondary-light"
+                        fontFamily="bold"
+                        fontSize={24}
+                    >
                         {galerie.name}
                     </Typography>
                 </TextContainer>

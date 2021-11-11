@@ -55,6 +55,7 @@ declare global {
                 ProfilePicture: undefined;
                 SubscribeGalerie: undefined;
                 UpdateFrame: undefined;
+                UpdateGalerie: undefined;
                 UserScreen: undefined;
                 UserGalerieBlackList: undefined;
             };
@@ -122,6 +123,10 @@ declare global {
             type UpdateFrameProp = BottomTabNavigationProp<
                 ParamList,
                 'UpdateFrame'
+            >;
+            type UpdateGalerieNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'UpdateGalerie'
             >;
             type UserScreen = BottomTabNavigationProp<ParamList, 'UserScreen'>;
             type UserGalerieBlackListNavigationProp = BottomTabNavigationProp<
