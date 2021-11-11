@@ -16,6 +16,7 @@ import { updateLogoutStatus } from '#store/logout/actionCreators';
 import { resetNotification } from '#store/notification/actionCreators';
 import { resetMe } from '#store/me/actionCreators';
 import { resetProfilePictures } from '#store/profilePictures/actionCreators';
+import { resetReports } from '#store/reports/actionCreators';
 import { resetUsers } from '#store/users/actionCreators';
 
 const successLogoutMiddleware: Middleware<{}, Store.Reducer> =
@@ -38,6 +39,7 @@ const successLogoutMiddleware: Middleware<{}, Store.Reducer> =
                 dispatch(resetNotification());
                 dispatch(resetProfilePictures());
                 dispatch(resetUsers());
+                dispatch(resetReports());
                 dispatch(updateLogoutStatus('SUCCESS'));
             });
         }

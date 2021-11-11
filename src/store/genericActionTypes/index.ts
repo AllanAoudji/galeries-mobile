@@ -14,6 +14,7 @@ export const LOGOUT: Store.Entity = '[LOGOUT]';
 export const ME: Store.Entity = '[ME]';
 export const NOTIFICATION: Store.Entity = '[NOTIFICATION]';
 export const PROFILE_PICTURES: Store.Entity = '[PROFILE PICTURE]';
+export const REPORTS: Store.Entity = '[REPORT]';
 export const SIGNIN: Store.Entity = '[SIGNIN]';
 export const USERS: Store.Entity = '[USERS]';
 

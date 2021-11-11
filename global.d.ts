@@ -211,6 +211,7 @@ declare global {
             | '[NOTIFICATION]'
             | '[ME]'
             | '[PROFILE PICTURE]'
+            | '[REPORT]'
             | '[SIGNIN]'
             | '[UI]'
             | '[USERS]';
@@ -350,6 +351,11 @@ declare global {
                 };
                 previous: string;
                 status: { [key: string]: Store.Status };
+            };
+            reports: {
+                loading: {
+                    post: Store.Status;
+                };
             };
             notification: Store.Models.Notification | null;
             signin: {
