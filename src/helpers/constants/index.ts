@@ -119,3 +119,11 @@ export const GLOBAL_STYLE = {
 };
 
 export const PRE_CODE = 'GALERIE_INVITATION ';
+
+export const REPORT_REASONS: ReportReason[] = [
+    'disinformation',
+    'harassment',
+    'hate',
+    'intellectual propery',
+    'nudity',
+];

@@ -1,24 +1,28 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-
-import { useDispatch, useSelector } from 'react-redux';
 import {
     BackHandler,
     KeyboardAvoidingView,
     Platform,
     StyleSheet,
-    View,
 } from 'react-native';
-import { CustomButton, CustomRadio, Typography } from '#components';
-import { resetCommentsCurrent, selectCommentCurrent } from '#store/comments';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { ButtonContainer, Container, ScrollViewStyle } from './styles';
-import { GLOBAL_STYLE } from '#helpers/constants';
+import { CustomButton, ReportRadioButton, Typography } from '#components';
+import { GLOBAL_STYLE, REPORT_REASONS } from '#helpers/constants';
+import { selectCommentCurrent } from '#store/comments';
 import {
     postReports,
     resetReportsLoadingPost,
     selectReportsLoadingPost,
 } from '#store/reports';
+
+import {
+    ButtonContainer,
+    Container,
+    ReasonsContainer,
+    ScrollViewStyle,
+} from './styles';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.ReportCommentNavigationProp;
@@ -27,9 +31,20 @@ type Props = {
 const ReportCommentScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
+    const [value, setValue] = React.useState<ReportReason | null>();
+
     const currentComment = useSelector(selectCommentCurrent);
     const loading = useSelector(selectReportsLoadingPost);
 
+    const handlePress = React.useCallback((reason: ReportReason) => {
+        setValue(reason);
+    }, []);
+    const handlePressPostReport = React.useCallback(() => {
+        if (!currentComment) return;
+        if (!value) return;
+        if (loading.includes('LOADING')) return;
+        dispatch(postReports(currentComment, value, 'commentId'));
+    }, [currentComment, loading, value]);
     const handlePressBack = React.useCallback(() => {
         if (loading.includes('LOADING')) return;
         if (navigation.canGoBack()) navigation.goBack();
@@ -39,16 +54,26 @@ const ReportCommentScreen = ({ navigation }: Props) => {
     useFocusEffect(
         React.useCallback(() => {
             if (!currentComment) {
+                console.log('do not have comment');
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
         }, [currentComment, navigation])
     );
     useFocusEffect(
+        React.useCallback(() => {
+            if (loading === 'SUCCESS') {
+                console.log('loading is success');
+                if (navigation.canGoBack()) navigation.goBack();
+                else navigation.navigate('Home');
+            }
+        }, [loading, navigation])
+    );
+    useFocusEffect(
         React.useCallback(
             () => () => {
-                dispatch(resetCommentsCurrent());
                 dispatch(resetReportsLoadingPost());
+                setValue(null);
             },
             []
         )
@@ -66,18 +91,6 @@ const ReportCommentScreen = ({ navigation }: Props) => {
                 if (BackHandlerListerner) BackHandlerListerner.remove();
             };
         }, [loading])
-    );
-    useFocusEffect(
-        React.useCallback(() => {
-            if (currentComment)
-                dispatch(
-                    postReports(
-                        currentComment,
-                        { reason: 'disinformation' },
-                        'commentId'
-                    )
-                );
-        }, [currentComment])
     );
 
     if (!currentComment) return null;
@@ -97,17 +110,26 @@ const ReportCommentScreen = ({ navigation }: Props) => {
                     <Typography fontSize={24}>
                         Why did you want to report this comment?
                     </Typography>
-                    <Typography fontSize={18}>
+                    <Typography fontFamily="light" fontSize={18}>
                         Your report is anonymous
                     </Typography>
-                    {/* <View><CustomRadio /></View> */}
+                    <ReasonsContainer>
+                        {REPORT_REASONS.map((reason) => (
+                            <ReportRadioButton
+                                key={reason}
+                                onPress={handlePress}
+                                reason={reason}
+                                value={reason === value}
+                            />
+                        ))}
+                    </ReasonsContainer>
                     <ButtonContainer>
                         <CustomButton
-                            // disable={disableButton}
+                            disable={value === null}
                             loading={loading.includes('LOADING')}
                             mb="smallest"
                             mt="normal"
-                            onPress={() => {}}
+                            onPress={handlePressPostReport}
                             title="create galerie"
                         />
                         <CustomButton

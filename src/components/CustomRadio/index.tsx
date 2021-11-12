@@ -8,6 +8,7 @@ type Props = {
     disabled?: boolean;
     label?: string;
     labelFontSize?: keyof Style.FontSizes;
+    labelMargin?: keyof Style.Spacings;
     mb?: keyof Style.Spacings;
     ml?: keyof Style.Spacings;
     mr?: keyof Style.Spacings;
@@ -24,6 +25,7 @@ const CustomRadio = ({
     disabled,
     label,
     labelFontSize = 14,
+    labelMargin = 'small',
     mb,
     ml,
     mr,
@@ -52,11 +54,11 @@ const CustomRadio = ({
             pr={pr}
             pt={pt}
         >
-            <Button hasLabel={!!label}>
+            <Button>
                 <Active value={value} />
             </Button>
             {!!label && (
-                <TextContainer>
+                <TextContainer ml={labelMargin}>
                     <Typography fontSize={labelFontSize}>{label}</Typography>
                 </TextContainer>
             )}

@@ -11,6 +11,12 @@ declare global {
             [id: string]: Order;
         }
     }
+    type ReportReason =
+        | 'disinformation'
+        | 'harassment'
+        | 'hate'
+        | 'intellectual propery'
+        | 'nudity';
     namespace Screen {
         namespace CreateFrameStack {
             type ParamList = {

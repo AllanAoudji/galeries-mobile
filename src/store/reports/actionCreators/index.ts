@@ -7,19 +7,11 @@ import {
 
 export const postReports: (
     modelId: string,
-    payload: {
-        reason:
-            | 'disinformation'
-            | 'harassment'
-            | 'hate'
-            | 'intellectual property'
-            | 'nudity'
-            | 'scam';
-    },
+    reason: ReportReason,
     type: 'frameId' | 'commentId' | 'profilePictureId'
-) => Store.Action = (modelId, payload, type) => ({
+) => Store.Action = (modelId, reason, type) => ({
     meta: { query: { [type]: modelId } },
-    payload,
+    payload: { reason },
     type: REPORTS_POST,
 });
 export const resetReports: () => Store.Action = () => ({

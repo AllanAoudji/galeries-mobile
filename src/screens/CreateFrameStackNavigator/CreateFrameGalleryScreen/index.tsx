@@ -117,7 +117,6 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
                 onScroll={scrollHandler}
                 removeClippedSubviews={true}
                 renderItem={renderItem}
-                scrollEventThrottle={4}
                 showsVerticalScrollIndicator={false}
                 updateCellsBatchingPeriod={1}
                 windowSize={31}

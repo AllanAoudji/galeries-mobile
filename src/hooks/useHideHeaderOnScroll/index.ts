@@ -33,7 +33,8 @@ const useHideHeaderOnScroll = (headerHeight: number) => {
         },
         onScroll: (e, ctx) => {
             const diff = e.contentOffset.y - ctx.position;
-            translateY.value = clamp(ctx.translate + diff, 0, headerHeight);
+            const newTranslateY = clamp(ctx.translate + diff, 0, headerHeight);
+            if (!Number.isNaN(newTranslateY)) translateY.value = newTranslateY;
         },
     });
 
