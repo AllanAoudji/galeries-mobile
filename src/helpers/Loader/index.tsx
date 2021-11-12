@@ -5,15 +5,20 @@ import { useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SplashScreen } from '#components';
-import { getMe, selectMeStatus } from '#store/me';
+import { getMe, selectMe, selectMeStatus } from '#store/me';
 
 import { Container } from './styles';
+
+const INTERVAL = 1000 * 60;
 
 const Loader: React.FC<{}> = ({ children }) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
 
+    const timer = React.useRef<ReturnType<typeof setInterval> | null>(null);
+
     const meStatus = useSelector(selectMeStatus);
+    const me = useSelector(selectMe);
 
     const [assets] = useAssets([require('../../../assets/images/PP.jpg')]);
 
@@ -27,12 +32,24 @@ const Loader: React.FC<{}> = ({ children }) => {
     React.useEffect(() => {
         if (meStatus === 'PENDING') dispatch(getMe());
     }, [meStatus]);
+    React.useEffect(() => {
+        if (me && !timer.current)
+            timer.current = setInterval(() => {
+                dispatch(getMe());
+            }, INTERVAL);
+    }, [me]);
+    React.useEffect(
+        () => () => {
+            if (timer.current) clearInterval(timer.current);
+        },
+        []
+    );
 
     if (
         !assets ||
         !fontsLoaded ||
         meStatus === 'PENDING' ||
-        meStatus.includes('LOADING')
+        meStatus === 'INITIAL_LOADING'
     ) {
         return <SplashScreen />;
     }
