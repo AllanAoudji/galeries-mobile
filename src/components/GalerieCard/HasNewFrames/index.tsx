@@ -9,7 +9,6 @@ type Props = {
 };
 
 const HasNewFrames = ({ galerie }: Props) => {
-    console.log(galerie);
     if (!galerie.hasNewFrames) return null;
 
     return (

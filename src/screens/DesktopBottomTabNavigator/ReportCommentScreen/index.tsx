@@ -54,7 +54,6 @@ const ReportCommentScreen = ({ navigation }: Props) => {
     useFocusEffect(
         React.useCallback(() => {
             if (!currentComment) {
-                console.log('do not have comment');
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
@@ -63,7 +62,6 @@ const ReportCommentScreen = ({ navigation }: Props) => {
     useFocusEffect(
         React.useCallback(() => {
             if (loading === 'SUCCESS') {
-                console.log('loading is success');
                 if (navigation.canGoBack()) navigation.goBack();
                 else navigation.navigate('Home');
             }
