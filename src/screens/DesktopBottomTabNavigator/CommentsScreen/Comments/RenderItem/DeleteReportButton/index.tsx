@@ -8,6 +8,7 @@ import { DeleteCommentModalContext } from '#contexts/DeleteCommentModalContext';
 import { selectGalerie } from '#store/galeries';
 import { selectMeId } from '#store/me';
 import { updateCommentsCurrent } from '#store/comments';
+import { selectFrame } from '#store/frames';
 
 type Props = {
     comment: Store.Models.Comment;
@@ -22,6 +23,11 @@ const DeleteReportButton = ({ comment, user }: Props) => {
     const { closeBottomSheet } = React.useContext(BottomSheetContext);
     const { handleOpenModal } = React.useContext(DeleteCommentModalContext);
 
+    const frameSelector = React.useMemo(
+        () => selectFrame(comment.frameId),
+        [comment]
+    );
+    const frame = useSelector(frameSelector);
     const galerieSelector = React.useMemo(
         () => selectGalerie(comment ? comment.galerieId : null),
         [comment]
@@ -44,10 +50,11 @@ const DeleteReportButton = ({ comment, user }: Props) => {
     }, [closeBottomSheet, comment, navigation]);
 
     if (!galerie) return null;
+    if (!frame) return null;
     if (!meId) return null;
     if (!user) return null;
 
-    if (meId === user.id || galerie.role !== 'user')
+    if (meId === user.id || galerie.role !== 'user' || frame.userId === meId)
         return (
             <BottomSheetButton
                 onPress={handleBottomSheetDelete}

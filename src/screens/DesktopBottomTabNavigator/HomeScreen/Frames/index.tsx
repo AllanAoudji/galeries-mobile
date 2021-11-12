@@ -113,7 +113,7 @@ const style: ({ minHeight }: { minHeight: number }) => {
     animatedFlatListContentContainerStyle: {
         marginTop: StatusBar.currentHeight || 0,
         minHeight,
-        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
+        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT + 30,
         paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
     },
 }));
