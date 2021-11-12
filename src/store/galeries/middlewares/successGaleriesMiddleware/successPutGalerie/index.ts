@@ -9,7 +9,8 @@ const successPutGalerie = (
     getState: () => Store.Reducer,
     action: Store.Action
 ) => {
-    const { allowNotification, description, name } = action.payload.data;
+    const { allowNotification, description, hasNewFrames, name } =
+        action.payload.data;
 
     const galerieId = action.meta.query
         ? action.meta.query.galerieId
@@ -38,6 +39,13 @@ const successPutGalerie = (
             updateGaleriesById({
                 ...currentGalerie,
                 allowNotification,
+            })
+        );
+    } else if (typeof hasNewFrames === 'boolean') {
+        dispatch(
+            updateGaleriesById({
+                ...currentGalerie,
+                hasNewFrames,
             })
         );
     }

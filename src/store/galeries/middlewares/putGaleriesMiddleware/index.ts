@@ -6,6 +6,7 @@ import {
 } from '#store/dispatchers';
 import { updateGaleriesLoadingPut } from '#store/galeries/actionCreators';
 import { GALERIES_PUT } from '#store/galeries/actionTypes';
+import dispatchPutGalerieHasNewFrames from '#store/dispatchers/dispatchPutGalerieHasNewFrames';
 
 const putGaleriesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -21,17 +22,17 @@ const putGaleriesMiddleware: Middleware<{}, Store.Reducer> =
         const loading = getState().galeries.loading.put;
         if (loading.includes('LOADING')) return;
 
-        if (
-            typeof action.payload === 'object' &&
+        if (typeof action.payload !== 'object') return;
+
+        if (action.payload.hasNewFrames)
+            dispatchPutGalerieHasNewFrames(dispatch, galerieId);
+        else if (
             typeof action.payload.description === 'string' &&
             typeof action.payload.name === 'string'
         ) {
             dispatch(updateGaleriesLoadingPut('LOADING'));
             dispatchPutGalerie(dispatch, galerieId, action.payload);
-        } else if (
-            typeof action.payload === 'object' &&
-            Object.keys(action.payload).length === 0
-        ) {
+        } else if (Object.keys(action.payload).length === 0) {
             dispatch(updateGaleriesLoadingPut('LOADING'));
             dispatchPutGalerieAllowNotification(dispatch, galerieId);
         }

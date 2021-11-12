@@ -230,6 +230,7 @@ declare global {
             | '[LOGIN]'
             | '[LOGOUT]'
             | '[NOTIFICATION]'
+            | '[NOTIFICATIONS]'
             | '[ME]'
             | '[PROFILE PICTURE]'
             | '[REPORT]'
@@ -377,6 +378,16 @@ declare global {
                 loading: {
                     post: Store.Status;
                 };
+            };
+            notifications: {
+                allIds: string[];
+                byId: { [key: string]: Store.Models.Notification };
+                end: boolean;
+                loading: {
+                    delete: Store.Status;
+                };
+                previous: string;
+                status: Store.Status;
             };
             notification: Store.Models.Notification | null;
             signin: {
