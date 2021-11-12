@@ -1,9 +1,13 @@
 import * as React from 'react';
 
-import { Active, Button, Container } from './styles';
+import Typography from '#components/Typography';
+
+import { Active, Button, Container, TextContainer } from './styles';
 
 type Props = {
     disabled?: boolean;
+    label?: string;
+    labelFontSize?: keyof Style.FontSizes;
     mb?: keyof Style.Spacings;
     ml?: keyof Style.Spacings;
     mr?: keyof Style.Spacings;
@@ -18,6 +22,8 @@ type Props = {
 
 const CustomRadio = ({
     disabled,
+    label,
+    labelFontSize = 14,
     mb,
     ml,
     mr,
@@ -46,9 +52,14 @@ const CustomRadio = ({
             pr={pr}
             pt={pt}
         >
-            <Button>
+            <Button hasLabel={!!label}>
                 <Active value={value} />
             </Button>
+            {!!label && (
+                <TextContainer>
+                    <Typography fontSize={labelFontSize}>{label}</Typography>
+                </TextContainer>
+            )}
         </Container>
     );
 };

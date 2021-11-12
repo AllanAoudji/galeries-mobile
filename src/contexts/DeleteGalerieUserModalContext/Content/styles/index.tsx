@@ -8,8 +8,5 @@ const FormContainer = styled.View`
     flex-direction: row;
     padding-top: ${({ theme }) => theme.spacings.smallest};
 `;
-const TextContainer = styled.View`
-    flex: 1;
-`;
 
-export { Container, FormContainer, TextContainer };
+export { Container, FormContainer };

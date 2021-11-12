@@ -3,7 +3,9 @@ import styled from 'styled-components/native';
 type ActiveProps = {
     value: boolean;
 };
-
+type ButtonProps = {
+    hasLabel: boolean;
+};
 type ContainerProps = {
     disabled?: boolean;
     mb?: keyof Style.Spacings;
@@ -23,7 +25,7 @@ const Active = styled.View<ActiveProps>`
     opacity: ${({ value }) => (value ? 1 : 0)};
     width: 12px;
 `;
-const Button = styled.View`
+const Button = styled.View<ButtonProps>`
     align-items: center;
     background-color: ${({ theme }) => theme.colors['secondary-light']};
     border-color: ${({ theme }) => theme.colors.primary};
@@ -31,9 +33,13 @@ const Button = styled.View`
     border-width: 2px;
     height: 24px;
     justify-content: center;
+    margin-right: ${({ hasLabel, theme }) =>
+        `${hasLabel ? theme.spacings.small : 0}`};
     width: 24px;
 `;
 const Container = styled.Pressable<ContainerProps>`
+    align-items: center;
+    flex-direction: row;
     margin-bottom: ${({ mb, theme }) => (mb ? theme.spacings[mb] : 0)};
     margin-left: ${({ ml, theme }) => (ml ? theme.spacings[ml] : 0)};
     margin-right: ${({ mr, theme }) => (mr ? theme.spacings[mr] : 0)};
@@ -44,5 +50,8 @@ const Container = styled.Pressable<ContainerProps>`
     padding-right: ${({ pr, theme }) => (pr ? theme.spacings[pr] : 0)};
     padding-top: ${({ pt, theme }) => (pt ? theme.spacings[pt] : 0)};
 `;
+const TextContainer = styled.View`
+    flex: 1;
+`;
 
-export { Active, Button, Container };
+export { Active, Button, Container, TextContainer };

@@ -3,7 +3,7 @@ import * as React from 'react';
 import CustomRadio from '#components/CustomRadio';
 import Typography from '#components/Typography';
 
-import { Container, FormContainer, TextContainer } from './styles';
+import { Container, FormContainer } from './styles';
 
 type Props = {
     onPress: () => void;
@@ -17,17 +17,12 @@ const Content = ({ onPress, value }: Props) => {
             <FormContainer>
                 <CustomRadio
                     onChange={onPress}
+                    label="If you decide to black list this user, he is not gonna be able to subscribe to this galerie anymore"
                     pt="smallest"
                     pb="smallest"
                     pr="small"
                     value={value}
                 />
-                <TextContainer>
-                    <Typography>
-                        If you decide to black list this user, he is not gonna
-                        be able to subscribe to this galerie anymore
-                    </Typography>
-                </TextContainer>
             </FormContainer>
         </Container>
     );
