@@ -526,7 +526,7 @@ declare global {
             type User = {
                 createdAt: Date;
                 defaultProfilePicture: string | null;
-                hasNewNotification?: boolean;
+                hasNewNotifications?: boolean;
                 id: string;
                 isBlackListed: boolean;
                 pseudonym: string;
