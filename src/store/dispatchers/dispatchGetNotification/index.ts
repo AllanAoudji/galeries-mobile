@@ -2,23 +2,23 @@ import { Dispatch } from 'redux';
 
 import { END_POINT } from '#helpers/constants';
 import { apiRequest } from '#store/api/actionCreators';
-import { FRAMES } from '#store/genericActionTypes';
+import { NOTIFICATIONS } from '#store/genericActionTypes';
 
-const dispatchGetFrame: (
+const dispatchGetNotification = (
     dispatch: Dispatch<Store.Action>,
-    frameId: string
-) => void = (dispatch, frameId) => {
+    notificationId: string
+) => {
     dispatch(
         apiRequest({
             meta: {
-                entity: FRAMES,
+                entity: NOTIFICATIONS,
                 method: 'GET',
-                query: { frameId },
-                url: `${END_POINT.FRAMES}/${frameId}`,
+                query: { notificationId },
+                url: `${END_POINT.NOTIFICATIONS}/${notificationId}`,
             },
             payload: {},
         })
     );
 };
 
-export default dispatchGetFrame;
+export default dispatchGetNotification;

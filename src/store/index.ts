@@ -21,6 +21,7 @@ import { loginMiddlewares, loginReducer } from './login';
 import { logoutMiddlewares, logoutReducer } from './logout';
 import { meMiddlewares, meReducer } from './me';
 import { notificationReducer } from './notification';
+import { notificationsReducer, notificationsMiddleware } from './notifications';
 import {
     profilePicturesMiddlewares,
     profilePicturesReducer,
@@ -42,6 +43,7 @@ const reducers = combineReducers({
     login: loginReducer,
     logout: logoutReducer,
     me: meReducer,
+    notifications: notificationsReducer,
     notification: notificationReducer,
     profilePictures: profilePicturesReducer,
     reports: reportsReducer,
@@ -64,6 +66,7 @@ export default createStore(
             ...loginMiddlewares,
             ...logoutMiddlewares,
             ...meMiddlewares,
+            ...notificationsMiddleware,
             ...profilePicturesMiddlewares,
             ...reportsMiddlewares,
             ...usersMiddleware,

@@ -246,6 +246,15 @@ declare global {
             query?: { [key: string]: string };
             url?: string;
         };
+        type NotificationType =
+            | 'BETA_KEY_USED'
+            | 'COMMENT_COMMENTED'
+            | 'FRAME_LIKED'
+            | 'FRAME_COMMENTED'
+            | 'FRAME_POSTED'
+            | 'GALERIE_ROLE_CHANGE'
+            | 'ROLE_CHANGE'
+            | 'USER_SUBSCRIBE';
         type Reducer = {
             comments: {
                 allIds: { [key: string]: string[] };
@@ -479,6 +488,10 @@ declare global {
                 pendingHexes: string;
                 updatedAt: string;
             };
+            type GlobalNotification = {
+                status: 'error' | 'success';
+                text: string;
+            };
             type Image = {
                 id: string;
                 format: string;
@@ -507,8 +520,18 @@ declare global {
                 userId: string;
             };
             type Notification = {
-                status: 'error' | 'success';
-                text: string;
+                autoIncrementId: string;
+                commentId: string | null;
+                createdAt: string;
+                frameId: string | null;
+                galerieId: string | null;
+                id: string;
+                num: number;
+                role: Store.Role | null;
+                seen: boolean;
+                type: Store.NotificationType;
+                updatedAt: string;
+                userId: string;
             };
             type ProfilePicture = {
                 autoIncrementId: string;

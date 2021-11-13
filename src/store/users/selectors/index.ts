@@ -31,6 +31,11 @@ export const selectGalerieUsersAllIds = (galerieId?: string) =>
         if (!galerieId) return undefined;
         return usersAllIds[galerieId] || [];
     });
+export const selectNotificationUsersAllIds = (notificationId?: string) =>
+    createSelector([usersAllIdsSelector], (usersAllIds) => {
+        if (!notificationId) return undefined;
+        return usersAllIds[notificationId] || [];
+    });
 export const selectGalerieUsersStatus: (
     galerieId: string
 ) => OutputSelector<

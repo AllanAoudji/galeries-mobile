@@ -26,6 +26,7 @@ export { default as dispatchGetInvitation } from './dispatchGetInvitation';
 export { default as dispatchGetLike } from './dispatchGetLike';
 export { default as dispatchGetMe } from './dispatchGetMe';
 export { default as dispatchGetMeCurrentProfilePicture } from './dispatchGetMeCurrentProfilePicture';
+export { default as dispatchGetNotification } from './dispatchGetNotification';
 export { default as dispatchGetNotificationFrames } from './dispatchGetNotificationFrames';
 export { default as dispatchGetNotifications } from './dispatchGetNotifications';
 export { default as dispatchGetNotificationUsers } from './dispatchGetNotificationUsers';
@@ -64,6 +65,7 @@ export { default as dispatchRefreshGalerieFrames } from './dispatchRefreshGaleri
 export { default as dispatchRefreshGalerieBlackLists } from './dispatchRefreshGalerieBlackLists';
 export { default as dispatchRefreshGalerieInvitations } from './dispatchRefreshGalerieInvitations';
 export { default as dispatchRefreshGalerieUsers } from './dispatchRefreshGalerieUsers';
+export { default as dispatchRefreshNotifications } from './dispatchRefreshNotifications';
 export { default as dispatchRefreshUsers } from './dispatchRefreshUsers';
 export { default as dispatchSuccessNotification } from './dispatchSuccessNotification';
 export { default as dispatchUnsubscribeGalerie } from './dispatchUnsubscribeGalerie';

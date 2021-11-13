@@ -1,4 +1,5 @@
 import {
+    NOTIFICATIONS_ALL_IDS_REMOVE,
     NOTIFICATIONS_ALL_IDS_RESET,
     NOTIFICATIONS_ALL_IDS_SET,
     NOTIFICATIONS_BY_ID_REMOVE,
@@ -24,7 +25,7 @@ export const deleteNotification: (notificationId: string) => Store.Action = (
     notificationId
 ) => ({
     meta: { query: { notificationId } },
-    payload: {},
+    payload: notificationId,
     type: NOTIFICATIONS_DELETE,
 });
 export const getNotificationId: (notificationId: string) => Store.Action = (
@@ -39,17 +40,24 @@ export const getNotifications: () => Store.Action = () => ({
     payload: {},
     type: NOTIFICATIONS_GET,
 });
-export const putNotificationId: (notificationId: string) => Store.Action = (
+export const putNotification: (notificationId: string) => Store.Action = (
     notificationId
 ) => ({
     meta: { query: { notificationId } },
-    payload: {},
+    payload: notificationId,
     type: NOTIFICATIONS_PUT,
 });
 export const refreshNotifications: () => Store.Action = () => ({
     meta: {},
     payload: {},
     type: NOTIFICATIONS_REFETCH,
+});
+export const removeNotificationsAllIds: (payload: string) => Store.Action = (
+    payload
+) => ({
+    meta: {},
+    payload,
+    type: NOTIFICATIONS_ALL_IDS_REMOVE,
 });
 export const removeNotificationsById: (payload: string) => Store.Action = (
     payload

@@ -19,12 +19,14 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== FRAMES_GET) return;
 
+        const frameId = action.meta.query
+            ? action.meta.query.frameId
+            : undefined;
         const galerieId = action.meta.query
             ? action.meta.query.galerieId
             : undefined;
 
-        if (typeof action.payload === 'string')
-            dispatchGetFrame(dispatch, action.payload);
+        if (frameId) dispatchGetFrame(dispatch, action.payload);
         else if (galerieId) {
             const end = getState().frames.end[galerieId] || false;
             const status = getState().frames.status[galerieId] || 'PENDING';

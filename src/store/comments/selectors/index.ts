@@ -6,11 +6,11 @@ const selectCommentsEnd = (state: Store.Reducer) => state.comments.end;
 const selectCommentsStatus = (state: Store.Reducer) => state.comments.status;
 const selectFramesCurrent = (state: Store.Reducer) => state.frames.current;
 
-export const selectComment = (commentId: string) =>
-    createSelector(
-        [selectCommentsById],
-        (commentsById) => commentsById[commentId]
-    );
+export const selectComment = (commentId?: string | null) =>
+    createSelector([selectCommentsById], (commentsById) => {
+        if (!commentId) return undefined;
+        return commentsById[commentId];
+    });
 export const selectCommentCommentsAllIds: (
     commentId: string
 ) => OutputSelector<

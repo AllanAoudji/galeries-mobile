@@ -4,11 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Typography } from '#components';
 import { putMeHasNewNotification, selectMe } from '#store/me';
+import {
+    getNotifications,
+    selectNotificationsStatus,
+} from '#store/notifications';
 
 const NotificationsScreen = () => {
     const dispatch = useDispatch();
 
     const me = useSelector(selectMe);
+    const status = useSelector(selectNotificationsStatus);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -16,6 +21,11 @@ const NotificationsScreen = () => {
                 dispatch(putMeHasNewNotification());
             }
         }, [me])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (status === 'PENDING') dispatch(getNotifications());
+        }, [status])
     );
 
     return <Typography>Notifications</Typography>;

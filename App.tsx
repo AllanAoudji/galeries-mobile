@@ -59,3 +59,6 @@ export default function App() {
 // Better post frame
 // Update galerie
 // Forgot password
+
+// If status === 'ERROR' and allIds = [] || undefined
+// show error, refresh button
