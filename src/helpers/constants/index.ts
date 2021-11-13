@@ -65,6 +65,7 @@ export const END_POINT = {
     LOGIN: '/login',
     LOGOUT: '/logout',
     ME: '/me',
+    NOTIFICATIONS: '/notifications',
     PROFILE_PICTURES: '/profilePictures',
     REFRESH_TOKEN: '/refreshToken',
     REPORTS: '/reports',
