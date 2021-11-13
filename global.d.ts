@@ -15,7 +15,7 @@ declare global {
         | 'disinformation'
         | 'harassment'
         | 'hate'
-        | 'intellectual propery'
+        | 'intellectual property'
         | 'nudity';
     namespace Screen {
         namespace CreateFrameStack {
@@ -230,6 +230,7 @@ declare global {
             | '[LOGIN]'
             | '[LOGOUT]'
             | '[NOTIFICATION]'
+            | '[NOTIFICATIONS]'
             | '[ME]'
             | '[PROFILE PICTURE]'
             | '[REPORT]'
@@ -378,6 +379,16 @@ declare global {
                     post: Store.Status;
                 };
             };
+            notifications: {
+                allIds: string[];
+                byId: { [key: string]: Store.Models.Notification };
+                end: boolean;
+                loading: {
+                    delete: Store.Status;
+                };
+                previous: string;
+                status: Store.Status;
+            };
             notification: Store.Models.Notification | null;
             signin: {
                 fieldsError: {
@@ -515,7 +526,7 @@ declare global {
             type User = {
                 createdAt: Date;
                 defaultProfilePicture: string | null;
-                hasNewNotification?: boolean;
+                hasNewNotifications?: boolean;
                 id: string;
                 isBlackListed: boolean;
                 pseudonym: string;

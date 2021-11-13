@@ -18,6 +18,7 @@ import {
 
 import EmptyScrollView from './EmptyScrollView';
 import Frames from './Frames';
+import { putGalerieHasNewFrames } from '#store/galeries';
 
 type Props = {
     current: boolean;
@@ -56,6 +57,12 @@ const FramesScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
                     dispatch(getGalerieFrames(galerie.id));
                 });
         }, [framesStatus, galerie])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (current && galerie && galerie.hasNewFrames)
+                dispatch(putGalerieHasNewFrames(galerie.id));
+        }, [current, galerie])
     );
 
     return (

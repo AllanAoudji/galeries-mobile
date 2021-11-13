@@ -61,9 +61,10 @@ const Notification = () => {
             setHasNotification(true);
             value.value = withTiming(1, ANIMATIONS.TIMING_CONFIG());
 
-            timer.current = setTimeout(() => {
-                closeNotification();
-            }, CLOSE_NOTIFICATION_DELAY);
+            if (!timer.current)
+                timer.current = setTimeout(() => {
+                    closeNotification();
+                }, CLOSE_NOTIFICATION_DELAY);
         }
     }, [closeNotification, notification]);
 

@@ -58,6 +58,7 @@ export const END_POINT = {
     FRAMES: '/frames',
     GALERIE_PICTURES: '/galeriePictures',
     GALERIES: '/galeries',
+    HAS_NEW_FRAMES: '/hasNewFrames',
     INVITATIONS: '/invitations',
     LIKES: '/likes',
     LOGIN: '/login',
@@ -124,6 +125,6 @@ export const REPORT_REASONS: ReportReason[] = [
     'disinformation',
     'harassment',
     'hate',
-    'intellectual propery',
+    'intellectual property',
     'nudity',
 ];

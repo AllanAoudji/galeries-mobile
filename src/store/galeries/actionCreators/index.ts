@@ -79,6 +79,13 @@ export const putGalerie: (
     payload,
     type: GALERIES_PUT,
 });
+export const putGalerieHasNewFrames: (galerieId: string) => Store.Action = (
+    galerieId
+) => ({
+    meta: { query: { galerieId } },
+    payload: { hasNewFrames: true },
+    type: GALERIES_PUT,
+});
 export const putGalerieNotification: (galerieId: string) => Store.Action = (
     galerieId
 ) => ({

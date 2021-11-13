@@ -16,6 +16,8 @@ import { resetGaleriesCurrent } from '#store/galeries';
 import CreateGalerieButton from './CreateGalerieButton';
 import SubscribeGalerieButton from './SubscribeGalerieButton';
 
+import HasNewNotifications from './HasNewNotifications';
+
 import {
     Container,
     IconContainer,
@@ -168,6 +170,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
                 </IconContainer>
                 <IconContainer onPress={handleNotificationsPress}>
                     <PictogramContainer>
+                        <HasNewNotifications />
                         <Pictogram
                             color="primary"
                             variant={notificationsvariant}
