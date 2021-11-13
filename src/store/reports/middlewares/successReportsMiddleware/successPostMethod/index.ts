@@ -1,10 +1,15 @@
 import { Dispatch } from 'redux';
 import { updateReportsLoadingPost } from '#store/reports/actionCreators';
-import { removeCommentsById, updateCommentsAllIds } from '#store/comments';
+import {
+    removeCommentsById,
+    updateCommentsAllIds,
+    updateCommentsById,
+} from '#store/comments';
 import {
     removeFramesById,
     setFramesAllIds,
     setGalerieFramesAllIds,
+    updateFramesById,
 } from '#store/frames';
 import {
     removeProfilePicturesById,
@@ -32,12 +37,37 @@ const successPostMethod = (
             if (comment.commentId) {
                 const allIds =
                     getState().comments.allIds[comment.commentId] || [];
+                const parentComment =
+                    getState().comments.byId[comment.commentId];
                 const newAllIds = allIds.filter((id) => id !== commentId);
                 dispatch(updateCommentsAllIds(comment.commentId, newAllIds));
+                if (parentComment) {
+                    dispatch(
+                        updateCommentsById({
+                            ...parentComment,
+                            numOfComments:
+                                parentComment.numOfComments > 0
+                                    ? parentComment.numOfComments - 1
+                                    : 0,
+                        })
+                    );
+                }
             } else {
                 const allIds =
                     getState().comments.allIds[comment.frameId] || [];
+                const frame = getState().frames.byId[comment.frameId];
                 const newAllIds = allIds.filter((id) => id !== commentId);
+                if (frame) {
+                    dispatch(
+                        updateFramesById({
+                            ...frame,
+                            numOfComments:
+                                frame.numOfComments > 0
+                                    ? frame.numOfComments - 1
+                                    : 0,
+                        })
+                    );
+                }
                 dispatch(updateCommentsAllIds(comment.frameId, newAllIds));
             }
             dispatch(removeCommentsById(commentId));
