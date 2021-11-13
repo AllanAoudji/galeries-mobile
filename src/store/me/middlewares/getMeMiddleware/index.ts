@@ -14,8 +14,6 @@ const getMeMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== ME_GET) return;
 
-        console.log('get me');
-
         const meStatus = getState().me.status;
         if (meStatus.includes('LOADING')) return;
 

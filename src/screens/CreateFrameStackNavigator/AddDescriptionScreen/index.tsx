@@ -100,7 +100,10 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
                     .getParent<
                         NavigationProp<Screen.DesktopBottomTab.ParamList>
                     >()
-                    .navigate('Galerie');
+                    .reset({
+                        index: 0,
+                        routes: [{ name: 'Galerie' }],
+                    });
             }
         }, [loading, navigation, resetPictures])
     );
