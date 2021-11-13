@@ -24,6 +24,11 @@ export const putMe: () => Store.Action = () => ({
     payload: {},
     type: ME_PUT,
 });
+export const putMeHasNewNotification: () => Store.Action = () => ({
+    meta: {},
+    payload: { hasNewNotifications: true },
+    type: ME_PUT,
+});
 export const resetMe: () => Store.Action = () => ({
     meta: {},
     payload: {},

@@ -59,6 +59,7 @@ export const END_POINT = {
     GALERIE_PICTURES: '/galeriePictures',
     GALERIES: '/galeries',
     HAS_NEW_FRAMES: '/hasNewFrames',
+    HAS_NEW_NOTIFICATIONS: '/hasNewNotifications',
     INVITATIONS: '/invitations',
     LIKES: '/likes',
     LOGIN: '/login',

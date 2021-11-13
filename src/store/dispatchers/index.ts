@@ -47,8 +47,10 @@ export { default as dispatchPostProfilePictureIdReports } from './dispatchPostPr
 export { default as dispatchPutFrame } from './dispatchPutFrame';
 export { default as dispatchPutGalerie } from './dispatchPutGalerie';
 export { default as dispatchPutGalerieAllowNotification } from './dispatchPutGalerieAllowNotification';
+export { default as dispatchPutGalerieHasNewFrames } from './dispatchPutGalerieHasNewFrames';
 export { default as dispatchPutGaleriePicture } from './dispatchPutGaleriePicture';
 export { default as dispatchPutGalerieUserRole } from './dispatchPutGalerieUserRole';
+export { default as dispatchPutUsersMeHasNewNotifications } from './dispatchPutUsersMeHasNewNotifications';
 export { default as dispatchRefreshFrames } from './dispatchRefreshFrames';
 export { default as dispatchRefreshFrameComments } from './dispatchRefreshFrameComments';
 export { default as dispatchRefetchFrameLikes } from './dispatchRefetchFrameLikes';

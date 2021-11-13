@@ -1,18 +1,24 @@
 import { Middleware } from 'redux';
 
 import { API_ERROR } from '#store/api/actionTypes';
-import { dispatchErrorNotification } from '#store/dispatchers';
 import { ME } from '#store/genericActionTypes';
-import { updateMeStatus } from '#store/me/actionCreators';
+
+import errorDefaultMethod from './errorDefaultMethod';
+import errorPutMethod from './errorPutMethod';
 
 const errorMeMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === `${ME} ${API_ERROR}`) {
-            dispatch(updateMeStatus('ERROR'));
-            dispatchErrorNotification(dispatch, action);
+        if (action.type !== `${ME} ${API_ERROR}`) return;
+
+        switch (action.meta.method) {
+            case 'PUT':
+                errorPutMethod(dispatch, action);
+                break;
+            default:
+                errorDefaultMethod(dispatch);
         }
     };
 
