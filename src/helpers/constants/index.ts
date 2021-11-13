@@ -125,6 +125,6 @@ export const REPORT_REASONS: ReportReason[] = [
     'disinformation',
     'harassment',
     'hate',
-    'intellectual propery',
+    'intellectual property',
     'nudity',
 ];

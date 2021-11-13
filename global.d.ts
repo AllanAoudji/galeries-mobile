@@ -15,7 +15,7 @@ declare global {
         | 'disinformation'
         | 'harassment'
         | 'hate'
-        | 'intellectual propery'
+        | 'intellectual property'
         | 'nudity';
     namespace Screen {
         namespace CreateFrameStack {
