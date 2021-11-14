@@ -2,23 +2,23 @@ import { Dispatch } from 'redux';
 
 import { END_POINT } from '#helpers/constants';
 import { apiRequest } from '#store/api';
-import { USERS } from '#store/genericActionTypes';
+import { COMMENTS } from '#store/genericActionTypes';
 
-const dispatchGetNotificationUsers = (
+const dispatchGetNotificationComments = (
     dispatch: Dispatch<Store.Action>,
     notificationId: string
 ) => {
     dispatch(
         apiRequest({
             meta: {
-                entity: USERS,
+                entity: COMMENTS,
                 query: { notificationId },
                 method: 'GET',
-                url: `${END_POINT.NOTIFICATIONS}/${notificationId}${END_POINT.USERS}`,
+                url: `${END_POINT.NOTIFICATIONS}/${notificationId}${END_POINT.COMMENTS}`,
             },
             payload: {},
         })
     );
 };
 
-export default dispatchGetNotificationUsers;
+export default dispatchGetNotificationComments;

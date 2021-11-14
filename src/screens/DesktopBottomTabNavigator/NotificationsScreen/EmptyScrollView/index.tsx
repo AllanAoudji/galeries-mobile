@@ -10,7 +10,10 @@ import { useTheme } from 'styled-components/native';
 
 import { EmptyMessage } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { refreshFrames, selectFramesStatus } from '#store/frames';
+import {
+    refreshNotifications,
+    selectNotificationsStatus,
+} from '#store/notifications';
 
 import { InnerContainer, StyledAnimatedScrollView } from './styles';
 
@@ -18,12 +21,12 @@ type Props = {
     scrollHandler: any;
 };
 
-const EmptyScrollView = ({ scrollHandler }: Props) => {
+const emptyScrollView = ({ scrollHandler }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const theme = useTheme();
 
-    const status = useSelector(selectFramesStatus);
+    const status = useSelector(selectNotificationsStatus);
 
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -40,14 +43,15 @@ const EmptyScrollView = ({ scrollHandler }: Props) => {
         setRefreshing(true);
         if (!status.includes('LOADING') && status !== 'REFRESH') {
             InteractionManager.runAfterInteractions(() => {
-                dispatch(refreshFrames());
+                dispatch(refreshNotifications());
             });
         }
     }, [status]);
 
     useFocusEffect(
         React.useCallback(() => {
-            if (status === 'SUCCESS' && refreshing) setRefreshing(false);
+            if ((status === 'SUCCESS' || status === 'ERROR') && refreshing)
+                setRefreshing(false);
         }, [refreshing, status])
     );
 
@@ -68,10 +72,10 @@ const EmptyScrollView = ({ scrollHandler }: Props) => {
             <InnerContainer
                 height={dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT}
             >
-                <EmptyMessage text="no frames found" />
+                <EmptyMessage text="you don't have any notification yet" />
             </InnerContainer>
         </StyledAnimatedScrollView>
     );
 };
 
-export default EmptyScrollView;
+export default emptyScrollView;

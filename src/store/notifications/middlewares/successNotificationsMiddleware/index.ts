@@ -5,6 +5,7 @@ import { API_SUCCESS } from '#store/api/actionTypes';
 import successDefaultMethod from './successDefaultMethod';
 import successDeleteMethod from './successDeleteMethod';
 import successGetMethod from './successGetMethod';
+import successPutMethod from './successPutMethod';
 import { NOTIFICATIONS } from '#store/genericActionTypes';
 
 const successNotificationsMiddleware: Middleware<{}, Store.Reducer> =
@@ -20,9 +21,10 @@ const successNotificationsMiddleware: Middleware<{}, Store.Reducer> =
                 successDeleteMethod(dispatch, getState, action);
                 break;
             case 'GET':
-                successGetMethod(action);
+                successGetMethod(dispatch, getState, action);
                 break;
             case 'PUT':
+                successPutMethod(dispatch, getState, action);
                 break;
             default:
                 successDefaultMethod(dispatch);

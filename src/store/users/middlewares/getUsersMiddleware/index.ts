@@ -44,6 +44,7 @@ const getUsersMiddleware: Middleware<{}, Store.Reducer> =
             const status = getState().users.status[notificationId] || 'PENDING';
             if (status.includes('LOADING')) return;
             if (status === 'REFRESH') return;
+
             dispatch(updateGalerieUsersStatus(notificationId, 'LOADING'));
             dispatchGetNotificationUsers(dispatch, notificationId);
         } else if (typeof userId === 'string') {

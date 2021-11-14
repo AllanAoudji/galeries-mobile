@@ -27,6 +27,7 @@ export { default as dispatchGetLike } from './dispatchGetLike';
 export { default as dispatchGetMe } from './dispatchGetMe';
 export { default as dispatchGetMeCurrentProfilePicture } from './dispatchGetMeCurrentProfilePicture';
 export { default as dispatchGetNotification } from './dispatchGetNotification';
+export { default as dispatchGetNotificationComments } from './dispatchGetNotificationComments';
 export { default as dispatchGetNotificationFrames } from './dispatchGetNotificationFrames';
 export { default as dispatchGetNotifications } from './dispatchGetNotifications';
 export { default as dispatchGetNotificationUsers } from './dispatchGetNotificationUsers';

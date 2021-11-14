@@ -41,6 +41,12 @@ export const getCommentComments: (commentId: string) => Store.Action = (
     payload: {},
     type: COMMENTS_GET,
 });
+export const getNotificationComments: (notificationId: string) => Store.Action =
+    (notificationId) => ({
+        meta: { query: { notificationId } },
+        payload: {},
+        type: COMMENTS_GET,
+    });
 export const getFrameComments: (frameId: string) => Store.Action = (
     frameId
 ) => ({

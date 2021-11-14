@@ -17,12 +17,14 @@ const successGetComments = (
 ) => {
     const allIds: string[] = [];
     const byId: { [key: string]: Store.Models.Comment } = {};
+
     const frameId = action.meta.query ? action.meta.query.frameId : undefined;
     const commentId = action.meta.query
         ? action.meta.query.commentId
         : undefined;
-
-    if (!frameId && !commentId) return;
+    const notificationId = action.meta.query
+        ? action.meta.query.notificationId
+        : undefined;
 
     if (
         typeof action.payload !== 'object' ||
@@ -87,6 +89,20 @@ const successGetComments = (
             if (previous) dispatch(updateCommentsPrevious(commentId, previous));
         }
         dispatch(updateCommentsStatus(commentId, 'SUCCESS'));
+    } else if (notificationId) {
+        if (comment === undefined) {
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else oldAllIds = getState().comments.allIds[notificationId] || [];
+            const newAllIds = combineCommentsAllIds(
+                getState,
+                oldAllIds,
+                allIds
+            );
+
+            dispatch(updateCommentsAllIds(notificationId, newAllIds));
+        }
+        dispatch(updateCommentsStatus(notificationId, 'SUCCESS'));
     }
 
     allIds.forEach((id) => {

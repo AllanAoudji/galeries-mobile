@@ -17,6 +17,10 @@ type Props = {
     borderRadius?: number;
     galerie?: Store.Models.Galerie;
     height?: number;
+    mb?: keyof Style.Spacings;
+    ml?: keyof Style.Spacings;
+    mr?: keyof Style.Spacings;
+    mt?: keyof Style.Spacings;
     size?: number;
     width?: number;
 };
@@ -25,6 +29,10 @@ const GalerieCoverPicture = ({
     borderRadius,
     galerie,
     height,
+    mb,
+    ml,
+    mr,
+    mt,
     size,
     width,
 }: Props) => {
@@ -62,6 +70,10 @@ const GalerieCoverPicture = ({
         <Container
             borderRadius={borderRadius}
             height={height}
+            mb={mb}
+            ml={ml}
+            mr={mr}
+            mt={mt}
             size={currentSize}
             width={width}
         >

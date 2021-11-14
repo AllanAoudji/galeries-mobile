@@ -52,6 +52,13 @@ export const getGalerieFrames: (galerieId: string) => Store.Action = (
     payload: {},
     type: FRAMES_GET,
 });
+export const getNotificationFrames: (notificationId: string) => Store.Action = (
+    notificationId
+) => ({
+    meta: { query: { notificationId } },
+    payload: {},
+    type: FRAMES_GET,
+});
 export const postFrame: (galerieId: string, payload: FormData) => Store.Action =
     (galerieId, payload) => ({
         meta: { query: { galerieId } },

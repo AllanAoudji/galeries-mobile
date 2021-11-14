@@ -20,7 +20,7 @@ const notificationsAllIdsReducer = (
         }
         case NOTIFICATIONS_ALL_IDS_SET: {
             if (!Array.isArray(action.payload)) return state;
-            return { ...action.payload };
+            return [...action.payload];
         }
         default:
             return state;

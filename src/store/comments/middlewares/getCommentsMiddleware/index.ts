@@ -5,6 +5,7 @@ import {
     dispatchGetComment,
     dispatchGetCommentComments,
     dispatchGetFrameComments,
+    dispatchGetNotificationComments,
 } from '#store/dispatchers';
 import { updateCommentsStatus } from '#store/comments/actionCreators';
 
@@ -22,6 +23,9 @@ const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
         const commentId = action.meta.query
             ? action.meta.query.commentId
             : undefined;
+        const notificationId = action.meta.query
+            ? action.meta.query.notificationId
+            : undefined;
 
         if (frameId) {
             const end = getState().comments.end[frameId] || false;
@@ -36,6 +40,15 @@ const getCommentsMiddleware: Middleware<{}, Store.Reducer> =
 
             dispatch(updateCommentsStatus(frameId, newStatus));
             dispatchGetFrameComments(dispatch, frameId, previous);
+        } else if (notificationId) {
+            const status =
+                getState().comments.status[notificationId] || 'PENDING';
+
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
+
+            dispatch(updateCommentsStatus(notificationId, 'LOADING'));
+            dispatchGetNotificationComments(dispatch, notificationId);
         } else if (commentId) {
             const end = getState().comments.end[commentId] || false;
             const status = getState().comments.status[commentId] || 'PENDING';

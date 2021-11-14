@@ -109,7 +109,7 @@ export const setNotificationsAllIds: (payload: string[]) => Store.Action = (
     type: NOTIFICATIONS_ALL_IDS_SET,
 });
 export const setNotificationsById: (payload: {
-    [key: string]: Store.Models.Galerie;
+    [key: string]: Store.Models.Notification;
 }) => Store.Action = (payload) => ({
     meta: {},
     payload,
