@@ -10,7 +10,7 @@ import { GLOBAL_STYLE } from '#helpers/constants';
 import { selectGalerie, updateGaleriesCurrent } from '#store/galeries';
 import { putNotification } from '#store/notifications';
 
-import { Container } from './styles';
+import { Container, TextContainer } from './styles';
 
 type Props = {
     notification: Store.Models.Notification;
@@ -53,17 +53,21 @@ const NotificationGalerieRoleChange = ({ notification }: Props) => {
                 galerie={galerie}
             />
             <Container>
-                <Typography>
-                    You become {notification.role === 'admin' ? 'the' : 'a'}{' '}
-                    <Typography fontFamily="bold">
-                        {notification.role}{' '}
+                <TextContainer>
+                    <Typography>
+                        You become {notification.role === 'admin' ? 'the' : 'a'}{' '}
+                        <Typography fontFamily="bold">
+                            {notification.role}{' '}
+                        </Typography>
+                        of galerie{' '}
+                        <Typography fontFamily="bold">
+                            {galerie.name}
+                        </Typography>
                     </Typography>
-                    of galerie{' '}
-                    <Typography fontFamily="bold">{galerie.name}</Typography>
-                </Typography>
+                </TextContainer>
                 <Pictogram
                     color="secondary-dark"
-                    ml="small"
+                    pl="smallest"
                     variant={
                         notification.role === 'admin'
                             ? 'admin-role'

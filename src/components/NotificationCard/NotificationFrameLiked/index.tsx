@@ -1,48 +1,61 @@
+import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import NotificationCardContainer from '#components/NotificationCardContainer';
 import Typography from '#components/Typography';
-import { selectFrame } from '#store/frames';
-import { selectNotificationUsersAllIds } from '#store/users';
+import { selectFrame, updateFramesCurrent } from '#store/frames';
+import { putNotification } from '#store/notifications';
 
-import ProfilePictureContainer from './ProfilePictureContainer';
 import FrameContainer from './FrameContainer';
+import Users from './Users';
+
+import { Container, TextContainer } from './styles';
 
 const onLongPress = () => {};
-const onPress = () => {};
 
 type Props = {
     notification: Store.Models.Notification;
 };
 
 const NotificationFrameLiked = ({ notification }: Props) => {
+    const dispatch = useDispatch();
+    const navigation =
+        useNavigation<Screen.DesktopBottomTab.NotificationNavigationProp>();
+
     const frameSelector = React.useMemo(
         () => selectFrame(notification.frameId),
         [notification]
     );
     const frame = useSelector(frameSelector);
-    const usersAllIdsSelector = React.useMemo(
-        () => selectNotificationUsersAllIds(notification.id),
-        [notification]
-    );
-    const usersAllIds = useSelector(usersAllIdsSelector);
+
+    const handlePress = React.useCallback(() => {
+        if (frame) {
+            dispatch(putNotification(notification.id));
+            dispatch(updateFramesCurrent(frame.id));
+            navigation.navigate('Frame');
+        }
+    }, [frame, navigation, notification]);
 
     return (
         <NotificationCardContainer
             onLongPress={onLongPress}
-            onPress={onPress}
+            onPress={handlePress}
             seen={notification.seen}
         >
             <FrameContainer frame={frame} />
-            <Typography>
-                {notification.num} user
-                {notification.num > 1 ? 's' : ''} like your frame
-            </Typography>
-            {usersAllIds &&
-                usersAllIds.map((id) => (
-                    <ProfilePictureContainer key={id} userId={id} />
-                ))}
+            <Container>
+                <TextContainer>
+                    <Typography>
+                        <Typography fontFamily="bold">
+                            {notification.num} new user
+                            {notification.num > 1 ? 's' : ''}{' '}
+                        </Typography>
+                        like your frame
+                    </Typography>
+                </TextContainer>
+                <Users notification={notification} />
+            </Container>
         </NotificationCardContainer>
     );
 };

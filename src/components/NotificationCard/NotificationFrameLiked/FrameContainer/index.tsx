@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
-import { Image } from 'react-native';
+
 import {
     selectFrameGaleriePicturesAllIds,
     selectGaleriePicture,
 } from '#store/galeriePictures';
+
+import { ImageStyled } from './styles';
 
 type Props = {
     frame?: Store.Models.Frame;
@@ -26,16 +28,17 @@ const FrameContainer = ({ frame }: Props) => {
         [galeriePictures]
     );
     const galeriePicture = useSelector(galeriePictureSelector);
-
-    if (!frame) return null;
-    if (!galeriePicture) return null;
-
-    return (
-        <Image
-            style={{ height: 50, width: 50 }}
-            source={{ uri: galeriePicture.cropedImage.cachedSignedUrl }}
-        />
+    // TODO: need default local image
+    const source = React.useMemo(
+        () => ({
+            uri: galeriePicture
+                ? galeriePicture.cropedImage.cachedSignedUrl
+                : '',
+        }),
+        [galeriePicture]
     );
+
+    return <ImageStyled source={source} />;
 };
 
 export default React.memo(FrameContainer);
