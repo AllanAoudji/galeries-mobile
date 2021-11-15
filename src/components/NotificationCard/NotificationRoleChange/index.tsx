@@ -5,12 +5,12 @@ import Typography from '#components/Typography';
 
 type Props = {
     notification: Store.Models.Notification;
+    onLongPress: () => void;
 };
 
-const onLongPress = () => {};
 const onPress = () => {};
 
-const NotificationRoleChange = ({ notification }: Props) => {
+const NotificationRoleChange = ({ notification, onLongPress }: Props) => {
     return (
         <NotificationCardContainer
             onPress={onPress}

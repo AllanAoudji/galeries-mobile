@@ -11,11 +11,10 @@ import FrameContainer from './FrameContainer';
 
 type Props = {
     notification: Store.Models.Notification;
+    onLongPress: () => void;
 };
 
-const onLongPress = () => {};
-
-const NotificationFrameCommented = ({ notification }: Props) => {
+const NotificationFrameCommented = ({ notification, onLongPress }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.NotificationNavigationProp>();

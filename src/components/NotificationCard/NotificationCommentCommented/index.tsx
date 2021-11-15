@@ -10,13 +10,12 @@ import { putNotification } from '#store/notifications';
 
 type Props = {
     notification: Store.Models.Notification;
+    onLongPress: () => void;
 };
-
-const onLongPress = () => {};
 
 const CROP_COMMENT_BODY = 28;
 
-const NotificationCommentCommented = ({ notification }: Props) => {
+const NotificationCommentCommented = ({ notification, onLongPress }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.NotificationNavigationProp>();

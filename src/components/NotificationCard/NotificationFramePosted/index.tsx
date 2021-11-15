@@ -13,11 +13,10 @@ import { Container } from './styles';
 
 type Props = {
     notification: Store.Models.Notification;
+    onLongPress: () => void;
 };
 
-const onLongPress = () => {};
-
-const NotificationFramePosted = ({ notification }: Props) => {
+const NotificationFramePosted = ({ notification, onLongPress }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.NotificationNavigationProp>();

@@ -3,6 +3,7 @@ import { Middleware } from 'redux';
 import {
     resetNotificationsAllIds,
     resetNotificationsById,
+    resetNotificationsCurrent,
     resetNotificationsEnd,
     resetNotificationsLoadingDelete,
     resetNotificationsPrevious,
@@ -20,6 +21,7 @@ const resetNotificationsMiddleware: Middleware<{}, Store.Reducer> =
 
         dispatch(resetNotificationsAllIds());
         dispatch(resetNotificationsById());
+        dispatch(resetNotificationsCurrent());
         dispatch(resetNotificationsEnd());
         dispatch(resetNotificationsLoadingDelete());
         dispatch(resetNotificationsPrevious());

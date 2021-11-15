@@ -2,7 +2,16 @@ import { createSelector } from 'reselect';
 
 const notificationsByIdSelector = (state: Store.Reducer) =>
     state.notifications.byId;
+const notificationsCurrentSelector = (state: Store.Reducer) =>
+    state.notifications.current;
 
+export const selectCurrentNotifications = createSelector(
+    [notificationsByIdSelector, notificationsCurrentSelector],
+    (notificationsById, notificationsCurrent) => {
+        if (!notificationsCurrent) return undefined;
+        return notificationsById[notificationsCurrent];
+    }
+);
 export const selectNotification = (notificationId?: string | null) =>
     createSelector([notificationsByIdSelector], (notificationsById) => {
         if (!notificationId) return undefined;

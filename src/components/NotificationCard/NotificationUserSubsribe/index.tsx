@@ -15,11 +15,10 @@ import { putNotification } from '#store/notifications';
 
 type Props = {
     notification: Store.Models.Notification;
+    onLongPress: () => void;
 };
 
-const onLongPress = () => {};
-
-const NotificationUserSubscribe = ({ notification }: Props) => {
+const NotificationUserSubscribe = ({ notification, onLongPress }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.NotificationNavigationProp>();

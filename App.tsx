@@ -13,6 +13,7 @@ import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
 import { DeleteGalerieBlackListModalProvider } from '#contexts/DeleteGalerieBlackListModalContext';
 import { DeleteGalerieUserModalProvider } from '#contexts/DeleteGalerieUserModalContext';
 import { DeleteInvitationModalProvider } from '#contexts/DeleteInvitationModalContext';
+import { DeleteNotificationModalProvider } from '#contexts/DeleteNotificationModalContext';
 import ThemeProvider from '#contexts/ThemeContext';
 import Loader from '#helpers/Loader';
 import RootStackNavigator from '#screens/RootStackNavigator';
@@ -31,11 +32,13 @@ export default function App() {
                                 <DeleteCommentModalProvider>
                                     <DeleteGalerieUserModalProvider>
                                         <DeleteInvitationModalProvider>
-                                            <BottomSheetProvider>
-                                                <RootStackNavigator />
-                                                <Notification />
-                                                <StatusBar style="auto" />
-                                            </BottomSheetProvider>
+                                            <DeleteNotificationModalProvider>
+                                                <BottomSheetProvider>
+                                                    <RootStackNavigator />
+                                                    <Notification />
+                                                    <StatusBar style="auto" />
+                                                </BottomSheetProvider>
+                                            </DeleteNotificationModalProvider>
                                         </DeleteInvitationModalProvider>
                                     </DeleteGalerieUserModalProvider>
                                 </DeleteCommentModalProvider>

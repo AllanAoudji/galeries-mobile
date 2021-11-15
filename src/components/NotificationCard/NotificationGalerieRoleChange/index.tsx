@@ -14,11 +14,13 @@ import { Container, TextContainer } from './styles';
 
 type Props = {
     notification: Store.Models.Notification;
+    onLongPress: () => void;
 };
 
-const onLongPress = () => {};
-
-const NotificationGalerieRoleChange = ({ notification }: Props) => {
+const NotificationGalerieRoleChange = ({
+    notification,
+    onLongPress,
+}: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.NotificationNavigationProp>();

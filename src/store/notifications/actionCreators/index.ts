@@ -6,6 +6,8 @@ import {
     NOTIFICATIONS_BY_ID_RESET,
     NOTIFICATIONS_BY_ID_SET,
     NOTIFICATIONS_BY_ID_UPDATE,
+    NOTIFICATIONS_CURRENT_RESET,
+    NOTIFICATIONS_CURRENT_UPDATE,
     NOTIFICATIONS_DELETE,
     NOTIFICATIONS_END_RESET,
     NOTIFICATIONS_END_UPDATE,
@@ -81,6 +83,11 @@ export const resetNotificationsById: () => Store.Action = () => ({
     payload: {},
     type: NOTIFICATIONS_BY_ID_RESET,
 });
+export const resetNotificationsCurrent: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: NOTIFICATIONS_CURRENT_RESET,
+});
 export const resetNotificationsEnd: () => Store.Action = () => ({
     meta: {},
     payload: {},
@@ -121,6 +128,13 @@ export const updateNotificationsById: (
     meta: {},
     payload,
     type: NOTIFICATIONS_BY_ID_UPDATE,
+});
+export const updateNotificationsCurrent: (
+    notificationId: string
+) => Store.Action = (notificationId) => ({
+    meta: {},
+    payload: notificationId,
+    type: NOTIFICATIONS_CURRENT_UPDATE,
 });
 export const updateNotificationsEnd: (payload: boolean) => Store.Action = (
     payload

@@ -391,6 +391,7 @@ declare global {
             notifications: {
                 allIds: string[];
                 byId: { [key: string]: Store.Models.Notification };
+                current: string | null;
                 end: boolean;
                 loading: {
                     delete: Store.Status;

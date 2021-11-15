@@ -8,12 +8,12 @@ import { selectUser } from '#store/users';
 
 type Props = {
     notification: Store.Models.Notification;
+    onLongPress: () => void;
 };
 
 const onPress = () => {};
-const onLongPress = () => {};
 
-const NotificationBetakeyUsed = ({ notification }: Props) => {
+const NotificationBetakeyUsed = ({ notification, onLongPress }: Props) => {
     const userSelector = React.useMemo(
         () => selectUser(notification.userId),
         [notification]

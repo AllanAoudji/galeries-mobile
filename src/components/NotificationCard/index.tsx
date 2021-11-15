@@ -1,5 +1,9 @@
 import * as React from 'react';
 
+import { BottomSheetContext } from '#contexts/BottomSheetContext';
+
+import DeleteNotificationButton from './DeleteNotificationButton';
+import MarkAsSeenButton from './MarkAsSeenButton';
 import NotificationBetakeyUsed from './NotificationBetaKeyUsed';
 import NotificationCommentCommented from './NotificationCommentCommented';
 import NotificationFrameCommented from './NotificationFrameCommented';
@@ -14,22 +18,77 @@ type Props = {
 };
 
 const NotificationCard = ({ notification }: Props) => {
+    const { openBottomSheet } = React.useContext(BottomSheetContext);
+
+    const bottomSheetContent = React.useCallback(() => {
+        return (
+            <>
+                <DeleteNotificationButton notification={notification} />
+                <MarkAsSeenButton notification={notification} />
+            </>
+        );
+    }, [notification]);
+
+    const handleLongPress = React.useCallback(() => {
+        openBottomSheet(bottomSheetContent);
+    }, [bottomSheetContent, openBottomSheet]);
+
     if (notification.type === 'BETA_KEY_USED')
-        return <NotificationBetakeyUsed notification={notification} />;
+        return (
+            <NotificationBetakeyUsed
+                notification={notification}
+                onLongPress={handleLongPress}
+            />
+        );
     if (notification.type === 'COMMENT_COMMENTED')
-        return <NotificationCommentCommented notification={notification} />;
+        return (
+            <NotificationCommentCommented
+                notification={notification}
+                onLongPress={handleLongPress}
+            />
+        );
     if (notification.type === 'FRAME_COMMENTED')
-        return <NotificationFrameCommented notification={notification} />;
+        return (
+            <NotificationFrameCommented
+                notification={notification}
+                onLongPress={handleLongPress}
+            />
+        );
     if (notification.type === 'FRAME_LIKED')
-        return <NotificationFrameLiked notification={notification} />;
+        return (
+            <NotificationFrameLiked
+                notification={notification}
+                onLongPress={handleLongPress}
+            />
+        );
     if (notification.type === 'FRAME_POSTED')
-        return <NotificationFramePosted notification={notification} />;
+        return (
+            <NotificationFramePosted
+                notification={notification}
+                onLongPress={handleLongPress}
+            />
+        );
     if (notification.type === 'GALERIE_ROLE_CHANGE')
-        return <NotificationGalerieRoleChange notification={notification} />;
+        return (
+            <NotificationGalerieRoleChange
+                notification={notification}
+                onLongPress={handleLongPress}
+            />
+        );
     if (notification.type === 'ROLE_CHANGE')
-        return <NotificationRoleChange notification={notification} />;
+        return (
+            <NotificationRoleChange
+                notification={notification}
+                onLongPress={handleLongPress}
+            />
+        );
     if (notification.type === 'USER_SUBSCRIBE')
-        return <NotificationUserSubsribe notification={notification} />;
+        return (
+            <NotificationUserSubsribe
+                notification={notification}
+                onLongPress={handleLongPress}
+            />
+        );
     return null;
 };
 
