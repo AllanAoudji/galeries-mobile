@@ -14,7 +14,6 @@ import { FullScreenLoader } from '#components';
 import { UnsubscribeGalerieProvider } from '#contexts/UnsubscribeGalerieContext';
 import clamp from '#helpers/clamp';
 import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
-import { selectFramesLoadingPost } from '#store/frames';
 import { resetGaleriesCurrent, selectCurrentGalerie } from '#store/galeries';
 
 import AboutScreen from './AboutScreen';
@@ -49,7 +48,6 @@ const GalerieTabViewNavigator = () => {
         useNavigation<Screen.DesktopBottomTab.GalerieNavigationProp>();
 
     const galerie = useSelector(selectCurrentGalerie);
-    const framesLoadingPost = useSelector(selectFramesLoadingPost);
 
     const scrollY = useSharedValue(0);
     const editScrollY = React.useCallback((offsetY: number) => {
@@ -240,11 +238,7 @@ const GalerieTabViewNavigator = () => {
             };
         }, [])
     );
-    useFocusEffect(
-        React.useCallback(() => {
-            if (framesLoadingPost === 'SUCCESS') editScrollY(0);
-        }, [framesLoadingPost])
-    );
+
     React.useEffect(() => {
         if (!galerie) {
             scrollY.value = 0;

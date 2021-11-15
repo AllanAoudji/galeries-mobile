@@ -84,9 +84,7 @@ const Users = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
             if (flatListRef.current && !current) {
-                flatListRef.current.scrollToOffset({
-                    offset: newScrollY,
-                });
+                flatListRef.current.scrollToOffset({ offset: newScrollY });
             }
         },
         [current]
@@ -107,6 +105,10 @@ const Users = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
         },
         [editScrollY, current]
     );
+
+    React.useEffect(() => {
+        if (current) editScrollY(0);
+    }, []);
 
     useFocusEffect(
         React.useCallback(() => {

@@ -3,10 +3,10 @@ import { Middleware } from 'redux';
 import {
     dispatchPutGalerie,
     dispatchPutGalerieAllowNotification,
+    dispatchPutGalerieHasNewFrames,
 } from '#store/dispatchers';
 import { updateGaleriesLoadingPut } from '#store/galeries/actionCreators';
 import { GALERIES_PUT } from '#store/galeries/actionTypes';
-import dispatchPutGalerieHasNewFrames from '#store/dispatchers/dispatchPutGalerieHasNewFrames';
 
 const putGaleriesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

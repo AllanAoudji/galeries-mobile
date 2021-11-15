@@ -4,6 +4,7 @@ import {
     dispatchGetFrame,
     dispatchGetFrames,
     dispatchGetGalerieFrames,
+    dispatchGetNotificationFrames,
 } from '#store/dispatchers';
 import {
     updateFramesStatus,
@@ -19,12 +20,17 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== FRAMES_GET) return;
 
+        const frameId = action.meta.query
+            ? action.meta.query.frameId
+            : undefined;
+        const notificationId = action.meta.query
+            ? action.meta.query.notificationId
+            : undefined;
         const galerieId = action.meta.query
             ? action.meta.query.galerieId
             : undefined;
 
-        if (typeof action.payload === 'string')
-            dispatchGetFrame(dispatch, action.payload);
+        if (frameId) dispatchGetFrame(dispatch, action.payload);
         else if (galerieId) {
             const end = getState().frames.end[galerieId] || false;
             const status = getState().frames.status[galerieId] || 'PENDING';
@@ -38,6 +44,14 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
 
             dispatch(updateGalerieFramesStatus(galerieId, newStatus));
             dispatchGetGalerieFrames(dispatch, galerieId, previous);
+        } else if (notificationId) {
+            const status =
+                getState().frames.status[notificationId] || 'PENDING';
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
+
+            dispatch(updateGalerieFramesStatus(notificationId, 'LOADING'));
+            dispatchGetNotificationFrames(dispatch, notificationId);
         } else {
             const end = getState().frames.end[''];
             const status = getState().frames.status[''] || 'PENDING';

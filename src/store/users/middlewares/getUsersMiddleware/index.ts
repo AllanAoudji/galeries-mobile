@@ -2,6 +2,7 @@ import { Middleware } from 'redux';
 
 import {
     dispatchGetGalerieUsers,
+    dispatchGetNotificationUsers,
     dispatchGetUser,
     dispatchGetUsers,
 } from '#store/dispatchers';
@@ -21,7 +22,11 @@ const getUsersMiddleware: Middleware<{}, Store.Reducer> =
         const galerieId = action.meta.query
             ? action.meta.query.galerieId
             : undefined;
+        const notificationId = action.meta.query
+            ? action.meta.query.notificationId
+            : undefined;
         const userId = action.payload;
+
         if (galerieId) {
             const end = getState().users.end[galerieId] || false;
             const status = getState().users.status[galerieId] || 'PENDING';
@@ -35,6 +40,13 @@ const getUsersMiddleware: Middleware<{}, Store.Reducer> =
 
             dispatch(updateGalerieUsersStatus(galerieId, newStatus));
             dispatchGetGalerieUsers(dispatch, galerieId, previous);
+        } else if (notificationId) {
+            const status = getState().users.status[notificationId] || 'PENDING';
+            if (status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
+
+            dispatch(updateGalerieUsersStatus(notificationId, 'LOADING'));
+            dispatchGetNotificationUsers(dispatch, notificationId);
         } else if (typeof userId === 'string') {
             const user = getState().users.byId[userId];
             if (!user) dispatchGetUser(dispatch, userId);

@@ -43,7 +43,7 @@ const BottomSheetOptions = ({ frame }: Props) => {
 
     const handlePress = React.useCallback(() => {
         openBottomSheet(bottomSheetContent);
-    }, [bottomSheetContent]);
+    }, [bottomSheetContent, openBottomSheet]);
 
     useFocusEffect(
         React.useCallback(() => () => handleCloseModal(), [handleCloseModal])

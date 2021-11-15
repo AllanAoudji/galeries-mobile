@@ -7,7 +7,7 @@ import { updateCommentsCurrent } from '#store/comments';
 import { selectMeId } from '#store/me';
 
 type Props = {
-    comment: Store.Models.Comment;
+    comment?: Store.Models.Comment;
     user?: Store.Models.User;
 };
 
@@ -26,7 +26,7 @@ const ReplyButton = ({ comment, user }: Props) => {
 
     const handleBottomSheetPressReply = React.useCallback(() => {
         closeBottomSheet();
-        dispatch(updateCommentsCurrent(comment.id));
+        if (comment) dispatch(updateCommentsCurrent(comment.id));
     }, [closeBottomSheet, comment]);
 
     return (

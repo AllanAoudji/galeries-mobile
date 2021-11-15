@@ -31,8 +31,8 @@ const RenderItem = ({ item }: Props) => {
     const commentSelector = React.useMemo(() => selectComment(item), [item]);
     const comment = useSelector(commentSelector);
     const userSelector = React.useMemo(
-        () => selectUser(comment.userId),
-        [comment.userId]
+        () => selectUser(comment ? comment.userId : null),
+        [comment]
     );
     const user = useSelector(userSelector);
 
@@ -49,12 +49,15 @@ const RenderItem = ({ item }: Props) => {
         openBottomSheet(bottomSheetContent);
     }, []);
     const handlePressReply = React.useCallback(() => {
+        if (!comment) return;
         dispatch(updateCommentsCurrent(comment.id));
     }, [comment]);
 
     React.useEffect(() => {
         if (!bottomSheetIsOpen) resetCommentSelected();
     }, [bottomSheetIsOpen]);
+
+    if (!comment) return null;
 
     useFocusEffect(
         React.useCallback(() => {

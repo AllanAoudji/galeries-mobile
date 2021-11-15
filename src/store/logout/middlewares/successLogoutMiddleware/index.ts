@@ -14,6 +14,7 @@ import { resetLikes } from '#store/likes/actionCreators';
 import { resetLogin } from '#store/login/actionCreators';
 import { updateLogoutStatus } from '#store/logout/actionCreators';
 import { resetNotification } from '#store/notification/actionCreators';
+import { resetNotifications } from '#store/notifications/actionCreators';
 import { resetMe } from '#store/me/actionCreators';
 import { resetProfilePictures } from '#store/profilePictures/actionCreators';
 import { resetReports } from '#store/reports/actionCreators';
@@ -37,6 +38,7 @@ const successLogoutMiddleware: Middleware<{}, Store.Reducer> =
                 dispatch(resetLikes());
                 dispatch(resetLogin());
                 dispatch(resetNotification());
+                dispatch(resetNotifications());
                 dispatch(resetProfilePictures());
                 dispatch(resetUsers());
                 dispatch(resetReports());

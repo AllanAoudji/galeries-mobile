@@ -13,6 +13,7 @@ const dispatchGetFrame: (
             meta: {
                 entity: FRAMES,
                 method: 'GET',
+                query: { frameId },
                 url: `${END_POINT.FRAMES}/${frameId}`,
             },
             payload: {},

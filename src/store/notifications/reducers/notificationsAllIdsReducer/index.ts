@@ -1,5 +1,6 @@
 import {
     NOTIFICATIONS_ALL_IDS_RESET,
+    NOTIFICATIONS_ALL_IDS_REMOVE,
     NOTIFICATIONS_ALL_IDS_SET,
 } from '#store/notifications/actionTypes';
 
@@ -11,9 +12,15 @@ const notificationsAllIdsReducer = (
     switch (action.type) {
         case NOTIFICATIONS_ALL_IDS_RESET:
             return initialState;
+        case NOTIFICATIONS_ALL_IDS_REMOVE: {
+            if (typeof action.payload !== 'string') return state;
+            const allIds = [...state];
+            const newAllIds = allIds.filter((id) => id !== action.payload);
+            return [...newAllIds];
+        }
         case NOTIFICATIONS_ALL_IDS_SET: {
             if (!Array.isArray(action.payload)) return state;
-            return { ...action.payload };
+            return [...action.payload];
         }
         default:
             return state;

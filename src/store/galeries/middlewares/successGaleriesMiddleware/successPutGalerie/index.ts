@@ -17,12 +17,12 @@ const successPutGalerie = (
         : undefined;
 
     if (!galerieId) {
-        dispatch(updateGaleriesLoadingPut('SUCCESS'));
+        dispatch(updateGaleriesLoadingPut('ERROR'));
         return;
     }
     const currentGalerie = getState().galeries.byId[galerieId];
     if (!currentGalerie) {
-        dispatch(updateGaleriesLoadingPut('SUCCESS'));
+        dispatch(updateGaleriesLoadingPut('ERROR'));
         return;
     }
 

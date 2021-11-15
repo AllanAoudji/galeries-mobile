@@ -11,7 +11,7 @@ import { updateCommentsCurrent } from '#store/comments';
 import { selectFrame } from '#store/frames';
 
 type Props = {
-    comment: Store.Models.Comment;
+    comment?: Store.Models.Comment;
     user?: Store.Models.User;
 };
 
@@ -24,7 +24,7 @@ const DeleteReportButton = ({ comment, user }: Props) => {
     const { handleOpenModal } = React.useContext(DeleteCommentModalContext);
 
     const frameSelector = React.useMemo(
-        () => selectFrame(comment.frameId),
+        () => selectFrame(comment ? comment.frameId : null),
         [comment]
     );
     const frame = useSelector(frameSelector);
@@ -49,6 +49,7 @@ const DeleteReportButton = ({ comment, user }: Props) => {
         }
     }, [closeBottomSheet, comment, navigation]);
 
+    if (!comment) return null;
     if (!galerie) return null;
     if (!frame) return null;
     if (!meId) return null;

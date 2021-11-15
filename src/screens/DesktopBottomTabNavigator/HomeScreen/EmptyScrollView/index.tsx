@@ -33,7 +33,7 @@ const EmptyScrollView = ({ scrollHandler }: Props) => {
             theme.colors['primary-dark'],
             theme.colors['primary-light'],
         ],
-        []
+        [theme]
     );
 
     const handleRefresh = React.useCallback(() => {
@@ -48,7 +48,7 @@ const EmptyScrollView = ({ scrollHandler }: Props) => {
     useFocusEffect(
         React.useCallback(() => {
             if (status === 'SUCCESS' && refreshing) setRefreshing(false);
-        }, [status, refreshing])
+        }, [refreshing, status])
     );
 
     return (

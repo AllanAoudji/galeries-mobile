@@ -36,6 +36,13 @@ export const getGalerieUsers: (galerieId: string) => Store.Action = (
     payload: {},
     type: USERS_GET,
 });
+export const getNotificationUsers: (notificationId: string) => Store.Action = (
+    notificationId
+) => ({
+    meta: { query: { notificationId } },
+    payload: {},
+    type: USERS_GET,
+});
 export const getUserId: (payload?: string | null) => Store.Action = (
     payload
 ) => ({

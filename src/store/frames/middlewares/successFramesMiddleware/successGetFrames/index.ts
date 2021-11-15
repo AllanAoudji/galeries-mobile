@@ -41,6 +41,9 @@ const successGetFrames = (
     const galerieId = action.meta.query
         ? action.meta.query.galerieId
         : undefined;
+    const notificationId = action.meta.query
+        ? action.meta.query.notificationId
+        : undefined;
     const previousFrameId =
         allIds.length > 0 ? allIds[allIds.length - 1] : undefined;
     const previous = previousFrameId
@@ -61,6 +64,19 @@ const successGetFrames = (
         }
 
         dispatch(updateGalerieFramesStatus(galerieId, 'SUCCESS'));
+    } else if (notificationId) {
+        if (frame === undefined) {
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else oldAllIds = getState().frames.allIds[notificationId] || [];
+            const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
+
+            dispatch(setGalerieFramesAllIds(notificationId, newAllIds));
+            dispatch(
+                updateGalerieFramesEnd(notificationId, allIds.length < 20)
+            );
+        }
+        dispatch(updateGalerieFramesStatus(notificationId, 'SUCCESS'));
     } else {
         if (frame === undefined) {
             let oldAllIds: string[];

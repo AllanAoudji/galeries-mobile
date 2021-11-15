@@ -23,6 +23,8 @@ export { default as InvitationCard } from './InvitationCard';
 export { default as LikeButton } from './LikeButton';
 export { default as Logo } from './Logo';
 export { default as Notification } from './Notification';
+export { default as NotificationCard } from './NotificationCard';
+export { default as NotificationCardContainer } from './NotificationCardContainer';
 export { default as NumberTextInput } from './NumberTextInput';
 export { default as Pictogram } from './Pictogram';
 export { default as ProfilePicture } from './ProfilePicture';

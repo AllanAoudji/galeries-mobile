@@ -23,8 +23,12 @@ const successGetUsers = (
     const allIds: string[] = [];
     const byId: { [key: string]: Store.Models.User } = {};
     const { user, users } = action.payload.data;
+
     const galerieId = action.meta.query
         ? action.meta.query.galerieId
+        : undefined;
+    const notificationId = action.meta.query
+        ? action.meta.query.notificationId
         : undefined;
 
     if (users && Array.isArray(users)) {
@@ -54,6 +58,13 @@ const successGetUsers = (
         dispatch(setGalerieUsersAllIds(galerieId, newAllIds));
         dispatch(updateGalerieUsersEnd(galerieId, allIds.length < 20));
         if (previous) dispatch(updateGalerieUsersPrevious(galerieId, previous));
+    } else if (notificationId && user === undefined) {
+        let oldAllIds: string[];
+        if (action.meta.refresh) oldAllIds = [];
+        else oldAllIds = getState().users.allIds[notificationId] || [];
+        const newAllIds = combineUsersAllIds(getState, oldAllIds, allIds);
+
+        dispatch(setGalerieUsersAllIds(notificationId, newAllIds));
     } else if (user === undefined) {
         let oldAllIds: string[];
         if (action.meta.refresh) oldAllIds = [];

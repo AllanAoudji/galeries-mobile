@@ -1,10 +1,13 @@
 import {
+    NOTIFICATIONS_ALL_IDS_REMOVE,
     NOTIFICATIONS_ALL_IDS_RESET,
     NOTIFICATIONS_ALL_IDS_SET,
     NOTIFICATIONS_BY_ID_REMOVE,
     NOTIFICATIONS_BY_ID_RESET,
     NOTIFICATIONS_BY_ID_SET,
     NOTIFICATIONS_BY_ID_UPDATE,
+    NOTIFICATIONS_CURRENT_RESET,
+    NOTIFICATIONS_CURRENT_UPDATE,
     NOTIFICATIONS_DELETE,
     NOTIFICATIONS_END_RESET,
     NOTIFICATIONS_END_UPDATE,
@@ -24,7 +27,7 @@ export const deleteNotification: (notificationId: string) => Store.Action = (
     notificationId
 ) => ({
     meta: { query: { notificationId } },
-    payload: {},
+    payload: notificationId,
     type: NOTIFICATIONS_DELETE,
 });
 export const getNotificationId: (notificationId: string) => Store.Action = (
@@ -39,17 +42,24 @@ export const getNotifications: () => Store.Action = () => ({
     payload: {},
     type: NOTIFICATIONS_GET,
 });
-export const putNotificationId: (notificationId: string) => Store.Action = (
+export const putNotification: (notificationId: string) => Store.Action = (
     notificationId
 ) => ({
     meta: { query: { notificationId } },
-    payload: {},
+    payload: notificationId,
     type: NOTIFICATIONS_PUT,
 });
 export const refreshNotifications: () => Store.Action = () => ({
     meta: {},
     payload: {},
     type: NOTIFICATIONS_REFETCH,
+});
+export const removeNotificationsAllIds: (payload: string) => Store.Action = (
+    payload
+) => ({
+    meta: {},
+    payload,
+    type: NOTIFICATIONS_ALL_IDS_REMOVE,
 });
 export const removeNotificationsById: (payload: string) => Store.Action = (
     payload
@@ -72,6 +82,11 @@ export const resetNotificationsById: () => Store.Action = () => ({
     meta: {},
     payload: {},
     type: NOTIFICATIONS_BY_ID_RESET,
+});
+export const resetNotificationsCurrent: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: NOTIFICATIONS_CURRENT_RESET,
 });
 export const resetNotificationsEnd: () => Store.Action = () => ({
     meta: {},
@@ -101,7 +116,7 @@ export const setNotificationsAllIds: (payload: string[]) => Store.Action = (
     type: NOTIFICATIONS_ALL_IDS_SET,
 });
 export const setNotificationsById: (payload: {
-    [key: string]: Store.Models.Galerie;
+    [key: string]: Store.Models.Notification;
 }) => Store.Action = (payload) => ({
     meta: {},
     payload,
@@ -113,6 +128,13 @@ export const updateNotificationsById: (
     meta: {},
     payload,
     type: NOTIFICATIONS_BY_ID_UPDATE,
+});
+export const updateNotificationsCurrent: (
+    notificationId: string
+) => Store.Action = (notificationId) => ({
+    meta: {},
+    payload: notificationId,
+    type: NOTIFICATIONS_CURRENT_UPDATE,
 });
 export const updateNotificationsEnd: (payload: boolean) => Store.Action = (
     payload
