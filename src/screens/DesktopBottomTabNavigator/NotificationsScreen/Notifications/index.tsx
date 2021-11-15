@@ -71,6 +71,14 @@ const Notifications = ({ allIds, scrollHandler }: Props) => {
             dispatch(refreshNotifications());
         });
     }, [status]);
+    const getItemLayout = React.useCallback(
+        (_, index) => ({
+            length: GLOBAL_STYLE.NOTIFICATION_CARD_HEIGHT,
+            offset: GLOBAL_STYLE.NOTIFICATION_CARD_HEIGHT * index,
+            index,
+        }),
+        []
+    );
     const keyExtractor = React.useCallback((data: string) => data, []);
 
     useFocusEffect(
@@ -88,6 +96,7 @@ const Notifications = ({ allIds, scrollHandler }: Props) => {
             data={allIds}
             extraData={allIds}
             initialNumToRender={3}
+            getItemLayout={getItemLayout}
             keyExtractor={keyExtractor}
             maxToRenderPerBatch={3}
             onEndReached={handleEndReach}

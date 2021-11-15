@@ -52,9 +52,7 @@ export default function App() {
 }
 
 // TODO:
-// Notifications Screen
 // Profile Screen
-// Form Scrollable
 // Change email/password/delete account
 // Tickets
 // Show ticket
