@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
+import { updateNotificationsCurrent } from '#store/notifications';
 
 import DeleteNotificationButton from './DeleteNotificationButton';
 import MarkAsSeenButton from './MarkAsSeenButton';
@@ -18,6 +20,8 @@ type Props = {
 };
 
 const NotificationCard = ({ notification }: Props) => {
+    const dispatch = useDispatch();
+
     const { openBottomSheet } = React.useContext(BottomSheetContext);
 
     const bottomSheetContent = React.useCallback(() => {
@@ -30,8 +34,9 @@ const NotificationCard = ({ notification }: Props) => {
     }, [notification]);
 
     const handleLongPress = React.useCallback(() => {
+        dispatch(updateNotificationsCurrent(notification.id));
         openBottomSheet(bottomSheetContent);
-    }, [bottomSheetContent, openBottomSheet]);
+    }, [bottomSheetContent, notification, openBottomSheet]);
 
     if (notification.type === 'BETA_KEY_USED')
         return (

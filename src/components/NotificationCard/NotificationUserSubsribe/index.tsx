@@ -38,6 +38,7 @@ const NotificationUserSubscribe = ({ notification, onLongPress }: Props) => {
 
     return (
         <NotificationCardContainer
+            notification={notification}
             onLongPress={onLongPress}
             onPress={handlePress}
             seen={notification.seen}

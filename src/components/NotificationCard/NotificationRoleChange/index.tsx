@@ -13,6 +13,7 @@ const onPress = () => {};
 const NotificationRoleChange = ({ notification, onLongPress }: Props) => {
     return (
         <NotificationCardContainer
+            notification={notification}
             onPress={onPress}
             onLongPress={onLongPress}
             seen={notification.seen}

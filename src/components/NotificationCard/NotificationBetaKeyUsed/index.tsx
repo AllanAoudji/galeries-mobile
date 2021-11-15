@@ -22,6 +22,7 @@ const NotificationBetakeyUsed = ({ notification, onLongPress }: Props) => {
 
     return (
         <NotificationCardContainer
+            notification={notification}
             onLongPress={onLongPress}
             onPress={onPress}
             seen={notification.seen}

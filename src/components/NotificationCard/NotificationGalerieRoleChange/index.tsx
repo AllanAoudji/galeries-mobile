@@ -40,6 +40,7 @@ const NotificationGalerieRoleChange = ({
 
     return (
         <NotificationCardContainer
+            notification={notification}
             onLongPress={onLongPress}
             onPress={handlePress}
             seen={notification.seen}

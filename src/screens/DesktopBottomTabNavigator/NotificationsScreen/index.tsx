@@ -4,11 +4,13 @@ import { useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BottomLoader, DefaultHeader, FullScreenLoader } from '#components';
+import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { useHideHeaderOnScroll } from '#hooks';
 import { putMeHasNewNotification, selectMe } from '#store/me';
 import {
     getNotifications,
+    resetNotificationsCurrent,
     selectNotificationsAllIds,
     selectNotificationsStatus,
 } from '#store/notifications';
@@ -21,6 +23,8 @@ import { Container, Header } from './styles';
 const NotificationsScreen = () => {
     const dispatch = useDispatch();
     const dimension = useWindowDimensions();
+
+    const { bottomSheetIsOpen } = React.useContext(BottomSheetContext);
 
     const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
         GLOBAL_STYLE.HEADER_TAB_HEIGHT
@@ -50,6 +54,11 @@ const NotificationsScreen = () => {
         React.useCallback(() => {
             if (status === 'PENDING') dispatch(getNotifications());
         }, [status])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!bottomSheetIsOpen) dispatch(resetNotificationsCurrent());
+        }, [bottomSheetIsOpen])
     );
 
     return (
