@@ -10,7 +10,7 @@ const notificationsPreviousReducer = (
 ) => {
     switch (action.type) {
         case NOTIFICATIONS_PREVIOUS_RESET:
-            return state;
+            return initalState;
         case NOTIFICATIONS_PREVIOUS_UPDATE:
             if (typeof action.payload !== 'string') return state;
             return action.payload;

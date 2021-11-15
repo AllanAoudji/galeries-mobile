@@ -53,7 +53,7 @@ const successGetMethod = (
             allIds
         );
         dispatch(setNotificationsAllIds(newAllIds));
-        dispatch(updateNotificationsEnd(allIds.length < 6));
+        dispatch(updateNotificationsEnd(allIds.length < 20));
         if (previous) dispatch(updateNotificationsPrevious(previous));
     }
 
@@ -71,8 +71,6 @@ const successGetMethod = (
         }
         if (
             byId[id].type === 'BETA_KEY_USED' ||
-            // byId[id].type === 'COMMENT_COMMENTED' ||
-            // byId[id].type === 'FRAME_COMMENTED' ||
             byId[id].type === 'FRAME_LIKED' ||
             byId[id].type === 'USER_SUBSCRIBE'
         ) {

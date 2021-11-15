@@ -41,10 +41,10 @@ const NotificationsScreen = () => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (me && me.hasNewNotifications) {
+            if (me && me.hasNewNotifications && status === 'SUCCESS') {
                 dispatch(putMeHasNewNotification());
             }
-        }, [me])
+        }, [me, status])
     );
     useFocusEffect(
         React.useCallback(() => {

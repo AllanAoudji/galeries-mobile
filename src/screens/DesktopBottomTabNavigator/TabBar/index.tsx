@@ -5,13 +5,14 @@ import {
     Keyboard,
     useWindowDimensions,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import { Pictogram } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { useKeyboard } from '#hooks';
 import { resetGaleriesCurrent } from '#store/galeries';
+import { getMe, selectMe } from '#store/me';
 
 import CreateGalerieButton from './CreateGalerieButton';
 import SubscribeGalerieButton from './SubscribeGalerieButton';
@@ -25,6 +26,7 @@ import {
     PictogramContainer,
 } from './styles';
 
+const INTERVAL = 1000 * 30;
 const customSize = {
     height: 28,
     width: 28,
@@ -39,6 +41,10 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
     const { keyboardShown } = useKeyboard();
 
     const { openBottomSheet } = React.useContext(BottomSheetContext);
+
+    const timer = React.useRef<ReturnType<typeof setInterval> | null>(null);
+
+    const me = useSelector(selectMe);
 
     const color = React.useMemo(
         () => ['transparent', theme.colors['secondary-light']],
@@ -141,6 +147,18 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         if (keyboardShown) Keyboard.dismiss();
         else openBottomSheet(bottomSheetContent);
     }, [bottomSheetContent, openBottomSheet, keyboardShown]);
+
+    React.useEffect(() => {
+        if ((currentRouteName === 'Notifications' || !me) && timer.current) {
+            clearInterval(timer.current);
+            timer.current = null;
+        }
+        if (currentRouteName !== 'Notifications' && me && !timer.current) {
+            timer.current = setInterval(() => {
+                dispatch(getMe());
+            }, INTERVAL);
+        }
+    }, [currentRouteName, me, timer]);
 
     if (showTabBar) return null;
 

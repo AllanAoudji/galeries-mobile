@@ -2,12 +2,14 @@ import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import NotificationCardContainer from '#components/NotificationCardContainer';
 import GalerieCoverPicture from '#components/GalerieCoverPicture';
+import NotificationCardContainer from '#components/NotificationCardContainer';
 import Typography from '#components/Typography';
+import { GLOBAL_STYLE } from '#helpers/constants';
 import { selectGalerie, updateGaleriesCurrent } from '#store/galeries';
 import { putNotification } from '#store/notifications';
-import { GLOBAL_STYLE } from '#helpers/constants';
+
+import { Container } from './styles';
 
 type Props = {
     notification: Store.Models.Notification;
@@ -19,6 +21,7 @@ const NotificationFramePosted = ({ notification }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.NotificationNavigationProp>();
+
     const galerieSelector = React.useMemo(
         () => selectGalerie(notification.galerieId),
         [notification]
@@ -26,10 +29,11 @@ const NotificationFramePosted = ({ notification }: Props) => {
     const galerie = useSelector(galerieSelector);
 
     const handlePress = React.useCallback(() => {
+        if (!galerie) return;
         dispatch(putNotification(notification.id));
-        dispatch(updateGaleriesCurrent(notification.galerieId));
+        dispatch(updateGaleriesCurrent(galerie.id));
         navigation.navigate('Galerie');
-    }, [notification, navigation]);
+    }, [galerie, notification, navigation]);
 
     return (
         <NotificationCardContainer
@@ -37,17 +41,27 @@ const NotificationFramePosted = ({ notification }: Props) => {
             onPress={handlePress}
             seen={notification.seen}
         >
-            <GalerieCoverPicture
-                borderRadius={
-                    GLOBAL_STYLE.NOTIFICATION_CARD_IMAGE_BORDER_RADIUS
-                }
-                size={GLOBAL_STYLE.NOTIFICATION_CARD_IMAGE_SIZE}
-                galerie={galerie}
-            />
-            <Typography>
-                {notification.num} frame{notification.num > 1 && 's'} posted on{' '}
-                {galerie ? galerie.name : 'galerie not found'}
-            </Typography>
+            <Container>
+                <Typography>
+                    <Typography fontFamily="bold">
+                        {notification.num} new frame
+                        {notification.num > 1 && 's'}{' '}
+                    </Typography>
+                    are posted on
+                    <Typography fontFamily="bold">
+                        {' '}
+                        {galerie ? galerie.name : 'galerie not found'}
+                    </Typography>
+                </Typography>
+                <GalerieCoverPicture
+                    borderRadius={
+                        GLOBAL_STYLE.NOTIFICATION_CARD_IMAGE_BORDER_RADIUS
+                    }
+                    ml="smallest"
+                    size={GLOBAL_STYLE.NOTIFICATION_CARD_IMAGE_SIZE}
+                    galerie={galerie}
+                />
+            </Container>
         </NotificationCardContainer>
     );
 };

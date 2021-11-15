@@ -8,8 +8,6 @@ import { selectComment } from '#store/comments';
 import { updateFramesCurrent } from '#store/frames';
 import { putNotification } from '#store/notifications';
 
-import { Container } from './styles';
-
 type Props = {
     notification: Store.Models.Notification;
 };
@@ -37,28 +35,26 @@ const NotificationCommentCommented = ({ notification }: Props) => {
         }
     }, [comment, notification, navigation]);
 
-    if (!comment) return null;
-
     return (
         <NotificationCardContainer
             onLongPress={onLongPress}
             onPress={handlePress}
             seen={notification.seen}
         >
-            <Container>
-                <Typography>
-                    You have{' '}
-                    <Typography fontFamily="bold">
-                        {notification.num} answer
-                        {notification.num > 1 ? 's' : ''}
-                    </Typography>{' '}
-                    on your comment:{' '}
-                    <Typography fontFamily="light">
+            <Typography>
+                You have{' '}
+                <Typography fontFamily="bold">
+                    {notification.num} new answer
+                    {notification.num > 1 ? 's' : ''}
+                </Typography>{' '}
+                on your comment:{' '}
+                {comment && (
+                    <Typography fontFamily="oblique">
                         "{comment.body.substring(0, CROP_COMMENT_BODY)}
                         {comment.body.length > CROP_COMMENT_BODY && '...'}"
                     </Typography>
-                </Typography>
-            </Container>
+                )}
+            </Typography>
         </NotificationCardContainer>
     );
 };

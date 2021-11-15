@@ -20,7 +20,7 @@ const successMeMiddleware: Middleware<{}, Store.Reducer> =
                     successPutMethod(dispatch, getState, action);
                     break;
                 case 'GET':
-                    successGetMethod(dispatch, action);
+                    successGetMethod(dispatch, getState, action);
                     break;
                 default:
                     successDefaultMethod(dispatch, action);

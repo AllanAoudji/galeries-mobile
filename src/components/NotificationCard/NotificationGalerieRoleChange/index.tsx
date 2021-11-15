@@ -22,6 +22,7 @@ const NotificationGalerieRoleChange = ({ notification }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.NotificationNavigationProp>();
+
     const galerieSelector = React.useMemo(
         () => selectGalerie(notification.galerieId),
         [notification]
@@ -29,14 +30,11 @@ const NotificationGalerieRoleChange = ({ notification }: Props) => {
     const galerie = useSelector(galerieSelector);
 
     const handlePress = React.useCallback(() => {
-        if (galerie) {
-            dispatch(updateGaleriesCurrent(galerie.id));
-            dispatch(putNotification(notification.id));
-            navigation.navigate('Galerie');
-        }
+        if (!galerie) return;
+        dispatch(updateGaleriesCurrent(galerie.id));
+        dispatch(putNotification(notification.id));
+        navigation.navigate('Galerie');
     }, [galerie, notification, navigation]);
-
-    if (!galerie) return null;
 
     return (
         <NotificationCardContainer
@@ -44,35 +42,38 @@ const NotificationGalerieRoleChange = ({ notification }: Props) => {
             onPress={handlePress}
             seen={notification.seen}
         >
-            <GalerieCoverPicture
-                borderRadius={
-                    GLOBAL_STYLE.NOTIFICATION_CARD_IMAGE_BORDER_RADIUS
+            <Pictogram
+                color="secondary-dark"
+                pr="smallest"
+                variant={
+                    notification.role === 'admin'
+                        ? 'admin-role'
+                        : 'moderator-role'
                 }
-                mr="smallest"
-                size={GLOBAL_STYLE.NOTIFICATION_CARD_IMAGE_SIZE}
-                galerie={galerie}
             />
             <Container>
                 <TextContainer>
-                    <Typography>
-                        You become {notification.role === 'admin' ? 'the' : 'a'}{' '}
-                        <Typography fontFamily="bold">
-                            {notification.role}{' '}
+                    {galerie && (
+                        <Typography>
+                            You become{' '}
+                            {notification.role === 'admin' ? 'the' : 'a'}{' '}
+                            <Typography fontFamily="bold">
+                                {notification.role}{' '}
+                            </Typography>
+                            of galerie{' '}
+                            <Typography fontFamily="bold">
+                                {galerie.name}
+                            </Typography>
                         </Typography>
-                        of galerie{' '}
-                        <Typography fontFamily="bold">
-                            {galerie.name}
-                        </Typography>
-                    </Typography>
+                    )}
                 </TextContainer>
-                <Pictogram
-                    color="secondary-dark"
-                    pl="smallest"
-                    variant={
-                        notification.role === 'admin'
-                            ? 'admin-role'
-                            : 'moderator-role'
+                <GalerieCoverPicture
+                    borderRadius={
+                        GLOBAL_STYLE.NOTIFICATION_CARD_IMAGE_BORDER_RADIUS
                     }
+                    ml="smallest"
+                    size={GLOBAL_STYLE.NOTIFICATION_CARD_IMAGE_SIZE}
+                    galerie={galerie}
                 />
             </Container>
         </NotificationCardContainer>
