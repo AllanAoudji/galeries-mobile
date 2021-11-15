@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
+
 import {
     selectFrameGaleriePicturesAllIds,
     selectGaleriePicture,
@@ -27,7 +28,7 @@ const FrameContainer = ({ frame }: Props) => {
         [galeriePictures]
     );
     const galeriePicture = useSelector(galeriePictureSelector);
-
+    // TODO: Need local default uri
     const source = React.useMemo(
         () => ({
             uri: galeriePicture
@@ -36,9 +37,6 @@ const FrameContainer = ({ frame }: Props) => {
         }),
         [galeriePictures]
     );
-
-    if (!frame) return null;
-    if (!galeriePicture) return null;
 
     return <ImageStyled source={source} />;
 };
