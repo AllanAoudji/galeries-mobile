@@ -16,7 +16,7 @@ type Props = {
 
 const onLongPress = () => {};
 
-const CROP_COMMENT_BODY = 30;
+const CROP_COMMENT_BODY = 28;
 
 const NotificationCommentCommented = ({ notification }: Props) => {
     const dispatch = useDispatch();
