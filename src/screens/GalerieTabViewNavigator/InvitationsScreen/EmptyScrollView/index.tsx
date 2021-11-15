@@ -61,10 +61,7 @@ const EmptyScrollView = ({ current, editScrollY, galerie, scrollY }: Props) => {
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
             if (scrollViewRef.current && !current) {
-                scrollViewRef.current.scrollTo({
-                    animated: false,
-                    y: newScrollY,
-                });
+                scrollViewRef.current.scrollTo({ y: newScrollY });
             }
         },
         [current]
@@ -85,6 +82,10 @@ const EmptyScrollView = ({ current, editScrollY, galerie, scrollY }: Props) => {
         },
         [current, editScrollY]
     );
+
+    React.useEffect(() => {
+        if (current) editScrollY(0);
+    }, []);
 
     useFocusEffect(
         React.useCallback(() => {

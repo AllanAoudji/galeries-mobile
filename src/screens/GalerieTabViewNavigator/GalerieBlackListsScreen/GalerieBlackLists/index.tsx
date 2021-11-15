@@ -90,9 +90,7 @@ const GalerieBlackLists = ({
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
             if (flatListRef.current && !current) {
-                flatListRef.current.scrollToOffset({
-                    offset: newScrollY,
-                });
+                flatListRef.current.scrollToOffset({ offset: newScrollY });
             }
         },
         [current]
@@ -113,6 +111,10 @@ const GalerieBlackLists = ({
         },
         [current, editScrollY]
     );
+
+    React.useEffect(() => {
+        if (current) editScrollY(0);
+    }, []);
 
     useFocusEffect(
         React.useCallback(() => {
