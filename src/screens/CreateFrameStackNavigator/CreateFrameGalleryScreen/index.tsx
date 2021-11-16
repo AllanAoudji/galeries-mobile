@@ -1,69 +1,33 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as MediaLibrary from 'expo-media-library';
 import * as React from 'react';
-import {
-    FlatList,
-    ListRenderItem,
-    StyleProp,
-    StyleSheet,
-    useWindowDimensions,
-    ViewStyle,
-} from 'react-native';
-import Animated from 'react-native-reanimated';
+import { FlatList, ListRenderItem, useWindowDimensions } from 'react-native';
 
-import {
-    BottomLoader,
-    CustomButton,
-    DefaultHeader,
-    Typography,
-} from '#components';
-import { CreateFrameContext } from '#contexts/CreateFrameContext';
-import { GLOBAL_STYLE } from '#helpers/constants';
-import { useCameraRoll, useHideHeaderOnScroll } from '#hooks';
+import { BottomLoader } from '#components';
+import { useCameraRoll } from '#hooks';
 
 import RenderItem from './RenderItem';
 
-import {
-    AddPicturesButtonContainer,
-    ButtonContainer,
-    Container,
-    Header,
-} from './styles';
-
-type Props = {
-    navigation: Screen.CreateFrameStack.CreateFrameCameraNavigationProp;
-};
+import { Container } from './styles';
 
 const NUM_OF_COLUMNS = 3;
 
-const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 const renderItem: ListRenderItem<MediaLibrary.Asset> = ({ item }) => (
     <RenderItem item={item} numOfColumns={NUM_OF_COLUMNS} />
 );
 
-const CreateFrameGalleryScreen = ({ navigation }: Props) => {
+const CreateFrameGalleryScreen = () => {
     const dimension = useWindowDimensions();
 
-    const { picturesUri } = React.useContext(CreateFrameContext);
-
     const { getPhotos, loading, photos } = useCameraRoll();
-    const { containerStyle, headerStyle, scrollHandler } =
-        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT);
 
     const [firstLoad, setFirstLoad] = React.useState<boolean>(true);
 
-    const CustomButtonVariant = React.useMemo(
-        () => (!picturesUri.length ? 'stroke' : 'fill'),
-        [picturesUri]
-    );
     const showButtonLoader = React.useMemo(
         () => !firstLoad && loading,
         [firstLoad, loading]
     );
 
-    const handlePressAddPictures = React.useCallback(
-        () => navigation.navigate('AddPictures'),
-        [navigation]
-    );
     const getItemLayout = React.useCallback(
         (_, index) => ({
             length: dimension.width / 3,
@@ -77,34 +41,20 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
         []
     );
 
-    React.useEffect(() => {
-        getPhotos();
-    }, []);
-    React.useEffect(() => {
-        if (!loading && photos.length) setFirstLoad(false);
-    }, [loading, photos]);
+    useFocusEffect(
+        React.useCallback(() => {
+            getPhotos();
+        }, [])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!loading && photos.length) setFirstLoad(false);
+        }, [loading, photos])
+    );
 
     return (
         <Container>
-            <Header style={containerStyle}>
-                <DefaultHeader style={headerStyle} variant="secondary" />
-                <AddPicturesButtonContainer>
-                    <ButtonContainer>
-                        <CustomButton
-                            disable={!picturesUri.length}
-                            onPress={handlePressAddPictures}
-                            small
-                            title="add pictures"
-                            variant={CustomButtonVariant}
-                        />
-                    </ButtonContainer>
-                    <Typography fontFamily="bold" fontSize={14}>
-                        {picturesUri.length}/6 pictures selected
-                    </Typography>
-                </AddPicturesButtonContainer>
-            </Header>
-            <AnimatedFlatList
-                contentContainerStyle={style().animatedFlatListContentContainer}
+            <FlatList
                 data={photos}
                 extraData={photos}
                 getItemLayout={getItemLayout}
@@ -114,7 +64,6 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
                 numColumns={3}
                 onEndReached={getPhotos}
                 onEndReachedThreshold={0.2}
-                onScroll={scrollHandler}
                 removeClippedSubviews={true}
                 renderItem={renderItem}
                 showsVerticalScrollIndicator={false}
@@ -125,14 +74,5 @@ const CreateFrameGalleryScreen = ({ navigation }: Props) => {
         </Container>
     );
 };
-
-const style: () => {
-    animatedFlatListContentContainer: StyleProp<ViewStyle>;
-} = StyleSheet.create(() => ({
-    animatedFlatListContentContainer: {
-        paddingTop:
-            GLOBAL_STYLE.HEADER_TAB_HEIGHT + GLOBAL_STYLE.FRAME_GALLERY_HEADER,
-    },
-}));
 
 export default CreateFrameGalleryScreen;

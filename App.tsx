@@ -14,6 +14,7 @@ import { DeleteGalerieBlackListModalProvider } from '#contexts/DeleteGalerieBlac
 import { DeleteGalerieUserModalProvider } from '#contexts/DeleteGalerieUserModalContext';
 import { DeleteInvitationModalProvider } from '#contexts/DeleteInvitationModalContext';
 import { DeleteNotificationModalProvider } from '#contexts/DeleteNotificationModalContext';
+import { GaleriesSearchProvider } from '#contexts/GaleriesSearchContext';
 import ThemeProvider from '#contexts/ThemeContext';
 import Loader from '#helpers/Loader';
 import RootStackNavigator from '#screens/RootStackNavigator';
@@ -33,11 +34,13 @@ export default function App() {
                                     <DeleteGalerieUserModalProvider>
                                         <DeleteInvitationModalProvider>
                                             <DeleteNotificationModalProvider>
-                                                <BottomSheetProvider>
-                                                    <RootStackNavigator />
-                                                    <Notification />
-                                                    <StatusBar style="auto" />
-                                                </BottomSheetProvider>
+                                                <GaleriesSearchProvider>
+                                                    <BottomSheetProvider>
+                                                        <RootStackNavigator />
+                                                        <Notification />
+                                                        <StatusBar style="auto" />
+                                                    </BottomSheetProvider>
+                                                </GaleriesSearchProvider>
                                             </DeleteNotificationModalProvider>
                                         </DeleteInvitationModalProvider>
                                     </DeleteGalerieUserModalProvider>

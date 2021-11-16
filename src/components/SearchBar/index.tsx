@@ -18,6 +18,7 @@ type Props = {
     onChangeText: (text: string) => void;
     onFocus?: () => void;
     onStopTyping: () => void;
+    placeholder?: string;
     setValue: React.Dispatch<React.SetStateAction<string>>;
     value: string;
 };
@@ -34,6 +35,7 @@ const SearchBar = ({
     onChangeText,
     onFocus,
     onStopTyping,
+    placeholder,
     setValue,
     value,
 }: Props) => {
@@ -72,6 +74,7 @@ const SearchBar = ({
                 maxLength={maxLength}
                 onFocus={onFocus}
                 onChangeText={handleChangeText}
+                placeholder={placeholder}
                 value={value}
             />
             {value !== '' && (

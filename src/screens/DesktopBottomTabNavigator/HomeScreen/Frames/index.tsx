@@ -5,14 +5,9 @@ import {
     InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
-    StatusBar,
-    StyleProp,
     StyleSheet,
-    useWindowDimensions,
-    ViewStyle,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import Animated from 'react-native-reanimated';
 
 import { useTheme } from 'styled-components/native';
 import { GLOBAL_STYLE } from '#helpers/constants';
@@ -22,16 +17,13 @@ import RenderItem from './RenderItem';
 
 type Props = {
     allIds: string[];
-    scrollHandler: any;
 };
 
-const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Frames = ({ allIds, scrollHandler }: Props) => {
-    const dimension = useWindowDimensions();
+const Frames = ({ allIds }: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -45,12 +37,6 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
             theme.colors['primary-dark'],
             theme.colors['primary-light'],
         ],
-        []
-    );
-    const styleProps = React.useMemo(
-        () => ({
-            minHeight: dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT,
-        }),
         []
     );
 
@@ -76,10 +62,8 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
     );
 
     return (
-        <AnimatedFlatList
-            contentContainerStyle={
-                style(styleProps).animatedFlatListContentContainerStyle
-            }
+        <FlatList
+            contentContainerStyle={style.animatedFlatListContentContainerStyle}
             data={allIds}
             extraData={allIds}
             initialNumToRender={3}
@@ -87,7 +71,7 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
             maxToRenderPerBatch={3}
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
-            onScroll={scrollHandler}
+            overScrollMode="never"
             refreshControl={
                 <RefreshControl
                     colors={colors}
@@ -107,15 +91,10 @@ const Frames = ({ allIds, scrollHandler }: Props) => {
     );
 };
 
-const style: ({ minHeight }: { minHeight: number }) => {
-    animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ minHeight }) => ({
+const style = StyleSheet.create({
     animatedFlatListContentContainerStyle: {
-        marginTop: StatusBar.currentHeight || 0,
-        minHeight,
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT + 30,
-        paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
     },
-}));
+});
 
 export default Frames;

@@ -5,13 +5,14 @@ import {
 } from '@react-navigation/stack';
 import * as React from 'react';
 
+import { DefaultHeader } from '#components';
 import { CreateFrameProvider } from '#contexts/CreateFrameContext';
 
 import AddDescriptionScreen from './AddDescriptionScreen';
 import AddPicturesScreen from './AddPicturesScreen';
 import CreateFrameCameraScreen from './CreateFrameCameraScreen';
+import CreateFrameGalleryHeader from './CreateFrameGalleryHeader';
 import CreateFrameGalleryScreen from './CreateFrameGalleryScreen';
-import { DefaultHeader } from '#components';
 
 const Stack = createStackNavigator<Screen.CreateFrameStack.ParamList>();
 
@@ -35,7 +36,7 @@ const createFrameCameraOption: StackNavigationOptions = {
     headerShown: false,
 };
 const createFrameGalleryOption: StackNavigationOptions = {
-    headerShown: false,
+    header: CreateFrameGalleryHeader,
 };
 const screenOptions: StackNavigationOptions = {
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

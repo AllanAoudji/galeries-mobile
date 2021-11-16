@@ -1,12 +1,9 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { BottomLoader, DefaultHeader, FullScreenLoader } from '#components';
+import { BottomLoader, FullScreenLoader } from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
-import { GLOBAL_STYLE } from '#helpers/constants';
-import { useHideHeaderOnScroll } from '#hooks';
 import { putMeHasNewNotification, selectMe } from '#store/me';
 import {
     getNotifications,
@@ -18,17 +15,12 @@ import {
 import EmptyScrollView from './EmptyScrollView';
 import Notifications from './Notifications';
 
-import { Container, Header } from './styles';
+import { Container } from './styles';
 
 const NotificationsScreen = () => {
     const dispatch = useDispatch();
-    const dimension = useWindowDimensions();
 
     const { bottomSheetIsOpen } = React.useContext(BottomSheetContext);
-
-    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
-        GLOBAL_STYLE.HEADER_TAB_HEIGHT
-    );
 
     const me = useSelector(selectMe);
     const status = useSelector(selectNotificationsStatus);
@@ -63,13 +55,10 @@ const NotificationsScreen = () => {
 
     return (
         <Container>
-            <Header style={containerStyle} width={dimension.width}>
-                <DefaultHeader title="notifications" />
-            </Header>
             {allIds.length > 0 ? (
-                <Notifications allIds={allIds} scrollHandler={scrollHandler} />
+                <Notifications allIds={allIds} />
             ) : (
-                <EmptyScrollView scrollHandler={scrollHandler} />
+                <EmptyScrollView />
             )}
             <FullScreenLoader show={showFullScreenLoader} />
             <BottomLoader show={showBottomLoader} bottom="huge" />

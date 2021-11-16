@@ -1,11 +1,9 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { InteractionManager, useWindowDimensions } from 'react-native';
+import { InteractionManager } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { BottomLoader, DefaultHeader, FullScreenLoader } from '#components';
-import { GLOBAL_STYLE } from '#helpers/constants';
-import { useHideHeaderOnScroll } from '#hooks';
+import { BottomLoader, FullScreenLoader } from '#components';
 import {
     getFrames,
     selectFramesAllIds,
@@ -15,18 +13,13 @@ import {
 import Frames from './Frames';
 import EmptyScrollView from './EmptyScrollView';
 
-import { Container, Header } from './styles';
+import { Container } from './styles';
 
 const HomeScreen = () => {
     const dispatch = useDispatch();
-    const dimension = useWindowDimensions();
 
     const framesAllIds = useSelector(selectFramesAllIds);
     const framesStatus = useSelector(selectFramesStatus);
-
-    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
-        GLOBAL_STYLE.HEADER_TAB_HEIGHT
-    );
 
     const showBottomLoader = React.useMemo(
         () => framesStatus === 'LOADING',
@@ -48,16 +41,13 @@ const HomeScreen = () => {
 
     return (
         <Container>
-            <Header style={containerStyle} width={dimension.width}>
-                <DefaultHeader />
-            </Header>
             {framesAllIds.length > 0 ? (
-                <Frames allIds={framesAllIds} scrollHandler={scrollHandler} />
+                <Frames allIds={framesAllIds} />
             ) : (
-                <EmptyScrollView scrollHandler={scrollHandler} />
+                <EmptyScrollView />
             )}
             <FullScreenLoader show={showFullScreenLoader} />
-            <BottomLoader show={showBottomLoader} bottom="huge" />
+            <BottomLoader bottom="huge" show={showBottomLoader} />
         </Container>
     );
 };

@@ -17,7 +17,7 @@ const useCameraRoll = () => {
                 mediaType: ['photo'],
                 ...(!!after && { after }),
             });
-            if (mounted) {
+            if (mounted.current) {
                 if (after !== response.endCursor) {
                     setAfter(response.endCursor);
                     setHasNextPage(response.hasNextPage);

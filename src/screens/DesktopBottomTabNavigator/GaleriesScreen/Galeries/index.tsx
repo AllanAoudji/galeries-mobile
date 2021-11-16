@@ -1,14 +1,12 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
+    FlatList,
     InteractionManager,
     Keyboard,
     ListRenderItemInfo,
     RefreshControl,
-    StyleProp,
     StyleSheet,
-    useWindowDimensions,
-    ViewStyle,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
@@ -23,19 +21,15 @@ import {
 
 import RenderItem from './RenderItem';
 
-import { StyledAnimatedFlatList } from './styles';
-
 type Props = {
     allIds: string[];
-    scrollHandler: any;
 };
 
 const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Galeries = ({ allIds, scrollHandler }: Props) => {
-    const dimension = useWindowDimensions();
+const Galeries = ({ allIds }: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -50,15 +44,6 @@ const Galeries = ({ allIds, scrollHandler }: Props) => {
             theme.colors['primary-dark'],
             theme.colors['primary-light'],
         ],
-        []
-    );
-    const styleProps = React.useMemo(
-        () => ({
-            minHeight:
-                dimension.height +
-                GLOBAL_STYLE.HEADER_TAB_HEIGHT -
-                GLOBAL_STYLE.SEARCH_BAR_HEIGHT,
-        }),
         []
     );
 
@@ -96,10 +81,8 @@ const Galeries = ({ allIds, scrollHandler }: Props) => {
     );
 
     return (
-        <StyledAnimatedFlatList
-            contentContainerStyle={
-                style(styleProps).animatedFlatListContentContainerStyle
-            }
+        <FlatList
+            contentContainerStyle={style.animatedFlatListContentContainerStyle}
             data={allIds}
             extraData={allIds}
             getItemLayout={getItemLayout}
@@ -109,7 +92,7 @@ const Galeries = ({ allIds, scrollHandler }: Props) => {
             maxToRenderPerBatch={4}
             onEndReached={handleEndReached}
             onEndReachedThreshold={0.2}
-            onScroll={scrollHandler}
+            overScrollMode="never"
             onScrollBeginDrag={handleScrollBeginDrag}
             refreshControl={
                 <RefreshControl
@@ -130,14 +113,10 @@ const Galeries = ({ allIds, scrollHandler }: Props) => {
     );
 };
 
-const style: ({ minHeight }: { minHeight: number }) => {
-    animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ minHeight }) => ({
+const style = StyleSheet.create({
     animatedFlatListContentContainerStyle: {
-        minHeight,
-        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
-        paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
+        paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT + 30,
     },
-}));
+});
 
 export default Galeries;

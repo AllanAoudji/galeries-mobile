@@ -15,13 +15,9 @@ import {
     selectNotificationsStatus,
 } from '#store/notifications';
 
-import { InnerContainer, StyledAnimatedScrollView } from './styles';
+import { InnerContainer, StyledScrollView } from './styles';
 
-type Props = {
-    scrollHandler: any;
-};
-
-const emptyScrollView = ({ scrollHandler }: Props) => {
+const emptyScrollView = () => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const theme = useTheme();
@@ -56,8 +52,8 @@ const emptyScrollView = ({ scrollHandler }: Props) => {
     );
 
     return (
-        <StyledAnimatedScrollView
-            onScroll={scrollHandler}
+        <StyledScrollView
+            overScrollMode="never"
             refreshControl={
                 <RefreshControl
                     colors={colors}
@@ -70,11 +66,11 @@ const emptyScrollView = ({ scrollHandler }: Props) => {
             showsVerticalScrollIndicator={false}
         >
             <InnerContainer
-                height={dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+                height={dimension.height - GLOBAL_STYLE.HEADER_TAB_HEIGHT}
             >
                 <EmptyMessage text="you don't have any notification yet" />
             </InnerContainer>
-        </StyledAnimatedScrollView>
+        </StyledScrollView>
     );
 };
 
