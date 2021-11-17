@@ -3,9 +3,15 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import { selectCurrentFrame } from '#store/frames';
-import { selectCurrentFrameLikesAllIds } from '#store/likes';
+import {
+    selectCurrentFrameLikesAllIds,
+    selectCurrentFrameLikesStatus,
+} from '#store/likes';
 
 import Likes from './Likes';
+
+import { Container } from './styles';
+import { BottomLoader, FullScreenLoader } from '#components';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.LikesNavigationProp;
@@ -14,6 +20,7 @@ type Props = {
 const LikesScreen = ({ navigation }: Props) => {
     const currentFrame = useSelector(selectCurrentFrame);
     const currentFrameLikesAllIds = useSelector(selectCurrentFrameLikesAllIds);
+    const status = useSelector(selectCurrentFrameLikesStatus);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -33,7 +40,13 @@ const LikesScreen = ({ navigation }: Props) => {
 
     if (!currentFrame) return null;
 
-    return <Likes frameId={currentFrame.id} allIds={currentFrameLikesAllIds} />;
+    return (
+        <Container>
+            <Likes frameId={currentFrame.id} allIds={currentFrameLikesAllIds} />
+            <FullScreenLoader show={status === 'INITIAL_LOADING'} />
+            <BottomLoader show={status === 'LOADING'} />
+        </Container>
+    );
 };
 
 export default LikesScreen;

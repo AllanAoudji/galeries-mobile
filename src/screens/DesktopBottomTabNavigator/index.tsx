@@ -21,6 +21,7 @@ import HomeHeader from './HomeHeader';
 import HomeScreen from './HomeScreen';
 import InvitationScreen from './InvitationScreen';
 import InvitationQRCode from './InvitationQRCode';
+import LikesHeader from './LikesHeader';
 import LikesScreen from './LikesScreen';
 import NotificationsHeader from './NotificationsHeader';
 import NotificationsScreen from './NotificationsScreen';
@@ -75,6 +76,11 @@ const galeriesScreenOption: BottomTabNavigationOptions = {
 const homeScreenHeader = () => <HomeHeader />;
 const homeScreenOption: BottomTabNavigationOptions = {
     header: homeScreenHeader,
+    headerShown: true,
+};
+const likesHeader = () => <LikesHeader />;
+const likesScreenOption: BottomTabNavigationOptions = {
+    header: likesHeader,
     headerShown: true,
 };
 const notificationsScreenHeader = () => <NotificationsHeader />;
@@ -186,7 +192,11 @@ const DesktopBottomTabNavigator = () => {
             />
             <Tab.Screen component={InvitationScreen} name="Invitation" />
             <Tab.Screen component={InvitationQRCode} name="InvitationQRCode" />
-            <Tab.Screen component={LikesScreen} name="Likes" />
+            <Tab.Screen
+                component={LikesScreen}
+                name="Likes"
+                options={likesScreenOption}
+            />
             <Tab.Screen
                 component={NotificationsScreen}
                 name="Notifications"
