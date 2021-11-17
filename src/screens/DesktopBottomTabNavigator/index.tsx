@@ -12,6 +12,7 @@ import CommentScreen from './CommentsScreen';
 import CreateFrameScreen from './CreateFrameScreen';
 import CreateGalerieScreen from './CreateGalerieScreen';
 import CreateInvitationScreen from './CreateInvitationScreen';
+import CreateProfilePictureCameraScreen from './CreateProfilePictureCameraScreen';
 import DeleteGalerieScreen from './DeleteGalerieScreen';
 import FrameScreen from './FrameScreen';
 import GalerieScreen from './GalerieScreen';
@@ -176,6 +177,10 @@ const DesktopBottomTabNavigator = () => {
                 component={CreateInvitationScreen}
                 name="CreateInvitation"
                 options={createInvitationScreenOption}
+            />
+            <Tab.Screen
+                component={CreateProfilePictureCameraScreen}
+                name="CreateProfilePictureCamera"
             />
             <Tab.Screen component={DeleteGalerieScreen} name="DeleteGalerie" />
             <Tab.Screen component={FrameScreen} name="Frame" />
