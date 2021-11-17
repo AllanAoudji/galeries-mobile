@@ -12,9 +12,9 @@ import { GLOBAL_STYLE } from '#helpers/constants';
 import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 import { resetGaleriesCurrent } from '#store/galeries';
 
-import { Container } from './styles';
-
 import AbsoluteGalerieCoverPicture from './AbsoluteGalerieCoverPicture';
+
+import { Container } from './styles';
 
 type Props = {
     scrollY: Animated.SharedValue<number>;

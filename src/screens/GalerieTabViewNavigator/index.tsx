@@ -120,7 +120,7 @@ const GalerieTabViewNavigator = () => {
                         : adminRoleRoutes,
             });
         },
-        [galerie]
+        [galerie, getCurrentAdminRoute, getCurrentUserRoute]
     );
 
     const renderScene = React.useCallback(
@@ -258,6 +258,7 @@ const GalerieTabViewNavigator = () => {
                 <TabView
                     navigationState={navigationState}
                     onIndexChange={onIndexChange}
+                    overScrollMode="never"
                     renderScene={renderScene}
                     renderTabBar={renderTabBar}
                 />

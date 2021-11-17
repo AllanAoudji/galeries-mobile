@@ -55,6 +55,7 @@ export default function App() {
 }
 
 // TODO:
+// Header on Comment/Likes
 // Profile Screen
 // Change email/password/delete account
 // Tickets

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "galerie_mobile",
+    "name": "galerie",
     "slug": "galerie_mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,7 +22,7 @@
     },
     "android": {
       "package": "com.azihuber.galerie",
-      "versionCode": 1,
+      "versionCode": "0.1.0",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
