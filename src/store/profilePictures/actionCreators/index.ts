@@ -185,7 +185,7 @@ export const updateProfilePicturesLoadingPost: (
     payload,
     type: PROFILE_PICTURES_LOADING_POST_UPDATE,
 });
-export const updateProfilePicturesPrevious: (payload: string) => Store.Action =
+export const updateProfilePicturesPrevious: (payload?: string) => Store.Action =
     (payload) => ({
         meta: {},
         payload,

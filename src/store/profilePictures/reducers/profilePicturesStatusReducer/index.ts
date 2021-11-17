@@ -12,10 +12,10 @@ const profilePicturesStatusReducer = (
     switch (action.type) {
         case PROFILE_PICTURES_STATUS_RESET:
             return initialState;
-        case PROFILE_PICTURES_STATUS_UPDATE:
+        case PROFILE_PICTURES_STATUS_UPDATE: {
             if (
                 !action.meta.query ||
-                !action.meta.query.userId ||
+                !action.meta.query.userId === undefined ||
                 !checkIfStatus(action.payload)
             )
                 return state;
@@ -23,6 +23,7 @@ const profilePicturesStatusReducer = (
                 ...state,
                 [action.meta.query.userId]: action.payload,
             };
+        }
         default:
             return state;
     }
