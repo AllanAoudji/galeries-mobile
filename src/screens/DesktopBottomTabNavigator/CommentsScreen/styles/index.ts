@@ -2,8 +2,8 @@ import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 const Container = styled.View`
-    background-color: ${({ theme }) => theme.colors['secondary-light']};
     flex: 1;
+    background-color: ${({ theme }) => theme.colors['secondary-light']};
 `;
 const Header = styled(Animated.View)`
     position: absolute;

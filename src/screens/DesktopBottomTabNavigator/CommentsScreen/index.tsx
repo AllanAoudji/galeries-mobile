@@ -6,11 +6,13 @@ import {
     KeyboardAvoidingView,
     Platform,
     StyleSheet,
+    useWindowDimensions,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { BottomLoader, DefaultHeader, FullScreenLoader } from '#components';
+import { BottomLoader, FullScreenLoader } from '#components';
 import { SelectCommentProvider } from '#contexts/SelectedCommentContext';
+import { useComponentSize } from '#hooks';
 import {
     getFrameComments,
     selectCommentCurrent,
@@ -19,14 +21,13 @@ import {
     selectCurrentFrameCommentsStatus,
 } from '#store/comments';
 import { selectCurrentFrame } from '#store/frames';
-import { GLOBAL_STYLE } from '#helpers/constants';
-import { useHideHeaderOnScroll } from '#hooks';
 
 import Comments from './Comments';
 import EmptyScrollView from './EmptyScrollView';
 import Form from './Form';
 
-import { Container, Header } from './styles';
+import { Container } from './styles';
+import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CommentsNavigationProp;
@@ -34,10 +35,9 @@ type Props = {
 
 const CommentScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
+    const dimension = useWindowDimensions();
 
-    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
-        GLOBAL_STYLE.HEADER_TAB_HEIGHT
-    );
+    const { onLayout, size } = useComponentSize();
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
@@ -47,10 +47,6 @@ const CommentScreen = ({ navigation }: Props) => {
     const loading = useSelector(selectCommentsLoadingPost);
     const status = useSelector(selectCurrentFrameCommentsStatus);
 
-    const handlePress = React.useCallback(() => {
-        if (navigation.canGoBack()) navigation.goBack();
-        else navigation.navigate('Home');
-    }, [navigation]);
     const handlePostSuccess = React.useCallback(() => {
         if (flatListRef.current && !currentComment)
             flatListRef.current.scrollToOffset({ offset: 0 });
@@ -77,30 +73,28 @@ const CommentScreen = ({ navigation }: Props) => {
         return <FullScreenLoader show />;
 
     return (
-        <SelectCommentProvider>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={styles.keyboardAvoidingViewStyle}
-            >
-                <Container>
-                    <Header style={containerStyle}>
-                        <DefaultHeader
-                            onPress={handlePress}
-                            title="comments"
-                            variant="secondary"
-                        />
-                    </Header>
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.keyboardAvoidingViewStyle}
+            keyboardVerticalOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+        >
+            <SelectCommentProvider>
+                <Container onLayout={onLayout}>
                     {!!commentsAllIds && commentsAllIds.length > 0 ? (
                         <Comments
                             allIds={commentsAllIds}
                             flatListRef={flatListRef}
                             frameId={currentFrame.id}
-                            scrollHandler={scrollHandler}
                         />
                     ) : (
                         <EmptyScrollView
+                            height={
+                                size
+                                    ? size.height
+                                    : dimension.height -
+                                      GLOBAL_STYLE.HEADER_TAB_HEIGHT
+                            }
                             frameId={currentFrame.id}
-                            scrollHandler={scrollHandler}
                         />
                     )}
                     <Form
@@ -110,8 +104,8 @@ const CommentScreen = ({ navigation }: Props) => {
                     />
                     <BottomLoader bottom="huge" show={status === 'LOADING'} />
                 </Container>
-            </KeyboardAvoidingView>
-        </SelectCommentProvider>
+            </SelectCommentProvider>
+        </KeyboardAvoidingView>
     );
 };
 

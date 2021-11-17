@@ -1,10 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import {
-    InteractionManager,
-    RefreshControl,
-    useWindowDimensions,
-} from 'react-native';
+import { InteractionManager, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
@@ -19,11 +15,10 @@ import { InnerContainer, StyledAnimatedScrollView } from './styles';
 
 type Props = {
     frameId: string;
-    scrollHandler: any;
+    height: number;
 };
 
-const EmptyScrollView = ({ frameId, scrollHandler }: Props) => {
-    const dimension = useWindowDimensions();
+const EmptyScrollView = ({ frameId, height }: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -60,7 +55,7 @@ const EmptyScrollView = ({ frameId, scrollHandler }: Props) => {
 
     return (
         <StyledAnimatedScrollView
-            onScroll={scrollHandler}
+            overScrollMode="never"
             refreshControl={
                 <RefreshControl
                     colors={colors}
@@ -72,12 +67,10 @@ const EmptyScrollView = ({ frameId, scrollHandler }: Props) => {
             }
             showsVerticalScrollIndicator={false}
         >
-            <InnerContainer
-                height={dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT}
-            >
+            <InnerContainer height={height}>
                 <EmptyMessage
                     pb={GLOBAL_STYLE.COMMENTS_FOOTER_HEIGHT}
-                    text="this frame do not have comment yet..."
+                    text="This frame do not have comment yet..."
                 />
             </InnerContainer>
         </StyledAnimatedScrollView>

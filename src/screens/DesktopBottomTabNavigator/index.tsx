@@ -7,6 +7,7 @@ import * as React from 'react';
 
 import { DefaultHeader } from '#components';
 
+import CommentsHeader from './CommentsHeader';
 import CommentScreen from './CommentsScreen';
 import CreateFrameScreen from './CreateFrameScreen';
 import CreateGalerieScreen from './CreateGalerieScreen';
@@ -37,6 +38,11 @@ import UserScreen from './UserScreen';
 
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 
+const commentsHeader = () => <CommentsHeader />;
+const commentsScreenOption: BottomTabNavigationOptions = {
+    header: commentsHeader,
+    headerShown: true,
+};
 const createGalerieScreenHeader = () => (
     <DefaultHeader
         color="primary-dark"
@@ -149,7 +155,11 @@ const DesktopBottomTabNavigator = () => {
             screenOptions={screenOptions}
             tabBar={tabBar}
         >
-            <Tab.Screen component={CommentScreen} name="Comments" />
+            <Tab.Screen
+                component={CommentScreen}
+                name="Comments"
+                options={commentsScreenOption}
+            />
             <Tab.Screen component={CreateFrameScreen} name="CreateFrame" />
             <Tab.Screen
                 component={CreateGalerieScreen}

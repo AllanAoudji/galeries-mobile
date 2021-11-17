@@ -3,16 +3,10 @@ import * as React from 'react';
 import {
     FlatList,
     InteractionManager,
-    Keyboard,
     ListRenderItemInfo,
     RefreshControl,
-    StatusBar,
-    StyleProp,
     StyleSheet,
-    useWindowDimensions,
-    ViewStyle,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
@@ -29,21 +23,13 @@ type CommentsProps = {
     allIds: string[];
     flatListRef: React.MutableRefObject<FlatList<any> | null>;
     frameId: string;
-    scrollHandler: any;
 };
 
-const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const Comments = ({
-    allIds,
-    flatListRef,
-    frameId,
-    scrollHandler,
-}: CommentsProps) => {
-    const dimension = useWindowDimensions();
+const Comments = ({ allIds, flatListRef, frameId }: CommentsProps) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
@@ -63,12 +49,6 @@ const Comments = ({
         ],
         [theme]
     );
-    const styleProps = React.useMemo(
-        () => ({
-            minHeight: dimension.height + GLOBAL_STYLE.HEADER_TAB_HEIGHT,
-        }),
-        [dimension]
-    );
 
     const handleEndReach = React.useCallback(
         () =>
@@ -85,10 +65,6 @@ const Comments = ({
             dispatch(refreshFrameComments(frameId));
         });
     }, [frameId]);
-    const handleScrollBeginDrag = React.useCallback(
-        () => Keyboard.dismiss(),
-        []
-    );
     const keyExtractor = React.useCallback((data: string) => data, []);
 
     useFocusEffect(
@@ -98,10 +74,8 @@ const Comments = ({
     );
 
     return (
-        <AnimatedFlatList
-            contentContainerStyle={
-                style(styleProps).animatedFlatListContentContainerStyle
-            }
+        <FlatList
+            contentContainerStyle={style.animatedFlatListContentContainerStyle}
             data={allIds}
             extraData={allIds}
             initialNumToRender={15}
@@ -109,8 +83,7 @@ const Comments = ({
             maxToRenderPerBatch={15}
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
-            onScroll={scrollHandler}
-            onScrollBeginDrag={handleScrollBeginDrag}
+            overScrollMode="never"
             ref={flatListRef}
             refreshControl={
                 <RefreshControl
@@ -131,15 +104,10 @@ const Comments = ({
     );
 };
 
-const style: ({ minHeight }: { minHeight: number }) => {
-    animatedFlatListContentContainerStyle: StyleProp<ViewStyle>;
-} = StyleSheet.create(({ minHeight }) => ({
+const style = StyleSheet.create({
     animatedFlatListContentContainerStyle: {
-        marginTop: StatusBar.currentHeight || 0,
-        minHeight,
-        paddingBottom: GLOBAL_STYLE.COMMENTS_FOOTER_HEIGHT,
-        paddingTop: GLOBAL_STYLE.HEADER_TAB_HEIGHT,
+        paddingBottom: GLOBAL_STYLE.COMMENTS_FOOTER_HEIGHT + 30,
     },
-}));
+});
 
 export default Comments;
