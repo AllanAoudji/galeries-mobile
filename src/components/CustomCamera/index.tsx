@@ -113,12 +113,14 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
 
     return (
         <Container>
-            <CameraStyled
-                flashMode={flashMode}
-                margins={margins}
-                ref={cameraRef}
-                type={type}
-            />
+            {mounted.current && (
+                <CameraStyled
+                    flashMode={flashMode}
+                    margins={margins}
+                    ref={cameraRef}
+                    type={type}
+                />
+            )}
             {!!snapShot && <ImageStyled margins={margins} source={source} />}
             {!!onPressBack && <ReturnButton onPress={handlePressBack} />}
             {!snapShot && type === Camera.Constants.Type.back && (

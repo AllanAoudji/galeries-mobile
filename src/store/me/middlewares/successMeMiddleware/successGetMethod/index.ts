@@ -1,10 +1,11 @@
 import { Dispatch } from 'redux';
 
 import { ERROR_MESSAGE } from '#helpers/constants';
+import { dispatchErrorNotification } from '#store/dispatchers';
 import { updateMeId, updateMeStatus } from '#store/me/actionCreators';
 import { resetNotifications } from '#store/notifications/actionCreators';
+import { getMeCurrentProfilePicture } from '#store/profilePictures/actionCreators';
 import { setUsersById } from '#store/users/actionCreators';
-import { dispatchErrorNotification } from '#store/dispatchers';
 
 const successGetMethod = (
     dispatch: Dispatch<Store.Action>,
@@ -19,6 +20,7 @@ const successGetMethod = (
         const notificationsStatus = getState().notifications.status;
         if (notificationsStatus !== 'PENDING' && user.hasNewNotifications)
             dispatch(resetNotifications());
+        dispatch(getMeCurrentProfilePicture());
     } else {
         dispatch(updateMeStatus('ERROR'));
         dispatchErrorNotification(

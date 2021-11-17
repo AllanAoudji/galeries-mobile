@@ -3,6 +3,7 @@ import * as React from 'react';
 import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 import { InteractionManager } from 'react-native';
+import { Camera } from 'expo-camera';
 import {
     AddButton,
     BottomLoader,
@@ -13,6 +14,7 @@ import {
     getProfilePictures,
     selectCurrentUserCurrentProfilePictureStatus,
     selectProfilePicturesAllIds,
+    selectProfilePicturesLoadingPost,
 } from '#store/profilePictures';
 
 import ProfilePictures from './ProfilePictures';
@@ -28,11 +30,13 @@ const ProfilePicturesScreen = ({ current, editScrollY, scrollY }: Props) => {
     const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.ProfileNavigationProp>();
+    const mounted = React.useRef(false);
 
     const profilePicturesAllIds = useSelector(selectProfilePicturesAllIds);
     const profilePicturesStatus = useSelector(
         selectCurrentUserCurrentProfilePictureStatus
     );
+    const loading = useSelector(selectProfilePicturesLoadingPost);
 
     const showBottomLoader = React.useMemo(
         () => profilePicturesStatus === 'LOADING',
@@ -46,8 +50,13 @@ const ProfilePicturesScreen = ({ current, editScrollY, scrollY }: Props) => {
     );
 
     const handlePressAddButton = React.useCallback(() => {
-        navigation.navigate('CreateProfilePictureCamera');
-    }, [navigation]);
+        if (loading !== 'PENDING') return;
+        (async () => {
+            const { status } = await Camera.requestCameraPermissionsAsync();
+            if (status === 'granted' && mounted.current)
+                navigation.navigate('CreateProfilePictureCamera');
+        })();
+    }, [loading, navigation]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -57,6 +66,13 @@ const ProfilePicturesScreen = ({ current, editScrollY, scrollY }: Props) => {
                 });
         }, [profilePicturesStatus])
     );
+
+    React.useEffect(() => {
+        mounted.current = true;
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
 
     return (
         <GalerieTabbarScreenContainer>

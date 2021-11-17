@@ -16,21 +16,33 @@ const getProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
         next(action);
         if (action.type !== PROFILE_PICTURES_GET) return;
 
-        const meId = getState().me.id;
         const userId = action.meta.query ? action.meta.query.userId : undefined;
 
         if (userId) {
-            const status = getState().profilePictures.status[userId];
+            const status =
+                getState().profilePictures.status[userId] || 'PENDING';
             if (status !== 'PENDING') return;
 
             dispatch(updateProfilePicturesStatus(userId, 'LOADING'));
-            if (meId === userId) dispatchGetMeCurrentProfilePicture(dispatch);
-            else dispatchGetUserCurrentProfilePicture(dispatch, userId);
+            if (userId === 'me') {
+                const meId = getState().me.id;
+                if (!meId) return;
+
+                dispatchGetMeCurrentProfilePicture(dispatch, meId);
+            } else dispatchGetUserCurrentProfilePicture(dispatch, userId);
         } else if (typeof action.payload === 'string')
             dispatchGetprofilePicture(dispatch, action.payload);
         else {
-            dispatch(updateProfilePicturesStatus('', 'LOADING'));
-            dispatchGetProfilePictures(dispatch);
+            const { end, previous } = getState().profilePictures;
+            const status = getState().profilePictures.status[''] || 'PENDING';
+            if (end) return;
+            if (status && status.includes('LOADING')) return;
+            if (status === 'REFRESH') return;
+            const newStatus: Store.Status =
+                status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';
+
+            dispatch(updateProfilePicturesStatus('', newStatus));
+            dispatchGetProfilePictures(dispatch, previous);
         }
     };
 

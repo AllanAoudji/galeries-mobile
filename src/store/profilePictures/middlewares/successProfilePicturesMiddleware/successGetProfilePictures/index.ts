@@ -11,6 +11,7 @@ import {
     updateProfilePicturesPrevious,
     updateProfilePicturesStatus,
 } from '#store/profilePictures/actionCreators';
+import { combineProfilePicturesAllIds } from '#store/combineAllIds';
 
 const successGetProfilePictures = async (
     dispatch: Dispatch<Store.Action>,
@@ -125,6 +126,7 @@ const successGetProfilePictures = async (
     }
 
     dispatch(setProfilePicturesById(byId));
+
     const previousProfilePictureId =
         allIds.length > 0 ? allIds[allIds.length - 1] : undefined;
     const previous = previousProfilePictureId
@@ -136,7 +138,16 @@ const successGetProfilePictures = async (
         dispatch(updateProfilePicturesStatus(userId, 'SUCCESS'));
     } else {
         if (profilePicture === undefined) {
-            dispatch(setProfilePicturesAllId(allIds));
+            let oldAllIds: string[];
+            if (action.meta.refresh) oldAllIds = [];
+            else oldAllIds = getState().profilePictures.allIds;
+            const newAllIds = combineProfilePicturesAllIds(
+                getState,
+                oldAllIds,
+                allIds
+            );
+
+            dispatch(setProfilePicturesAllId(newAllIds));
             dispatch(updateProfilePicturesEnd(allIds.length < 20));
             dispatch(updateProfilePicturesPrevious(previous));
         }

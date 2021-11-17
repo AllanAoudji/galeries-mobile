@@ -7,6 +7,7 @@ import {
     updateProfilePicturesId,
     updateProfilePicturesLoadingPost,
 } from '#store/profilePictures/actionCreators';
+import { combineProfilePicturesAllIds } from '#store/combineAllIds';
 
 const successPostProfilePictures = async (
     dispatch: Dispatch<Store.Action>,
@@ -22,7 +23,7 @@ const successPostProfilePictures = async (
     const meId = getState().me.id;
     if (!meId) return;
 
-    const { profilePicture } = action.payload.payload.data;
+    const { profilePicture } = action.payload.data;
     const cropedImagePath = `${FileSystem.cacheDirectory}${profilePicture.cropedImage.id}`;
     const originalImagePath = `${FileSystem.cacheDirectory}${profilePicture.originalImage.id}`;
     let cropedImageCashed = '';
@@ -30,12 +31,12 @@ const successPostProfilePictures = async (
 
     try {
         const cropedImage = await FileSystem.downloadAsync(
-            profilePicture.cropedImage.id,
+            profilePicture.cropedImage.signedUrl,
             cropedImagePath
         );
         cropedImageCashed = cropedImage.uri;
         const originalImage = await FileSystem.downloadAsync(
-            profilePicture.originalImage.id,
+            profilePicture.originalImage.signedUrl,
             originalImagePath
         );
         originalImageCashed = originalImage.uri;
@@ -44,25 +45,29 @@ const successPostProfilePictures = async (
         return;
     }
 
-    const allIds = [profilePicture.id];
     const byId: { [key: string]: Store.Models.ProfilePicture } = {
         [profilePicture.id]: {
             ...profilePicture,
             cropedImage: {
                 ...profilePicture.cropedImage,
-                cropedImageCashed,
+                cachedSignedUrl: cropedImageCashed,
             },
             originalImage: {
                 ...profilePicture.originalImage,
-                originalImageCashed,
+                cachedSignedUrl: originalImageCashed,
             },
         },
     };
-
-    dispatch(setProfilePicturesAllId(allIds));
     dispatch(setProfilePicturesById(byId));
+
+    const oldAllIds = getState().profilePictures.allIds;
+    const newAllIds = combineProfilePicturesAllIds(getState, oldAllIds, [
+        profilePicture.id,
+    ]);
+    dispatch(setProfilePicturesAllId(newAllIds));
+
     dispatch(updateProfilePicturesId(meId, profilePicture.id));
-    updateProfilePicturesLoadingPost('SUCCESS');
+    dispatch(updateProfilePicturesLoadingPost('ERROR'));
 };
 
 export default successPostProfilePictures;

@@ -45,6 +45,14 @@ const ProfilePictures = ({ allIds, current, editScrollY, scrollY }: Props) => {
         [dimension]
     );
 
+    const getItemLayout = React.useCallback(
+        (_, index) => ({
+            length: dimension.width / 2,
+            offset: (dimension.width / 2) * index,
+            index,
+        }),
+        []
+    );
     const handleEndReach = React.useCallback(() => {
         InteractionManager.runAfterInteractions(() => {
             dispatch(getProfilePictures());
@@ -86,8 +94,10 @@ const ProfilePictures = ({ allIds, current, editScrollY, scrollY }: Props) => {
             }
             data={allIds}
             extraData={allIds}
+            getItemLayout={getItemLayout}
             keyExtractor={keyExtractor}
             maxToRenderPerBatch={4}
+            numColumns={2}
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}

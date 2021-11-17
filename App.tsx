@@ -6,8 +6,9 @@ import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 
-import { Notification } from '#components';
+import { Notification, PostingProfilePictures } from '#components';
 import { BottomSheetProvider } from '#contexts/BottomSheetContext';
+import { CreateProfilePictureProvider } from '#contexts/CreateProfilePictureContext';
 import { DeleteCommentModalProvider } from '#contexts/DeleteCommentModalContext';
 import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
 import { DeleteGalerieBlackListModalProvider } from '#contexts/DeleteGalerieBlackListModalContext';
@@ -28,25 +29,28 @@ export default function App() {
             <Provider store={store}>
                 <Loader>
                     <NavigationContainer>
-                        <DeleteFrameModalProvider>
-                            <DeleteGalerieBlackListModalProvider>
-                                <DeleteCommentModalProvider>
-                                    <DeleteGalerieUserModalProvider>
-                                        <DeleteInvitationModalProvider>
-                                            <DeleteNotificationModalProvider>
-                                                <GaleriesSearchProvider>
-                                                    <BottomSheetProvider>
-                                                        <RootStackNavigator />
-                                                        <Notification />
-                                                        <StatusBar style="auto" />
-                                                    </BottomSheetProvider>
-                                                </GaleriesSearchProvider>
-                                            </DeleteNotificationModalProvider>
-                                        </DeleteInvitationModalProvider>
-                                    </DeleteGalerieUserModalProvider>
-                                </DeleteCommentModalProvider>
-                            </DeleteGalerieBlackListModalProvider>
-                        </DeleteFrameModalProvider>
+                        <CreateProfilePictureProvider>
+                            <DeleteFrameModalProvider>
+                                <DeleteGalerieBlackListModalProvider>
+                                    <DeleteCommentModalProvider>
+                                        <DeleteGalerieUserModalProvider>
+                                            <DeleteInvitationModalProvider>
+                                                <DeleteNotificationModalProvider>
+                                                    <GaleriesSearchProvider>
+                                                        <BottomSheetProvider>
+                                                            <RootStackNavigator />
+                                                            <PostingProfilePictures />
+                                                            <Notification />
+                                                            <StatusBar style="auto" />
+                                                        </BottomSheetProvider>
+                                                    </GaleriesSearchProvider>
+                                                </DeleteNotificationModalProvider>
+                                            </DeleteInvitationModalProvider>
+                                        </DeleteGalerieUserModalProvider>
+                                    </DeleteCommentModalProvider>
+                                </DeleteGalerieBlackListModalProvider>
+                            </DeleteFrameModalProvider>
+                        </CreateProfilePictureProvider>
                     </NavigationContainer>
                 </Loader>
             </Provider>
@@ -67,3 +71,4 @@ export default function App() {
 
 // If status === 'ERROR' and allIds = [] || undefined
 // show error, refresh button
+// Change PP status => me/id

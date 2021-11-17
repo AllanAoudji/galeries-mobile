@@ -83,6 +83,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
             currentRouteName === 'CreateFrame' ||
             currentRouteName === 'CreateGalerie' ||
             currentRouteName === 'CreateInvitation' ||
+            currentRouteName === 'CreateProfilePictureCamera' ||
             currentRouteName === 'DeleteGalerie' ||
             currentRouteName === 'Frame' ||
             currentRouteName === 'Invitation' ||

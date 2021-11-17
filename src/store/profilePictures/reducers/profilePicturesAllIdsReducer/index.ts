@@ -19,8 +19,7 @@ const profilePicturesAllIdsReducer = (
         case PROFILE_PICTURES_ALL_ID_RESET:
             return initialState;
         case PROFILE_PICTURES_ALL_ID_SET:
-            if (Array.isArray(action.payload))
-                return [...state, ...action.payload];
+            if (Array.isArray(action.payload)) return action.payload;
             return state;
         default:
             return state;

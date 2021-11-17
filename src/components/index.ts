@@ -27,6 +27,7 @@ export { default as NotificationCard } from './NotificationCard';
 export { default as NotificationCardContainer } from './NotificationCardContainer';
 export { default as NumberTextInput } from './NumberTextInput';
 export { default as Pictogram } from './Pictogram';
+export { default as PostingProfilePictures } from './PostingProfilePictures';
 export { default as ProfilePicture } from './ProfilePicture';
 export { default as ReportRadioButton } from './ReportRadioButton';
 export { default as ReturnButton } from './ReturnButton';

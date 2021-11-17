@@ -76,6 +76,7 @@ const ImageStyled = styled.Image<ImageStyleProps>`
         }px`};
 `;
 const InnerContainer = styled.View<InnerContainerProps>`
+    align-items: center;
     border-color: ${({ theme }) => theme.colors.primary};
     border-radius: ${({ size }) => `${PROFILE_PICTURE_SIZE[size] / 2}px`};
     border-width: ${({ border, size }) => {
@@ -84,6 +85,7 @@ const InnerContainer = styled.View<InnerContainerProps>`
     }};
     height: ${({ size }) => `${PROFILE_PICTURE_SIZE[size]}px`};
     overflow: hidden;
+    justify-content: center;
     width: ${({ size }) => `${PROFILE_PICTURE_SIZE[size]}px`};
 `;
 

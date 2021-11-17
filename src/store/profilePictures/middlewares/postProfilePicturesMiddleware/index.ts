@@ -18,8 +18,8 @@ const postProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
         )
             return;
 
-        dispatch(updateProfilePicturesLoadingPost('LOADING'));
         dispatchPostProfilePicture(dispatch, action.payload);
+        dispatch(updateProfilePicturesLoadingPost('LOADING'));
     };
 
 export default postProfilePicturesMiddleware;
