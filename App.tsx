@@ -59,6 +59,9 @@ export default function App() {
 }
 
 // TODO:
+// Animate add button
+// select camera or galerie to post PP
+
 // Header on Comment/Likes
 // Profile Screen
 // Change email/password/delete account

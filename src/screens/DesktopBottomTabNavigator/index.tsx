@@ -13,6 +13,8 @@ import CreateFrameScreen from './CreateFrameScreen';
 import CreateGalerieScreen from './CreateGalerieScreen';
 import CreateInvitationScreen from './CreateInvitationScreen';
 import CreateProfilePictureCameraScreen from './CreateProfilePictureCameraScreen';
+import CreateProfilePictureGalerieHeader from './CreateProfilePictureGalerieHeader';
+import CreateProfilePictureGalerieScreen from './CreateProfilePictureGalerieScreen';
 import DeleteGalerieScreen from './DeleteGalerieScreen';
 import FrameScreen from './FrameScreen';
 import GalerieScreen from './GalerieScreen';
@@ -67,6 +69,13 @@ const createInvitationScreenHeader = () => (
 );
 const createInvitationScreenOption: BottomTabNavigationOptions = {
     header: createInvitationScreenHeader,
+    headerShown: true,
+};
+const createProfilePictureScreenHeader = () => (
+    <CreateProfilePictureGalerieHeader />
+);
+const createProfilePictureGalerieScreenOption: BottomTabNavigationOptions = {
+    header: createProfilePictureScreenHeader,
     headerShown: true,
 };
 const galeriesScreenHeader = () => <GaleriesHeader />;
@@ -181,6 +190,11 @@ const DesktopBottomTabNavigator = () => {
             <Tab.Screen
                 component={CreateProfilePictureCameraScreen}
                 name="CreateProfilePictureCamera"
+            />
+            <Tab.Screen
+                component={CreateProfilePictureGalerieScreen}
+                name="CreateProfilePictureGalerie"
+                options={createProfilePictureGalerieScreenOption}
             />
             <Tab.Screen component={DeleteGalerieScreen} name="DeleteGalerie" />
             <Tab.Screen component={FrameScreen} name="Frame" />

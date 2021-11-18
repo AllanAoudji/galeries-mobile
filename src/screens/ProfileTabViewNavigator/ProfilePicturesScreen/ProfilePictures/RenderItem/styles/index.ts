@@ -15,8 +15,8 @@ const Container = styled.View<ContainerProps>`
 `;
 
 const StyledImage = styled.Image<StyledImageProps>`
-    height: ${({ size }) => `${size - 4}px`};
-    width: ${({ size }) => `${size - 4}px`};
+    height: ${({ size }) => `${size - 5}px`};
+    width: ${({ size }) => `${size - 5}px`};
 `;
 
 export { Container, StyledImage };

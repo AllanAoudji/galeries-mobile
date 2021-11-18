@@ -49,6 +49,7 @@ declare global {
                 CreateGalerie: undefined;
                 CreateInvitation: undefined;
                 CreateProfilePictureCamera: undefined;
+                CreateProfilePictureGalerie: undefined;
                 DeleteGalerie: undefined;
                 Frame: undefined;
                 Galerie: undefined;
@@ -89,6 +90,11 @@ declare global {
                 BottomTabNavigationProp<
                     ParamList,
                     'CreateProfilePictureCamera'
+                >;
+            type CreateProfilePictureGalerieNavigationProp =
+                BottomTabNavigationProp<
+                    ParamList,
+                    'CreateProfilePictureGalerie'
                 >;
             type DeleteGalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,

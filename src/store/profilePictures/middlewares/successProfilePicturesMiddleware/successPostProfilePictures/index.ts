@@ -67,7 +67,7 @@ const successPostProfilePictures = async (
     dispatch(setProfilePicturesAllId(newAllIds));
 
     dispatch(updateProfilePicturesId(meId, profilePicture.id));
-    dispatch(updateProfilePicturesLoadingPost('ERROR'));
+    dispatch(updateProfilePicturesLoadingPost('SUCCESS'));
 };
 
 export default successPostProfilePictures;

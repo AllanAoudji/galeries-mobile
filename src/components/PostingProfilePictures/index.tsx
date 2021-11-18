@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 import {
-    cancelAnimation,
     interpolate,
     interpolateColor,
     runOnJS,
@@ -104,7 +103,7 @@ const PostingProfilePictures = () => {
             state.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(600), () => {
                 runOnJS(removePicture)();
             });
-            cancelAnimation(rotate);
+            rotate.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(1200));
         } else if (loading === 'ERROR') {
             rotate.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(1200));
         }

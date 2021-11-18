@@ -121,4 +121,4 @@ const style: ({ minHeight }: { minHeight: number }) => {
     },
 }));
 
-export default ProfilePictures;
+export default React.memo(ProfilePictures);
