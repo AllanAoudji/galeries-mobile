@@ -12,11 +12,13 @@ export const CreateProfilePictureContext = React.createContext<{
     pictureUri: string | null;
     repost: () => void;
     removePicture: () => void;
+    setPicture: (uri: string) => void;
 }>({
     addPicture: () => {},
     pictureUri: null,
     repost: () => {},
     removePicture: () => {},
+    setPicture: () => {},
 });
 
 export const CreateProfilePictureProvider: React.FC<{}> = ({ children }) => {
@@ -62,6 +64,10 @@ export const CreateProfilePictureProvider: React.FC<{}> = ({ children }) => {
     const removePicture = React.useCallback(() => {
         setPictureUri(null);
     }, []);
+    const setPicture = React.useCallback(
+        (uri: string) => setPictureUri(uri),
+        []
+    );
 
     React.useEffect(() => {
         if (loading === 'SUCCESS') {
@@ -76,6 +82,7 @@ export const CreateProfilePictureProvider: React.FC<{}> = ({ children }) => {
                 pictureUri,
                 repost,
                 removePicture,
+                setPicture,
             }}
         >
             {children}
