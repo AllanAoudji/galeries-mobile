@@ -3,6 +3,7 @@ import { Middleware } from 'redux';
 import {
     dispatchGetFrame,
     dispatchGetFrames,
+    dispatchGetFramesMe,
     dispatchGetGalerieFrames,
     dispatchGetNotificationFrames,
 } from '#store/dispatchers';
@@ -29,6 +30,7 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
         const galerieId = action.meta.query
             ? action.meta.query.galerieId
             : undefined;
+        const userId = action.meta.query ? action.meta.query.userId : undefined;
 
         if (frameId) dispatchGetFrame(dispatch, action.payload);
         else if (galerieId) {
@@ -52,6 +54,18 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
 
             dispatch(updateGalerieFramesStatus(notificationId, 'LOADING'));
             dispatchGetNotificationFrames(dispatch, notificationId);
+        } else if (userId) {
+            const meId = getState().me.id;
+            if (meId === userId) {
+                const end = getState().frames.end[userId] || false;
+                const status = getState().frames.status[userId] || 'PENDING';
+                const previous = getState().frames.previous[userId];
+                if (end) return;
+                if (status === 'LOADING') return;
+
+                dispatch(updateGalerieFramesStatus(userId, 'LOADING'));
+                dispatchGetFramesMe(dispatch, previous);
+            }
         } else {
             const end = getState().frames.end[''];
             const status = getState().frames.status[''] || 'PENDING';

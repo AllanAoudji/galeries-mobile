@@ -14,6 +14,7 @@ export { default as dispatchGetFrameComments } from './dispatchGetFrameComments'
 export { default as dispatchGetFrameGaleriePictures } from './dispatchGetFrameGaleriePictures';
 export { default as dispatchGetFrameLikes } from './dispatchGetFrameLikes';
 export { default as dispatchGetFrames } from './dispatchGetFrames';
+export { default as dispatchGetFramesMe } from './dispatchGetFramesMe';
 export { default as dispatchGetGalerie } from './dispatchGetGalerie';
 export { default as dispatchGetGalerieBlackList } from './dispatchGetGalerieBlackList';
 export { default as dispatchGetGalerieBlackLists } from './dispatchGetGalerieBlackLists';
