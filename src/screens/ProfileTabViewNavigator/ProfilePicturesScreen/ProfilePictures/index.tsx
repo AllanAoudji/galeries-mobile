@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
@@ -83,6 +84,17 @@ const ProfilePictures = ({ allIds, current, editScrollY, scrollY }: Props) => {
     React.useEffect(() => {
         if (current) editScrollY(0);
     }, []);
+
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                if (flatListRef.current && current) {
+                    flatListRef.current.scrollToOffset({ offset: 0 });
+                }
+            },
+            [current]
+        )
+    );
 
     return (
         <AnimatedFlatList

@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { useSharedValue } from 'react-native-reanimated';
 import {
@@ -98,6 +99,26 @@ const ProfileTabViewNavigator = () => {
             }
         ) => <Header scrollY={scrollY} {...props} />,
         []
+    );
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!navigationState) {
+                setNavigationState({
+                    index: 0,
+                    routes,
+                });
+            }
+        }, [navigationState])
+    );
+
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                setCurrentRoute('profilePictures');
+            },
+            []
+        )
     );
 
     return (
