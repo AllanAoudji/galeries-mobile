@@ -77,7 +77,10 @@ const successGetProfilePictures = async (
                     };
                 })
             );
-        else if (profilePicture && typeof profilePicture === 'object') {
+        else if (
+            profilePicture !== null &&
+            typeof profilePicture === 'object'
+        ) {
             const cropedImagePath = `${FileSystem.cacheDirectory}${profilePicture.cropedImage.id}`;
             const originalImagePath = `${FileSystem.cacheDirectory}${profilePicture.originalImage.id}`;
             let cropedImageCashed = '';
@@ -87,7 +90,7 @@ const successGetProfilePictures = async (
             if (cropedImage.exists) cropedImageCashed = cropedImage.uri;
             else {
                 const newImage = await FileSystem.downloadAsync(
-                    profilePicture.cropedImage.id,
+                    profilePicture.cropedImage.signedUrl,
                     cropedImagePath
                 );
                 cropedImageCashed = newImage.uri;
@@ -98,7 +101,7 @@ const successGetProfilePictures = async (
             if (originalImage.exists) originalImageCashed = originalImage.uri;
             else {
                 const newImage = await FileSystem.downloadAsync(
-                    profilePicture.originalImage.id,
+                    profilePicture.originalImage.signedUrl,
                     originalImagePath
                 );
                 originalImageCashed = newImage.uri;
@@ -118,6 +121,7 @@ const successGetProfilePictures = async (
             };
         }
     } catch (err) {
+        console.log(err);
         dispatchErrorNotification(
             dispatch,
             ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE
