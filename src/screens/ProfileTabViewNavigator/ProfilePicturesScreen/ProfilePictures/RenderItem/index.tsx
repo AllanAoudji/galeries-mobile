@@ -1,10 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useWindowDimensions } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
-import { selectProfilePicture } from '#store/profilePictures';
+import {
+    selectProfilePicture,
+    updateProfilePicturesCurrent,
+} from '#store/profilePictures';
 
 import DeleteProfilePictureButton from './DeleteProfilePictureButton';
 import PutProfilePictureButton from './PutProfilePictureButton';
@@ -17,6 +20,7 @@ type Props = {
 
 const RenderItem = ({ item }: Props) => {
     const dimension = useWindowDimensions();
+    const dispatch = useDispatch();
     const navigation =
         useNavigation<Screen.DesktopBottomTab.ProfileNavigationProp>();
 
@@ -50,8 +54,10 @@ const RenderItem = ({ item }: Props) => {
         openBottomSheet(bottomSheetContent);
     }, [bottomSheetContent, openBottomSheet]);
     const handlePress = React.useCallback(() => {
+        if (!profilePicture) return;
         navigation.navigate('ProfilePicture');
-    }, [navigation]);
+        dispatch(updateProfilePicturesCurrent(profilePicture.id));
+    }, [navigation, profilePicture]);
 
     if (!profilePicture) return null;
 

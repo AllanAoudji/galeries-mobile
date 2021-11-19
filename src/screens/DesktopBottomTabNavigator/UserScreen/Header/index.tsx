@@ -1,11 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { Pressable, useWindowDimensions } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
 import { GalerieCoverPicture, ProfilePicture, ReturnButton } from '#components';
-import { selectUserCurrentProfilePictureId } from '#store/profilePictures';
+import {
+    selectUserCurrentProfilePictureId,
+    updateProfilePicturesCurrent,
+} from '#store/profilePictures';
 
 import {
     Container,
@@ -21,6 +24,7 @@ type Props = {
 
 const Header = ({ galerie, user }: Props) => {
     const dimension = useWindowDimensions();
+    const dispatch = useDispatch();
     const navigation = useNavigation<Screen.DesktopBottomTab.UserScreen>();
     const theme = useTheme();
 
@@ -38,7 +42,10 @@ const Header = ({ galerie, user }: Props) => {
     );
 
     const handlePressProfilePicture = React.useCallback(() => {
-        if (currentProfilePictureId) navigation.navigate('ProfilePicture');
+        if (currentProfilePictureId) {
+            dispatch(updateProfilePicturesCurrent(currentProfilePictureId));
+            navigation.navigate('ProfilePicture');
+        }
     }, [currentProfilePictureId, navigation]);
     const handlePressReturn = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();

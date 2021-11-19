@@ -12,10 +12,10 @@ const profilePicturesStatusSelector = (state: Store.Reducer) =>
 const usersCurrentSelector = (state: Store.Reducer) => state.me.id;
 
 export const selectCurrentProfilepictureId = createSelector(
-    [profilePicturesIdSelector, profilePicturesCurrentSelector],
-    (profilePicturesId, profilePicturesCurrent) => {
+    [profliePicturesById, profilePicturesCurrentSelector],
+    (profilePicturesById, profilePicturesCurrent) => {
         if (!profilePicturesCurrent) return undefined;
-        return profilePicturesId[profilePicturesCurrent];
+        return profilePicturesById[profilePicturesCurrent];
     }
 );
 export const selectCurrentProfilePictureStatus = createSelector(

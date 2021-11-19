@@ -3,7 +3,7 @@ import {
     removeProfilePicturesId,
     updateProfilePicturesId,
     updateProfilePicturesLoadingPut,
-} from '#store/profilePictures';
+} from '#store/profilePictures/actionCreators';
 
 const successPutMethod = (
     dispatch: Dispatch<Store.Action>,
