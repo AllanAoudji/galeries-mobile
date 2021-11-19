@@ -48,7 +48,6 @@ const EmptyScrollView = () => {
                 <RefreshControl
                     colors={colors}
                     onRefresh={handleRefresh}
-                    progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
                     progressBackgroundColor={theme.colors['secondary-light']}
                     refreshing={refreshing}
                 />

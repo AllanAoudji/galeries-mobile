@@ -94,7 +94,6 @@ const Galeries = ({ allIds }: Props) => {
                     colors={colors}
                     onRefresh={handleRefresh}
                     progressBackgroundColor={theme.colors.secondary}
-                    progressViewOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
                     refreshing={refreshing}
                 />
             }
