@@ -136,25 +136,22 @@ const successGetProfilePictures = async (
         ? byId[previousProfilePictureId].autoIncrementId
         : undefined;
 
-    if (id && userId) {
-        dispatch(updateProfilePicturesId(userId, id));
+    if (userId) {
+        if (id) dispatch(updateProfilePicturesId(userId, id));
         dispatch(updateProfilePicturesStatus(userId, 'SUCCESS'));
-    } else {
-        if (profilePicture === undefined) {
-            let oldAllIds: string[];
-            if (action.meta.refresh) oldAllIds = [];
-            else oldAllIds = getState().profilePictures.allIds;
-            const newAllIds = combineProfilePicturesAllIds(
-                getState,
-                oldAllIds,
-                allIds
-            );
+    } else if (profilePicture === undefined) {
+        let oldAllIds: string[];
+        if (action.meta.refresh) oldAllIds = [];
+        else oldAllIds = getState().profilePictures.allIds;
+        const newAllIds = combineProfilePicturesAllIds(
+            getState,
+            oldAllIds,
+            allIds
+        );
 
-            dispatch(setProfilePicturesAllId(newAllIds));
-            dispatch(updateProfilePicturesEnd(allIds.length < 20));
-            dispatch(updateProfilePicturesPrevious(previous));
-        }
-
+        dispatch(setProfilePicturesAllId(newAllIds));
+        dispatch(updateProfilePicturesEnd(allIds.length < 20));
+        dispatch(updateProfilePicturesPrevious(previous));
         dispatch(updateProfilePicturesStatus('', 'SUCCESS'));
     }
 };
