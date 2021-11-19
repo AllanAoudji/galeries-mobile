@@ -20,13 +20,12 @@ import EmptyScrollView from './EmptyScrollView';
 
 type Props = {
     current: boolean;
-    editScrollY: (offsetY: number) => void;
+    editScrollY: (offsetY: number, withAnimation?: boolean) => void;
     scrollY: Animated.SharedValue<number>;
 };
 
 const ProfilePicturesScreen = ({ current, editScrollY, scrollY }: Props) => {
     const dispatch = useDispatch();
-    const mounted = React.useRef(false);
 
     const profilePicturesAllIds = useSelector(selectProfilePicturesAllIds);
     const profilePicturesStatus = useSelector(
@@ -46,17 +45,10 @@ const ProfilePicturesScreen = ({ current, editScrollY, scrollY }: Props) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (profilePicturesStatus === 'PENDING')
+            if (current && profilePicturesStatus === 'PENDING')
                 dispatch(getProfilePictures());
-        }, [profilePicturesStatus])
+        }, [current, profilePicturesStatus])
     );
-
-    React.useEffect(() => {
-        mounted.current = true;
-        return () => {
-            mounted.current = false;
-        };
-    }, []);
 
     return (
         <GalerieTabbarScreenContainer>

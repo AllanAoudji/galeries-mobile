@@ -63,8 +63,11 @@ const getFramesMiddleware: Middleware<{}, Store.Reducer> =
                 if (end) return;
                 if (status === 'LOADING') return;
 
-                dispatch(updateGalerieFramesStatus(userId, 'LOADING'));
-                dispatchGetFramesMe(dispatch, previous);
+                const newStatus: Store.Status =
+                    status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';
+
+                dispatch(updateGalerieFramesStatus(userId, newStatus));
+                dispatchGetFramesMe(dispatch, meId, previous);
             }
         } else {
             const end = getState().frames.end[''];

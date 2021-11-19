@@ -59,7 +59,7 @@ const EmptyScrollView = ({ current, editScrollY, scrollY }: Props) => {
             showsVerticalScrollIndicator={false}
         >
             <InnerContainer height={dimension.height + ProfileTabViewMaxScroll}>
-                <EmptyMessage text="You don't have any profile picture yet. Click on the + button to post a new one" />
+                <EmptyMessage text="You don't have posted any frames yet." />
             </InnerContainer>
         </StyledAnimatedScrollView>
     );

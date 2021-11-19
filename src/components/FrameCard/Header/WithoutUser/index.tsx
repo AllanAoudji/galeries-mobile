@@ -3,7 +3,8 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGalerie, updateGaleriesCurrent } from '#store/galeries';
 import { Container } from './styles';
-import { GalerieCoverPicture, Typography } from '#components';
+import Typography from '#components/Typography';
+import GalerieCoverPicture from '#components/GalerieCoverPicture';
 import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
@@ -19,7 +20,7 @@ const WithoutUser = ({ frame }: Props) => {
     >();
 
     const galerieSelector = React.useMemo(
-        () => selectGalerie(frame.userId),
+        () => selectGalerie(frame.galerieId),
         [frame]
     );
     const galerie = useSelector(galerieSelector);
@@ -36,6 +37,7 @@ const WithoutUser = ({ frame }: Props) => {
             <GalerieCoverPicture
                 borderRadius={5}
                 galerie={galerie}
+                mr="smallest"
                 size={GLOBAL_STYLE.FRAME_COVER_PICTURE_SIZE}
             />
             <Typography fontFamily="light">Posted on </Typography>

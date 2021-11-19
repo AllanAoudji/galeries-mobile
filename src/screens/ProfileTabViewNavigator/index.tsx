@@ -1,6 +1,5 @@
-import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { useSharedValue } from 'react-native-reanimated';
+import { useSharedValue, withTiming } from 'react-native-reanimated';
 import {
     NavigationState,
     Route,
@@ -18,6 +17,7 @@ import ProfilePicturesScreen from './ProfilePicturesScreen';
 import AbsoluteHeader from './AbsoluteHeader';
 
 import { Container } from './styles';
+import { ANIMATIONS } from '#helpers/constants';
 
 const routes = [
     { key: 'profilePictures', title: 'Profile Pictures' },
@@ -26,11 +26,20 @@ const routes = [
 
 const ProfileTabViewNavigator = () => {
     const scrollY = useSharedValue(0);
-    const editScrollY = React.useCallback((offsetY: number) => {
-        'worklet';
+    const editScrollY = React.useCallback(
+        (offsetY: number, withAnimattion?: boolean) => {
+            'worklet';
 
-        scrollY.value = clamp(offsetY, 0, ProfileTabViewMaxScroll);
-    }, []);
+            if (withAnimattion) {
+                scrollY.value = withTiming(
+                    clamp(offsetY, 0, ProfileTabViewMaxScroll),
+                    ANIMATIONS.TIMING_CONFIG()
+                );
+            }
+            scrollY.value = clamp(offsetY, 0, ProfileTabViewMaxScroll);
+        },
+        []
+    );
 
     const [currentRoute, setCurrentRoute] =
         React.useState<string>('profilePictures');
@@ -99,26 +108,6 @@ const ProfileTabViewNavigator = () => {
             }
         ) => <Header scrollY={scrollY} {...props} />,
         []
-    );
-
-    useFocusEffect(
-        React.useCallback(() => {
-            if (!navigationState) {
-                setNavigationState({
-                    index: 0,
-                    routes,
-                });
-            }
-        }, [navigationState])
-    );
-
-    useFocusEffect(
-        React.useCallback(
-            () => () => {
-                setCurrentRoute('profilePictures');
-            },
-            []
-        )
     );
 
     return (

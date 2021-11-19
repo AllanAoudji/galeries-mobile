@@ -1,4 +1,3 @@
-import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
@@ -8,17 +7,19 @@ import {
     useWindowDimensions,
     ViewStyle,
 } from 'react-native';
+
 import Animated, {
     runOnJS,
     useAnimatedReaction,
     useAnimatedScrollHandler,
 } from 'react-native-reanimated';
-import { useDispatch } from 'react-redux';
-import ProfileTabViewMaxScroll from '#helpers/ProfileTabViewMaxScroll';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectMeId } from '#store/me';
+import { getUserFrames } from '#store/frames';
 
 import RenderItem from './RenderItem';
-import { getProfilePictures } from '#store/profilePictures';
 import { GLOBAL_STYLE } from '#helpers/constants';
+import ProfileTabViewMaxScroll from '#helpers/ProfileTabViewMaxScroll';
 
 type Props = {
     allIds: string[];
@@ -32,11 +33,13 @@ const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const ProfilePictures = ({ allIds, current, editScrollY, scrollY }: Props) => {
+const Frames = ({ allIds, current, editScrollY, scrollY }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
 
     const flatListRef = React.useRef<FlatList | null>(null);
+
+    const meId = useSelector(selectMeId);
 
     const styleProps = React.useMemo(
         () => ({
@@ -45,17 +48,10 @@ const ProfilePictures = ({ allIds, current, editScrollY, scrollY }: Props) => {
         [dimension]
     );
 
-    const getItemLayout = React.useCallback(
-        (_, index) => ({
-            length: dimension.width / 2,
-            offset: (dimension.width / 2) * index,
-            index,
-        }),
-        []
-    );
     const handleEndReach = React.useCallback(() => {
-        dispatch(getProfilePictures());
-    }, []);
+        if (!meId) return;
+        dispatch(getUserFrames(meId));
+    }, [meId]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {
@@ -65,6 +61,7 @@ const ProfilePictures = ({ allIds, current, editScrollY, scrollY }: Props) => {
         },
         [current]
     );
+
     useAnimatedReaction(
         () => scrollY.value,
         (newScrollY) => {
@@ -82,19 +79,10 @@ const ProfilePictures = ({ allIds, current, editScrollY, scrollY }: Props) => {
     );
 
     React.useEffect(() => {
-        if (current) editScrollY(0, true);
+        if (current) {
+            editScrollY(0, true);
+        }
     }, []);
-
-    useFocusEffect(
-        React.useCallback(
-            () => () => {
-                if (flatListRef.current && current) {
-                    flatListRef.current.scrollToOffset({ offset: 0 });
-                }
-            },
-            [current]
-        )
-    );
 
     return (
         <AnimatedFlatList
@@ -103,10 +91,8 @@ const ProfilePictures = ({ allIds, current, editScrollY, scrollY }: Props) => {
             }
             data={allIds}
             extraData={allIds}
-            getItemLayout={getItemLayout}
             keyExtractor={keyExtractor}
             maxToRenderPerBatch={4}
-            numColumns={2}
             onEndReached={handleEndReach}
             onEndReachedThreshold={0.2}
             onScroll={scrollHandler}
@@ -126,8 +112,9 @@ const style: ({ minHeight }: { minHeight: number }) => {
         paddingBottom: GLOBAL_STYLE.BOTTOM_TAB_HEIGHT,
         paddingTop:
             GLOBAL_STYLE.PROFILE_TAB_BAR_INFOS +
-            GLOBAL_STYLE.PROFILE_TAB_BAR_MENU,
+            GLOBAL_STYLE.PROFILE_TAB_BAR_MENU +
+            15,
     },
 }));
 
-export default React.memo(ProfilePictures);
+export default Frames;

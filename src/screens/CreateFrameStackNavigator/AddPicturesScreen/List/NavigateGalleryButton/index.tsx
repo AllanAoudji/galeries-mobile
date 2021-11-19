@@ -16,9 +16,9 @@ const NavigateGalleryButton = () => {
     const handlePress = React.useCallback(() => {
         (async () => {
             const { status } = await MediaLibrary.requestPermissionsAsync();
+            if (!mounted.current) return;
             closeBottomSheet();
-            if (status === 'granted' && mounted.current)
-                navigation.navigate('CreateFrameGallery');
+            if (status === 'granted') navigation.navigate('CreateFrameGallery');
         })();
     }, [closeBottomSheet]);
 

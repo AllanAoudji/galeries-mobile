@@ -78,6 +78,7 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
                     uri,
                     [{ flip: ImageManipulator.FlipType.Horizontal }]
                 );
+                if (!mounted.current) return;
                 setSnapshot(photoFliped.uri);
             } else setSnapshot(uri);
         }
