@@ -12,7 +12,7 @@ const RenderItem = ({ item }: Props) => {
     const frameSelector = React.useMemo(() => selectFrame(item), [item]);
     const frame = useSelector(frameSelector);
 
-    return <FrameCard frame={frame} showGalerie />;
+    return <FrameCard frame={frame} />;
 };
 
 export default React.memo(RenderItem);
