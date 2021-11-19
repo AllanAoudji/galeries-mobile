@@ -7,6 +7,7 @@ import successDefaultMethod from './successDefaultMethod';
 import successDeleteProfilePicture from './successDeleteProfilePicture';
 import successGetProfilePictures from './successGetProfilePictures';
 import successPostProfilePictures from './successPostProfilePictures';
+import successPutMethod from './successPutMethod';
 
 const successProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>
@@ -25,6 +26,9 @@ const successProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
                 break;
             case 'POST':
                 await successPostProfilePictures(dispatch, getState, action);
+                break;
+            case 'PUT':
+                successPutMethod(dispatch, getState, action);
                 break;
             default:
                 successDefaultMethod(dispatch);

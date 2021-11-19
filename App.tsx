@@ -15,6 +15,7 @@ import { DeleteGalerieBlackListModalProvider } from '#contexts/DeleteGalerieBlac
 import { DeleteGalerieUserModalProvider } from '#contexts/DeleteGalerieUserModalContext';
 import { DeleteInvitationModalProvider } from '#contexts/DeleteInvitationModalContext';
 import { DeleteNotificationModalProvider } from '#contexts/DeleteNotificationModalContext';
+import { DeleteProfilePictureModalProvider } from '#contexts/DeleteProfilePictureModalContext';
 import { GaleriesSearchProvider } from '#contexts/GaleriesSearchContext';
 import ThemeProvider from '#contexts/ThemeContext';
 import Loader from '#helpers/Loader';
@@ -36,14 +37,16 @@ export default function App() {
                                         <DeleteGalerieUserModalProvider>
                                             <DeleteInvitationModalProvider>
                                                 <DeleteNotificationModalProvider>
-                                                    <GaleriesSearchProvider>
-                                                        <BottomSheetProvider>
-                                                            <RootStackNavigator />
-                                                            <PostingProfilePictures />
-                                                            <Notification />
-                                                            <StatusBar style="auto" />
-                                                        </BottomSheetProvider>
-                                                    </GaleriesSearchProvider>
+                                                    <DeleteProfilePictureModalProvider>
+                                                        <GaleriesSearchProvider>
+                                                            <BottomSheetProvider>
+                                                                <RootStackNavigator />
+                                                                <PostingProfilePictures />
+                                                                <Notification />
+                                                                <StatusBar style="auto" />
+                                                            </BottomSheetProvider>
+                                                        </GaleriesSearchProvider>
+                                                    </DeleteProfilePictureModalProvider>
                                                 </DeleteNotificationModalProvider>
                                             </DeleteInvitationModalProvider>
                                         </DeleteGalerieUserModalProvider>

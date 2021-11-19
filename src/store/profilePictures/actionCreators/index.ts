@@ -18,9 +18,12 @@ import {
     PROFILE_PICTURES_LOADING_DELETE_UPDATE,
     PROFILE_PICTURES_LOADING_POST_RESET,
     PROFILE_PICTURES_LOADING_POST_UPDATE,
+    PROFILE_PICTURES_LOADING_PUT_RESET,
+    PROFILE_PICTURES_LOADING_PUT_UPDATE,
     PROFILE_PICTURES_POST,
     PROFILE_PICTURES_PREVIOUS_RESET,
     PROFILE_PICTURES_PREVIOUS_UPDATE,
+    PROFILE_PICTURES_PUT,
     PROFILE_PICTURES_RESET,
     PROFILE_PICTURES_STATUS_RESET,
     PROFILE_PICTURES_STATUS_UPDATE,
@@ -63,6 +66,13 @@ export const postProfilePicture: (payload: FormData) => Store.Action = (
     meta: {},
     payload,
     type: PROFILE_PICTURES_POST,
+});
+export const putProfilePicture: (profilePictureId: string) => Store.Action = (
+    profilePictureId
+) => ({
+    meta: { query: { profilePictureId } },
+    payload: {},
+    type: PROFILE_PICTURES_PUT,
 });
 export const removeProfilePicturesAllId: (payload: string) => Store.Action = (
     payload
@@ -125,6 +135,11 @@ export const resetProfilePicturesLoadingPost: () => Store.Action = () => ({
     payload: {},
     type: PROFILE_PICTURES_LOADING_POST_RESET,
 });
+export const resetProfilePicturesLoadingPut: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: PROFILE_PICTURES_LOADING_PUT_RESET,
+});
 export const resetProfilePicturesPrevious: () => Store.Action = () => ({
     meta: {},
     payload: {},
@@ -184,6 +199,13 @@ export const updateProfilePicturesLoadingPost: (
     meta: {},
     payload,
     type: PROFILE_PICTURES_LOADING_POST_UPDATE,
+});
+export const updateProfilePicturesLoadingPut: (
+    payload: Store.Status
+) => Store.Action = (payload) => ({
+    meta: {},
+    payload,
+    type: PROFILE_PICTURES_LOADING_PUT_UPDATE,
 });
 export const updateProfilePicturesPrevious: (payload?: string) => Store.Action =
     (payload) => ({

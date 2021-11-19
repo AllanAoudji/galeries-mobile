@@ -29,7 +29,9 @@ const DeleteFrameButton = ({ frame, me }: Props) => {
     if (!galerie || !me) return null;
     if (frame.userId !== me.id && galerie.role === 'user') return null;
 
-    return <BottomSheetButton onPress={handlePress} title="delete frame..." />;
+    return (
+        <BottomSheetButton onPress={handlePress} title="delete this frame..." />
+    );
 };
 
 export default React.memo(DeleteFrameButton);

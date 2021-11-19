@@ -83,3 +83,5 @@ export const selectProfilePicturesLoadingDelete = (state: Store.Reducer) =>
     state.profilePictures.loading.delete;
 export const selectProfilePicturesLoadingPost = (state: Store.Reducer) =>
     state.profilePictures.loading.post;
+export const selectProfilePicturesLoadingPut = (state: Store.Reducer) =>
+    state.profilePictures.loading.put;

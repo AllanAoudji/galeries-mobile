@@ -7,7 +7,7 @@ type StyledImageProps = {
     size: number;
 };
 
-const Container = styled.View<ContainerProps>`
+const Container = styled.Pressable<ContainerProps>`
     align-items: center;
     height: ${({ size }) => `${size}px`};
     justify-content: center;

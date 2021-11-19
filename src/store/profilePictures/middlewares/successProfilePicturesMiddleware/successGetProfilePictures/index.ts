@@ -121,7 +121,6 @@ const successGetProfilePictures = async (
             };
         }
     } catch (err) {
-        console.log(err);
         dispatchErrorNotification(
             dispatch,
             ERROR_MESSAGE.DEFAULT_ERROR_MESSAGE

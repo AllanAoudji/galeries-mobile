@@ -391,6 +391,7 @@ declare global {
                 loading: {
                     delete: Store.Status;
                     post: Store.Status;
+                    put: Store.Status;
                 };
                 previous: string;
                 status: { [key: string]: Store.Status };

@@ -31,6 +31,7 @@ const successDeleteProfilePicture = (
         if (getState().profilePictures.id[profilePicture.userId]) {
             dispatch(removeProfilePicturesId(profilePicture.userId));
         }
+        dispatch(removeProfilePicturesAllId(profilePicture.id));
     }
 
     dispatch(updateProfilePicturesLoadingDelete('SUCCESS'));
