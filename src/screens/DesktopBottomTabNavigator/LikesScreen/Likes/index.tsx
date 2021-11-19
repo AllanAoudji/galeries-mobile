@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
-    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StyleSheet,
@@ -52,16 +51,12 @@ const Likes = ({ allIds, frameId }: Props) => {
 
     const handleEndReach = React.useCallback(() => {
         if (status && !status.includes('LOADING') && status !== 'REFRESH')
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(getFrameLikes(frameId));
-            });
+            dispatch(getFrameLikes(frameId));
     }, [frameId, status]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
         if (status && !status.includes('LOADING') && status !== 'REFRESH')
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(refreshFrameLikes(frameId));
-            });
+            dispatch(refreshFrameLikes(frameId));
     }, [frameId, status]);
     const getItemLayout = React.useCallback(
         (_, index) => ({
@@ -82,9 +77,7 @@ const Likes = ({ allIds, frameId }: Props) => {
     useFocusEffect(
         React.useCallback(() => {
             if (!status || status === 'PENDING')
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch(getFrameLikes(frameId));
-                });
+                dispatch(getFrameLikes(frameId));
         }, [frameId, status])
     );
 

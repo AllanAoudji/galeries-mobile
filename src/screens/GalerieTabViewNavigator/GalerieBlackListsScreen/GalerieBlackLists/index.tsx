@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
-    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StyleProp,
@@ -74,17 +73,11 @@ const GalerieBlackLists = ({
     );
 
     const handleEndReach = React.useCallback(() => {
-        if (galerie)
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(getGalerieBlackLists(galerie.id));
-            });
+        if (galerie) dispatch(getGalerieBlackLists(galerie.id));
     }, [galerie]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (galerie)
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(refreshGalerieBlackLists(galerie.id));
-            });
+        if (galerie) dispatch(refreshGalerieBlackLists(galerie.id));
     }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(

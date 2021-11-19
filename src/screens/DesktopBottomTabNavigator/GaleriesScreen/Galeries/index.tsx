@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
-    InteractionManager,
     Keyboard,
     ListRenderItemInfo,
     RefreshControl,
@@ -49,16 +48,12 @@ const Galeries = ({ allIds }: Props) => {
 
     const handleEndReached = React.useCallback(() => {
         if (status.includes('LOADING') || status === 'REFRESH') return;
-        InteractionManager.runAfterInteractions(() => {
-            dispatch(getGaleries(filterGaleriesName));
-        });
+        dispatch(getGaleries(filterGaleriesName));
     }, [filterGaleriesName, status]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
         if (status.includes('LOADING') || status === 'REFRESH') return;
-        InteractionManager.runAfterInteractions(() => {
-            dispatch(refreshGaleries(filterGaleriesName));
-        });
+        dispatch(refreshGaleries(filterGaleriesName));
     }, [filterGaleriesName, status]);
     const handleScrollBeginDrag = React.useCallback(
         () => Keyboard.dismiss(),

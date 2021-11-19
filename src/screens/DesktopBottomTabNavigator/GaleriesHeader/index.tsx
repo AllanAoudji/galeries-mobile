@@ -4,7 +4,7 @@ import {
     useNavigation,
 } from '@react-navigation/native';
 import * as React from 'react';
-import { InteractionManager, Keyboard, StatusBar } from 'react-native';
+import { Keyboard, StatusBar } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Pictogram, SearchBar } from '#components';
@@ -58,9 +58,7 @@ const GaleriesHeader = () => {
     useFocusEffect(
         React.useCallback(() => {
             if (galeriesNameStatus === 'PENDING') {
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch(getGaleries(filterGaleriesName));
-                });
+                dispatch(getGaleries(filterGaleriesName));
                 if (filterGaleriesName !== '') setSearchFinished(false);
             }
         }, [filterGaleriesName, galeriesNameStatus])

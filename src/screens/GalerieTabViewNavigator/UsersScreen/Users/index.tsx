@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
-    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StyleProp,
@@ -68,17 +67,11 @@ const Users = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
     );
 
     const handleEndReach = React.useCallback(() => {
-        if (galerie)
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(getGalerieUsers(galerie.id));
-            });
+        if (galerie) dispatch(getGalerieUsers(galerie.id));
     }, [galerie]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (galerie)
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(refreshGalerieUsers(galerie.id));
-            });
+        if (galerie) dispatch(refreshGalerieUsers(galerie.id));
     }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(

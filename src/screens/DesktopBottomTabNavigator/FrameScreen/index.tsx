@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { ActivityIndicator, InteractionManager } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
@@ -61,9 +61,7 @@ const FrameScreen = ({ navigation }: Props) => {
             (!galeriePicturesStatus ||
                 galeriePicturesStatus.includes('LOADING'))
         )
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(getFrameGaleriePictures(currentFrame.id));
-            });
+            dispatch(getFrameGaleriePictures(currentFrame.id));
     }, [currentFrame, galeriePicturesAllIds, galeriePicturesStatus]);
 
     useFocusEffect(

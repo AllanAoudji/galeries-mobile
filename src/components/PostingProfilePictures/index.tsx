@@ -109,11 +109,9 @@ const PostingProfilePictures = () => {
         }
     }, [loading, removePicture]);
     React.useEffect(() => {
-        if (loading === 'ERROR') {
+        if (loading === 'ERROR')
             error.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(300));
-        } else {
-            error.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(300));
-        }
+        else error.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(300));
     }, [loading]);
 
     return (

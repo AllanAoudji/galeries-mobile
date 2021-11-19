@@ -1,10 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import {
-    InteractionManager,
-    RefreshControl,
-    useWindowDimensions,
-} from 'react-native';
+import { RefreshControl, useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
@@ -40,9 +36,7 @@ const EmptyScrollView = () => {
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
         if (status.includes('LOADING') || status === 'REFRESH')
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(refreshGaleries(filterGaleriesName));
-            });
+            dispatch(refreshGaleries(filterGaleriesName));
     }, [filterGaleriesName, status]);
 
     useFocusEffect(

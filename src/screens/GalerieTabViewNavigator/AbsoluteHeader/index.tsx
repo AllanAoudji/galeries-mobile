@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { InteractionManager, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import Animated, {
     interpolate,
     useAnimatedStyle,
@@ -28,9 +28,7 @@ const AbsoluteHeader = ({ scrollY }: Props) => {
     const handlePress = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
-        InteractionManager.runAfterInteractions(() => {
-            dispatch(resetGaleriesCurrent());
-        });
+        dispatch(resetGaleriesCurrent());
     }, [navigation]);
 
     const style = useAnimatedStyle(() => {

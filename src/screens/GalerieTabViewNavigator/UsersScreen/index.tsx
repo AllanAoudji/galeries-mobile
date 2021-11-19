@@ -1,6 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { InteractionManager } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -43,9 +42,7 @@ const UsersScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
     useFocusEffect(
         React.useCallback(() => {
             if (usersStatus && usersStatus === 'PENDING' && galerie)
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch(getGalerieUsers(galerie.id));
-                });
+                dispatch(getGalerieUsers(galerie.id));
         }, [galerie, usersStatus])
     );
 

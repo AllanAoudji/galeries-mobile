@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
-    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StyleSheet,
@@ -42,16 +41,12 @@ const Frames = ({ allIds }: Props) => {
 
     const handleEndReach = React.useCallback(() => {
         if (status.includes('LOADING') || status === 'REFRESH')
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(getFrames());
-            });
+            dispatch(getFrames());
     }, []);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
         if (status.includes('LOADING') || status === 'REFRESH') return;
-        InteractionManager.runAfterInteractions(() => {
-            dispatch(refreshFrames());
-        });
+        dispatch(refreshFrames());
     }, [status]);
     const keyExtractor = React.useCallback((data: string) => data, []);
 

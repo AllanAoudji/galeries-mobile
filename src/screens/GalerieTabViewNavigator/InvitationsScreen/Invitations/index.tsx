@@ -8,7 +8,6 @@ import {
     StyleSheet,
     useWindowDimensions,
     ViewStyle,
-    InteractionManager,
 } from 'react-native';
 import Animated, {
     runOnJS,
@@ -82,17 +81,11 @@ const Invitations = ({
         []
     );
     const handleEndReach = React.useCallback(() => {
-        if (galerie)
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(getGalerieInvitations(galerie.id));
-            });
+        if (galerie) dispatch(getGalerieInvitations(galerie.id));
     }, [galerie]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (galerie)
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(refreshGalerieInvitations(galerie.id));
-            });
+        if (galerie) dispatch(refreshGalerieInvitations(galerie.id));
     }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(

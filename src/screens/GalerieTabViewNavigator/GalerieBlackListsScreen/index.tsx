@@ -1,6 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { InteractionManager } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -58,9 +57,7 @@ const GalerieBlackListsScreen = ({
                 galerieBlackListsStatus === 'PENDING' &&
                 galerie
             )
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch(getGalerieBlackLists(galerie.id));
-                });
+                dispatch(getGalerieBlackLists(galerie.id));
         }, [galerieBlackListsStatus, galerie])
     );
 

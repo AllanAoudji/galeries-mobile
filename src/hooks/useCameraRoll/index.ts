@@ -31,6 +31,13 @@ const useCameraRoll = () => {
         }
     }, [after, hasNextPage, loading]);
 
+    const reset = React.useCallback(() => {
+        setAfter(null);
+        setHasNextPage(true);
+        setLoading(false);
+        setPhotos([]);
+    }, []);
+
     React.useEffect(() => {
         mounted.current = true;
         return () => {
@@ -38,7 +45,7 @@ const useCameraRoll = () => {
         };
     }, []);
 
-    return { getPhotos, loading, photos };
+    return { getPhotos, loading, photos, reset };
 };
 
 export default useCameraRoll;

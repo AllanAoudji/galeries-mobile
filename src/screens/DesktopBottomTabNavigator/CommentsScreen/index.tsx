@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
-    InteractionManager,
     KeyboardAvoidingView,
     Platform,
     StyleSheet,
@@ -63,9 +62,7 @@ const CommentScreen = ({ navigation }: Props) => {
     useFocusEffect(
         React.useCallback(() => {
             if (currentFrame && status === 'PENDING')
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch(getFrameComments(currentFrame.id));
-                });
+                dispatch(getFrameComments(currentFrame.id));
         }, [currentFrame, status])
     );
 

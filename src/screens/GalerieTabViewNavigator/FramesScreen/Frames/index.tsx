@@ -8,7 +8,6 @@ import {
     useWindowDimensions,
     StyleProp,
     ViewStyle,
-    InteractionManager,
 } from 'react-native';
 import Animated, {
     runOnJS,
@@ -68,17 +67,11 @@ const Frames = ({ allIds, current, editScrollY, galerie, scrollY }: Props) => {
     );
 
     const handleEndReach = React.useCallback(() => {
-        if (galerie)
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(getGalerieFrames(galerie.id));
-            });
+        if (galerie) dispatch(getGalerieFrames(galerie.id));
     }, [galerie]);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (galerie)
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(refreshGalerieFrames(galerie.id));
-            });
+        if (galerie) dispatch(refreshGalerieFrames(galerie.id));
     }, [galerie]);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(

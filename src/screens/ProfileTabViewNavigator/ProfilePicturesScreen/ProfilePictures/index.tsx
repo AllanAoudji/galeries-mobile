@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     FlatList,
-    InteractionManager,
     ListRenderItemInfo,
     StyleProp,
     StyleSheet,
@@ -54,9 +53,7 @@ const ProfilePictures = ({ allIds, current, editScrollY, scrollY }: Props) => {
         []
     );
     const handleEndReach = React.useCallback(() => {
-        InteractionManager.runAfterInteractions(() => {
-            dispatch(getProfilePictures());
-        });
+        dispatch(getProfilePictures());
     }, []);
     const keyExtractor = React.useCallback((item: string) => item, []);
     const setInitialScroll = React.useCallback(

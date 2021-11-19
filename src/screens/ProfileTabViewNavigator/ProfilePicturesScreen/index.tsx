@@ -1,7 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import Animated from 'react-native-reanimated';
-import { InteractionManager } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -48,9 +47,7 @@ const ProfilePicturesScreen = ({ current, editScrollY, scrollY }: Props) => {
     useFocusEffect(
         React.useCallback(() => {
             if (profilePicturesStatus === 'PENDING')
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch(getProfilePictures());
-                });
+                dispatch(getProfilePictures());
         }, [profilePicturesStatus])
     );
 

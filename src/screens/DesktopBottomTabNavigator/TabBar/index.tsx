@@ -1,10 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
-import {
-    InteractionManager,
-    Keyboard,
-    useWindowDimensions,
-} from 'react-native';
+import { Keyboard, useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
@@ -113,36 +109,28 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         if (keyboardShown) Keyboard.dismiss();
         else {
             navigation.navigate('Galeries');
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(resetGaleriesCurrent());
-            });
+            dispatch(resetGaleriesCurrent());
         }
     }, [keyboardShown, navigation]);
     const handleHomePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else {
             navigation.navigate('Home');
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(resetGaleriesCurrent());
-            });
+            dispatch(resetGaleriesCurrent());
         }
     }, [keyboardShown, navigation]);
     const handleNotificationsPress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else {
             navigation.navigate('Notifications');
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(resetGaleriesCurrent());
-            });
+            dispatch(resetGaleriesCurrent());
         }
     }, [keyboardShown, navigation]);
     const handleProfilePress = React.useCallback(() => {
         if (keyboardShown) Keyboard.dismiss();
         else {
             navigation.navigate('Profile');
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(resetGaleriesCurrent());
-            });
+            dispatch(resetGaleriesCurrent());
         }
     }, [keyboardShown, navigation]);
     const handleAddSubscribePress = React.useCallback(() => {

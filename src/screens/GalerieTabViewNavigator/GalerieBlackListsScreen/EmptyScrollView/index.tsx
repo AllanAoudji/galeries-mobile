@@ -1,10 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import {
-    InteractionManager,
-    RefreshControl,
-    useWindowDimensions,
-} from 'react-native';
+import { RefreshControl, useWindowDimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated, {
     runOnJS,
@@ -53,10 +49,7 @@ const EmptyScrollView = ({ current, editScrollY, galerie, scrollY }: Props) => {
 
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
-        if (galerie)
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(refreshGalerieBlackLists(galerie.id));
-            });
+        if (galerie) dispatch(refreshGalerieBlackLists(galerie.id));
     }, [galerie]);
     const setInitialScroll = React.useCallback(
         (newScrollY: number) => {

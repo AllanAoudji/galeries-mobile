@@ -4,7 +4,6 @@ import {
     useNavigation,
 } from '@react-navigation/native';
 import * as React from 'react';
-import { InteractionManager } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Animated from 'react-native-reanimated';
 
@@ -67,9 +66,7 @@ const InvitationsScreen = ({
     useFocusEffect(
         React.useCallback(() => {
             if (galerie && invitationsStatus && invitationsStatus === 'PENDING')
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch(getGalerieInvitations(galerie.id));
-                });
+                dispatch(getGalerieInvitations(galerie.id));
         }, [galerie, invitationsStatus])
     );
 

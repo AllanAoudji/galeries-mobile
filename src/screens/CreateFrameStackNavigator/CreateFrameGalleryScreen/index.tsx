@@ -43,8 +43,8 @@ const CreateFrameGalleryScreen = () => {
 
     useFocusEffect(
         React.useCallback(() => {
-            getPhotos();
-        }, [])
+            if (photos.length === 0) getPhotos();
+        }, [photos])
     );
     useFocusEffect(
         React.useCallback(() => {

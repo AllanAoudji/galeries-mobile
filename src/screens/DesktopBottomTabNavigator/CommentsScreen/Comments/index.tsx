@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
-    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StyleSheet,
@@ -51,19 +50,14 @@ const Comments = ({ allIds, flatListRef, frameId }: CommentsProps) => {
     );
 
     const handleEndReach = React.useCallback(
-        () =>
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(getFrameComments(frameId));
-            }),
+        () => dispatch(getFrameComments(frameId)),
         []
     );
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
         if (!status || status.includes('LOADING') || status === 'REFRESH')
             return;
-        InteractionManager.runAfterInteractions(() => {
-            dispatch(refreshFrameComments(frameId));
-        });
+        dispatch(refreshFrameComments(frameId));
     }, [frameId]);
     const keyExtractor = React.useCallback((data: string) => data, []);
 

@@ -2,7 +2,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
-    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StyleSheet,
@@ -46,16 +45,12 @@ const Notifications = ({ allIds }: Props) => {
 
     const handleEndReach = React.useCallback(() => {
         if (status.includes('LOADING') || status === 'REFRESH')
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(getNotifications());
-            });
+            dispatch(getNotifications());
     }, []);
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
         if (status.includes('LOADING') || status === 'REFRESH') return;
-        InteractionManager.runAfterInteractions(() => {
-            dispatch(refreshNotifications());
-        });
+        dispatch(refreshNotifications());
     }, [status]);
     const getItemLayout = React.useCallback(
         (_, index) => ({

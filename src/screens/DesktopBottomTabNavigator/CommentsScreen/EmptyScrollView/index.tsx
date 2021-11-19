@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { InteractionManager, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
@@ -42,9 +42,7 @@ const EmptyScrollView = ({ frameId, height }: Props) => {
     const handleRefresh = React.useCallback(() => {
         setRefreshing(true);
         if (status && !status.includes('LOADING') && status !== 'REFRESH')
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(refreshFrameComments(frameId));
-            });
+            dispatch(refreshFrameComments(frameId));
     }, [frameId, status]);
 
     useFocusEffect(
