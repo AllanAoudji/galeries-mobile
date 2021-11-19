@@ -16,6 +16,8 @@ import {
     InnerContainer,
 } from './styles';
 
+import Options from './Options';
+
 type Props = {
     navigation: Screen.DesktopBottomTab.ProfilePictureNavigationProp;
 };
@@ -38,6 +40,10 @@ const ProfilePictureScreen = ({ navigation }: Props) => {
     const handleHideOptions = React.useCallback(() => {
         setShowOptions(false);
     }, []);
+    const handlePressBack = React.useCallback(() => {
+        if (navigation.canGoBack()) navigation.goBack();
+        else navigation.navigate('Home');
+    }, [navigation]);
     const handleShowOptions = React.useCallback(() => setShowOptions(true), []);
 
     useFocusEffect(
@@ -47,6 +53,15 @@ const ProfilePictureScreen = ({ navigation }: Props) => {
                 else navigation.navigate('Home');
             }
         }, [currentProfilePicture])
+    );
+
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                handleHideOptions();
+            },
+            []
+        )
     );
 
     if (!currentProfilePicture) return null;
@@ -66,6 +81,12 @@ const ProfilePictureScreen = ({ navigation }: Props) => {
                     width={dimension.width}
                 />
             </InnerContainer>
+            <Options
+                profilePicture={currentProfilePicture}
+                onPress={handleHideOptions}
+                onPressBack={handlePressBack}
+                show={showOptions}
+            />
         </Container>
     );
 };

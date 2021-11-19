@@ -37,9 +37,15 @@ const postReportsMiddleware: Middleware<{}, Store.Reducer> =
                 action.payload
             );
         } else if (action.meta.query.profilePictureId) {
+            const profilePicture =
+                getState().profilePictures.byId[
+                    action.meta.query.profilePictureId
+                ];
+            if (!profilePicture) return;
             dispatch(updateReportsLoadingPost('LOADING'));
             dispatchPostProfilePictureIdReports(
                 dispatch,
+                profilePicture.userId,
                 action.meta.query.profilePictureId,
                 action.payload
             );

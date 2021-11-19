@@ -43,7 +43,9 @@ const ReportProfilePictureScreen = ({ navigation }: Props) => {
         if (!currentProfilePicture) return;
         if (!value) return;
         if (loading.includes('LOADING')) return;
-        dispatch(postReports(currentProfilePicture, value, 'commentId'));
+        dispatch(
+            postReports(currentProfilePicture.id, value, 'profilePictureId')
+        );
     }, [currentProfilePicture, loading, value]);
     const handlePressBack = React.useCallback(() => {
         if (loading.includes('LOADING')) return;

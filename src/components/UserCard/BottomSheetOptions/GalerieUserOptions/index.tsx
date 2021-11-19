@@ -75,11 +75,13 @@ const GalerieUserOptions = ({ galerie, role, user }: Props) => {
                     user={user}
                 />
                 <ReportProfilePictureButton
+                    profilePictureId={currentProfilePictureId}
                     hide={hideReportProfilePuctureButton}
                 />
             </>
         );
     }, [
+        currentProfilePictureId,
         galerie,
         hideChangeRoleButton,
         hideDeleteBanButton,

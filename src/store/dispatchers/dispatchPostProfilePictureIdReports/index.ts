@@ -6,6 +6,7 @@ import { END_POINT } from '#helpers/constants';
 
 const dispatchPostProfilePictureIdReports = (
     dispatch: Dispatch<Store.Action>,
+    userId: string,
     profilePictureId: string,
     payload: { reason: string }
 ) => {
@@ -15,7 +16,7 @@ const dispatchPostProfilePictureIdReports = (
                 entity: REPORTS,
                 method: 'POST',
                 query: { profilePictureId },
-                url: `${END_POINT.PROFILE_PICTURES}/${profilePictureId}${END_POINT.REPORTS}`,
+                url: `${END_POINT.USERS}/${userId}${END_POINT.PROFILE_PICTURES}/${profilePictureId}${END_POINT.REPORTS}`,
             },
             payload,
         })
