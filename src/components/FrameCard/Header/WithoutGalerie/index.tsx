@@ -8,6 +8,7 @@ import { selectUser, updateUserCurrent } from '#store/users';
 import { selectCurrentGalerie } from '#store/galeries';
 
 import { Container } from './styles';
+import { selectMeId } from '#store/me';
 
 type Props = {
     frame: Store.Models.Frame;
@@ -22,15 +23,19 @@ const WithoutGalerie = ({ frame }: Props) => {
     >();
 
     const currentGalerie = useSelector(selectCurrentGalerie);
+    const meId = useSelector(selectMeId);
     const userSelector = React.useMemo(() => selectUser(frame.userId), [frame]);
     const user = useSelector(userSelector);
 
     const handlePress = React.useCallback(() => {
         if (currentGalerie) {
-            dispatch(updateUserCurrent(frame.userId));
-            navigation.navigate('UserScreen');
+            if (meId === frame.userId) navigation.navigate('Profile');
+            else {
+                dispatch(updateUserCurrent(frame.userId));
+                navigation.navigate('UserScreen');
+            }
         }
-    }, [currentGalerie, frame]);
+    }, [currentGalerie, frame, meId]);
 
     return (
         <Container onPress={handlePress}>
