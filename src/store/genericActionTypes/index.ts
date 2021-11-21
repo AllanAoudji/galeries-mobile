@@ -1,4 +1,5 @@
 // Entities
+export const BETA_KEYS: Store.Entity = '[BETA KEYS]';
 export const COMMENTS: Store.Entity = '[COMMENTS]';
 export const FRAMES: Store.Entity = '[FRAMES]';
 export const FORGOT_YOUR_PASSWORD: Store.Entity = '[FORGOT YOUR PASSWORD]';

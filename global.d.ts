@@ -288,6 +288,18 @@ declare global {
             | 'ROLE_CHANGE'
             | 'USER_SUBSCRIBE';
         type Reducer = {
+            betaKeys: {
+                allIds: string[];
+                byId: { [key: string]: Store.Models.BetaKeys };
+                current: string | null;
+                end: boolean;
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                };
+                previous: string;
+                status: { [key: string]: Store.Status };
+            };
             comments: {
                 allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.Comment };
@@ -464,6 +476,10 @@ declare global {
             | 'REFRESH'
             | 'SUCCESS';
         namespace Models {
+            type BetaKeys = {
+                autoIncrementId: string;
+                id: string;
+            };
             type Comment = {
                 autoIncrementId: string;
                 body: string;
