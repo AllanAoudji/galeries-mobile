@@ -478,7 +478,13 @@ declare global {
         namespace Models {
             type BetaKeys = {
                 autoIncrementId: string;
+                code: string;
+                createdAt: string;
+                createById: string | null;
+                email: string | null;
                 id: string;
+                updatedAt: string;
+                userId: string;
             };
             type Comment = {
                 autoIncrementId: string;
