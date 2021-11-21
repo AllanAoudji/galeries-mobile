@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Middleware } from 'redux';
 
 import { API_SUCCESS } from '#store/api/actionTypes';
+import { resetBetaKeys } from '#store/betaKeys/actionCreators';
 import { resetComments } from '#store/comments/actionCreators';
 import { resetFrames } from '#store/frames/actionCreators';
 import { resetGaleries } from '#store/galeries/actionCreators';
@@ -28,6 +29,7 @@ const successLogoutMiddleware: Middleware<{}, Store.Reducer> =
         if (action.type === `${LOGOUT} ${API_SUCCESS}`) {
             AsyncStorage.clear().finally(() => {
                 dispatch(resetMe());
+                dispatch(resetBetaKeys());
                 dispatch(resetComments());
                 dispatch(resetFrames());
                 dispatch(resetGaleries());
