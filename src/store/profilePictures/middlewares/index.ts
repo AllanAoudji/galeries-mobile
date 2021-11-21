@@ -2,6 +2,7 @@ import deleteProfilePicturesMiddleware from './deleteProfilePicturesMiddleware';
 import errorProfilePicturesMiddleware from './errorProfilePicturesMiddleware';
 import getProfilePicturesMiddleware from './getProfilePicturesMiddleware';
 import postProfilePicturesMiddleware from './postProfilePicturesMiddleware';
+import puProfilePicturesMiddleware from './puProfilePicturesMiddleware';
 import resetProfilePicturesMiddleware from './resetProfilePicturesMiddleware';
 import successProfilePicturesMiddleware from './successProfilePicturesMiddleware';
 
@@ -11,6 +12,7 @@ export const profilePicturesMiddlewares = [
     errorProfilePicturesMiddleware,
     getProfilePicturesMiddleware,
     postProfilePicturesMiddleware,
+    puProfilePicturesMiddleware,
     resetProfilePicturesMiddleware,
     successProfilePicturesMiddleware,
 ];

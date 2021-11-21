@@ -7,12 +7,14 @@ type PropsContainer = {
     mt?: keyof Style.Spacings;
 };
 
+const CONTAINER_HEIGHT = 34;
+
 const Container = styled.Pressable<PropsContainer>`
-    border-color: ${({ theme }) => theme.colors.black};
-    border-radius: 4px;
-    border-width: 2px;
+    border-radius: ${() => `${CONTAINER_HEIGHT / 2}px`};
+    flex: 1;
     flex-direction: row;
-    height: 34px;
+    height: ${() => `${CONTAINER_HEIGHT}px`};
+    background-color: ${({ theme }) => theme.colors.secondary};
     margin-bottom: ${({ mb, theme }) => (mb ? theme.spacings[mb] : 0)};
     margin-left: ${({ ml, theme }) => (ml ? theme.spacings[ml] : 0)};
     margin-right: ${({ mr, theme }) => (mr ? theme.spacings[mr] : 0)};
@@ -21,8 +23,8 @@ const Container = styled.Pressable<PropsContainer>`
 const PictogramContainer = styled.View`
     align-items: center;
     justify-content: center;
-    margin: 0 10px;
-    opacity: 0.3;
+    margin: 0 15px;
+    opacity: 0.4;
 `;
 const QuitContainer = styled.Pressable`
     align-items: center;

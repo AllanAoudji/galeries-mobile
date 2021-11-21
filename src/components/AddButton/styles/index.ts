@@ -1,26 +1,23 @@
+import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 type ContainerProps = {
-    bottom?: keyof Style.Spacings;
     color: keyof Style.Colors;
-    right?: keyof Style.Spacings;
+    size: number;
 };
 
-const CONTAINER_SIZE = 50;
-
-const Container = styled.Pressable<ContainerProps>`
+const Container = styled(Animated.View)`
+    position: absolute;
+    right: ${({ theme }) => theme.spacings.normal};
+`;
+const InnerContainer = styled.Pressable<ContainerProps>`
     align-items: center;
     background-color: ${({ color, theme }) => theme.colors[color]};
-    border-radius: ${() => `${CONTAINER_SIZE / 2}px`};
-    bottom: ${({ bottom, theme }) =>
-        bottom ? theme.spacings[bottom] : 'auto'};
-    height: ${() => `${CONTAINER_SIZE}px`};
+    border-radius: ${({ size }) => `${size / 2}px`};
+    height: ${({ size }) => `${size}px`};
     justify-content: center;
-    position: ${({ right, bottom }) =>
-        !!right || !!bottom ? 'absolute' : 'relative'};
-    right: ${({ right, theme }) => (right ? theme.spacings[right] : 'auto')};
-    width: ${() => `${CONTAINER_SIZE}px`};
+    width: ${({ size }) => `${size}px`};
 `;
 
 // eslint-disable-next-line import/prefer-default-export
-export { Container };
+export { Container, InnerContainer };

@@ -1,7 +1,11 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { BackHandler } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
+import {
+    interpolate,
+    useAnimatedStyle,
+    useSharedValue,
+} from 'react-native-reanimated';
 import {
     NavigationState,
     Route,
@@ -10,7 +14,12 @@ import {
 } from 'react-native-tab-view';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { FullScreenLoader } from '#components';
+import {
+    AbsoluteHeader,
+    FullScreenContainer,
+    FullScreenLoader,
+    Typography,
+} from '#components';
 import { UnsubscribeGalerieProvider } from '#contexts/UnsubscribeGalerieContext';
 import clamp from '#helpers/clamp';
 import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
@@ -23,9 +32,8 @@ import Header from './Header';
 import InvitationsScreen from './InvitationsScreen';
 import OptionsScreen from './OptionsScreen';
 import UsersScreen from './UsersScreen';
-import AbsoluteHeader from './AbsoluteHeader';
 
-import { Container } from './styles';
+import { PictureHeader, PictureHeaderTextContainer } from './styles';
 
 const adminRoleRoutes = [
     { key: 'frames', title: 'Frames' },
@@ -49,13 +57,6 @@ const GalerieTabViewNavigator = () => {
 
     const galerie = useSelector(selectCurrentGalerie);
 
-    const scrollY = useSharedValue(0);
-    const editScrollY = React.useCallback((offsetY: number) => {
-        'worklet';
-
-        scrollY.value = clamp(offsetY, 0, GalerieTabViewMaxScroll);
-    }, []);
-
     const [currentRoute, setCurrentRoute] = React.useState<string>('frames');
     const [navigationState, setNavigationState] =
         React.useState<NavigationState<Route> | null>({
@@ -65,6 +66,21 @@ const GalerieTabViewNavigator = () => {
                     ? userRoleRoutes
                     : adminRoleRoutes,
         });
+
+    const scrollY = useSharedValue(0);
+    const editScrollY = React.useCallback((offsetY: number) => {
+        'worklet';
+
+        scrollY.value = clamp(offsetY, 0, GalerieTabViewMaxScroll);
+    }, []);
+    const pictureHeaderStyle = useAnimatedStyle(() => {
+        const opacity = interpolate(
+            scrollY.value,
+            [0, GalerieTabViewMaxScroll / 2, GalerieTabViewMaxScroll],
+            [0, 0, 1]
+        );
+        return { opacity };
+    }, []);
 
     const getCurrentAdminRoute = React.useCallback((index: number) => {
         switch (index) {
@@ -108,6 +124,10 @@ const GalerieTabViewNavigator = () => {
                 setCurrentRoute('frames');
         }
     }, []);
+    const navigationCallBack = React.useCallback(
+        () => dispatch(resetGaleriesCurrent),
+        []
+    );
     const onIndexChange = React.useCallback(
         (index: number) => {
             if (galerie && galerie.role === 'user') getCurrentUserRoute(index);
@@ -120,9 +140,8 @@ const GalerieTabViewNavigator = () => {
                         : adminRoleRoutes,
             });
         },
-        [galerie]
+        [galerie, getCurrentAdminRoute, getCurrentUserRoute]
     );
-
     const renderScene = React.useCallback(
         ({
             route,
@@ -248,20 +267,35 @@ const GalerieTabViewNavigator = () => {
     }, [galerie]);
 
     if (!galerie) return null;
-
     if (!navigationState) return <FullScreenLoader show />;
 
     return (
         <UnsubscribeGalerieProvider>
-            <Container>
-                <AbsoluteHeader scrollY={scrollY} />
+            <FullScreenContainer>
+                <AbsoluteHeader
+                    navigationCallBack={navigationCallBack}
+                    type="return"
+                >
+                    <PictureHeader style={pictureHeaderStyle}>
+                        <PictureHeaderTextContainer>
+                            <Typography
+                                color="secondary-light"
+                                fontFamily="bold"
+                                fontSize={24}
+                            >
+                                {galerie.name}
+                            </Typography>
+                        </PictureHeaderTextContainer>
+                    </PictureHeader>
+                </AbsoluteHeader>
                 <TabView
                     navigationState={navigationState}
                     onIndexChange={onIndexChange}
+                    overScrollMode="never"
                     renderScene={renderScene}
                     renderTabBar={renderTabBar}
                 />
-            </Container>
+            </FullScreenContainer>
         </UnsubscribeGalerieProvider>
     );
 };

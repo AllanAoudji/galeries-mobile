@@ -13,6 +13,7 @@ const dispatchGetUserCurrentProfilePicture: (
             meta: {
                 entity: PROFILE_PICTURES,
                 method: 'GET',
+                query: { userId },
                 url: `${END_POINT.USERS}/${userId}${END_POINT.CURRENT_PROFILE_PICTURE}`,
             },
             payload: {},

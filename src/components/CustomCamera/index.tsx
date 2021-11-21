@@ -71,13 +71,16 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
     const handleTakePicture = React.useCallback(async () => {
         if (cameraRef.current && !snapShot) {
             const { uri } = await cameraRef.current.takePictureAsync();
+            if (!mounted.current) return;
+
             if (type === Camera.Constants.Type.front) {
                 const photoFliped = await ImageManipulator.manipulateAsync(
                     uri,
                     [{ flip: ImageManipulator.FlipType.Horizontal }]
                 );
-                if (mounted.current) setSnapshot(photoFliped.uri);
-            } else if (mounted.current) setSnapshot(uri);
+                if (!mounted.current) return;
+                setSnapshot(photoFliped.uri);
+            } else setSnapshot(uri);
         }
     }, [cameraRef, snapShot, type]);
 
@@ -111,12 +114,14 @@ const CustomCamera = ({ onPressBack, onSavePictureUri }: Props) => {
 
     return (
         <Container>
-            <CameraStyled
-                flashMode={flashMode}
-                margins={margins}
-                ref={cameraRef}
-                type={type}
-            />
+            {mounted.current && (
+                <CameraStyled
+                    flashMode={flashMode}
+                    margins={margins}
+                    ref={cameraRef}
+                    type={type}
+                />
+            )}
             {!!snapShot && <ImageStyled margins={margins} source={source} />}
             {!!onPressBack && <ReturnButton onPress={handlePressBack} />}
             {!snapShot && type === Camera.Constants.Type.back && (

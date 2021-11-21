@@ -1,121 +1,107 @@
-import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
+import {
+    Keyboard,
+    ListRenderItemInfo,
+    useWindowDimensions,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { withTiming } from 'react-native-reanimated';
 
-import { InteractionManager } from 'react-native';
 import {
     BottomLoader,
-    DefaultHeader,
+    CustomFlatList,
+    EmptyMessage,
+    FullScreenContainer,
     FullScreenLoader,
-    SearchBar,
 } from '#components';
-import { ANIMATIONS, GLOBAL_STYLE } from '#helpers/constants';
-import { useHideHeaderOnScroll } from '#hooks';
+import { GaleriesSearchContext } from '#contexts/GaleriesSearchContext';
+import { GLOBAL_STYLE } from '#helpers/constants';
 import {
     getGaleries,
-    resetGaleriesFilterName,
+    refreshGaleries,
     selectGaleriesAllIds,
     selectGaleriesFilterName,
     selectGaleriesNameStatus,
-    updateGaleriesFilterName,
 } from '#store/galeries';
 
-import EmptyScrollView from './EmptyScrollView';
-import Galeries from './Galeries';
+import RenderItem from './RenderItem';
 
-import { Container, Header, SearchBarContainer } from './styles';
+const renderItem = ({ item }: ListRenderItemInfo<string>) => (
+    <RenderItem item={item} />
+);
 
 const GaleriesScreen = () => {
+    const dimension = useWindowDimensions();
     const dispatch = useDispatch();
 
+    const { searchFinished } = React.useContext(GaleriesSearchContext);
+
+    const allIds = useSelector(selectGaleriesAllIds);
     const filterGaleriesName = useSelector(selectGaleriesFilterName);
-    const galeriesAllIds = useSelector(selectGaleriesAllIds);
-    const galeriesNameStatus = useSelector(selectGaleriesNameStatus);
+    const status = useSelector(selectGaleriesNameStatus);
 
-    const { containerStyle, headerStyle, scrollHandler, translateY } =
-        useHideHeaderOnScroll(GLOBAL_STYLE.HEADER_TAB_HEIGHT);
+    const emptyMessageHeight = React.useMemo(
+        () => dimension.height - GLOBAL_STYLE.HEADER_TAB_HEIGHT,
+        [dimension]
+    );
 
-    const [searchFinished, setSearchFinished] = React.useState<boolean>(true);
-    const [value, setValue] = React.useState<string>(filterGaleriesName);
-
-    const showBottonLoader = React.useMemo(
+    const showFullScreenLoader = React.useMemo(
         () =>
-            galeriesNameStatus === 'PENDING' ||
-            galeriesNameStatus === 'INITIAL_LOADING' ||
+            status === 'PENDING' ||
+            status === 'INITIAL_LOADING' ||
             !searchFinished,
-        [galeriesNameStatus, searchFinished]
+        [status, searchFinished]
     );
-    const handleChangeText = React.useCallback(
-        (e: string) => {
-            dispatch(updateGaleriesFilterName(e.trim()));
-            translateY.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(200));
-        },
-        [searchFinished]
+    const showBottomLoader = React.useMemo(
+        () => status === 'LOADING',
+        [status]
     );
-    const handleFocusSearchBar = React.useCallback(() => {
-        translateY.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(200));
-    }, []);
-    const handleStopTyping = React.useCallback(
-        () => setSearchFinished(true),
+
+    const getItemLayout = React.useCallback(
+        (_, index) => ({
+            length: GLOBAL_STYLE.GALERIE_CARD_HEIGHT,
+            offset: GLOBAL_STYLE.GALERIE_CARD_HEIGHT * index,
+            index,
+        }),
+        []
+    );
+    const handleEndReach = React.useCallback(() => {
+        if (status.includes('LOADING')) return;
+        if (status === 'REFRESH') return;
+        dispatch(getGaleries(filterGaleriesName));
+    }, [filterGaleriesName, status]);
+    const handleRefresh = React.useCallback(() => {
+        if (status.includes('LOADING') || status === 'REFRESH')
+            dispatch(refreshGaleries(filterGaleriesName));
+    }, [filterGaleriesName, status]);
+    const handleScrollBeginDrag = React.useCallback(
+        () => Keyboard.dismiss(),
         []
     );
 
-    useFocusEffect(
-        React.useCallback(() => {
-            if (galeriesNameStatus === 'PENDING') {
-                InteractionManager.runAfterInteractions(() => {
-                    dispatch(getGaleries(filterGaleriesName));
-                });
-                if (filterGaleriesName !== '') setSearchFinished(false);
-            }
-        }, [filterGaleriesName, galeriesNameStatus])
-    );
-    useFocusEffect(
-        React.useCallback(
-            () => () => {
-                dispatch(resetGaleriesFilterName());
-                setValue('');
-                setSearchFinished(true);
-            },
-            []
-        )
-    );
-    useFocusEffect(
-        React.useCallback(() => {
-            if (showBottonLoader) translateY.value = 0;
-        }, [showBottonLoader])
-    );
-
     return (
-        <Container>
-            <Header style={containerStyle}>
-                <DefaultHeader style={headerStyle} title="galeries" />
-                <SearchBarContainer>
-                    <SearchBar
-                        mt="smallest"
-                        onChangeText={handleChangeText}
-                        onFocus={handleFocusSearchBar}
-                        onStopTyping={handleStopTyping}
-                        setValue={setValue}
-                        value={value}
-                    />
-                </SearchBarContainer>
-            </Header>
-            {!!galeriesAllIds && galeriesAllIds.length > 0 ? (
-                <Galeries
-                    allIds={galeriesAllIds}
-                    scrollHandler={scrollHandler}
+        <FullScreenContainer>
+            {!!allIds && allIds.length > 0 ? (
+                <CustomFlatList
+                    allIds={allIds}
+                    getItemLayout={getItemLayout}
+                    onEndReach={handleEndReach}
+                    onRefresh={handleRefresh}
+                    onScrollBeginDrag={handleScrollBeginDrag}
+                    pb={GLOBAL_STYLE.BOTTOM_TAB_HEIGHT}
+                    renderItem={renderItem}
+                    status={status || 'PENDING'}
                 />
             ) : (
-                <EmptyScrollView scrollHandler={scrollHandler} />
+                <EmptyMessage
+                    height={emptyMessageHeight}
+                    onRefresh={handleRefresh}
+                    refreshStatus={status}
+                    text="no galerie found"
+                />
             )}
-            <FullScreenLoader show={showBottonLoader} />
-            <BottomLoader
-                bottom="huge"
-                show={galeriesNameStatus === 'LOADING'}
-            />
-        </Container>
+            <FullScreenLoader show={showFullScreenLoader} />
+            <BottomLoader bottom="huge" show={showBottomLoader} />
+        </FullScreenContainer>
     );
 };
 

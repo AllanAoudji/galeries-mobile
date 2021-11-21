@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import {
     removeProfilePicturesAllId,
     removeProfilePicturesById,
+    resetProfilePicturesCurrent,
     removeProfilePicturesId,
     updateProfilePicturesLoadingDelete,
 } from '#store/profilePictures/actionCreators';
@@ -27,12 +28,15 @@ const successDeleteProfilePicture = (
 
     const profilePicture = getState().profilePictures.byId[profilePictureId];
     if (profilePicture) {
+        dispatch(resetProfilePicturesCurrent());
         dispatch(removeProfilePicturesById(profilePictureId));
         if (getState().profilePictures.id[profilePicture.userId]) {
             dispatch(removeProfilePicturesId(profilePicture.userId));
         }
+        dispatch(removeProfilePicturesAllId(profilePicture.id));
     }
 
+    dispatch(resetProfilePicturesCurrent());
     dispatch(updateProfilePicturesLoadingDelete('SUCCESS'));
 };
 

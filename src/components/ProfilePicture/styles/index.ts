@@ -21,17 +21,20 @@ type InnerContainerProps = {
 const PROFILE_PICTURE_SIZE = {
     huge: 170,
     large: 50,
+    largest: 65,
     normal: 34,
     small: 30,
 };
 const INNER_CONTAINER_BORDER_WIDTH = {
     huge: 7,
+    largest: 4,
     large: 3,
     normal: 2,
     small: 2,
 };
 const CONTAINER_BORDER_WIDTH = {
     huge: 7,
+    largest: 4,
     large: 3,
     normal: 3,
     small: 3,
@@ -73,6 +76,7 @@ const ImageStyled = styled.Image<ImageStyleProps>`
         }px`};
 `;
 const InnerContainer = styled.View<InnerContainerProps>`
+    align-items: center;
     border-color: ${({ theme }) => theme.colors.primary};
     border-radius: ${({ size }) => `${PROFILE_PICTURE_SIZE[size] / 2}px`};
     border-width: ${({ border, size }) => {
@@ -81,6 +85,7 @@ const InnerContainer = styled.View<InnerContainerProps>`
     }};
     height: ${({ size }) => `${PROFILE_PICTURE_SIZE[size]}px`};
     overflow: hidden;
+    justify-content: center;
     width: ${({ size }) => `${PROFILE_PICTURE_SIZE[size]}px`};
 `;
 

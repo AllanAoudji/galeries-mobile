@@ -9,6 +9,7 @@ import {
     resetProfilePicturesId,
     resetProfilePicturesLoadingDelete,
     resetProfilePicturesLoadingPost,
+    resetProfilePicturesLoadingPut,
     resetProfilePicturesPrevious,
     resetProfilePicturesStatus,
 } from '#store/profilePictures/actionCreators';
@@ -27,6 +28,7 @@ const resetProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
         dispatch(resetProfilePicturesId());
         dispatch(resetProfilePicturesLoadingDelete());
         dispatch(resetProfilePicturesLoadingPost());
+        dispatch(resetProfilePicturesLoadingPut());
         dispatch(resetProfilePicturesPrevious());
         dispatch(resetProfilePicturesStatus());
     };

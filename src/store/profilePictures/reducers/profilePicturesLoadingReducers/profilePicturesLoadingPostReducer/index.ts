@@ -13,8 +13,8 @@ const profilePicturesLoadingPostReducer = (
         case PROFILE_PICTURES_LOADING_POST_RESET:
             return initialState;
         case PROFILE_PICTURES_LOADING_POST_UPDATE:
-            if (checkIfStatus(action.payload)) return action.payload;
-            return state;
+            if (!checkIfStatus(action.payload)) return state;
+            return action.payload;
         default:
             return state;
     }

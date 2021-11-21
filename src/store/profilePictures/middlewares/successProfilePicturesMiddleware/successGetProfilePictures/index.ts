@@ -11,6 +11,7 @@ import {
     updateProfilePicturesPrevious,
     updateProfilePicturesStatus,
 } from '#store/profilePictures/actionCreators';
+import { combineProfilePicturesAllIds } from '#store/combineAllIds';
 
 const successGetProfilePictures = async (
     dispatch: Dispatch<Store.Action>,
@@ -76,7 +77,10 @@ const successGetProfilePictures = async (
                     };
                 })
             );
-        else if (profilePicture && typeof profilePicture === 'object') {
+        else if (
+            profilePicture !== null &&
+            typeof profilePicture === 'object'
+        ) {
             const cropedImagePath = `${FileSystem.cacheDirectory}${profilePicture.cropedImage.id}`;
             const originalImagePath = `${FileSystem.cacheDirectory}${profilePicture.originalImage.id}`;
             let cropedImageCashed = '';
@@ -86,7 +90,7 @@ const successGetProfilePictures = async (
             if (cropedImage.exists) cropedImageCashed = cropedImage.uri;
             else {
                 const newImage = await FileSystem.downloadAsync(
-                    profilePicture.cropedImage.id,
+                    profilePicture.cropedImage.signedUrl,
                     cropedImagePath
                 );
                 cropedImageCashed = newImage.uri;
@@ -97,7 +101,7 @@ const successGetProfilePictures = async (
             if (originalImage.exists) originalImageCashed = originalImage.uri;
             else {
                 const newImage = await FileSystem.downloadAsync(
-                    profilePicture.originalImage.id,
+                    profilePicture.originalImage.signedUrl,
                     originalImagePath
                 );
                 originalImageCashed = newImage.uri;
@@ -124,23 +128,30 @@ const successGetProfilePictures = async (
         return;
     }
 
-    if (!allIds.length || typeof id !== 'string') return;
-
     dispatch(setProfilePicturesById(byId));
 
-    if (id && userId) {
-        dispatch(updateProfilePicturesId(userId, id));
+    const previousProfilePictureId =
+        allIds.length > 0 ? allIds[allIds.length - 1] : undefined;
+    const previous = previousProfilePictureId
+        ? byId[previousProfilePictureId].autoIncrementId
+        : undefined;
+
+    if (userId) {
+        if (id) dispatch(updateProfilePicturesId(userId, id));
         dispatch(updateProfilePicturesStatus(userId, 'SUCCESS'));
-    } else {
-        if (profilePicture === undefined) {
-            const previousProfilePictureId = allIds[allIds.length - 1];
-            const previous = byId[previousProfilePictureId].autoIncrementId;
+    } else if (profilePicture === undefined) {
+        let oldAllIds: string[];
+        if (action.meta.refresh) oldAllIds = [];
+        else oldAllIds = getState().profilePictures.allIds;
+        const newAllIds = combineProfilePicturesAllIds(
+            getState,
+            oldAllIds,
+            allIds
+        );
 
-            dispatch(setProfilePicturesAllId(allIds));
-            dispatch(updateProfilePicturesEnd(allIds.length < 20));
-            dispatch(updateProfilePicturesPrevious(previous));
-        }
-
+        dispatch(setProfilePicturesAllId(newAllIds));
+        dispatch(updateProfilePicturesEnd(allIds.length < 20));
+        dispatch(updateProfilePicturesPrevious(previous));
         dispatch(updateProfilePicturesStatus('', 'SUCCESS'));
     }
 };

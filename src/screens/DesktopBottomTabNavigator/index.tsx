@@ -7,18 +7,26 @@ import * as React from 'react';
 
 import { DefaultHeader } from '#components';
 
+import CommentsHeader from './CommentsHeader';
 import CommentScreen from './CommentsScreen';
 import CreateFrameScreen from './CreateFrameScreen';
 import CreateGalerieScreen from './CreateGalerieScreen';
 import CreateInvitationScreen from './CreateInvitationScreen';
+import CreateProfilePictureCameraScreen from './CreateProfilePictureCameraScreen';
+import CreateProfilePictureGalerieHeader from './CreateProfilePictureGalerieHeader';
+import CreateProfilePictureGalerieScreen from './CreateProfilePictureGalerieScreen';
 import DeleteGalerieScreen from './DeleteGalerieScreen';
 import FrameScreen from './FrameScreen';
 import GalerieScreen from './GalerieScreen';
+import GaleriesHeader from './GaleriesHeader';
 import GaleriesScreen from './GaleriesScreen';
+import HomeHeader from './HomeHeader';
 import HomeScreen from './HomeScreen';
 import InvitationScreen from './InvitationScreen';
 import InvitationQRCode from './InvitationQRCode';
+import LikesHeader from './LikesHeader';
 import LikesScreen from './LikesScreen';
+import NotificationsHeader from './NotificationsHeader';
 import NotificationsScreen from './NotificationsScreen';
 import ProfileScreen from './ProfileScreen';
 import ProfilePictureScreen from './ProfilePictureScreen';
@@ -34,6 +42,11 @@ import UserScreen from './UserScreen';
 
 const Tab = createBottomTabNavigator<Screen.DesktopBottomTab.ParamList>();
 
+const commentsHeader = () => <CommentsHeader />;
+const commentsScreenOption: BottomTabNavigationOptions = {
+    header: commentsHeader,
+    headerShown: true,
+};
 const createGalerieScreenHeader = () => (
     <DefaultHeader
         color="primary-dark"
@@ -56,6 +69,33 @@ const createInvitationScreenHeader = () => (
 );
 const createInvitationScreenOption: BottomTabNavigationOptions = {
     header: createInvitationScreenHeader,
+    headerShown: true,
+};
+const createProfilePictureScreenHeader = () => (
+    <CreateProfilePictureGalerieHeader />
+);
+const createProfilePictureGalerieScreenOption: BottomTabNavigationOptions = {
+    header: createProfilePictureScreenHeader,
+    headerShown: true,
+};
+const galeriesScreenHeader = () => <GaleriesHeader />;
+const galeriesScreenOption: BottomTabNavigationOptions = {
+    header: galeriesScreenHeader,
+    headerShown: true,
+};
+const homeScreenHeader = () => <HomeHeader />;
+const homeScreenOption: BottomTabNavigationOptions = {
+    header: homeScreenHeader,
+    headerShown: true,
+};
+const likesHeader = () => <LikesHeader />;
+const likesScreenOption: BottomTabNavigationOptions = {
+    header: likesHeader,
+    headerShown: true,
+};
+const notificationsScreenHeader = () => <NotificationsHeader />;
+const notificationsScreenOption: BottomTabNavigationOptions = {
+    header: notificationsScreenHeader,
     headerShown: true,
 };
 const reportCommentScreenHeader = () => (
@@ -131,7 +171,11 @@ const DesktopBottomTabNavigator = () => {
             screenOptions={screenOptions}
             tabBar={tabBar}
         >
-            <Tab.Screen component={CommentScreen} name="Comments" />
+            <Tab.Screen
+                component={CommentScreen}
+                name="Comments"
+                options={commentsScreenOption}
+            />
             <Tab.Screen component={CreateFrameScreen} name="CreateFrame" />
             <Tab.Screen
                 component={CreateGalerieScreen}
@@ -143,15 +187,40 @@ const DesktopBottomTabNavigator = () => {
                 name="CreateInvitation"
                 options={createInvitationScreenOption}
             />
+            <Tab.Screen
+                component={CreateProfilePictureCameraScreen}
+                name="CreateProfilePictureCamera"
+            />
+            <Tab.Screen
+                component={CreateProfilePictureGalerieScreen}
+                name="CreateProfilePictureGalerie"
+                options={createProfilePictureGalerieScreenOption}
+            />
             <Tab.Screen component={DeleteGalerieScreen} name="DeleteGalerie" />
             <Tab.Screen component={FrameScreen} name="Frame" />
             <Tab.Screen component={GalerieScreen} name="Galerie" />
-            <Tab.Screen component={GaleriesScreen} name="Galeries" />
-            <Tab.Screen component={HomeScreen} name="Home" />
+            <Tab.Screen
+                component={GaleriesScreen}
+                name="Galeries"
+                options={galeriesScreenOption}
+            />
+            <Tab.Screen
+                component={HomeScreen}
+                name="Home"
+                options={homeScreenOption}
+            />
             <Tab.Screen component={InvitationScreen} name="Invitation" />
             <Tab.Screen component={InvitationQRCode} name="InvitationQRCode" />
-            <Tab.Screen component={LikesScreen} name="Likes" />
-            <Tab.Screen component={NotificationsScreen} name="Notifications" />
+            <Tab.Screen
+                component={LikesScreen}
+                name="Likes"
+                options={likesScreenOption}
+            />
+            <Tab.Screen
+                component={NotificationsScreen}
+                name="Notifications"
+                options={notificationsScreenOption}
+            />
             <Tab.Screen component={ProfileScreen} name="Profile" />
             <Tab.Screen
                 component={ProfilePictureScreen}

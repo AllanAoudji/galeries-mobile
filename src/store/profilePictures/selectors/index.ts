@@ -9,13 +9,13 @@ const profilePicturesIdSelector = (state: Store.Reducer) =>
     state.profilePictures.id;
 const profilePicturesStatusSelector = (state: Store.Reducer) =>
     state.profilePictures.status;
-const usersCurrentSelector = (state: Store.Reducer) => state.users.current;
+const usersCurrentSelector = (state: Store.Reducer) => state.me.id;
 
 export const selectCurrentProfilepictureId = createSelector(
-    [profilePicturesIdSelector, profilePicturesCurrentSelector],
-    (profilePicturesId, profilePicturesCurrent) => {
+    [profliePicturesById, profilePicturesCurrentSelector],
+    (profilePicturesById, profilePicturesCurrent) => {
         if (!profilePicturesCurrent) return undefined;
-        return profilePicturesId[profilePicturesCurrent];
+        return profilePicturesById[profilePicturesCurrent];
     }
 );
 export const selectCurrentProfilePictureStatus = createSelector(
@@ -34,10 +34,7 @@ export const selectCurrentUserCurrentProfilePictureId = createSelector(
 );
 export const selectCurrentUserCurrentProfilePictureStatus = createSelector(
     [profilePicturesStatusSelector, usersCurrentSelector],
-    (profliePicturesStatus, usersCurrent) => {
-        if (!usersCurrent) return undefined;
-        return profliePicturesStatus[usersCurrent];
-    }
+    (profliePicturesStatus) => profliePicturesStatus[''] || 'PENDING'
 );
 export const selectMeCurrentProfilePictureId = createSelector(
     [meIdSelector, profilePicturesIdSelector],
@@ -86,3 +83,5 @@ export const selectProfilePicturesLoadingDelete = (state: Store.Reducer) =>
     state.profilePictures.loading.delete;
 export const selectProfilePicturesLoadingPost = (state: Store.Reducer) =>
     state.profilePictures.loading.post;
+export const selectProfilePicturesLoadingPut = (state: Store.Reducer) =>
+    state.profilePictures.loading.put;

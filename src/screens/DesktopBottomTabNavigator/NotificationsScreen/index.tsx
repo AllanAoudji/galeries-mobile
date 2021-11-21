@@ -1,38 +1,43 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { useWindowDimensions } from 'react-native';
+import { ListRenderItemInfo, useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { BottomLoader, DefaultHeader, FullScreenLoader } from '#components';
+import {
+    BottomLoader,
+    CustomFlatList,
+    EmptyMessage,
+    FullScreenContainer,
+    FullScreenLoader,
+} from '#components';
 import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { GLOBAL_STYLE } from '#helpers/constants';
-import { useHideHeaderOnScroll } from '#hooks';
 import { putMeHasNewNotification, selectMe } from '#store/me';
 import {
     getNotifications,
+    refreshNotifications,
     resetNotificationsCurrent,
+    selectCurrentNotifications,
     selectNotificationsAllIds,
     selectNotificationsStatus,
 } from '#store/notifications';
 
-import EmptyScrollView from './EmptyScrollView';
-import Notifications from './Notifications';
+import RenderItem from './RenderItem';
 
-import { Container, Header } from './styles';
+const renderItem = ({ item }: ListRenderItemInfo<string>) => (
+    <RenderItem item={item} />
+);
 
 const NotificationsScreen = () => {
-    const dispatch = useDispatch();
     const dimension = useWindowDimensions();
+    const dispatch = useDispatch();
 
     const { bottomSheetIsOpen } = React.useContext(BottomSheetContext);
 
-    const { containerStyle, scrollHandler } = useHideHeaderOnScroll(
-        GLOBAL_STYLE.HEADER_TAB_HEIGHT
-    );
-
+    const allIds = useSelector(selectNotificationsAllIds);
+    const currentNotification = useSelector(selectCurrentNotifications);
     const me = useSelector(selectMe);
     const status = useSelector(selectNotificationsStatus);
-    const allIds = useSelector(selectNotificationsAllIds);
 
     const showBottomLoader = React.useMemo(
         () => status === 'LOADING',
@@ -43,37 +48,70 @@ const NotificationsScreen = () => {
         [status]
     );
 
+    const getItemLayout = React.useCallback(
+        (_, index) => ({
+            length: GLOBAL_STYLE.NOTIFICATION_CARD_HEIGHT,
+            offset: GLOBAL_STYLE.NOTIFICATION_CARD_HEIGHT * index,
+            index,
+        }),
+        []
+    );
+    const handleEndReach = React.useCallback(() => {
+        if (status.includes('LOADING')) return;
+        if (status === 'REFRESH') return;
+        dispatch(getNotifications());
+    }, []);
+    const handleRefresh = React.useCallback(() => {
+        if (status.includes('LOADING')) return;
+        if (status === 'REFRESH') return;
+        dispatch(refreshNotifications());
+    }, [status]);
+
     useFocusEffect(
         React.useCallback(() => {
-            if (me && me.hasNewNotifications && status === 'SUCCESS') {
-                dispatch(putMeHasNewNotification());
-            }
+            if (!me) return;
+            if (!me.hasNewNotifications) return;
+            if (status !== 'SUCCESS') return;
+            dispatch(putMeHasNewNotification());
         }, [me, status])
     );
     useFocusEffect(
         React.useCallback(() => {
-            if (status === 'PENDING') dispatch(getNotifications());
+            if (status !== 'PENDING') return;
+            dispatch(getNotifications());
         }, [status])
     );
     useFocusEffect(
         React.useCallback(() => {
-            if (!bottomSheetIsOpen) dispatch(resetNotificationsCurrent());
-        }, [bottomSheetIsOpen])
+            if (bottomSheetIsOpen) return;
+            if (!currentNotification) return;
+            dispatch(resetNotificationsCurrent());
+        }, [bottomSheetIsOpen, currentNotification])
     );
 
     return (
-        <Container>
-            <Header style={containerStyle} width={dimension.width}>
-                <DefaultHeader title="notifications" />
-            </Header>
+        <FullScreenContainer>
             {allIds.length > 0 ? (
-                <Notifications allIds={allIds} scrollHandler={scrollHandler} />
+                <CustomFlatList
+                    allIds={allIds}
+                    getItemLayout={getItemLayout}
+                    onRefresh={handleRefresh}
+                    onEndReach={handleEndReach}
+                    pb={GLOBAL_STYLE.BOTTOM_TAB_HEIGHT}
+                    renderItem={renderItem}
+                    status={status}
+                />
             ) : (
-                <EmptyScrollView scrollHandler={scrollHandler} />
+                <EmptyMessage
+                    height={dimension.height - GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+                    onRefresh={handleRefresh}
+                    refreshStatus={status}
+                    text="you don't have any notification yet"
+                />
             )}
             <FullScreenLoader show={showFullScreenLoader} />
-            <BottomLoader show={showBottomLoader} bottom="huge" />
-        </Container>
+            <BottomLoader bottom="huge" show={showBottomLoader} />
+        </FullScreenContainer>
     );
 };
 

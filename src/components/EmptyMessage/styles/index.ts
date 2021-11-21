@@ -1,17 +1,26 @@
+import { ScrollView } from 'react-native';
+import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 type ContainerProps = {
+    height: number;
     pb?: number;
     pt?: number;
 };
 
+const AnimatedScrollView = Animated.createAnimatedComponent<any>(ScrollView);
+
 const Container = styled.View<ContainerProps>`
     align-items: center;
-    flex: 1;
+    height: ${({ height }) => `${height}px`};
     justify-content: center;
-    padding: ${({ pb, pt, theme }) =>
-        `${pt || 0}px ${theme.spacings.normal} ${pb || 0}px`};
+    padding-bottom: ${({ pb }) => `${pb || 0}px`};
+    padding-left: ${({ theme }) => theme.spacings.normal};
+    padding-right: ${({ theme }) => theme.spacings.normal};
+    padding-top: ${({ pt }) => `${pt || 0}px`};
+`;
+const StyledAnimatedScrollView = styled(AnimatedScrollView)`
+    flex: 1;
 `;
 
-// eslint-disable-next-line import/prefer-default-export
-export { Container };
+export { Container, StyledAnimatedScrollView };

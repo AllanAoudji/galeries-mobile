@@ -11,9 +11,10 @@ const profilePicturesCurrentReducer = (
     switch (action.type) {
         case PROFILE_PICTURES_CURRENT_RESET:
             return initialState;
-        case PROFILE_PICTURES_CURRENT_UPDATE:
+        case PROFILE_PICTURES_CURRENT_UPDATE: {
             if (typeof action.payload === 'string') return action.payload;
             return state;
+        }
         default:
             return state;
     }

@@ -11,10 +11,10 @@ import { Container } from './styles';
 
 type Props = {
     frame?: Store.Models.Frame;
-    showGalerie?: boolean;
+    type?: 'galerie' | 'user';
 };
 
-const FrameCard = ({ frame, showGalerie = false }: Props) => {
+const FrameCard = ({ frame, type }: Props) => {
     const dimension = useWindowDimensions();
 
     if (!frame) return null;
@@ -22,7 +22,7 @@ const FrameCard = ({ frame, showGalerie = false }: Props) => {
     return (
         <CurrentGaleriePictureProvider>
             <Container width={dimension.width}>
-                <Header frame={frame} showGalerie={showGalerie} />
+                <Header frame={frame} type={type} />
                 <Slider frame={frame} />
                 <Footer frame={frame} />
             </Container>

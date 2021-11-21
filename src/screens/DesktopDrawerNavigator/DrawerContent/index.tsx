@@ -32,6 +32,14 @@ const DrawerContent = ({
 }: DrawerContentComponentProps & Props) => {
     const dispatch = useDispatch();
 
+    const handlePressModeration = React.useCallback(() => {
+        navigation.navigate('Moderation');
+    }, [navigation]);
+    const handlePressSendTicket = React.useCallback(
+        () => navigation.navigate('SendTicket'),
+        [navigation]
+    );
+
     const userOrAdmin = React.useMemo(() => {
         return role === 'user' ? (
             <NavigationButton
@@ -48,24 +56,17 @@ const DrawerContent = ({
                 title="Moderation"
             />
         );
-    }, [role]);
+    }, [handlePressModeration, handlePressSendTicket, role]);
 
     const handlePressLogout = React.useCallback(() => dispatch(logout()), []);
     const handlePressMain = React.useCallback(
         () => navigation.navigate('Main'),
-        []
+        [navigation]
     );
-    const handlePressModeration = React.useCallback(
-        () => navigation.navigate('Moderation'),
-        []
-    );
-    const handlePressSendTicket = React.useCallback(
-        () => navigation.navigate('SendTicket'),
-        []
-    );
+
     const handlePressSettings = React.useCallback(
         () => navigation.navigate('Settings'),
-        []
+        [navigation]
     );
 
     return (

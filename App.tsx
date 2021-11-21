@@ -6,14 +6,18 @@ import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 
-import { Notification } from '#components';
+import { Notification, PostingImageLoader } from '#components';
 import { BottomSheetProvider } from '#contexts/BottomSheetContext';
+import { CreateFrameProvider } from '#contexts/CreateFrameContext';
+import { CreateProfilePictureProvider } from '#contexts/CreateProfilePictureContext';
 import { DeleteCommentModalProvider } from '#contexts/DeleteCommentModalContext';
 import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
 import { DeleteGalerieBlackListModalProvider } from '#contexts/DeleteGalerieBlackListModalContext';
 import { DeleteGalerieUserModalProvider } from '#contexts/DeleteGalerieUserModalContext';
 import { DeleteInvitationModalProvider } from '#contexts/DeleteInvitationModalContext';
 import { DeleteNotificationModalProvider } from '#contexts/DeleteNotificationModalContext';
+import { DeleteProfilePictureModalProvider } from '#contexts/DeleteProfilePictureModalContext';
+import { GaleriesSearchProvider } from '#contexts/GaleriesSearchContext';
 import ThemeProvider from '#contexts/ThemeContext';
 import Loader from '#helpers/Loader';
 import RootStackNavigator from '#screens/RootStackNavigator';
@@ -27,23 +31,32 @@ export default function App() {
             <Provider store={store}>
                 <Loader>
                     <NavigationContainer>
-                        <DeleteFrameModalProvider>
-                            <DeleteGalerieBlackListModalProvider>
-                                <DeleteCommentModalProvider>
-                                    <DeleteGalerieUserModalProvider>
-                                        <DeleteInvitationModalProvider>
-                                            <DeleteNotificationModalProvider>
-                                                <BottomSheetProvider>
-                                                    <RootStackNavigator />
-                                                    <Notification />
-                                                    <StatusBar style="auto" />
-                                                </BottomSheetProvider>
-                                            </DeleteNotificationModalProvider>
-                                        </DeleteInvitationModalProvider>
-                                    </DeleteGalerieUserModalProvider>
-                                </DeleteCommentModalProvider>
-                            </DeleteGalerieBlackListModalProvider>
-                        </DeleteFrameModalProvider>
+                        <CreateFrameProvider>
+                            <CreateProfilePictureProvider>
+                                <DeleteFrameModalProvider>
+                                    <DeleteGalerieBlackListModalProvider>
+                                        <DeleteCommentModalProvider>
+                                            <DeleteGalerieUserModalProvider>
+                                                <DeleteInvitationModalProvider>
+                                                    <DeleteNotificationModalProvider>
+                                                        <DeleteProfilePictureModalProvider>
+                                                            <GaleriesSearchProvider>
+                                                                <BottomSheetProvider>
+                                                                    <RootStackNavigator />
+                                                                    <PostingImageLoader />
+                                                                    <Notification />
+                                                                    <StatusBar style="auto" />
+                                                                </BottomSheetProvider>
+                                                            </GaleriesSearchProvider>
+                                                        </DeleteProfilePictureModalProvider>
+                                                    </DeleteNotificationModalProvider>
+                                                </DeleteInvitationModalProvider>
+                                            </DeleteGalerieUserModalProvider>
+                                        </DeleteCommentModalProvider>
+                                    </DeleteGalerieBlackListModalProvider>
+                                </DeleteFrameModalProvider>
+                            </CreateProfilePictureProvider>
+                        </CreateFrameProvider>
                     </NavigationContainer>
                 </Loader>
             </Provider>
@@ -52,9 +65,11 @@ export default function App() {
 }
 
 // TODO:
-// Notifications Screen
+// Animate add button
+// select camera or galerie to post PP
+
+// Header on Comment/Likes
 // Profile Screen
-// Form Scrollable
 // Change email/password/delete account
 // Tickets
 // Show ticket
@@ -65,3 +80,4 @@ export default function App() {
 
 // If status === 'ERROR' and allIds = [] || undefined
 // show error, refresh button
+// Change PP status => me/id

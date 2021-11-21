@@ -3,7 +3,6 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import {
     BackHandler,
-    InteractionManager,
     KeyboardAvoidingView,
     Platform,
     StyleSheet,
@@ -41,9 +40,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
 
     const formik = useFormik({
         onSubmit: (values) => {
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(postGalerie(values));
-            });
+            dispatch(postGalerie(values));
         },
         initialValues,
         validateOnBlur: true,

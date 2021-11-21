@@ -48,6 +48,8 @@ declare global {
                 CreateFrame: NavigatorScreenParams<CreateFrameStack.ParamList>;
                 CreateGalerie: undefined;
                 CreateInvitation: undefined;
+                CreateProfilePictureCamera: undefined;
+                CreateProfilePictureGalerie: undefined;
                 DeleteGalerie: undefined;
                 Frame: undefined;
                 Galerie: undefined;
@@ -84,6 +86,16 @@ declare global {
                 ParamList,
                 'CreateInvitation'
             >;
+            type CreateProfilePictureCameraNavigationProp =
+                BottomTabNavigationProp<
+                    ParamList,
+                    'CreateProfilePictureCamera'
+                >;
+            type CreateProfilePictureGalerieNavigationProp =
+                BottomTabNavigationProp<
+                    ParamList,
+                    'CreateProfilePictureGalerie'
+                >;
             type DeleteGalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'DeleteGalerie'
@@ -158,7 +170,7 @@ declare global {
         namespace DesktopDrawer {
             type ParamList = {
                 Main: NavigatorScreenParams<DesktopBottomTab.ParamList>;
-                Moderation: undefined;
+                Moderation: NavigatorScreenParams<ModeratorStack.ParamList>;
                 SendTicket: undefined;
                 Settings: undefined;
             };
@@ -177,6 +189,25 @@ declare global {
             type SettingsScreenNavigationProp = DrawerNavigationProp<
                 ParamList,
                 'Settings'
+            >;
+        }
+        namespace ModeratorStack {
+            type ParamList = {
+                BetakeysScreen: undefined;
+                CreateBetakeyScreen: undefined;
+                ModerationNavigationScreen: undefined;
+            };
+            type BetaKeyScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'BetakeysScreen'
+            >;
+            type CreateBetaKeyScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'CreateBetakeyScreen'
+            >;
+            type ModerationNavigationScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'ModerationNavigationScreen'
             >;
         }
         namespace RootStack {
@@ -217,6 +248,7 @@ declare global {
             type: string;
         };
         type Entity =
+            | '[BETA KEYS]'
             | '[COMMENTS]'
             | '[FORGOT YOUR PASSWORD]'
             | '[FRAMES]'
@@ -379,6 +411,7 @@ declare global {
                 loading: {
                     delete: Store.Status;
                     post: Store.Status;
+                    put: Store.Status;
                 };
                 previous: string;
                 status: { [key: string]: Store.Status };
@@ -657,7 +690,12 @@ declare global {
             type Button = 'fill' | 'stroke';
             type Logo = 'large' | 'largest' | 'normal' | 'small' | 'smallest';
             type Pictogram = 'large' | 'normal' | 'small';
-            type ProfilePicture = 'small' | 'normal' | 'large' | 'huge';
+            type ProfilePicture =
+                | 'small'
+                | 'normal'
+                | 'large'
+                | 'largest'
+                | 'huge';
         }
     }
 }

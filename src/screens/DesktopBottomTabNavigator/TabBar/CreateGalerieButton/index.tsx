@@ -1,7 +1,7 @@
 import { BottomTabNavigationEventMap } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 import { NavigationHelpers, ParamListBase } from '@react-navigation/native';
 import * as React from 'react';
-import { InteractionManager, Keyboard } from 'react-native';
+import { Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { BottomSheetButton } from '#components';
@@ -24,9 +24,7 @@ const CreateGalerieButton = ({ navigation }: Props) => {
         else {
             closeBottomSheet();
             navigation.navigate('CreateGalerie');
-            InteractionManager.runAfterInteractions(() => {
-                dispatch(resetGaleriesCurrent());
-            });
+            dispatch(resetGaleriesCurrent());
         }
     }, [keyboardShown]);
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Typography } from '#components';
+import ProfileTabViewNavigator from '#screens/ProfileTabViewNavigator';
 
-const ProfileScreen = () => <Typography>Profile</Typography>;
+const ProfileScreen = () => <ProfileTabViewNavigator />;
 
 export default ProfileScreen;

@@ -14,6 +14,7 @@ export { default as dispatchGetFrameComments } from './dispatchGetFrameComments'
 export { default as dispatchGetFrameGaleriePictures } from './dispatchGetFrameGaleriePictures';
 export { default as dispatchGetFrameLikes } from './dispatchGetFrameLikes';
 export { default as dispatchGetFrames } from './dispatchGetFrames';
+export { default as dispatchGetFramesMe } from './dispatchGetFramesMe';
 export { default as dispatchGetGalerie } from './dispatchGetGalerie';
 export { default as dispatchGetGalerieBlackList } from './dispatchGetGalerieBlackList';
 export { default as dispatchGetGalerieBlackLists } from './dispatchGetGalerieBlackLists';
@@ -57,6 +58,7 @@ export { default as dispatchPutGalerieHasNewFrames } from './dispatchPutGalerieH
 export { default as dispatchPutGaleriePicture } from './dispatchPutGaleriePicture';
 export { default as dispatchPutGalerieUserRole } from './dispatchPutGalerieUserRole';
 export { default as dispatchPutNotification } from './dispatchPutNotification';
+export { default as dispatchPutProfilePicture } from './dispatchPutProfilePicture';
 export { default as dispatchPutUsersMeHasNewNotifications } from './dispatchPutUsersMeHasNewNotifications';
 export { default as dispatchRefreshFrames } from './dispatchRefreshFrames';
 export { default as dispatchRefreshFrameComments } from './dispatchRefreshFrameComments';

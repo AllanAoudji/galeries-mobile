@@ -4,6 +4,7 @@ const framesAllIdsSelector = (state: Store.Reducer) => state.frames.allIds;
 const framesByIdSelector = (state: Store.Reducer) => state.frames.byId;
 const framesCurrentSelector = (state: Store.Reducer) => state.frames.current;
 const framesStatusSelector = (state: Store.Reducer) => state.frames.status;
+const meIdSelector = (state: Store.Reducer) => state.me.id;
 const galeriesCurrentSelector = (state: Store.Reducer) =>
     state.galeries.current;
 
@@ -37,9 +38,23 @@ export const selectFramesAllIds = createSelector(
     [framesAllIdsSelector],
     (framesAllIds) => framesAllIds[''] || []
 );
+export const selectFramesMeAllIds = createSelector(
+    [framesAllIdsSelector, meIdSelector],
+    (framesAllIds, meId) => {
+        if (!meId) return undefined;
+        return framesAllIds[meId] || [];
+    }
+);
 export const selectFramesStatus = createSelector(
     [framesStatusSelector],
     (framesStatus) => framesStatus[''] || 'PENDING'
+);
+export const selectFramesMeStatus = createSelector(
+    [framesStatusSelector, meIdSelector],
+    (framesStatus, meId) => {
+        if (!meId) return undefined;
+        return framesStatus[meId] || 'PENDING';
+    }
 );
 export const selectFramesFieldsError = (state: Store.Reducer) =>
     state.frames.fieldsError;

@@ -38,10 +38,14 @@ const LandingScreen = ({ navigation }: Props) => {
             <View>
                 <CustomButton
                     mb="smallest"
+                    ml="small"
+                    mr="small"
                     onPress={handleOnPressLogin}
                     title="login"
                 />
                 <CustomButton
+                    ml="small"
+                    mr="small"
                     onPress={handleOnPressSignin}
                     title="signin"
                     variant="stroke"
