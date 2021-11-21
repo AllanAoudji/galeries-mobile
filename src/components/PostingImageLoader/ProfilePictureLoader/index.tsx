@@ -11,6 +11,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
+import { InteractionManager } from 'react-native';
 import ImageLoader from '#components/ImageLoader';
 import { CreateProfilePictureContext } from '#contexts/CreateProfilePictureContext';
 import { ANIMATIONS } from '#helpers/constants';
@@ -82,30 +83,40 @@ const ProfilePictureLoader = ({
     }, [loadingProfilePicture, repost]);
 
     React.useEffect(() => {
-        if (loadingProfilePicture === 'LOADING') {
-            state.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(600));
-            rotate.value = withRepeat(
-                withTiming(360, ANIMATIONS.TIMING_CONFIG(1200)),
-                -1
-            );
-        } else if (loadingProfilePicture === 'SUCCESS') {
-            state.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(600), () => {
-                runOnJS(removePicture)();
-            });
-            rotate.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(1200));
-        } else if (loadingProfilePicture === 'ERROR') {
-            rotate.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(1200));
-        }
+        InteractionManager.runAfterInteractions(() => {
+            if (loadingProfilePicture === 'LOADING') {
+                state.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(600));
+                rotate.value = withRepeat(
+                    withTiming(360, ANIMATIONS.TIMING_CONFIG(1200)),
+                    -1
+                );
+            } else if (loadingProfilePicture === 'SUCCESS') {
+                state.value = withTiming(
+                    0,
+                    ANIMATIONS.TIMING_CONFIG(600),
+                    () => {
+                        runOnJS(removePicture)();
+                    }
+                );
+                rotate.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(1200));
+            } else if (loadingProfilePicture === 'ERROR') {
+                rotate.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(1200));
+            }
+        });
     }, [loadingProfilePicture, removePicture]);
     React.useEffect(() => {
-        if (loadingProfilePicture === 'ERROR')
-            error.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(300));
-        else error.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(300));
+        InteractionManager.runAfterInteractions(() => {
+            if (loadingProfilePicture === 'ERROR')
+                error.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(300));
+            else error.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(300));
+        });
     }, [loadingProfilePicture]);
 
     React.useEffect(() => {
-        if (loadingProfilePicture === 'SUCCESS')
-            dispatch(resetProfilePicturesLoadingPost());
+        InteractionManager.runAfterInteractions(() => {
+            if (loadingProfilePicture === 'SUCCESS')
+                dispatch(resetProfilePicturesLoadingPost());
+        });
     }, [loadingProfilePicture]);
 
     return (

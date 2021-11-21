@@ -43,13 +43,13 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
     const formik = useFormik({
         onSubmit: (values) => {
             if (!currentGalerie) return;
-            postGalerieFrame(currentGalerie.id, values);
             navigation
                 .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
                 .reset({
                     index: 0,
                     routes: [{ name: 'Galerie' }],
                 });
+            postGalerieFrame(currentGalerie.id, values);
         },
         initialValues,
         validateOnBlur: true,

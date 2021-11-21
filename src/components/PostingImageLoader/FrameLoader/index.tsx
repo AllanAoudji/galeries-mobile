@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
+import { InteractionManager } from 'react-native';
 import ImageLoader from '#components/ImageLoader';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
 import { ANIMATIONS } from '#helpers/constants';
@@ -78,42 +79,58 @@ const FrameLoader = ({
     }, [loadingFrame, repost]);
 
     React.useEffect(() => {
-        if (loadingFrame === 'LOADING' || loadingFrame === 'ERROR') {
-            if (
-                loadingProfilePicture === 'LOADING' ||
-                loadingProfilePicture === 'ERROR'
-            )
+        InteractionManager.runAfterInteractions(() => {
+            if (loadingFrame === 'LOADING' || loadingFrame === 'ERROR') {
+                if (
+                    loadingProfilePicture === 'LOADING' ||
+                    loadingProfilePicture === 'ERROR'
+                )
+                    bottomState.value = withTiming(
+                        2,
+                        ANIMATIONS.TIMING_CONFIG(600)
+                    );
+                else
+                    bottomState.value = withTiming(
+                        1,
+                        ANIMATIONS.TIMING_CONFIG(600)
+                    );
+            } else
                 bottomState.value = withTiming(
-                    2,
+                    0,
                     ANIMATIONS.TIMING_CONFIG(600)
                 );
-            else
+        });
+    }, [loadingFrame, loadingProfilePicture]);
+    React.useEffect(() => {
+        InteractionManager.runAfterInteractions(() => {
+            if (loadingFrame === 'LOADING') {
+                state.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(600));
+                rotate.value = withRepeat(
+                    withTiming(360, ANIMATIONS.TIMING_CONFIG(1200)),
+                    -1
+                );
                 bottomState.value = withTiming(
                     1,
                     ANIMATIONS.TIMING_CONFIG(600)
                 );
-        } else bottomState.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(600));
-    }, [loadingFrame, loadingProfilePicture]);
-    React.useEffect(() => {
-        if (loadingFrame === 'LOADING') {
-            state.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(600));
-            rotate.value = withRepeat(
-                withTiming(360, ANIMATIONS.TIMING_CONFIG(1200)),
-                -1
-            );
-            bottomState.value = withTiming(1, ANIMATIONS.TIMING_CONFIG(600));
-        } else if (loadingFrame === 'SUCCESS') {
-            state.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(600), () => {
-                runOnJS(resetPictures)();
-            });
-            rotate.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(1200));
-        } else if (loadingFrame === 'ERROR') {
-            rotate.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(1200));
-        }
+            } else if (loadingFrame === 'SUCCESS') {
+                state.value = withTiming(
+                    0,
+                    ANIMATIONS.TIMING_CONFIG(600),
+                    () => {
+                        runOnJS(resetPictures)();
+                    }
+                );
+                rotate.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(1200));
+            } else if (loadingFrame === 'ERROR')
+                rotate.value = withTiming(0, ANIMATIONS.TIMING_CONFIG(1200));
+        });
     }, [loadingFrame, resetPictures]);
 
     React.useEffect(() => {
-        if (loadingFrame === 'SUCCESS') dispatch(resetFramesLoadingPost());
+        InteractionManager.runAfterInteractions(() => {
+            if (loadingFrame === 'SUCCESS') dispatch(resetFramesLoadingPost());
+        });
     }, [loadingFrame]);
 
     return (

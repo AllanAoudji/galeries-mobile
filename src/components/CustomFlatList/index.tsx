@@ -2,6 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import {
     FlatList,
+    InteractionManager,
     ListRenderItemInfo,
     RefreshControl,
     StyleProp,
@@ -65,6 +66,8 @@ const CustomFlatList = ({
 
     const ref = React.useRef<FlatList<any> | null>(null);
 
+    const [didFinishInitialAnimation, setDidFinishInitialAnimation] =
+        React.useState<boolean>(false);
     const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
     const colors = React.useMemo(
@@ -145,8 +148,17 @@ const CustomFlatList = ({
     );
     useFocusEffect(React.useCallback(() => () => setRefreshing(false), []));
 
+    React.useEffect(() => {
+        InteractionManager.runAfterInteractions(() => {
+            setDidFinishInitialAnimation(true);
+        });
+    }, []);
+    React.useEffect(() => () => setDidFinishInitialAnimation(false), []);
+
     // TODO:
     // need a way to scroll top when a new model is posted
+
+    if (!didFinishInitialAnimation) return null;
 
     return (
         <AnimatedFlatList
