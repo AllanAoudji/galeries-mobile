@@ -1,3 +1,4 @@
+export { default as dispatchDeleteBetaKeys } from './dispatchDeleteBetaKeys';
 export { default as dispatchDeleteComment } from './dispatchDeleteComment';
 export { default as dispatchDeleteFrame } from './dispatchDeleteFrame';
 export { default as dispatchDeleteGalerie } from './dispatchDeleteGalerie';
@@ -7,6 +8,8 @@ export { default as dispatchDeleteInvitation } from './dispatchDeleteInvitation'
 export { default as dispatchDeleteNotification } from './dispatchDeleteNotification';
 export { default as dispatchDeleteProfilePicture } from './dispatchDeleteProfilePicture';
 export { default as dispatchErrorNotification } from './dispatchErrorNotification';
+export { default as dispatchGetBetaKey } from './dispatchGetBetaKey';
+export { default as dispatchGetBetaKeys } from './dispatchGetBetaKeys';
 export { default as dispatchGetComment } from './dispatchGetComment';
 export { default as dispatchGetFrame } from './dispatchGetFrame';
 export { default as dispatchGetCommentComments } from './dispatchGetCommentComments';
@@ -39,6 +42,7 @@ export { default as dispatchGetUserCurrentProfilePicture } from './dispatchGetUs
 export { default as dispatchGetUsers } from './dispatchGetUsers';
 export { default as dispatchLogin } from './dispatchLogin';
 export { default as dispatchLogout } from './dispatchLogout';
+export { default as dispatchPostBetaKey } from './dispatchPostBetaKey';
 export { default as dispatchPostCommentComments } from './dispatchPostCommentComments';
 export { default as dispatchPostCommentIdReports } from './dispatchPostCommentIdReports';
 export { default as dispatchPostFrame } from './dispatchPostFrame';
@@ -60,6 +64,7 @@ export { default as dispatchPutGalerieUserRole } from './dispatchPutGalerieUserR
 export { default as dispatchPutNotification } from './dispatchPutNotification';
 export { default as dispatchPutProfilePicture } from './dispatchPutProfilePicture';
 export { default as dispatchPutUsersMeHasNewNotifications } from './dispatchPutUsersMeHasNewNotifications';
+export { default as dispatchRefreshBetaKeys } from './dispatchRefreshBetaKeys';
 export { default as dispatchRefreshFrames } from './dispatchRefreshFrames';
 export { default as dispatchRefreshFrameComments } from './dispatchRefreshFrameComments';
 export { default as dispatchRefetchFrameLikes } from './dispatchRefetchFrameLikes';

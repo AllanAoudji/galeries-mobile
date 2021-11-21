@@ -1,3 +1,4 @@
+export { default as combineBetaKeysAllIds } from './combineBetaKeysAllIds';
 export { default as combineCommentsAllIds } from './combineCommentsAllIds';
 export { default as combineFramesAllIds } from './combineFramesAllIds';
 export { default as combineGaleriesAllIds } from './combineGaleriesAllIds';

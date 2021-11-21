@@ -51,6 +51,7 @@ export const END_POINT = {
     ADMIN: '/admin',
     ALLOW_NOTIFICATION: '/allowNotification',
     BETA: '/beta',
+    BETA_KEYS: '/betaKeys',
     BLACKLISTS: '/blackLists',
     COMMENTS: '/comments',
     COVER_PICTURE: '/coverPicture',
