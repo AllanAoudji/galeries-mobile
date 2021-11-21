@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     postProfilePicture,
-    resetProfilePicturesLoadingPost,
     selectProfilePicturesLoadingPost,
 } from '#store/profilePictures';
 import CheckImageExtension from '#helpers/CheckImageExtension';
@@ -68,12 +67,6 @@ export const CreateProfilePictureProvider: React.FC<{}> = ({ children }) => {
         (uri: string) => setPictureUri(uri),
         []
     );
-
-    React.useEffect(() => {
-        if (loading === 'SUCCESS') {
-            dispatch(resetProfilePicturesLoadingPost());
-        }
-    }, [loading, removePicture]);
 
     return (
         <CreateProfilePictureContext.Provider

@@ -1,8 +1,20 @@
+import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
-const Container = styled.View`
-    flex: 1;
+const PictureHeader = styled(Animated.View)`
+    align-items: center;
+    bottom: 0;
+    justify-content: center;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+`;
+const PictureHeaderTextContainer = styled.View`
+    bottom: ${({ theme }) => theme.spacings.smallest};
+    position: absolute;
+    right: ${({ theme }) => theme.spacings.normal};
 `;
 
-// eslint-disable-next-line import/prefer-default-export
-export { Container };
+export { PictureHeader, PictureHeaderTextContainer };

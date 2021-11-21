@@ -94,8 +94,10 @@ const successGetUsers = (
     }
 
     allIds.forEach((id) => {
-        const profilePicture = getState().profilePictures.id[id];
-        if (!profilePicture) dispatch(getUserCurrentProfilePicture(id));
+        const profilePicture =
+            getState().profilePictures.status[id] || 'PENDING';
+        if (profilePicture === 'PENDING')
+            dispatch(getUserCurrentProfilePicture(id));
     });
 };
 

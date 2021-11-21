@@ -4,7 +4,7 @@ import { END_POINT } from '#helpers/constants';
 import { apiRequest } from '#store/api';
 import { FRAMES } from '#store/genericActionTypes';
 
-const dispatchGetFramesUser = (
+const dispatchGetFramesMe = (
     dispatch: Dispatch<Store.Action>,
     userId: string,
     previous?: string
@@ -25,4 +25,4 @@ const dispatchGetFramesUser = (
     );
 };
 
-export default dispatchGetFramesUser;
+export default dispatchGetFramesMe;

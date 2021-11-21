@@ -1,21 +1,26 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
+import { ListRenderItemInfo, useWindowDimensions } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
     BottomLoader,
+    CustomFlatList,
+    EmptyMessage,
     FullScreenLoader,
     GalerieTabbarScreenContainer,
 } from '#components';
+import { GLOBAL_STYLE } from '#helpers/constants';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 import {
     getGalerieBlackLists,
+    refreshGalerieBlackLists,
     selectCurrentGalerieGalerieBlackListsAllIds,
     selectCurrentGalerieGalerieBlackListsStatus,
 } from '#store/galerieBlackLists';
 
-import EmptyScrollView from './EmptyScrollView';
-import GalerieBlackLists from './GalerieBlackLists';
+import RenderItem from './RenderItem';
 
 type Props = {
     current: boolean;
@@ -24,59 +29,90 @@ type Props = {
     scrollY: Animated.SharedValue<number>;
 };
 
+const PADDING_TOP =
+    GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+    GLOBAL_STYLE.GALERIE_TAB_BAR_MENU;
+
+const renderItem = ({ index, item }: ListRenderItemInfo<string>) => (
+    <RenderItem item={item} index={index} />
+);
+
 const GalerieBlackListsScreen = ({
     current,
     editScrollY,
     galerie,
     scrollY,
 }: Props) => {
+    const dimension = useWindowDimensions();
     const dispatch = useDispatch();
 
-    const galerieBlackListsAllIds = useSelector(
-        selectCurrentGalerieGalerieBlackListsAllIds
-    );
-    const galerieBlackListsStatus = useSelector(
-        selectCurrentGalerieGalerieBlackListsStatus
-    );
+    const allIds = useSelector(selectCurrentGalerieGalerieBlackListsAllIds);
+    const status = useSelector(selectCurrentGalerieGalerieBlackListsStatus);
 
+    const minHeight = React.useMemo(
+        () => dimension.height + GalerieTabViewMaxScroll,
+        [dimension]
+    );
     const showBottomLoader = React.useMemo(
-        () => galerieBlackListsStatus === 'LOADING',
-        [galerieBlackListsStatus]
+        () => status === 'LOADING',
+        [status]
     );
     const showFullScreenLoader = React.useMemo(
-        () =>
-            galerieBlackListsStatus === 'PENDING' ||
-            galerieBlackListsStatus === 'INITIAL_LOADING',
-        [galerieBlackListsStatus]
+        () => status === 'PENDING' || status === 'INITIAL_LOADING',
+        [status]
     );
+
+    const handleEndReach = React.useCallback(() => {
+        if (!galerie) return;
+        if (!status) return;
+        if (status.includes('LOADING')) return;
+        if (status === 'REFRESH') return;
+        dispatch(getGalerieBlackLists(galerie.id));
+    }, [galerie, status]);
+    const handleRefresh = React.useCallback(() => {
+        if (!galerie) return;
+        if (!status) return;
+        if (status.includes('LOADING')) return;
+        if (status === 'REFRESH') return;
+        dispatch(refreshGalerieBlackLists(galerie.id));
+    }, [galerie, status]);
 
     useFocusEffect(
         React.useCallback(() => {
-            if (
-                galerieBlackListsStatus &&
-                galerieBlackListsStatus === 'PENDING' &&
-                galerie
-            )
-                dispatch(getGalerieBlackLists(galerie.id));
-        }, [galerieBlackListsStatus, galerie])
+            if (!galerie) return;
+            if (!status) return;
+            if (status !== 'PENDING') return;
+            dispatch(getGalerieBlackLists(galerie.id));
+        }, [status, galerie])
     );
 
     return (
         <GalerieTabbarScreenContainer>
-            {galerieBlackListsAllIds && galerieBlackListsAllIds.length > 0 ? (
-                <GalerieBlackLists
-                    allIds={galerieBlackListsAllIds}
-                    current={current}
+            {allIds && allIds.length > 0 ? (
+                <CustomFlatList
+                    allIds={allIds}
                     editScrollY={editScrollY}
-                    galerie={galerie}
+                    isFocus={current}
+                    minHeight={minHeight}
+                    onRefresh={handleRefresh}
+                    onEndReach={handleEndReach}
+                    pb={GLOBAL_STYLE.BOTTOM_TAB_HEIGHT}
+                    progressViewOffset={PADDING_TOP}
+                    pt={PADDING_TOP}
+                    renderItem={renderItem}
                     scrollY={scrollY}
+                    status={status || 'PENDING'}
                 />
             ) : (
-                <EmptyScrollView
-                    current={current}
+                <EmptyMessage
                     editScrollY={editScrollY}
-                    galerie={galerie}
+                    height={dimension.height + GalerieTabViewMaxScroll}
+                    isFocus={current}
+                    onRefresh={handleRefresh}
+                    progressViewOffset={PADDING_TOP}
+                    refreshStatus={status}
                     scrollY={scrollY}
+                    text="no other has been black listed from this galerie"
                 />
             )}
             <FullScreenLoader show={showFullScreenLoader} />

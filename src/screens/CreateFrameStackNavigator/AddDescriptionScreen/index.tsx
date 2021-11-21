@@ -11,13 +11,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { CustomButton, CustomTextInput } from '#components';
 import { CreateFrameContext } from '#contexts/CreateFrameContext';
-import CheckImageExtension from '#helpers/CheckImageExtension';
 import { FIELD_REQUIREMENT, GLOBAL_STYLE } from '#helpers/constants';
 import { frameDescriptionSchema } from '#helpers/schemas';
 import {
-    postFrame,
     resetFramesFieldsError,
-    resetFramesLoadingPost,
     selectFramesFieldsError,
     selectFramesLoadingPost,
     updateFramesFieldsError,
@@ -37,7 +34,7 @@ const initialValues = {
 const AddDescriptionScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
-    const { picturesUri, resetPictures } = React.useContext(CreateFrameContext);
+    const { postGalerieFrame } = React.useContext(CreateFrameContext);
 
     const currentGalerie = useSelector(selectCurrentGalerie);
     const framesFieldsError = useSelector(selectFramesFieldsError);
@@ -45,22 +42,14 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
 
     const formik = useFormik({
         onSubmit: (values) => {
-            if (currentGalerie) {
-                const formData = new FormData();
-                picturesUri.forEach((pictureUri) => {
-                    const type = CheckImageExtension(pictureUri);
-                    if (type)
-                        formData.append('image', {
-                            // @ts-ignore
-                            uri: pictureUri,
-                            type,
-                            name: pictureUri,
-                        });
+            if (!currentGalerie) return;
+            postGalerieFrame(currentGalerie.id, values);
+            navigation
+                .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
+                .reset({
+                    index: 0,
+                    routes: [{ name: 'Galerie' }],
                 });
-                if (values.description !== '')
-                    formData.append('description', values.description);
-                dispatch(postFrame(currentGalerie.id, formData));
-            }
         },
         initialValues,
         validateOnBlur: true,
@@ -93,24 +82,8 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
     }, [loading, navigation]);
 
     useFocusEffect(
-        React.useCallback(() => {
-            if (loading === 'SUCCESS') {
-                resetPictures();
-                navigation
-                    .getParent<
-                        NavigationProp<Screen.DesktopBottomTab.ParamList>
-                    >()
-                    .reset({
-                        index: 0,
-                        routes: [{ name: 'Galerie' }],
-                    });
-            }
-        }, [loading, navigation, resetPictures])
-    );
-    useFocusEffect(
         React.useCallback(
             () => () => {
-                dispatch(resetFramesLoadingPost());
                 dispatch(resetFramesFieldsError());
                 formik.resetForm();
             },

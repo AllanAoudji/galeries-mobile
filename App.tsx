@@ -6,8 +6,9 @@ import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Provider } from 'react-redux';
 
-import { Notification, PostingProfilePictures } from '#components';
+import { Notification, PostingImageLoader } from '#components';
 import { BottomSheetProvider } from '#contexts/BottomSheetContext';
+import { CreateFrameProvider } from '#contexts/CreateFrameContext';
 import { CreateProfilePictureProvider } from '#contexts/CreateProfilePictureContext';
 import { DeleteCommentModalProvider } from '#contexts/DeleteCommentModalContext';
 import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
@@ -30,30 +31,32 @@ export default function App() {
             <Provider store={store}>
                 <Loader>
                     <NavigationContainer>
-                        <CreateProfilePictureProvider>
-                            <DeleteFrameModalProvider>
-                                <DeleteGalerieBlackListModalProvider>
-                                    <DeleteCommentModalProvider>
-                                        <DeleteGalerieUserModalProvider>
-                                            <DeleteInvitationModalProvider>
-                                                <DeleteNotificationModalProvider>
-                                                    <DeleteProfilePictureModalProvider>
-                                                        <GaleriesSearchProvider>
-                                                            <BottomSheetProvider>
-                                                                <RootStackNavigator />
-                                                                <PostingProfilePictures />
-                                                                <Notification />
-                                                                <StatusBar style="auto" />
-                                                            </BottomSheetProvider>
-                                                        </GaleriesSearchProvider>
-                                                    </DeleteProfilePictureModalProvider>
-                                                </DeleteNotificationModalProvider>
-                                            </DeleteInvitationModalProvider>
-                                        </DeleteGalerieUserModalProvider>
-                                    </DeleteCommentModalProvider>
-                                </DeleteGalerieBlackListModalProvider>
-                            </DeleteFrameModalProvider>
-                        </CreateProfilePictureProvider>
+                        <CreateFrameProvider>
+                            <CreateProfilePictureProvider>
+                                <DeleteFrameModalProvider>
+                                    <DeleteGalerieBlackListModalProvider>
+                                        <DeleteCommentModalProvider>
+                                            <DeleteGalerieUserModalProvider>
+                                                <DeleteInvitationModalProvider>
+                                                    <DeleteNotificationModalProvider>
+                                                        <DeleteProfilePictureModalProvider>
+                                                            <GaleriesSearchProvider>
+                                                                <BottomSheetProvider>
+                                                                    <RootStackNavigator />
+                                                                    <PostingImageLoader />
+                                                                    <Notification />
+                                                                    <StatusBar style="auto" />
+                                                                </BottomSheetProvider>
+                                                            </GaleriesSearchProvider>
+                                                        </DeleteProfilePictureModalProvider>
+                                                    </DeleteNotificationModalProvider>
+                                                </DeleteInvitationModalProvider>
+                                            </DeleteGalerieUserModalProvider>
+                                        </DeleteCommentModalProvider>
+                                    </DeleteGalerieBlackListModalProvider>
+                                </DeleteFrameModalProvider>
+                            </CreateProfilePictureProvider>
+                        </CreateFrameProvider>
                     </NavigationContainer>
                 </Loader>
             </Provider>

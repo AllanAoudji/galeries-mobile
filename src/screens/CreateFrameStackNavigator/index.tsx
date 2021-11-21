@@ -6,7 +6,6 @@ import {
 import * as React from 'react';
 
 import { DefaultHeader } from '#components';
-import { CreateFrameProvider } from '#contexts/CreateFrameContext';
 
 import AddDescriptionScreen from './AddDescriptionScreen';
 import AddPicturesScreen from './AddPicturesScreen';
@@ -44,33 +43,31 @@ const screenOptions: StackNavigationOptions = {
 
 const CreateGalerieStackNavigator = () => {
     return (
-        <CreateFrameProvider>
-            <Stack.Navigator
-                initialRouteName="AddPictures"
-                screenOptions={screenOptions}
-            >
-                <Stack.Screen
-                    component={AddDescriptionScreen}
-                    name="AddDescription"
-                    options={addDescriptionOption}
-                />
-                <Stack.Screen
-                    component={AddPicturesScreen}
-                    name="AddPictures"
-                    options={addPicturesOption}
-                />
-                <Stack.Screen
-                    component={CreateFrameCameraScreen}
-                    name="CreateFrameCamera"
-                    options={createFrameCameraOption}
-                />
-                <Stack.Screen
-                    component={CreateFrameGalleryScreen}
-                    name="CreateFrameGallery"
-                    options={createFrameGalleryOption}
-                />
-            </Stack.Navigator>
-        </CreateFrameProvider>
+        <Stack.Navigator
+            initialRouteName="AddPictures"
+            screenOptions={screenOptions}
+        >
+            <Stack.Screen
+                component={AddDescriptionScreen}
+                name="AddDescription"
+                options={addDescriptionOption}
+            />
+            <Stack.Screen
+                component={AddPicturesScreen}
+                name="AddPictures"
+                options={addPicturesOption}
+            />
+            <Stack.Screen
+                component={CreateFrameCameraScreen}
+                name="CreateFrameCamera"
+                options={createFrameCameraOption}
+            />
+            <Stack.Screen
+                component={CreateFrameGalleryScreen}
+                name="CreateFrameGallery"
+                options={createFrameGalleryOption}
+            />
+        </Stack.Navigator>
     );
 };
 

@@ -42,7 +42,7 @@ export const selectFramesMeAllIds = createSelector(
     [framesAllIdsSelector, meIdSelector],
     (framesAllIds, meId) => {
         if (!meId) return undefined;
-        return framesAllIds[meId];
+        return framesAllIds[meId] || [];
     }
 );
 export const selectFramesStatus = createSelector(

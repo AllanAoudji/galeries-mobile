@@ -1,21 +1,26 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
+import { ListRenderItemInfo, useWindowDimensions } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
     BottomLoader,
+    CustomFlatList,
+    EmptyMessage,
     FullScreenLoader,
     GalerieTabbarScreenContainer,
 } from '#components';
+import { GLOBAL_STYLE } from '#helpers/constants';
+import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
 import {
     getGalerieUsers,
+    refreshGalerieUsers,
     selectCurrentGalerieUsersAllIds,
     selectCurrentGalerieUsersStatus,
 } from '#store/users';
 
-import EmptyScrollView from './EmptyScrollView';
-import Users from './Users';
+import RenderItem from './RenderItem';
 
 type Props = {
     current: boolean;
@@ -24,49 +29,85 @@ type Props = {
     scrollY: Animated.SharedValue<number>;
 };
 
+const renderItem = ({ index, item }: ListRenderItemInfo<string>) => (
+    <RenderItem index={index} item={item} />
+);
+
+const PADDING_TOP =
+    GLOBAL_STYLE.GALERIE_TAB_BAR_COVER_PICTURE +
+    GLOBAL_STYLE.GALERIE_TAB_BAR_MENU;
+
 const UsersScreen = ({ current, editScrollY, galerie, scrollY }: Props) => {
+    const dimension = useWindowDimensions();
     const dispatch = useDispatch();
 
-    const usersAllIds = useSelector(selectCurrentGalerieUsersAllIds);
-    const usersStatus = useSelector(selectCurrentGalerieUsersStatus);
+    const allIds = useSelector(selectCurrentGalerieUsersAllIds);
+    const status = useSelector(selectCurrentGalerieUsersStatus);
 
+    const minHeight = React.useMemo(
+        () => dimension.height + GalerieTabViewMaxScroll,
+        [dimension]
+    );
     const showBottomLoader = React.useMemo(
-        () => usersStatus === 'LOADING',
-        [usersStatus]
+        () => status === 'LOADING',
+        [status]
     );
     const showFullScreenLoader = React.useMemo(
-        () => usersStatus === 'PENDING' || usersStatus === 'INITIAL_LOADING',
-        [usersStatus]
+        () => status === 'PENDING' || status === 'INITIAL_LOADING',
+        [status]
     );
+
+    const handleEndReach = React.useCallback(() => {
+        if (!galerie) return;
+        if (!status) return;
+        if (status.includes('LOADING')) return;
+        if (status === 'REFRESH') return;
+        dispatch(getGalerieUsers(galerie.id));
+    }, [galerie, status]);
+    const handleRefresh = React.useCallback(() => {
+        if (!galerie) return;
+        if (!status) return;
+        if (status.includes('LOADING')) return;
+        if (status === 'REFRESH') return;
+        dispatch(refreshGalerieUsers(galerie.id));
+    }, [galerie, status]);
 
     useFocusEffect(
         React.useCallback(() => {
-            if (usersStatus && usersStatus === 'PENDING' && galerie)
-                dispatch(getGalerieUsers(galerie.id));
-        }, [galerie, usersStatus])
-    );
-
-    React.useEffect(() => {
-        if (usersStatus && usersStatus === 'PENDING' && galerie)
+            if (!galerie) return;
+            if (!status) return;
+            if (status !== 'PENDING') return;
             dispatch(getGalerieUsers(galerie.id));
-    }, [galerie, usersStatus]);
+        }, [galerie, status])
+    );
 
     return (
         <GalerieTabbarScreenContainer>
-            {usersAllIds && usersAllIds.length > 0 ? (
-                <Users
-                    allIds={usersAllIds}
-                    current={current}
+            {allIds && allIds.length > 0 ? (
+                <CustomFlatList
+                    allIds={allIds}
                     editScrollY={editScrollY}
-                    galerie={galerie}
+                    isFocus={current}
+                    minHeight={minHeight}
+                    onEndReach={handleEndReach}
+                    onRefresh={handleRefresh}
+                    pb={GLOBAL_STYLE.BOTTOM_TAB_HEIGHT}
+                    progressViewOffset={PADDING_TOP}
+                    pt={PADDING_TOP}
+                    renderItem={renderItem}
                     scrollY={scrollY}
+                    status={status || 'PENDING'}
                 />
             ) : (
-                <EmptyScrollView
-                    current={current}
+                <EmptyMessage
                     editScrollY={editScrollY}
-                    galerie={galerie}
+                    height={dimension.height + GalerieTabViewMaxScroll}
+                    isFocus={current}
+                    onRefresh={handleRefresh}
+                    progressViewOffset={PADDING_TOP}
+                    refreshStatus={status}
                     scrollY={scrollY}
+                    text="no other user follow this galerie yet."
                 />
             )}
             <FullScreenLoader show={showFullScreenLoader} />

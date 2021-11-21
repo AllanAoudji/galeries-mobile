@@ -38,7 +38,7 @@ const WithoutUser = ({ frame }: Props) => {
                 borderRadius={5}
                 galerie={galerie}
                 mr="smallest"
-                size={GLOBAL_STYLE.FRAME_COVER_PICTURE_SIZE}
+                size={GLOBAL_STYLE.FRAME_COVER_PICTURE_SIZE - 5}
             />
             <Typography fontFamily="light">Posted on </Typography>
             <Typography>

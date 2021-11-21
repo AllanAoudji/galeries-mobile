@@ -8,12 +8,17 @@ import {
     Route,
     SceneRendererProps,
 } from 'react-native-tab-view';
+import { useSelector } from 'react-redux';
 
-import Head from './Head';
+import {
+    ProfilePicture,
+    TabViewNavigatorHeader,
+    Typography,
+} from '#components';
 import ProfileTabViewMaxScroll from '#helpers/ProfileTabViewMaxScroll';
-import TabBar from './TabBar';
+import { selectMe } from '#store/me';
 
-import { Container } from './styles';
+import { Container, InnerContainer } from './styles';
 
 type Props = SceneRendererProps & {
     navigationState: NavigationState<Route>;
@@ -21,20 +26,40 @@ type Props = SceneRendererProps & {
 };
 
 const Header = ({ scrollY, ...props }: Props) => {
-    const containerStyle = useAnimatedStyle(() => {
-        const translateY = interpolate(
+    const me = useSelector(selectMe);
+
+    const titleContainerStyle = useAnimatedStyle(() => {
+        const opacity = interpolate(
             scrollY.value,
-            [0, ProfileTabViewMaxScroll],
-            [0, -ProfileTabViewMaxScroll]
+            [0, ProfileTabViewMaxScroll / 2, ProfileTabViewMaxScroll],
+            [1, 1, 0]
         );
-        return { transform: [{ translateY }] };
+        return { opacity };
     }, []);
 
     return (
-        <Container style={containerStyle}>
-            <Head scrollY={scrollY} />
-            <TabBar {...props} />
-        </Container>
+        <TabViewNavigatorHeader
+            maxScroll={ProfileTabViewMaxScroll}
+            scrollY={scrollY}
+            variant="center"
+            {...props}
+        >
+            <Container>
+                {!!me && (
+                    <InnerContainer style={titleContainerStyle}>
+                        <ProfilePicture
+                            mb="smallest"
+                            size="largest"
+                            user={me}
+                        />
+                        <Typography fontFamily="bold" fontSize={36}>
+                            {me.pseudonym}
+                        </Typography>
+                        <Typography>{me.userName}</Typography>
+                    </InnerContainer>
+                )}
+            </Container>
+        </TabViewNavigatorHeader>
     );
 };
 

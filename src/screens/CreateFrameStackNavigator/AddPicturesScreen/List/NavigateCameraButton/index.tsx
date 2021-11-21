@@ -17,8 +17,8 @@ const NavigateCameraButton = () => {
         (async () => {
             closeBottomSheet();
             const { status } = await Camera.requestCameraPermissionsAsync();
-            if (status === 'granted' && mounted.current)
-                navigation.navigate('CreateFrameCamera');
+            if (!mounted.current) return;
+            if (status === 'granted') navigation.navigate('CreateFrameCamera');
         })();
     }, []);
 

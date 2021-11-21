@@ -2,9 +2,9 @@ import * as FileSystem from 'expo-file-system';
 import { Dispatch } from 'redux';
 
 import {
-    resetFrames,
     setFramesById,
     setGalerieFramesAllIds,
+    setFramesAllIds,
     updateFramesLoadingPost,
 } from '#store/frames/actionCreators';
 import { combineFramesAllIds } from '#store/combineAllIds';
@@ -107,11 +107,31 @@ const successPostFrames = async (
         return;
     }
 
-    const oldAllIds = getState().frames.allIds[galerieId] || [];
-    const newAllIds = combineFramesAllIds(getState, oldAllIds, framesAllIds);
-    dispatch(setGalerieFramesAllIds(galerieId, newAllIds));
+    const framesOldsAllIds = getState().frames.allIds[''] || [];
+    const framesNewAllIds = combineFramesAllIds(
+        getState,
+        framesOldsAllIds,
+        framesAllIds
+    );
+    const galerieFramesOldAllIds = getState().frames.allIds[galerieId] || [];
+    const galeriePicturesNewAllIds = combineFramesAllIds(
+        getState,
+        galerieFramesOldAllIds,
+        framesAllIds
+    );
+    dispatch(setGalerieFramesAllIds(galerieId, galeriePicturesNewAllIds));
+    dispatch(setFramesAllIds(framesNewAllIds));
+    const meId = getState().me.id;
+    if (meId) {
+        const meFramesOldAllIds = getState().frames.allIds[meId] || [];
+        const meFramesNewAllIds = combineFramesAllIds(
+            getState,
+            meFramesOldAllIds,
+            framesAllIds
+        );
+        dispatch(setGalerieFramesAllIds(meId, meFramesNewAllIds));
+    }
 
-    dispatch(resetFrames());
     dispatch(updateFramesLoadingPost('SUCCESS'));
 };
 

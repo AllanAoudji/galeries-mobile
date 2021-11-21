@@ -3,17 +3,26 @@ import * as React from 'react';
 import {
     FlatList,
     KeyboardAvoidingView,
+    ListRenderItemInfo,
     Platform,
     StyleSheet,
     useWindowDimensions,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { BottomLoader, FullScreenLoader } from '#components';
+import {
+    BottomLoader,
+    CustomFlatList,
+    EmptyMessage,
+    FullScreenContainer,
+    FullScreenLoader,
+} from '#components';
 import { SelectCommentProvider } from '#contexts/SelectedCommentContext';
+import { GLOBAL_STYLE } from '#helpers/constants';
 import { useComponentSize } from '#hooks';
 import {
     getFrameComments,
+    refreshFrameComments,
     selectCommentCurrent,
     selectCommentsLoadingPost,
     selectCurrentFrameCommentsAllId,
@@ -21,16 +30,16 @@ import {
 } from '#store/comments';
 import { selectCurrentFrame } from '#store/frames';
 
-import Comments from './Comments';
-import EmptyScrollView from './EmptyScrollView';
 import Form from './Form';
-
-import { Container } from './styles';
-import { GLOBAL_STYLE } from '#helpers/constants';
+import RenderItem from './RenderItem';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CommentsNavigationProp;
 };
+
+const renderItem = ({ item }: ListRenderItemInfo<string>) => (
+    <RenderItem item={item} />
+);
 
 const CommentScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
@@ -40,29 +49,53 @@ const CommentScreen = ({ navigation }: Props) => {
 
     const flatListRef = React.useRef<FlatList | null>(null);
 
-    const commentsAllIds = useSelector(selectCurrentFrameCommentsAllId);
+    const allIds = useSelector(selectCurrentFrameCommentsAllId);
     const currentComment = useSelector(selectCommentCurrent);
     const currentFrame = useSelector(selectCurrentFrame);
     const loading = useSelector(selectCommentsLoadingPost);
     const status = useSelector(selectCurrentFrameCommentsStatus);
 
+    const emptyMessageHeight = React.useMemo(
+        () =>
+            size
+                ? size.height
+                : dimension.height - GLOBAL_STYLE.HEADER_TAB_HEIGHT,
+        [dimension, size]
+    );
+    const showBottomLoader = React.useMemo(
+        () => status === 'LOADING',
+        [status]
+    );
+
+    const handleEndReach = React.useCallback(() => {
+        if (!currentFrame) return;
+        if (!status) return;
+        if (status.includes('LOADING')) return;
+        if (status === 'REFRESH') return;
+        dispatch(getFrameComments(currentFrame.id));
+    }, [currentFrame, status]);
     const handlePostSuccess = React.useCallback(() => {
         if (flatListRef.current && !currentComment)
             flatListRef.current.scrollToOffset({ offset: 0 });
     }, [currentComment]);
+    const handleRefresh = React.useCallback(() => {
+        if (!currentFrame) return;
+        if (status && !status.includes('LOADING') && status !== 'REFRESH')
+            dispatch(refreshFrameComments(currentFrame.id));
+    }, [currentFrame, status]);
 
     useFocusEffect(
         React.useCallback(() => {
-            if (!currentFrame) {
-                if (navigation.canGoBack()) navigation.goBack();
-                else navigation.navigate('Home');
-            }
+            if (currentFrame) return;
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
         }, [currentFrame])
     );
     useFocusEffect(
         React.useCallback(() => {
-            if (currentFrame && status === 'PENDING')
-                dispatch(getFrameComments(currentFrame.id));
+            if (!currentFrame) return;
+            if (status && status !== 'PENDING') return;
+            dispatch(getFrameComments(currentFrame.id));
         }, [currentFrame, status])
     );
 
@@ -72,26 +105,27 @@ const CommentScreen = ({ navigation }: Props) => {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={styles.keyboardAvoidingViewStyle}
             keyboardVerticalOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
+            style={styles.keyboardAvoidingViewStyle}
         >
             <SelectCommentProvider>
-                <Container onLayout={onLayout}>
-                    {!!commentsAllIds && commentsAllIds.length > 0 ? (
-                        <Comments
-                            allIds={commentsAllIds}
+                <FullScreenContainer onLayout={onLayout}>
+                    {!!allIds && allIds.length > 0 ? (
+                        <CustomFlatList
+                            allIds={allIds}
                             flatListRef={flatListRef}
-                            frameId={currentFrame.id}
+                            onEndReach={handleEndReach}
+                            onRefresh={handleRefresh}
+                            pb={GLOBAL_STYLE.COMMENTS_FOOTER_HEIGHT}
+                            renderItem={renderItem}
+                            status={status || 'PENDING'}
                         />
                     ) : (
-                        <EmptyScrollView
-                            height={
-                                size
-                                    ? size.height
-                                    : dimension.height -
-                                      GLOBAL_STYLE.HEADER_TAB_HEIGHT
-                            }
-                            frameId={currentFrame.id}
+                        <EmptyMessage
+                            height={emptyMessageHeight}
+                            onRefresh={handleRefresh}
+                            refreshStatus={status}
+                            text="This frame do not have comment yet..."
                         />
                     )}
                     <Form
@@ -99,8 +133,8 @@ const CommentScreen = ({ navigation }: Props) => {
                         loading={loading}
                         onSuccess={handlePostSuccess}
                     />
-                    <BottomLoader bottom="huge" show={status === 'LOADING'} />
-                </Container>
+                    <BottomLoader bottom="huge" show={showBottomLoader} />
+                </FullScreenContainer>
             </SelectCommentProvider>
         </KeyboardAvoidingView>
     );
