@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+
 import profilePicturesLoadingDeleteReducer from './profilePicturesLoadingDeleteReducer';
 import profilePicturesLoadingPostReducer from './profilePicturesLoadingPostReducer';
 import profilePicturesLoadingPutReducer from './profilePicturesLoadingPutReducer';
