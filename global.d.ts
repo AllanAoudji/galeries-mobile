@@ -170,7 +170,7 @@ declare global {
         namespace DesktopDrawer {
             type ParamList = {
                 Main: NavigatorScreenParams<DesktopBottomTab.ParamList>;
-                Moderation: undefined;
+                Moderation: NavigatorScreenParams<ModeratorStack.ParamList>;
                 SendTicket: undefined;
                 Settings: undefined;
             };
@@ -189,6 +189,25 @@ declare global {
             type SettingsScreenNavigationProp = DrawerNavigationProp<
                 ParamList,
                 'Settings'
+            >;
+        }
+        namespace ModeratorStack {
+            type ParamList = {
+                BetakeysScreen: undefined;
+                CreateBetakeyScreen: undefined;
+                ModerationNavigationScreen: undefined;
+            };
+            type BetaKeyScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'BetakeysScreen'
+            >;
+            type CreateBetaKeyScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'CreateBetakeyScreen'
+            >;
+            type ModerationNavigationScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'ModerationNavigationScreen'
             >;
         }
         namespace RootStack {
@@ -229,6 +248,7 @@ declare global {
             type: string;
         };
         type Entity =
+            | '[BETA KEYS]'
             | '[COMMENTS]'
             | '[FORGOT YOUR PASSWORD]'
             | '[FRAMES]'

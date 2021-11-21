@@ -1,7 +1,13 @@
 import * as React from 'react';
 
-import { Typography } from '#components';
+import ModerationStackNavigator from '#screens/ModerationStackNavigator';
 
-const ModerationScreen = () => <Typography>Moderation</Typography>;
+type Props = {
+    navigation: Screen.DesktopDrawer.ModerationScreenNavigationProp;
+};
+
+const ModerationScreen = ({ navigation }: Props) => (
+    <ModerationStackNavigator navigation={navigation} />
+);
 
 export default ModerationScreen;

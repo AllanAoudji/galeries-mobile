@@ -26,6 +26,7 @@ export { default as ImageLoader } from './ImageLoader';
 export { default as InvitationCard } from './InvitationCard';
 export { default as LikeButton } from './LikeButton';
 export { default as Logo } from './Logo';
+export { default as ModerationNavigationButton } from './ModerationNavigationButton';
 export { default as Notification } from './Notification';
 export { default as NotificationCard } from './NotificationCard';
 export { default as NotificationCardContainer } from './NotificationCardContainer';
