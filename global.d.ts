@@ -293,12 +293,15 @@ declare global {
                 byId: { [key: string]: Store.Models.BetaKeys };
                 current: string | null;
                 end: boolean;
+                fieldsError: {
+                    email?: string;
+                };
                 loading: {
                     delete: Store.Status;
                     post: Store.Status;
                 };
                 previous: string;
-                status: { [key: string]: Store.Status };
+                status: Store.Status;
             };
             comments: {
                 allIds: { [key: string]: string[] };
@@ -480,7 +483,7 @@ declare global {
                 autoIncrementId: string;
                 code: string;
                 createdAt: string;
-                createById: string | null;
+                createdById: string | null;
                 email: string | null;
                 id: string;
                 updatedAt: string;

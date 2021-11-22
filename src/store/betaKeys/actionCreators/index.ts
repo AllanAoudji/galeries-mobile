@@ -10,6 +10,8 @@ import {
     BETA_KEYS_DELETE,
     BETA_KEYS_END_RESET,
     BETA_KEYS_END_UPDATE,
+    BETA_KEYS_FIELDS_ERROR_RESET,
+    BETA_KEYS_FIELDS_ERROR_UPDATE,
     BETA_KEYS_GET,
     BETA_KEYS_LOADING_DELETE_RESET,
     BETA_KEYS_LOADING_DELETE_UPDATE,
@@ -18,6 +20,7 @@ import {
     BETA_KEYS_POST,
     BETA_KEYS_PREVIOUS_RESET,
     BETA_KEYS_PREVIOUS_UPDATE,
+    BETA_KEYS_REFRESH,
     BETA_KEYS_RESET,
     BETA_KEYS_SATUS_UPDATE,
     BETA_KEYS_STATUS_RESET,
@@ -44,6 +47,11 @@ export const postBetaKey: (payload: { email?: string }) => Store.Action = (
     meta: {},
     payload,
     type: BETA_KEYS_POST,
+});
+export const refreshBetaKeys: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: BETA_KEYS_REFRESH,
 });
 export const removeBetaKeysAllId: (payload: string) => Store.Action = (
     payload
@@ -84,6 +92,11 @@ export const resetBetaKeysEnd: () => Store.Action = () => ({
     payload: {},
     type: BETA_KEYS_END_RESET,
 });
+export const resetBetaKeysFieldsError: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: BETA_KEYS_FIELDS_ERROR_RESET,
+});
 export const resetBetaKeysLoadingDelete: () => Store.Action = () => ({
     meta: {},
     payload: {},
@@ -123,12 +136,19 @@ export const updateBetaKeysCurrent: (payload: string) => Store.Action = (
     payload,
     type: BETA_KEYS_CURRENT_UPDATE,
 });
-export const updateBetaKeysEnd: (payload: string) => Store.Action = (
+export const updateBetaKeysEnd: (payload: boolean) => Store.Action = (
     payload
 ) => ({
     meta: {},
     payload,
     type: BETA_KEYS_END_UPDATE,
+});
+export const updateBetaKeysFieldsError: (payload: {
+    email?: string;
+}) => Store.Action = (payload) => ({
+    meta: {},
+    payload,
+    type: BETA_KEYS_FIELDS_ERROR_UPDATE,
 });
 export const updateBetaKeysLoadingDelete: (
     payload: Store.Status

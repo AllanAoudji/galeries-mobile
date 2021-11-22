@@ -11,6 +11,8 @@ export const selectBetaKey = (betaKeyId?: string | null) =>
     });
 export const selectBetaKeysAllIds = (state: Store.Reducer) =>
     state.betaKeys.allIds;
+export const selectBetaKeysFieldsError = (state: Store.Reducer) =>
+    state.betaKeys.fieldsError;
 export const selectBetaKeysLoadingDelete = (state: Store.Reducer) =>
     state.betaKeys.loading.delete;
 export const selectBetaKeysLoadingPost = (state: Store.Reducer) =>

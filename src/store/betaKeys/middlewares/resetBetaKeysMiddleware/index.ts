@@ -5,6 +5,7 @@ import {
     resetBetaKeysById,
     resetBetaKeysCurrent,
     resetBetaKeysEnd,
+    resetBetaKeysFieldsError,
     resetBetaKeysLoadingDelete,
     resetBetaKeysLoadingPost,
     resetBetaKeysPrevious,
@@ -24,6 +25,7 @@ const resetBetaKeysMiddleware: Middleware<{}, Store.Reducer> =
         dispatch(resetBetaKeysById());
         dispatch(resetBetaKeysCurrent());
         dispatch(resetBetaKeysEnd());
+        dispatch(resetBetaKeysFieldsError());
         dispatch(resetBetaKeysLoadingDelete());
         dispatch(resetBetaKeysLoadingPost());
         dispatch(resetBetaKeysPrevious());
