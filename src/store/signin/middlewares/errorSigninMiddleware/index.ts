@@ -15,6 +15,7 @@ const errorSigninMiddleware: Middleware<{}, Store.Reducer> =
         next(action);
 
         if (action.type !== `${SIGNIN} ${API_ERROR}`) return;
+
         if (
             typeof action.payload === 'object' &&
             (typeof action.payload.betaKey === 'string' ||

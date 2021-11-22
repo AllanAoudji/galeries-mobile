@@ -12,8 +12,6 @@ const successSigninMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== `${SIGNIN} ${API_SUCCESS}`) return;
 
-        console.log(action);
-
         dispatch(updateSigninStatus('SUCCESS'));
     };
 

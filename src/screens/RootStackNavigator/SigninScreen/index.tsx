@@ -29,11 +29,11 @@ import {
 } from './styles';
 
 const initialValues = {
-    betaKey: '',
-    confirmPassword: '',
-    email: '',
-    password: '',
-    userName: '',
+    betaKey: '1635-d8wphsg6kx',
+    confirmPassword: 'Aaoudjiuvhds9!',
+    email: 'allan.jouannet@gmail.com',
+    password: 'Aaoudjiuvhds9!',
+    userName: 'test',
 };
 
 type Props = {

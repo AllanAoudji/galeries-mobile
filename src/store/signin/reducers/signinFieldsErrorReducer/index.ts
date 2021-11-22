@@ -25,12 +25,11 @@ const signinFieldsErrorReducer = (
         case SIGNIN_FIELDS_ERROR_RESET:
             return initialState;
         case SIGNIN_FIELDS_ERROR_UPDATE:
-            if (checkIfSigninFieldsError(action.payload))
-                return {
-                    ...state,
-                    ...action.payload,
-                };
-            return state;
+            if (!checkIfSigninFieldsError(action.payload)) return state;
+            return {
+                ...state,
+                ...action.payload,
+            };
         default:
             return state;
     }

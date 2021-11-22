@@ -39,9 +39,9 @@ export const updateSigninFieldsError: (payload: {
     password?: string;
     confirmPassword?: string;
     betaKey?: string;
-}) => Store.Action = () => ({
+}) => Store.Action = (payload) => ({
     meta: {},
-    payload: {},
+    payload,
     type: SIGNIN_FIELDS_ERROR_UPDATE,
 });
 export const updateSigninStatus: (payload: Store.Status) => Store.Action = (
