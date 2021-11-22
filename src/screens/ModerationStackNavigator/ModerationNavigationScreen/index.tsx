@@ -21,7 +21,7 @@ const ModerationNavigationScreen = ({ navigation }: Props) => {
                     mt="small"
                     onPress={handlePressBetaKeys}
                     title="beta keys"
-                    pictogram="arrow-right"
+                    pictogram="key-fill"
                 />
             </Container>
         </FullScreenContainer>

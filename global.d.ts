@@ -676,6 +676,8 @@ declare global {
             | 'home-stroke'
             | 'invitation-fill'
             | 'invitation-stroke'
+            | 'key-fill'
+            | 'key-stroke'
             | 'logout-left'
             | 'logout-right'
             | 'moderation-fill'

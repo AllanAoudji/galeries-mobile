@@ -29,7 +29,7 @@ const ModerationNavigationHeader = () => {
                 pr="small"
                 variant="hamburger-menu"
             />
-            <Typography color="primary" fontFamily="bold" fontSize={24}>
+            <Typography color="primary" fontFamily="light" fontSize={24}>
                 moderation
             </Typography>
         </Container>

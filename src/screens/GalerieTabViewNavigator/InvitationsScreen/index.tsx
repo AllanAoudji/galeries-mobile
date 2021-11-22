@@ -121,11 +121,7 @@ const InvitationsScreen = ({
                     text="this galerie doesn't have invitation yet. Click on the + button to post a new one"
                 />
             )}
-            <AddButton
-                bottom="largest"
-                onPress={handlePressAddButton}
-                right="normal"
-            />
+            <AddButton onPress={handlePressAddButton} />
             <FullScreenLoader show={showFullScreenLoader} />
             <BottomLoader bottom="huge" show={showBottomLoader} />
         </GalerieTabbarScreenContainer>

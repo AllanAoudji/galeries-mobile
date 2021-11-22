@@ -1,6 +1,7 @@
 export { default as AbsoluteHeader } from './AbsoluteHeader';
 export { default as AddButton } from './AddButton';
 export { default as AnimatedTypography } from './AnimatedTypography';
+export { default as BetaKeyCard } from './BetaKeyCard';
 export { default as BottomLoader } from './BottomLoader';
 export { default as BottomSheetButton } from './BottomSheetButton';
 export { default as CheckBox } from './CheckBox';
