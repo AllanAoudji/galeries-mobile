@@ -6,7 +6,7 @@ const combineBetaKeysAllIds = (
     newAllIds: string[]
 ) => {
     const betaKeysById = getState().betaKeys.byId;
-    const allIds = uniqueArray([...oldAllIds, ...newAllIds]).filter((a, b) => {
+    const allIds = uniqueArray([...oldAllIds, ...newAllIds]).sort((a, b) => {
         if (!betaKeysById[a] || !betaKeysById[b]) return 0;
 
         const autoIncrementIdA = +betaKeysById[a].autoIncrementId;

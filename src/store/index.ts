@@ -28,7 +28,7 @@ import {
     profilePicturesReducer,
 } from './profilePictures';
 import { reportsMiddlewares, reportsReducer } from './reports';
-import { signinReducer } from './signin';
+import { signinReducer, signinMiddlewares } from './signin';
 import { usersMiddleware, usersReducer } from './users';
 
 const reducers = combineReducers({
@@ -72,6 +72,7 @@ export default createStore(
             ...notificationsMiddleware,
             ...profilePicturesMiddlewares,
             ...reportsMiddlewares,
+            ...signinMiddlewares,
             ...usersMiddleware,
             ...apiMiddlewares
         )

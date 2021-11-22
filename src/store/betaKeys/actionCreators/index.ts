@@ -117,9 +117,11 @@ export const resetBetaKeysStatus: () => Store.Action = () => ({
     payload: {},
     type: BETA_KEYS_STATUS_RESET,
 });
-export const setBetaKeysAllIds: (payload: string[]) => Store.Action = () => ({
+export const setBetaKeysAllIds: (payload: string[]) => Store.Action = (
+    payload
+) => ({
     meta: {},
-    payload: {},
+    payload,
     type: BETA_KEYS_ALL_IDS_SET,
 });
 export const setBetaKeysById: (payload: {

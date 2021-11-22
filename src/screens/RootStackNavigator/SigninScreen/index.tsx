@@ -15,6 +15,7 @@ import { signinSchema } from '#helpers/schemas';
 import {
     selectSigninFieldsError,
     selectSigninStatus,
+    signin,
     updateSigninFieldsError,
 } from '#store/signin';
 
@@ -46,7 +47,9 @@ const SigninScreen = ({ navigation }: Props) => {
 
     const formik = useFormik({
         initialValues,
-        onSubmit: async (values) => console.log(values),
+        onSubmit: async (values) => {
+            dispatch(signin(values));
+        },
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: signinSchema,

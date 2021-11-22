@@ -1,3 +1,4 @@
+export { default as createBetaKeySchema } from './createBetaKeySchema';
 export { default as createCommentSchema } from './createCommentSchema';
 export { default as createGaleriesSchema } from './createGaleriesSchema';
 export { default as createInvitationSchema } from './createInvitationSchema';
