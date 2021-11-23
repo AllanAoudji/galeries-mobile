@@ -9,18 +9,18 @@ type Props = {
     user?: Store.Models.User;
 };
 
-const CreatedBy = ({ user }: Props) => {
+const UsedBy = ({ user }: Props) => {
     return (
         <Container>
-            <ProfilePicture mr="smallest" user={user} />
             <Typography>
-                Created by{' '}
+                Used by{' '}
                 <Typography fontFamily="bold">
                     {user ? user.pseudonym : 'user not found'}
                 </Typography>
             </Typography>
+            <ProfilePicture ml="smallest" user={user} />
         </Container>
     );
 };
 
-export default CreatedBy;
+export default UsedBy;

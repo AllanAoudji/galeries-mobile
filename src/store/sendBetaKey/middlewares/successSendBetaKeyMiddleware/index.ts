@@ -6,7 +6,7 @@ import { updateNotification } from '#store/notification/actionCreators';
 import { updateSendBetaKeyStatusId } from '#store/sendBetaKey/actionCreators';
 
 const successSendBetaKeyMiddleware: Middleware<{}, Store.Reducer> =
-    ({ dispatch }) =>
+    ({ dispatch, getState }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
@@ -18,10 +18,14 @@ const successSendBetaKeyMiddleware: Middleware<{}, Store.Reducer> =
         if (!betaKeyId) return;
 
         dispatch(updateSendBetaKeyStatusId('SUCCESS', betaKeyId));
+        const betaKey = getState().betaKeys.byId[betaKeyId];
         dispatch(
             updateNotification({
                 status: 'success',
-                text: 'an email as been send to you',
+                text:
+                    betaKey && betaKey.email
+                        ? `an email has been send to ${betaKey.email}`
+                        : 'an email has been send',
             })
         );
     };

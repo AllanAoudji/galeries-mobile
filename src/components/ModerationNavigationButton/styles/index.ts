@@ -9,9 +9,7 @@ type ContainerProps = {
 const Container = styled.Pressable<ContainerProps>`
     align-items: center;
     background-color: ${({ theme }) => theme.colors.secondary};
-    border-color: ${({ theme }) => theme.colors.primary};
     border-radius: 8px;
-    border-width: 3px;
     height: ${() => `${GLOBAL_STYLE.MODERATION_NAVIGATION_BUTTON_HEIGHT}px`};
     justify-content: center;
     margin-bottom: ${({ mb, theme }) => (mb ? theme.spacings[mb] : 0)};

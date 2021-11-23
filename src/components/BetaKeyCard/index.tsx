@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import Typography from '#components/Typography';
 import { selectUser } from '#store/users';
 
+import Body from './Body';
 import CreatedBy from './CreatedBy';
-import ResendButton from './ResendButton';
 
 import { Container } from './styles';
 
@@ -25,21 +24,7 @@ const BetaKeyCard = ({ betaKey }: Props) => {
     return (
         <Container>
             <CreatedBy user={createdBy} />
-            <Typography fontSize={14}>
-                code:{' '}
-                <Typography color="primary" fontFamily="bold" fontSize={14}>
-                    {betaKey.code}
-                </Typography>
-            </Typography>
-            {betaKey.email && (
-                <Typography fontSize={14}>
-                    email:{' '}
-                    <Typography color="primary" fontFamily="bold" fontSize={14}>
-                        {betaKey.email}
-                    </Typography>
-                </Typography>
-            )}
-            <ResendButton betaKey={betaKey} />
+            <Body betaKey={betaKey} />
         </Container>
     );
 };

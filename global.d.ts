@@ -469,7 +469,7 @@ declare global {
                 previous: string;
                 status: Store.Status;
             };
-            notification: Store.Models.Notification | null;
+            notification: Store.Models.GlobalNotification | null;
             signin: {
                 fieldsError: {
                     userName: string;

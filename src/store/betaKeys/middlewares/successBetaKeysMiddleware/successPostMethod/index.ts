@@ -6,6 +6,7 @@ import {
     updateBetaKeysLoadingPost,
 } from '#store/betaKeys/actionCreators';
 import { combineBetaKeysAllIds } from '#store/combineAllIds';
+import { sendBetaKey } from '#store/sendBetaKey/actionCreators';
 
 const successPostMethod = (
     dispatch: Dispatch<Store.Action>,
@@ -38,6 +39,8 @@ const successPostMethod = (
     );
     dispatch(setBetaKeysAllIds(betaKeysNewAllIds));
     dispatch(updateBetaKeysLoadingPost('SUCCESS'));
+
+    if (betaKey.email) dispatch(sendBetaKey(betaKey.id));
 };
 
 export default successPostMethod;

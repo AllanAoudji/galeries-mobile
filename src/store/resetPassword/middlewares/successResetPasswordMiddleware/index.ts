@@ -17,7 +17,7 @@ const successResetPasswordMiddleware: Middleware<{}, Store.Reducer> =
         dispatch(
             updateNotification({
                 status: 'success',
-                text: 'an email as been send to you',
+                text: 'an email has been send to you',
             })
         );
     };

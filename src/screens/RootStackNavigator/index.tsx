@@ -49,7 +49,7 @@ const RootStackNavigator = () => {
 
     return (
         <Stack.Navigator
-            initialRouteName="ConfirmYourAccount"
+            initialRouteName="Landing"
             screenOptions={screenOptions}
         >
             {me ? (

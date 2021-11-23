@@ -13,6 +13,7 @@ import { createBetaKeySchema } from '#helpers/schemas';
 import {
     postBetaKey,
     resetBetaKeysLoadingPost,
+    resetBetaKeysFieldsError,
     selectBetaKeysFieldsError,
     selectBetaKeysLoadingPost,
     updateBetaKeysFieldsError,
@@ -76,11 +77,19 @@ const CreateBetakeyScreen = ({ navigation }: Props) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (loading === 'SUCCESS') {
-                dispatch(resetBetaKeysLoadingPost());
-                navigation.navigate('CreateBetakeyScreen');
-            }
+            if (loading !== 'SUCCESS') return;
+            navigation.navigate('BetakeysScreen');
         }, [loading, navigation])
+    );
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                dispatch(resetBetaKeysFieldsError());
+                dispatch(resetBetaKeysLoadingPost());
+                formik.resetForm();
+            },
+            []
+        )
     );
     useFocusEffect(
         React.useCallback(() => {
