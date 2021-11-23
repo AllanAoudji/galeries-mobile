@@ -72,6 +72,7 @@ export const END_POINT = {
     PROFILE_PICTURES: '/profilePictures',
     REFRESH_TOKEN: '/refreshToken',
     REPORTS: '/reports',
+    SEND: '/send',
     SIGNIN: '/signin',
     SUBSCRIBE: '/subscribe',
     UNSUBSCRIBE: '/unsubscribe',
@@ -108,6 +109,7 @@ export const FIELD_REQUIREMENT = {
 };
 
 export const GLOBAL_STYLE = {
+    BETA_KEY_CARD_HEIGHT: 200,
     BOTTOM_TAB_HEIGHT: 65,
     COMMENTS_FOOTER_HEIGHT: 82,
     FRAME_COVER_PICTURE_SIZE: 45,

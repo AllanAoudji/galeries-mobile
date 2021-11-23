@@ -35,6 +35,7 @@ import {
     resetPasswordMiddleware,
     resetPasswordReducers,
 } from './resetPassword';
+import { sendBetaKeyReducers, sendBetaKeyMiddlewares } from './sendBetaKey';
 import { signinReducer, signinMiddlewares } from './signin';
 import { usersMiddleware, usersReducer } from './users';
 
@@ -57,6 +58,7 @@ const reducers = combineReducers({
     profilePictures: profilePicturesReducer,
     reports: reportsReducer,
     resetPassword: resetPasswordReducers,
+    sendBetaKey: sendBetaKeyReducers,
     signin: signinReducer,
     users: usersReducer,
 });
@@ -82,6 +84,7 @@ export default createStore(
             ...profilePicturesMiddlewares,
             ...reportsMiddlewares,
             ...resetPasswordMiddleware,
+            ...sendBetaKeyMiddlewares,
             ...signinMiddlewares,
             ...usersMiddleware,
             ...apiMiddlewares

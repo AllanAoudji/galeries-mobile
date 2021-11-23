@@ -278,6 +278,7 @@ declare global {
             | '[PROFILE PICTURE]'
             | '[REPORT]'
             | '[RESET PASSWORD]'
+            | '[SEND BETA KEY]'
             | '[SIGNIN]'
             | '[UI]'
             | '[USERS]';
@@ -452,6 +453,11 @@ declare global {
                     post: Store.Status;
                 };
             };
+            sendBetaKey: {
+                status: {
+                    id: { [key: string]: Store.Status };
+                };
+            };
             notifications: {
                 allIds: string[];
                 byId: { [key: string]: Store.Models.Notification };
@@ -558,7 +564,7 @@ declare global {
                 current: boolean;
                 frameId: string;
                 id: string;
-                index: string;
+                index: number;
                 originalImage: Image & { cachedSignedUrl: string };
                 pendingHexes: string;
                 updatedAt: string;

@@ -21,6 +21,7 @@ import { resetNotifications } from '#store/notifications/actionCreators';
 import { resetProfilePictures } from '#store/profilePictures/actionCreators';
 import { resetReports } from '#store/reports/actionCreators';
 import { resetResetPassword } from '#store/resetPassword/actionCreators';
+import { resetSendBetaKey } from '#store/sendBetaKey/actionCreators';
 import { resetSignin } from '#store/signin/actionCreators';
 import { resetUsers } from '#store/users/actionCreators';
 
@@ -47,6 +48,7 @@ const successLogoutMiddleware: Middleware<{}, Store.Reducer> =
                 dispatch(resetNotifications());
                 dispatch(resetProfilePictures());
                 dispatch(resetResetPassword());
+                dispatch(resetSendBetaKey());
                 dispatch(resetSignin());
                 dispatch(resetUsers());
                 dispatch(resetReports());

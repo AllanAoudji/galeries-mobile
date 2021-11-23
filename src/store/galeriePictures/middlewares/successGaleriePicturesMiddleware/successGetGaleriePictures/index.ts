@@ -140,7 +140,12 @@ const successGetGaleriePictures = async (
 
     if (allIds.length && typeof frameId === 'string') {
         dispatch(updateGaleriePicturesStatus(frameId, 'SUCCESS'));
-        dispatch(updateGaleriePicturesAllIds(frameId, allIds));
+        dispatch(
+            updateGaleriePicturesAllIds(
+                frameId,
+                allIds.sort((a, b) => byId[a].index - byId[b].index)
+            )
+        );
     } else if (
         (typeof id === 'string' || id === null) &&
         typeof galerieId === 'string'

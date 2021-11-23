@@ -77,6 +77,7 @@ export { default as dispatchRefreshGalerieInvitations } from './dispatchRefreshG
 export { default as dispatchRefreshGalerieUsers } from './dispatchRefreshGalerieUsers';
 export { default as dispatchRefreshNotifications } from './dispatchRefreshNotifications';
 export { default as dispatchRefreshUsers } from './dispatchRefreshUsers';
+export { default as dispatchSendBetaKey } from './dispatchSendBetaKey';
 export { default as dispatchSignin } from './dispatchSignin';
 export { default as dispatchSuccessNotification } from './dispatchSuccessNotification';
 export { default as dispatchUnsubscribeGalerie } from './dispatchUnsubscribeGalerie';

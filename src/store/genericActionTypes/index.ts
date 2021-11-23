@@ -19,6 +19,7 @@ export const NOTIFICATIONS: Store.Entity = '[NOTIFICATIONS]';
 export const PROFILE_PICTURES: Store.Entity = '[PROFILE PICTURE]';
 export const REPORTS: Store.Entity = '[REPORT]';
 export const RESET_PASSWORD: Store.Entity = '[RESET PASSWORD]';
+export const SEND_BETA_KEY: Store.Entity = '[SEND BETA KEY]';
 export const SIGNIN: Store.Entity = '[SIGNIN]';
 export const USERS: Store.Entity = '[USERS]';
 
