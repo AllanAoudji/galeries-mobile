@@ -212,12 +212,17 @@ declare global {
         }
         namespace RootStack {
             type ParamList = {
+                ConfirmYourAccount: undefined;
                 Desktop: NavigatorScreenParams<DesktopDrawer.ParamList>;
                 ForgotYourPassword: undefined;
                 Landing: undefined;
                 Login: undefined;
                 Signin: undefined;
             };
+            type ConfirmYourAccountNavigationProp = StackNavigationProp<
+                ParamList,
+                'ConfirmYourAccount'
+            >;
             type DesktopNavigationProp = StackNavigationProp<
                 ParamList,
                 'Desktop'
@@ -249,6 +254,7 @@ declare global {
         };
         type Entity =
             | '[BETA KEYS]'
+            | '[CONFIRM ACCOUNT]'
             | '[COMMENTS]'
             | '[FORGOT YOUR PASSWORD]'
             | '[FRAMES]'
@@ -314,6 +320,9 @@ declare global {
                 };
                 previous: { [key: string]: string };
                 status: { [key: string]: Store.Status };
+            };
+            confirmAccount: {
+                status: Store.Status;
             };
             forgotYourPassword: {
                 fieldsError: {

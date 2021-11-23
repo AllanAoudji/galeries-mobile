@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 
 import { DefaultHeader } from '#components';
 
+import ConfirmYourAccountScreen from './ConfirmYourAccountScreen';
 import DesktopScreen from './DesktopScreen';
 import ForgotYourPasswordScreen from './ForgotYourPasswordScreen';
 import LangingScreen from './LandingScreen';
@@ -21,6 +22,24 @@ import { selectForgotYourPasswordStatus } from '#store/forgotYourPassword';
 
 const Stack = createStackNavigator<Screen.RootStack.ParamList>();
 
+const confirmYourAccountHeader = ({ navigation }: StackHeaderProps) => {
+    const handlePress = React.useCallback(() => {
+        navigation.navigate('Landing');
+    }, [navigation]);
+
+    return (
+        <DefaultHeader
+            color="primary-dark"
+            onPress={handlePress}
+            textColor="secondary-light"
+            title="confirm your account"
+            variant="secondary"
+        />
+    );
+};
+const confirmYourAccontOptions: StackNavigationOptions = {
+    header: confirmYourAccountHeader,
+};
 const desktopOptions: StackNavigationOptions = {
     headerShown: false,
 };
@@ -103,6 +122,11 @@ const RootStackNavigator = () => {
                 />
             ) : (
                 <>
+                    <Stack.Screen
+                        component={ConfirmYourAccountScreen}
+                        name="ConfirmYourAccount"
+                        options={confirmYourAccontOptions}
+                    />
                     <Stack.Screen
                         component={ForgotYourPasswordScreen}
                         name="ForgotYourPassword"

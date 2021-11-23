@@ -54,6 +54,7 @@ export const END_POINT = {
     BETA_KEYS: '/betaKeys',
     BLACKLISTS: '/blackLists',
     COMMENTS: '/comments',
+    CONFIRMATION: '/confirmation',
     COVER_PICTURE: '/coverPicture',
     CURRENT_PROFILE_PICTURE: '/currentProfilePicture',
     FRAMES: '/frames',

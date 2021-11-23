@@ -13,6 +13,7 @@ import { CustomButton, CustomTextInput, Typography } from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { signinSchema } from '#helpers/schemas';
 import {
+    resetSigninStatus,
     selectSigninFieldsError,
     selectSigninStatus,
     signin,
@@ -29,11 +30,11 @@ import {
 } from './styles';
 
 const initialValues = {
-    betaKey: '1635-d8wphsg6kx',
+    betaKey: '8544-ffmtgcfcw5',
     confirmPassword: 'Aaoudjiuvhds9!',
-    email: 'allan.jouannet@gmail.com',
+    email: 'allan.lakjg@gmail.com',
     password: 'Aaoudjiuvhds9!',
-    userName: 'test',
+    userName: 'majgmakj',
 };
 
 type Props = {
@@ -42,8 +43,8 @@ type Props = {
 
 const SigninScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
-    const loading = useSelector(selectSigninStatus);
     const fieldsError = useSelector(selectSigninFieldsError);
+    const status = useSelector(selectSigninStatus);
 
     const formik = useFormik({
         initialValues,
@@ -138,13 +139,22 @@ const SigninScreen = ({ navigation }: Props) => {
         [fieldsError, formik.errors]
     );
     const handlePressLogin = React.useCallback(() => {
-        if (!loading.includes('LOADING')) navigation.navigate('Login');
-    }, [loading, navigation]);
+        if (!status.includes('LOADING')) navigation.navigate('Login');
+    }, [status, navigation]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (status === 'SUCCESS') {
+                dispatch(resetSigninStatus());
+                navigation.navigate('ConfirmYourAccount');
+            }
+        }, [status])
+    );
 
     useFocusEffect(
         React.useCallback(() => {
             let BackHandlerListerner: any;
-            if (loading.includes('LOADING'))
+            if (status.includes('LOADING'))
                 BackHandlerListerner = BackHandler.addEventListener(
                     'hardwareBackPress',
                     () => true
@@ -153,7 +163,7 @@ const SigninScreen = ({ navigation }: Props) => {
             return () => {
                 if (BackHandlerListerner) BackHandlerListerner.remove();
             };
-        }, [loading])
+        }, [status])
     );
 
     return (
@@ -183,7 +193,7 @@ const SigninScreen = ({ navigation }: Props) => {
                     </TextContainer>
                     <CustomTextInput
                         error={userNameError}
-                        loading={loading.includes('LOADING')}
+                        loading={status.includes('LOADING')}
                         label="user name"
                         mt="normal"
                         onBlur={formik.handleBlur('userName')}
@@ -194,7 +204,7 @@ const SigninScreen = ({ navigation }: Props) => {
                     <CustomTextInput
                         error={emailError}
                         keyboardType="email-address"
-                        loading={loading.includes('LOADING')}
+                        loading={status.includes('LOADING')}
                         label="email"
                         onBlur={formik.handleBlur('email')}
                         onChangeText={handleChangeEmailText}
@@ -203,7 +213,7 @@ const SigninScreen = ({ navigation }: Props) => {
                     />
                     <CustomTextInput
                         error={passwordError}
-                        loading={loading.includes('LOADING')}
+                        loading={status.includes('LOADING')}
                         label="password"
                         onBlur={formik.handleBlur('password')}
                         onChangeText={handleChangePasswordText}
@@ -213,7 +223,7 @@ const SigninScreen = ({ navigation }: Props) => {
                     />
                     <CustomTextInput
                         error={confirmPasswordError}
-                        loading={loading.includes('LOADING')}
+                        loading={status.includes('LOADING')}
                         label="confirm password"
                         onBlur={formik.handleBlur('confirmPassword')}
                         onChangeText={handleChangeConfirmPasswordText}
@@ -223,7 +233,7 @@ const SigninScreen = ({ navigation }: Props) => {
                     />
                     <CustomTextInput
                         error={betaKeyError}
-                        loading={loading.includes('LOADING')}
+                        loading={status.includes('LOADING')}
                         label="beta key"
                         onBlur={formik.handleBlur('betaKey')}
                         onChangeText={handleChangeBetaKeyText}
@@ -233,7 +243,7 @@ const SigninScreen = ({ navigation }: Props) => {
                     <ButtonContainer>
                         <CustomButton
                             disable={disableButton}
-                            loading={loading.includes('LOADING')}
+                            loading={status.includes('LOADING')}
                             mt="normal"
                             onPress={formik.handleSubmit}
                             title="sign-in"

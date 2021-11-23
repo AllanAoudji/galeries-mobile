@@ -4,6 +4,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { apiMiddlewares } from './api';
 import { betaKeysMiddleware, betaKeysReducer } from './betaKeys';
 import { commentsMiddlewares, commentsReducer } from './comments';
+import {
+    confirmAccountMiddlewares,
+    confirmAccountReducers,
+} from './confirmAccount';
 import { forgotYourPasswordReducer } from './forgotYourPassword';
 import { framesMiddlewares, framesReducer } from './frames';
 import { galeriesMiddleware, galeriesReducer } from './galeries';
@@ -34,6 +38,7 @@ import { usersMiddleware, usersReducer } from './users';
 const reducers = combineReducers({
     betaKeys: betaKeysReducer,
     comments: commentsReducer,
+    confirmAccount: confirmAccountReducers,
     forgotYourPassword: forgotYourPasswordReducer,
     frames: framesReducer,
     galeries: galeriesReducer,
@@ -59,6 +64,7 @@ export default createStore(
         applyMiddleware(
             ...betaKeysMiddleware,
             ...commentsMiddlewares,
+            ...confirmAccountMiddlewares,
             ...framesMiddlewares,
             ...galeriesMiddleware,
             ...galerieBlackListsMiddlewares,
