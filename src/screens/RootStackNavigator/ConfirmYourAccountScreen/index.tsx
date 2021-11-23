@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { CustomButton, FullScreenContainer, Typography } from '#components';
 import { resetUserCurrent, selectCurrentUser } from '#store/users';
+import {
+    postConfirmAccount,
+    selectConfirmAccountStatus,
+} from '#store/confirmAccount';
 
 type Props = {
     navigation: Screen.RootStack.ConfirmYourAccountNavigationProp;
@@ -13,10 +17,12 @@ const ConfirmYourAccountScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
     const currentUser = useSelector(selectCurrentUser);
+    const status = useSelector(selectConfirmAccountStatus);
 
     const handlePress = React.useCallback(() => {
-        // TODO:
-        // send POST /users/confirmation
+        if (!currentUser) return;
+        if (status.includes('LOADING')) return;
+        dispatch(postConfirmAccount({ email: currentUser.email }));
     }, [currentUser]);
 
     useFocusEffect(
@@ -27,6 +33,13 @@ const ConfirmYourAccountScreen = ({ navigation }: Props) => {
     );
     useFocusEffect(
         React.useCallback(() => () => dispatch(resetUserCurrent()), [])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (status !== 'PENDING') return;
+            if (!currentUser) return;
+            dispatch(postConfirmAccount({ email: currentUser.email }));
+        }, [currentUser, status])
     );
 
     return (
@@ -39,7 +52,12 @@ const ConfirmYourAccountScreen = ({ navigation }: Props) => {
                 This email is only active during one week.
             </Typography>
             <Typography>No email in your mailbox?</Typography>
-            <CustomButton onPress={handlePress} small title="resend email" />
+            <CustomButton
+                loading={status.includes('LOADING')}
+                onPress={handlePress}
+                small
+                title="resend email"
+            />
         </FullScreenContainer>
     );
 };
