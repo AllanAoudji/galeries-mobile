@@ -6,7 +6,7 @@ const Container = styled.Pressable`
     flex-direction: row;
     justify-content: center;
     left: 0;
-    padding: ${({ theme }) => `${theme.spacings.smallest} 0`};
+    padding: 20px 0;
     position: absolute;
     right: 0;
 `;

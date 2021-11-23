@@ -9,18 +9,22 @@ import {
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CustomButton, CustomTextInput, Typography } from '#components';
+import {
+    CustomButton,
+    CustomTextInput,
+    RootFooter,
+    Typography,
+} from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { signinSchema } from '#helpers/schemas';
 import {
+    resetSigninFieldsError,
     resetSigninStatus,
     selectSigninFieldsError,
     selectSigninStatus,
     signin,
     updateSigninFieldsError,
 } from '#store/signin';
-
-import FooterNavigation from '../FooterNavigation';
 
 import {
     ButtonContainer,
@@ -145,10 +149,19 @@ const SigninScreen = ({ navigation }: Props) => {
     useFocusEffect(
         React.useCallback(() => {
             if (status === 'SUCCESS') {
-                dispatch(resetSigninStatus());
                 navigation.navigate('ConfirmYourAccount');
             }
         }, [status])
+    );
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                dispatch(resetSigninStatus());
+                dispatch(resetSigninFieldsError());
+                formik.resetForm();
+            },
+            []
+        )
     );
 
     useFocusEffect(
@@ -251,7 +264,7 @@ const SigninScreen = ({ navigation }: Props) => {
                     </ButtonContainer>
                 </ScrollViewStyle>
             </KeyboardAvoidingView>
-            <FooterNavigation
+            <RootFooter
                 onPress={handlePressLogin}
                 title="You already have an account?"
             />

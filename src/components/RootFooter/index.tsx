@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Typography } from '#components';
+import Typography from '#components/Typography';
 
 import { Container } from './styles';
 
@@ -9,7 +9,7 @@ type Props = {
     title: string;
 };
 
-const FooterNavigation = ({ onPress, title }: Props) => {
+const RootFooter = ({ onPress, title }: Props) => {
     return (
         <Container onPress={onPress}>
             <Typography color="primary-dark" fontFamily="light" fontSize={12}>
@@ -22,4 +22,4 @@ const FooterNavigation = ({ onPress, title }: Props) => {
     );
 };
 
-export default FooterNavigation;
+export default React.memo(RootFooter);

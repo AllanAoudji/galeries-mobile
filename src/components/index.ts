@@ -37,6 +37,7 @@ export { default as PostingImageLoader } from './PostingImageLoader';
 export { default as ProfilePicture } from './ProfilePicture';
 export { default as ReportRadioButton } from './ReportRadioButton';
 export { default as ReturnButton } from './ReturnButton';
+export { default as RootFooter } from './RootFooter';
 export { default as SearchBar } from './SearchBar';
 export { default as SplashScreen } from './SplashScreen';
 export { default as SubGalerieScreenHeader } from './SubGalerieScreenHeader';

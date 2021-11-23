@@ -1,115 +1,48 @@
 import {
     CardStyleInterpolators,
     createStackNavigator,
-    StackHeaderProps,
     StackNavigationOptions,
 } from '@react-navigation/stack';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
-import { DefaultHeader } from '#components';
+import { selectMe } from '#store/me';
 
+import ConfirmYourAccountHeader from './ConfirmYourAccountHeader';
 import ConfirmYourAccountScreen from './ConfirmYourAccountScreen';
 import DesktopScreen from './DesktopScreen';
+import ForgotYourPasswordHeader from './ForgotYourPasswordHeader';
 import ForgotYourPasswordScreen from './ForgotYourPasswordScreen';
 import ForgotYourPasswordLandingHeader from './ForgotYourPasswordLandingHeader';
 import ForgotYourPasswordLandingScreen from './ForgotYourPasswordLandingScreen';
 import LangingScreen from './LandingScreen';
+import LoginHeader from './LoginHeader';
 import LoginScreen from './LoginScreen';
+import SigninHeader from './SigninHeader';
 import SigninScreen from './SigninScreen';
-import { selectMe } from '#store/me';
-import { selectLoginStatus } from '#store/login';
-import { selectSigninStatus } from '#store/signin';
-import { selectResetPasswordStatus } from '#store/resetPassword';
 
 const Stack = createStackNavigator<Screen.RootStack.ParamList>();
 
-const confirmYourAccountHeader = ({ navigation }: StackHeaderProps) => {
-    const handlePress = React.useCallback(() => {
-        navigation.navigate('Landing');
-    }, [navigation]);
-
-    return (
-        <DefaultHeader
-            color="primary-dark"
-            onPress={handlePress}
-            textColor="secondary-light"
-            title="confirm your account"
-            variant="secondary"
-        />
-    );
-};
 const confirmYourAccontOptions: StackNavigationOptions = {
-    header: confirmYourAccountHeader,
+    header: ConfirmYourAccountHeader,
 };
 const desktopOptions: StackNavigationOptions = {
     headerShown: false,
 };
-const forgotYourPasswordHeader = ({ navigation }: StackHeaderProps) => {
-    const loading = useSelector(selectResetPasswordStatus);
-    const handlePress = React.useCallback(() => {
-        if (loading.includes('loading')) return;
-        navigation.navigate('Landing');
-    }, [loading]);
-
-    return (
-        <DefaultHeader
-            color="primary-dark"
-            onPress={handlePress}
-            textColor="secondary-light"
-            title="forgot your password?"
-            variant="secondary"
-        />
-    );
-};
 const forgotYourPasswordOptions: StackNavigationOptions = {
-    header: forgotYourPasswordHeader,
+    header: ForgotYourPasswordHeader,
 };
 const forgotYourPasswordLandingOptions: StackNavigationOptions = {
     header: ForgotYourPasswordLandingHeader,
 };
 const landingOptions: StackNavigationOptions = { headerShown: false };
-const loginHeader = ({ navigation }: StackHeaderProps) => {
-    const loading = useSelector(selectLoginStatus);
-    const handlePress = React.useCallback(() => {
-        if (loading.includes('loading')) return;
-        navigation.navigate('Login');
-    }, [loading]);
-
-    return (
-        <DefaultHeader
-            color="primary-dark"
-            onPress={handlePress}
-            textColor="secondary-light"
-            title="log-in"
-            variant="secondary"
-        />
-    );
-};
 const loginOption: StackNavigationOptions = {
-    header: loginHeader,
+    header: LoginHeader,
 };
 const screenOptions: StackNavigationOptions = {
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 };
-const signinHeader = ({ navigation }: StackHeaderProps) => {
-    const loading = useSelector(selectSigninStatus);
-    const handlePress = React.useCallback(() => {
-        if (loading.includes('loading')) return;
-        navigation.navigate('Landing');
-    }, [loading]);
-
-    return (
-        <DefaultHeader
-            color="primary-dark"
-            onPress={handlePress}
-            textColor="secondary-light"
-            title="sign-in"
-            variant="secondary"
-        />
-    );
-};
-const signinOptions: StackNavigationOptions = { header: signinHeader };
+const signinOptions: StackNavigationOptions = { header: SigninHeader };
 
 const RootStackNavigator = () => {
     const me = useSelector(selectMe);

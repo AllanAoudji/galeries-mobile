@@ -10,6 +10,8 @@ const Container = styled.View`
 `;
 const ForgotYourPasswordContainer = styled.Pressable`
     align-items: flex-end;
+    margin-left: ${({ theme }) => theme.spacings.large};
+    margin-top: ${({ theme }) => theme.spacings.smallest}
     padding: ${({ theme }) =>
         `${theme.spacings.smallest} 0 ${theme.spacings.smallest} ${theme.spacings.normal}`};
 `;
