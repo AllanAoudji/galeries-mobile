@@ -8,7 +8,6 @@ import {
     confirmAccountMiddlewares,
     confirmAccountReducers,
 } from './confirmAccount';
-import { forgotYourPasswordReducer } from './forgotYourPassword';
 import { framesMiddlewares, framesReducer } from './frames';
 import { galeriesMiddleware, galeriesReducer } from './galeries';
 import {
@@ -32,6 +31,10 @@ import {
     profilePicturesReducer,
 } from './profilePictures';
 import { reportsMiddlewares, reportsReducer } from './reports';
+import {
+    resetPasswordMiddleware,
+    resetPasswordReducers,
+} from './resetPassword';
 import { signinReducer, signinMiddlewares } from './signin';
 import { usersMiddleware, usersReducer } from './users';
 
@@ -39,7 +42,6 @@ const reducers = combineReducers({
     betaKeys: betaKeysReducer,
     comments: commentsReducer,
     confirmAccount: confirmAccountReducers,
-    forgotYourPassword: forgotYourPasswordReducer,
     frames: framesReducer,
     galeries: galeriesReducer,
     galerieBlackLists: galerieBlackListsReducer,
@@ -54,6 +56,7 @@ const reducers = combineReducers({
     notification: notificationReducer,
     profilePictures: profilePicturesReducer,
     reports: reportsReducer,
+    resetPassword: resetPasswordReducers,
     signin: signinReducer,
     users: usersReducer,
 });
@@ -78,6 +81,7 @@ export default createStore(
             ...notificationsMiddleware,
             ...profilePicturesMiddlewares,
             ...reportsMiddlewares,
+            ...resetPasswordMiddleware,
             ...signinMiddlewares,
             ...usersMiddleware,
             ...apiMiddlewares

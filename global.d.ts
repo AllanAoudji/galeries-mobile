@@ -215,6 +215,7 @@ declare global {
                 ConfirmYourAccount: undefined;
                 Desktop: NavigatorScreenParams<DesktopDrawer.ParamList>;
                 ForgotYourPassword: undefined;
+                ForgotYourPasswordLanding: undefined;
                 Landing: undefined;
                 Login: undefined;
                 Signin: undefined;
@@ -230,6 +231,10 @@ declare global {
             type ForgotYourPasswordNavigationProp = StackNavigationProp<
                 ParamList,
                 'ForgotYourPassword'
+            >;
+            type ForgotYourPasswordLandingNavigationProp = StackNavigationProp<
+                ParamList,
+                'ForgotYourPasswordLanding'
             >;
             type LandingScreenNavigationProp = StackNavigationProp<
                 ParamList,
@@ -272,6 +277,7 @@ declare global {
             | '[ME]'
             | '[PROFILE PICTURE]'
             | '[REPORT]'
+            | '[RESET PASSWORD]'
             | '[SIGNIN]'
             | '[UI]'
             | '[USERS]';
@@ -322,12 +328,6 @@ declare global {
                 status: { [key: string]: Store.Status };
             };
             confirmAccount: {
-                status: Store.Status;
-            };
-            forgotYourPassword: {
-                fieldsError: {
-                    email?: string;
-                };
                 status: Store.Status;
             };
             frames: {
@@ -439,6 +439,13 @@ declare global {
                 };
                 previous: string;
                 status: { [key: string]: Store.Status };
+            };
+            resetPassword: {
+                current: string | null;
+                fieldsError: {
+                    email?: string;
+                };
+                status: Store.Status;
             };
             reports: {
                 loading: {

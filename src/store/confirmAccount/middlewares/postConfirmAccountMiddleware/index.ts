@@ -1,8 +1,8 @@
 import { Middleware } from 'redux';
 
+import { updateConfirmAccountState } from '#store/confirmAccount/actionCreators';
 import { CONFIRM_ACCOUNT_POST } from '#store/confirmAccount/actionTypes';
 import { dispatchPostUsersConfirmation } from '#store/dispatchers';
-import { updateConfirmAccountState } from '#store/confirmAccount/actionCreators';
 
 const postConfirmAccountMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch, getState }) =>

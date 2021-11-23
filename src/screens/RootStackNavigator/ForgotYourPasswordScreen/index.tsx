@@ -9,20 +9,23 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CustomButton, CustomTextInput, Typography } from '#components';
+import {
+    CustomButton,
+    CustomTextInput,
+    FullScreenContainer,
+    Typography,
+} from '#components';
 import { forgotPassworSchema } from '#helpers/schemas';
 import {
-    selectForgotYourPasswordFieldsError,
-    selectForgotYourPasswordStatus,
-    updateForgotYourPasswordFieldsError,
-} from '#store/forgotYourPassword';
+    postResetPassword,
+    resetResetPasswordFieldErrors,
+    resetResetPasswordStatus,
+    selectResetPasswordFieldErrors,
+    selectResetPasswordStatus,
+    updateResetPasswordFieldErrors,
+} from '#store/resetPassword';
 
-import {
-    ButtonContainer,
-    Container,
-    ScrollViewStyle,
-    TextContainer,
-} from './styles';
+import { ButtonContainer, ScrollViewStyle, TextContainer } from './styles';
 import { GLOBAL_STYLE } from '#helpers/constants';
 
 type Props = {
@@ -34,12 +37,14 @@ const initialValues = { email: '' };
 const ForgotYourPasswordScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
-    const fieldsError = useSelector(selectForgotYourPasswordFieldsError);
-    const loading = useSelector(selectForgotYourPasswordStatus);
+    const fieldsError = useSelector(selectResetPasswordFieldErrors);
+    const loading = useSelector(selectResetPasswordStatus);
 
     const formik = useFormik({
         initialValues,
-        onSubmit: (values) => console.log(values),
+        onSubmit: (values) => {
+            dispatch(postResetPassword(values));
+        },
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: forgotPassworSchema,
@@ -49,16 +54,16 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
         const clientHasError = !!formik.errors.email;
         const serverHasError = !!fieldsError.email;
         return clientHasError || serverHasError;
-    }, [formik.submitCount, formik.errors]);
+    }, [fieldsError, formik.errors]);
     const emailError = React.useMemo(
-        () => formik.errors.email,
-        [formik.errors.email]
+        () => formik.errors.email || fieldsError.email,
+        [formik.errors.email, fieldsError]
     );
 
     const handleChangeEmailText = React.useCallback(
         (e: string) => {
             if (fieldsError.email)
-                dispatch(updateForgotYourPasswordFieldsError({ email: '' }));
+                dispatch(updateResetPasswordFieldErrors({ email: '' }));
             if (formik.errors.email) formik.setFieldError('email', '');
             formik.setFieldValue('email', e);
         },
@@ -83,9 +88,25 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
             };
         }, [loading])
     );
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                dispatch(resetResetPasswordFieldErrors());
+                dispatch(resetResetPasswordStatus());
+            },
+            []
+        )
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (loading !== 'SUCCESS') return;
+
+            navigation.navigate('ForgotYourPasswordLanding');
+        }, [loading])
+    );
 
     return (
-        <Container>
+        <FullScreenContainer>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 keyboardVerticalOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
@@ -130,7 +151,7 @@ const ForgotYourPasswordScreen = ({ navigation }: Props) => {
                     </ButtonContainer>
                 </ScrollViewStyle>
             </KeyboardAvoidingView>
-        </Container>
+        </FullScreenContainer>
     );
 };
 

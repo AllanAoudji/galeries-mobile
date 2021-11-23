@@ -15,7 +15,6 @@ const successGetMethod = (
     getState: () => Store.Reducer,
     action: Store.Action
 ) => {
-    console.log(action);
     if (typeof action.payload.data !== 'object') return;
 
     const allIds: string[] = [];

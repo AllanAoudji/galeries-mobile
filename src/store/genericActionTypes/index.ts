@@ -18,6 +18,7 @@ export const NOTIFICATION: Store.Entity = '[NOTIFICATION]';
 export const NOTIFICATIONS: Store.Entity = '[NOTIFICATIONS]';
 export const PROFILE_PICTURES: Store.Entity = '[PROFILE PICTURE]';
 export const REPORTS: Store.Entity = '[REPORT]';
+export const RESET_PASSWORD: Store.Entity = '[RESET PASSWORD]';
 export const SIGNIN: Store.Entity = '[SIGNIN]';
 export const USERS: Store.Entity = '[USERS]';
 

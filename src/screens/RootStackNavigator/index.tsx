@@ -12,13 +12,15 @@ import { DefaultHeader } from '#components';
 import ConfirmYourAccountScreen from './ConfirmYourAccountScreen';
 import DesktopScreen from './DesktopScreen';
 import ForgotYourPasswordScreen from './ForgotYourPasswordScreen';
+import ForgotYourPasswordLandingHeader from './ForgotYourPasswordLandingHeader';
+import ForgotYourPasswordLandingScreen from './ForgotYourPasswordLandingScreen';
 import LangingScreen from './LandingScreen';
 import LoginScreen from './LoginScreen';
 import SigninScreen from './SigninScreen';
 import { selectMe } from '#store/me';
 import { selectLoginStatus } from '#store/login';
 import { selectSigninStatus } from '#store/signin';
-import { selectForgotYourPasswordStatus } from '#store/forgotYourPassword';
+import { selectResetPasswordStatus } from '#store/resetPassword';
 
 const Stack = createStackNavigator<Screen.RootStack.ParamList>();
 
@@ -44,7 +46,7 @@ const desktopOptions: StackNavigationOptions = {
     headerShown: false,
 };
 const forgotYourPasswordHeader = ({ navigation }: StackHeaderProps) => {
-    const loading = useSelector(selectForgotYourPasswordStatus);
+    const loading = useSelector(selectResetPasswordStatus);
     const handlePress = React.useCallback(() => {
         if (loading.includes('loading')) return;
         navigation.navigate('Landing');
@@ -62,6 +64,9 @@ const forgotYourPasswordHeader = ({ navigation }: StackHeaderProps) => {
 };
 const forgotYourPasswordOptions: StackNavigationOptions = {
     header: forgotYourPasswordHeader,
+};
+const forgotYourPasswordLandingOptions: StackNavigationOptions = {
+    header: ForgotYourPasswordLandingHeader,
 };
 const landingOptions: StackNavigationOptions = { headerShown: false };
 const loginHeader = ({ navigation }: StackHeaderProps) => {
@@ -111,7 +116,7 @@ const RootStackNavigator = () => {
 
     return (
         <Stack.Navigator
-            initialRouteName="Landing"
+            initialRouteName="ConfirmYourAccount"
             screenOptions={screenOptions}
         >
             {me ? (
@@ -131,6 +136,11 @@ const RootStackNavigator = () => {
                         component={ForgotYourPasswordScreen}
                         name="ForgotYourPassword"
                         options={forgotYourPasswordOptions}
+                    />
+                    <Stack.Screen
+                        component={ForgotYourPasswordLandingScreen}
+                        name="ForgotYourPasswordLanding"
+                        options={forgotYourPasswordLandingOptions}
                     />
                     <Stack.Screen
                         component={LangingScreen}

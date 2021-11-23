@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { CustomButton, FullScreenContainer, Typography } from '#components';
 import {
-    postConfirmAccount,
-    selectConfirmAccountStatus,
-} from '#store/confirmAccount';
-import { resetUserCurrent, selectCurrentUser } from '#store/users';
+    postResetPassword,
+    resetResetPasswordCurrent,
+    resetResetPasswordStatus,
+    selectResetPasswordCurrent,
+    selectResetPasswordStatus,
+} from '#store/resetPassword';
 
 import {
     ButtonContainer,
@@ -17,36 +19,35 @@ import {
 } from './styles';
 
 type Props = {
-    navigation: Screen.RootStack.ConfirmYourAccountNavigationProp;
+    navigation: Screen.RootStack.ForgotYourPasswordLandingNavigationProp;
 };
 
-const ConfirmYourAccountScreen = ({ navigation }: Props) => {
+const ForgotYourPasswordLandingScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
-    const currentUser = useSelector(selectCurrentUser);
-    const status = useSelector(selectConfirmAccountStatus);
+    const email = useSelector(selectResetPasswordCurrent);
+    const status = useSelector(selectResetPasswordStatus);
 
     const handlePress = React.useCallback(() => {
-        if (!currentUser) return;
+        if (!email) return;
         if (status.includes('LOADING')) return;
-        dispatch(postConfirmAccount({ email: currentUser.email }));
-    }, [currentUser]);
+        dispatch(postResetPassword({ email }));
+    }, [email, status]);
 
     useFocusEffect(
+        React.useCallback(
+            () => () => {
+                dispatch(resetResetPasswordCurrent());
+                dispatch(resetResetPasswordStatus());
+            },
+            []
+        )
+    );
+    useFocusEffect(
         React.useCallback(() => {
-            if (currentUser) return;
+            if (email) return;
             navigation.navigate('Landing');
-        }, [currentUser])
-    );
-    useFocusEffect(
-        React.useCallback(() => () => dispatch(resetUserCurrent()), [])
-    );
-    useFocusEffect(
-        React.useCallback(() => {
-            if (status !== 'PENDING') return;
-            if (!currentUser) return;
-            dispatch(postConfirmAccount({ email: currentUser.email }));
-        }, [currentUser, status])
+        }, [email, navigation])
     );
 
     return (
@@ -57,13 +58,12 @@ const ConfirmYourAccountScreen = ({ navigation }: Props) => {
                         An email has been sent to you.
                     </Typography>
                     <Typography fontSize={18}>
-                        To confirm your account, click on the link in this
-                        email.
+                        To reset your password, click on the link in this email.
                     </Typography>
                 </TitleContainer>
                 <TextContainer>
                     <Typography fontFamily="light" fontSize={18}>
-                        This email is only active during one week.
+                        This email is only active during 2 days.
                     </Typography>
                 </TextContainer>
                 <TitleContainer>
@@ -89,4 +89,4 @@ const ConfirmYourAccountScreen = ({ navigation }: Props) => {
     );
 };
 
-export default React.memo(ConfirmYourAccountScreen);
+export default ForgotYourPasswordLandingScreen;

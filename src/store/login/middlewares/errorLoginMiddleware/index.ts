@@ -14,7 +14,6 @@ const errorLoginMiddleware: Middleware<{}, Store.Reducer> =
     (action: Store.Action) => {
         next(action);
         if (action.type !== `${LOGIN} ${API_ERROR}`) return;
-        console.log(action);
         if (
             typeof action.payload === 'object' &&
             (typeof action.payload.password === 'string' ||
