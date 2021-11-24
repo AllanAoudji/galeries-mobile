@@ -2,11 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import { Dispatch } from 'redux';
 
-import { ASYNC_STORAGE, ERROR_MESSAGE } from '#helpers/constants';
+import { ASYNC_STORAGE } from '#helpers/constants';
 import { updateMeLoadingPut } from '#store/me/actionCreators';
 import { updateNotification } from '#store/notification/actionCreators';
 import { updateUsersById } from '#store/users/actionCreators';
-import { dispatchErrorNotification } from '#store/dispatchers';
 
 const successPutMethod = (
     dispatch: Dispatch<Store.Action>,

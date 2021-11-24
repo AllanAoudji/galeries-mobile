@@ -24,6 +24,7 @@ const Separator = styled.View`
 `;
 const SubTitleContainer = styled.View`
     padding-right: ${({ theme }) => theme.spacings.small};
+    padding-bottom: ${({ theme }) => theme.spacings.smallest};
 `;
 const SeparatorContainer = styled.View`
     align-items: center;

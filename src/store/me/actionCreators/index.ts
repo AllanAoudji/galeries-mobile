@@ -28,6 +28,13 @@ export const putMe: () => Store.Action = () => ({
     payload: {},
     type: ME_PUT,
 });
+export const putMeEmail: (payload: { password: string }) => Store.Action = (
+    payload
+) => ({
+    meta: {},
+    payload,
+    type: ME_PUT,
+});
 export const putMeHasNewNotification: () => Store.Action = () => ({
     meta: {},
     payload: { hasNewNotifications: true },
@@ -76,6 +83,7 @@ export const resetMeStatus: () => Store.Action = () => ({
 export const updateMeFieldsError: (payload: {
     confirmNewPassword?: string;
     currentPassword?: string;
+    emailPassword?: string;
     newPassword?: string;
     pseudonym?: string;
 }) => Store.Action = (payload) => ({

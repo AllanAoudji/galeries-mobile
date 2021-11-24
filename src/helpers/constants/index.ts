@@ -57,6 +57,7 @@ export const END_POINT = {
     CONFIRMATION: '/confirmation',
     COVER_PICTURE: '/coverPicture',
     CURRENT_PROFILE_PICTURE: '/currentProfilePicture',
+    EMAIL: '/email',
     FRAMES: '/frames',
     GALERIE_PICTURES: '/galeriePictures',
     GALERIES: '/galeries',

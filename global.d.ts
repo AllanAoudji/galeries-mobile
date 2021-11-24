@@ -441,6 +441,7 @@ declare global {
                 fieldsError: {
                     confirmNewPassword: string;
                     currentPassword: string;
+                    emailPassword: string;
                     newPassword: string;
                     pseudonym: string;
                 };

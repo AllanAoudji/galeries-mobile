@@ -57,6 +57,7 @@ export { default as dispatchPostProfilePicture } from './dispatchPostProfilePict
 export { default as dispatchPostProfilePictureIdReports } from './dispatchPostProfilePictureIdReports';
 export { default as dispatchPostResetPassword } from './dispatchPostResetPassword';
 export { default as dispatchPostUsersConfirmation } from './dispatchPostUsersConfirmation';
+export { default as dispatchPutEmail } from './dispatchPutEmail';
 export { default as dispatchPutFrame } from './dispatchPutFrame';
 export { default as dispatchPutGalerie } from './dispatchPutGalerie';
 export { default as dispatchPutGalerieAllowNotification } from './dispatchPutGalerieAllowNotification';

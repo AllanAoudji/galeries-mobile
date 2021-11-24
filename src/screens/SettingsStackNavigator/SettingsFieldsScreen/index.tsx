@@ -15,6 +15,7 @@ import convertPixelToNum from '#helpers/convertPixelToNum';
 import { resetMeFieldsError, selectMe } from '#store/me';
 
 import ChangePseudonym from './ChangePseudonym';
+import UpdateEmail from './UpdateEmail';
 import UpdatePassword from './UpdatePassword';
 
 import { ScrollViewStyle } from './styles';
@@ -53,11 +54,7 @@ const SettingsScreen = () => {
                 >
                     <ChangePseudonym user={me} />
                     <UpdatePassword />
-                    <OptionSlice
-                        separaror
-                        subTitle="Register your new email. A mail gonna be send to you. Click on the link on this mail to change your email"
-                        title="update email"
-                    ></OptionSlice>
+                    <UpdateEmail />
                     <OptionSlice
                         subTitle="Once you delete your account, there is no going back. Please be certain."
                         title="delete account"

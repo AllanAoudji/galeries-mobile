@@ -1,6 +1,7 @@
 import { Middleware } from 'redux';
 
 import {
+    dispatchPutEmail,
     dispatchPutPassword,
     dispatchPutPseudonym,
     dispatchPutUsersMeHasNewNotifications,
@@ -30,6 +31,9 @@ const putMeMiddleware: Middleware<{}, Store.Reducer> =
         ) {
             dispatch(updateMeLoadingPut('LOADING'));
             dispatchPutPassword(dispatch, action.payload);
+        } else if (action.payload.password) {
+            dispatch(updateMeLoadingPut('LOADING'));
+            dispatchPutEmail(dispatch, action.payload);
         }
     };
 
