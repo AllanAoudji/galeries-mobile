@@ -24,8 +24,6 @@ const deleteGaleriesMiddleware: Middleware<{}, Store.Reducer> =
         const loading = getState().galeries.loading.delete;
         if (loading.includes('LOADING')) return;
 
-        dispatch(updateGaleriesLoadingDelete('LOADING'));
-
         if (galerie.role === 'admin') {
             if (
                 typeof action.payload !== 'object' ||

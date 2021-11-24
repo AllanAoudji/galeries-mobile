@@ -5,6 +5,7 @@ export { default as dispatchDeleteGalerie } from './dispatchDeleteGalerie';
 export { default as dispatchDeleteGalerieBlackList } from './dispatchDeleteGalerieBlackList';
 export { default as dispatchDeleteGalerieUser } from './dispatchDeleteGalerieUser';
 export { default as dispatchDeleteInvitation } from './dispatchDeleteInvitation';
+export { default as dispatchDeleteMe } from './dispatchDeleteMe';
 export { default as dispatchDeleteNotification } from './dispatchDeleteNotification';
 export { default as dispatchDeleteProfilePicture } from './dispatchDeleteProfilePicture';
 export { default as dispatchErrorNotification } from './dispatchErrorNotification';

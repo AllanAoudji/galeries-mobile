@@ -441,12 +441,16 @@ declare global {
                 fieldsError: {
                     confirmNewPassword: string;
                     currentPassword: string;
+                    deleteAccountSentence: string;
+                    deletePassword: string;
                     emailPassword: string;
                     newPassword: string;
                     pseudonym: string;
+                    userNameOrEmail: string;
                 };
                 id: string | null;
                 loading: {
+                    delete: Store.Status;
                     put: Store.Status;
                 };
                 status: Status;

@@ -10,8 +10,6 @@ type ContainerProps = {
 const Container = styled.View<ContainerProps>`
     margin: ${({ mt, theme }) =>
         `${mt ? theme.spacings[mt] : 0} ${theme.spacings.normal} 0`};
-    padding: ${({ separator, theme }) =>
-        `0 0 ${separator ? 0 : theme.spacings.huge}`};
 `;
 const TitleContainer = styled.View`
     padding-bottom: ${({ theme }) => theme.spacings.smallest};

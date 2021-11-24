@@ -4,6 +4,7 @@ import { API_SUCCESS } from '#store/api/actionTypes';
 import { ME } from '#store/genericActionTypes';
 
 import successDefaultMethod from './successDefaultMethod';
+import successDeleteMethod from './successDeleteMethod';
 import successGetMethod from './successGetMethod';
 import successPutMethod from './successPutMethod';
 import successPostMethod from './successPostMethod';
@@ -16,6 +17,7 @@ const successMeMiddleware: Middleware<{}, Store.Reducer> =
         if (action.type === `${ME} ${API_SUCCESS}`) {
             switch (action.meta.method) {
                 case 'DELETE':
+                    successDeleteMethod(action);
                     break;
                 case 'POST':
                     successPostMethod(dispatch, getState, action);

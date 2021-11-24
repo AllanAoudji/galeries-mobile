@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 import { useTheme } from 'styled-components';
 
-import { FullScreenContainer, OptionSlice } from '#components';
+import { FullScreenContainer } from '#components';
 import convertPixelToNum from '#helpers/convertPixelToNum';
 import { resetMeFieldsError, selectMe } from '#store/me';
 
 import ChangePseudonym from './ChangePseudonym';
+import DeleteAccount from './DeleteAccount';
 import UpdateEmail from './UpdateEmail';
 import UpdatePassword from './UpdatePassword';
 
@@ -28,7 +29,7 @@ const SettingsScreen = () => {
 
     const stylesProps = React.useMemo(
         () => ({
-            paddingBottom: convertPixelToNum(theme.spacings.large),
+            paddingBottom: convertPixelToNum(theme.spacings.largest),
         }),
         [theme]
     );
@@ -55,11 +56,7 @@ const SettingsScreen = () => {
                     <ChangePseudonym user={me} />
                     <UpdatePassword />
                     <UpdateEmail />
-                    <OptionSlice
-                        subTitle="Once you delete your account, there is no going back. Please be certain."
-                        title="delete account"
-                        titleColor="danger"
-                    ></OptionSlice>
+                    <DeleteAccount />
                 </ScrollViewStyle>
             </FullScreenContainer>
         </KeyboardAvoidingView>

@@ -5,6 +5,8 @@ import {
     ME_GET,
     ME_ID_RESET,
     ME_ID_UPDATE,
+    ME_LOADING_DELETE_RESET,
+    ME_LOADING_DELETE_UPDATE,
     ME_LOADING_PUT_RESET,
     ME_LOADING_PUT_UPDATE,
     ME_PUT,
@@ -13,9 +15,13 @@ import {
     ME_STATUS_UPDATE,
 } from '#store/me/actionTypes';
 
-export const deleteMe: () => Store.Action = () => ({
+export const deleteMe: (payload: {
+    deleteAccountSentence: string;
+    password: string;
+    userNameOrEmail: string;
+}) => Store.Action = (payload) => ({
     meta: {},
-    payload: {},
+    payload,
     type: ME_DELETE,
 });
 export const getMe: () => Store.Action = () => ({
@@ -70,6 +76,11 @@ export const resetMeId: () => Store.Action = () => ({
     payload: {},
     type: ME_ID_RESET,
 });
+export const resetMeLoadingDelete: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: ME_LOADING_DELETE_RESET,
+});
 export const resetMeLoadingPut: () => Store.Action = () => ({
     meta: {},
     payload: {},
@@ -83,9 +94,12 @@ export const resetMeStatus: () => Store.Action = () => ({
 export const updateMeFieldsError: (payload: {
     confirmNewPassword?: string;
     currentPassword?: string;
+    deletePassword?: string;
+    deleteAccountSentence?: string;
     emailPassword?: string;
     newPassword?: string;
     pseudonym?: string;
+    userNameOrEmail?: string;
 }) => Store.Action = (payload) => ({
     meta: {},
     payload,
@@ -95,6 +109,13 @@ export const updateMeId: (payload: string) => Store.Action = (payload) => ({
     meta: {},
     payload,
     type: ME_ID_UPDATE,
+});
+export const updateMeLoadingDelete: (payload: Store.Status) => Store.Action = (
+    payload
+) => ({
+    meta: {},
+    payload,
+    type: ME_LOADING_DELETE_UPDATE,
 });
 export const updateMeLoadingPut: (payload: Store.Status) => Store.Action = (
     payload
