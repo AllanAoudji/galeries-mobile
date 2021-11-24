@@ -294,6 +294,7 @@ declare global {
             | '[RESET PASSWORD]'
             | '[SEND BETA KEY]'
             | '[SIGNIN]'
+            | '[TICKET]'
             | '[UI]'
             | '[USERS]';
         type Meta = {
@@ -508,11 +509,27 @@ declare global {
                 };
                 status: Store.Status;
             };
+            tickets: {
+                allIds: { [key: string]: string[] };
+                byId: { [key: string]: Store.Models.Ticket };
+                current: string | null;
+                end: boolean;
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                };
+                previous: string;
+                status: Store.Status;
+            };
             users: {
                 allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.User };
                 current: string | null;
                 end: { [key: string]: boolean };
+                fieldsError: {
+                    body: string;
+                    header: string;
+                };
                 loading: {
                     delete: Store.Status;
                 };
@@ -652,6 +669,15 @@ declare global {
                 index: string;
                 originalImage: Image & { cachedSignedUrl: string };
                 pendingHexes: string;
+                updatedAt: string;
+                userId: string;
+            };
+            type Ticket = {
+                autoIncrementId: string;
+                body: string;
+                createdAt: string;
+                header: string;
+                id: string;
                 updatedAt: string;
                 userId: string;
             };
