@@ -32,6 +32,7 @@ export { default as Notification } from './Notification';
 export { default as NotificationCard } from './NotificationCard';
 export { default as NotificationCardContainer } from './NotificationCardContainer';
 export { default as NumberTextInput } from './NumberTextInput';
+export { default as OptionSlice } from './OptionSlice';
 export { default as Pictogram } from './Pictogram';
 export { default as PostingImageLoader } from './PostingImageLoader';
 export { default as ProfilePicture } from './ProfilePicture';

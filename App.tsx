@@ -21,8 +21,6 @@ export default function App() {
     );
 }
 
-// on a single screen, GET single
-// if model not found, remove from store
 // Change email/password/pseudonym/delete account
 // Ticket screen
 // Web app

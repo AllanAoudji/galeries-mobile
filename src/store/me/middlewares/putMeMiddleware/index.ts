@@ -1,7 +1,11 @@
 import { Middleware } from 'redux';
 
-import { dispatchPutUsersMeHasNewNotifications } from '#store/dispatchers';
+import {
+    dispatchPutUsersMeHasNewNotifications,
+    dispatchPutPseudonym,
+} from '#store/dispatchers';
 import { ME_PUT } from '#store/me/actionTypes';
+import { updateMeLoadingPut } from '#store/me/actionCreators';
 
 const putMeMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>
@@ -15,6 +19,10 @@ const putMeMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.payload.hasNewNotifications)
             dispatchPutUsersMeHasNewNotifications(dispatch);
+        else if (action.payload.pseudonym) {
+            dispatch(updateMeLoadingPut('LOADING'));
+            dispatchPutPseudonym(dispatch, action.payload);
+        }
     };
 
 export default putMeMiddleware;

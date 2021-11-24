@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import { updateMeLoadingPut } from '#store/me/actionCreators';
 import { updateUsersById } from '#store/users/actionCreators';
 
 const successPutMethod = (
@@ -15,16 +16,26 @@ const successPutMethod = (
     const me = getState().users.byId[meId];
     if (!me) return;
 
-    const { hasNewNotifications } = action.payload.data;
+    const { hasNewNotifications, pseudonym } = action.payload.data;
 
-    if (typeof hasNewNotifications === 'boolean') {
+    if (typeof hasNewNotifications === 'boolean')
         dispatch(
             updateUsersById({
                 ...me,
                 hasNewNotifications,
             })
         );
-    }
+
+    if (typeof pseudonym === 'string')
+        dispatch(
+            updateUsersById({
+                ...me,
+                pseudonym,
+            })
+        );
+
+    const loading = getState().me.loading.put;
+    if (loading.includes('LOADING')) dispatch(updateMeLoadingPut('SUCCESS'));
 };
 
 export default successPutMethod;

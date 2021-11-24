@@ -65,6 +65,7 @@ export { default as dispatchPutGaleriePicture } from './dispatchPutGaleriePictur
 export { default as dispatchPutGalerieUserRole } from './dispatchPutGalerieUserRole';
 export { default as dispatchPutNotification } from './dispatchPutNotification';
 export { default as dispatchPutProfilePicture } from './dispatchPutProfilePicture';
+export { default as dispatchPutPseudonym } from './dispatchPutPseudonym';
 export { default as dispatchPutUsersMeHasNewNotifications } from './dispatchPutUsersMeHasNewNotifications';
 export { default as dispatchRefreshBetaKeys } from './dispatchRefreshBetaKeys';
 export { default as dispatchRefreshFrames } from './dispatchRefreshFrames';

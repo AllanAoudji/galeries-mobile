@@ -70,6 +70,7 @@ export const END_POINT = {
     NOTIFICATIONS: '/notifications',
     PASSWORD: '/password',
     PROFILE_PICTURES: '/profilePictures',
+    PSEUDONYM: '/pseudonym',
     REFRESH_TOKEN: '/refreshToken',
     REPORTS: '/reports',
     SEND: '/send',
@@ -104,6 +105,8 @@ export const FIELD_REQUIREMENT = {
     GALERIE_NAME_MIN_LENGTH: 3,
     PASSWORD_MIN_LENGTH: 8,
     PASSWORD_MAX_LENGTH: 30,
+    PSEUDONYM_MAX_LENGTH: 30,
+    PSEUDONYM_MIN_LENGTH: 3,
     USERNAME_MIN_LENGTH: 3,
     USERNAME_MAX_LENGTH: 30,
 };

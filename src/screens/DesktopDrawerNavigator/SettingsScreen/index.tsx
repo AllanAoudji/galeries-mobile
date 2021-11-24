@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Typography } from '#components';
+import SettingsStackNavigator from '#screens/SettingsStackNavigator';
 
-const SettingsScreen = () => <Typography>Settings</Typography>;
+const SettingsScreen = () => <SettingsStackNavigator />;
 
 export default SettingsScreen;

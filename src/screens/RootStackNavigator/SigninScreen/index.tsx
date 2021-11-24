@@ -211,6 +211,7 @@ const SigninScreen = ({ navigation }: Props) => {
                         mt="normal"
                         onBlur={formik.handleBlur('userName')}
                         onChangeText={handeChangeUserNameText}
+                        removeEmoji
                         touched={formik.touched.userName || false}
                         value={formik.values.userName}
                     />
@@ -221,6 +222,7 @@ const SigninScreen = ({ navigation }: Props) => {
                         label="email"
                         onBlur={formik.handleBlur('email')}
                         onChangeText={handleChangeEmailText}
+                        removeEmoji
                         touched={formik.touched.email || false}
                         value={formik.values.email}
                     />
@@ -230,6 +232,7 @@ const SigninScreen = ({ navigation }: Props) => {
                         label="password"
                         onBlur={formik.handleBlur('password')}
                         onChangeText={handleChangePasswordText}
+                        removeEmoji
                         touched={formik.touched.password || false}
                         secureTextEntry
                         value={formik.values.password}
@@ -240,6 +243,7 @@ const SigninScreen = ({ navigation }: Props) => {
                         label="confirm password"
                         onBlur={formik.handleBlur('confirmPassword')}
                         onChangeText={handleChangeConfirmPasswordText}
+                        removeEmoji
                         touched={formik.touched.confirmPassword || false}
                         secureTextEntry
                         value={formik.values.confirmPassword}
@@ -250,6 +254,7 @@ const SigninScreen = ({ navigation }: Props) => {
                         label="beta key"
                         onBlur={formik.handleBlur('betaKey')}
                         onChangeText={handleChangeBetaKeyText}
+                        removeEmoji
                         touched={formik.touched.betaKey || false}
                         value={formik.values.betaKey}
                     />

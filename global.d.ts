@@ -249,6 +249,20 @@ declare global {
                 'Signin'
             >;
         }
+        namespace SettingsStack {
+            type ParamList = {
+                DeleteAccount: undefined;
+                SettingsFields: undefined;
+            };
+            type DeleteAccountScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'DeleteAccount'
+            >;
+            type SettingsFieldsScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'SettingsFields'
+            >;
+        }
     }
 
     namespace Store {
@@ -424,7 +438,13 @@ declare global {
                 status: Store.Status;
             };
             me: {
+                fieldsError: {
+                    pseudonym?: string;
+                };
                 id: string | null;
+                loading: {
+                    put: Store.Status;
+                };
                 status: Status;
             };
             profilePictures: {
