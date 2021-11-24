@@ -13,6 +13,7 @@ const dispatchGetInvitation: (
             meta: {
                 entity: INVITATIONS,
                 method: 'GET',
+                query: { invitationId },
                 url: `${END_POINT.INVITATIONS}/${invitationId}`,
             },
             payload: {},

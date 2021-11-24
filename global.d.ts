@@ -197,7 +197,7 @@ declare global {
                 CreateBetakeyScreen: undefined;
                 ModerationNavigationScreen: undefined;
             };
-            type BetaKeyScreenNavigationProp = StackNavigationProp<
+            type BetaKeysScreenNavigationProp = StackNavigationProp<
                 ParamList,
                 'BetakeysScreen'
             >;

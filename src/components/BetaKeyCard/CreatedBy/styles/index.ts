@@ -2,12 +2,13 @@ import styled from 'styled-components/native';
 
 const Container = styled.View`
     align-items: center;
-    border-bottom-color: ${({ theme }) => theme.colors['secondary-light']};
-    border-bottom-width: 2px;
     flex-direction: row;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
+    justify-content: space-between;
+    padding-bottom: ${({ theme }) => theme.spacings.smallest};
+`;
+const UserContainer = styled.View`
+    flex-direction: row;
+    align-items: center;
 `;
 
-// eslint-disable-next-line import/prefer-default-export
-export { Container };
+export { Container, UserContainer };

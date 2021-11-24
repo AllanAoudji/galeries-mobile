@@ -9,7 +9,7 @@ import { Container } from './styles';
 
 const BetaKeysHeader = () => {
     const navigation =
-        useNavigation<Screen.ModeratorStack.BetaKeyScreenNavigationProp>();
+        useNavigation<Screen.ModeratorStack.BetaKeysScreenNavigationProp>();
 
     const handlePress = React.useCallback(() => {
         Keyboard.dismiss();

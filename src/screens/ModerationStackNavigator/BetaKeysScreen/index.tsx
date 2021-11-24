@@ -29,7 +29,7 @@ const BetaKeysScreen = () => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
     const navigation =
-        useNavigation<Screen.ModeratorStack.BetaKeyScreenNavigationProp>();
+        useNavigation<Screen.ModeratorStack.BetaKeysScreenNavigationProp>();
 
     const allIds = useSelector(selectBetaKeysAllIds);
     const status = useSelector(selectBetaKeysStatus);

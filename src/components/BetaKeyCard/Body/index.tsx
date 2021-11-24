@@ -1,5 +1,5 @@
+import * as Clipboard from 'expo-clipboard';
 import * as React from 'react';
-import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Typography from '#components/Typography';
@@ -8,7 +8,7 @@ import { selectUser } from '#store/users';
 import ResendButton from './ResendButton';
 import UsedBy from './UsedBy';
 
-import { Container } from './styles';
+import { CodeContainer, CodeInnerContainer, Container } from './styles';
 
 type Props = {
     betaKey: Store.Models.BetaKeys;
@@ -21,34 +21,22 @@ const Body = ({ betaKey }: Props) => {
     );
     const usedBy = useSelector(usedBySelector);
 
+    const handlePress = React.useCallback(
+        () => Clipboard.setString(betaKey.code),
+        [betaKey]
+    );
+
     return (
-        <Container justifyContent={usedBy ? 'flex-end' : 'space-between'}>
-            {!usedBy && (
-                <View>
-                    <Typography fontSize={14}>
-                        code:{' '}
-                        <Typography
-                            color="primary"
-                            fontFamily="bold"
-                            fontSize={14}
-                        >
+        <Container>
+            <CodeContainer>
+                {!betaKey.userId && (
+                    <CodeInnerContainer onPress={handlePress}>
+                        <Typography fontFamily="bold" fontSize={18}>
                             {betaKey.code}
                         </Typography>
-                    </Typography>
-                    {betaKey.email && (
-                        <Typography fontSize={14}>
-                            email:{' '}
-                            <Typography
-                                color="primary"
-                                fontFamily="bold"
-                                fontSize={14}
-                            >
-                                {betaKey.email}
-                            </Typography>
-                        </Typography>
-                    )}
-                </View>
-            )}
+                    </CodeInnerContainer>
+                )}
+            </CodeContainer>
             {usedBy ? (
                 <UsedBy user={usedBy} />
             ) : (

@@ -21,7 +21,7 @@ const getProfilePicturesMiddleware: Middleware<{}, Store.Reducer> =
         if (userId) {
             const status =
                 getState().profilePictures.status[userId] || 'PENDING';
-            if (status !== 'PENDING') return;
+            if (status.includes('LOADING')) return;
 
             dispatch(updateProfilePicturesStatus(userId, 'LOADING'));
             if (userId === 'me') {

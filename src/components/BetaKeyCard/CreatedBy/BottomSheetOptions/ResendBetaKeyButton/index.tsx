@@ -1,15 +1,18 @@
 import * as React from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
-import CustomButton from '#components/CustomButton';
+
+import BottomSheetButton from '#components/BottomSheetButton';
+import { BottomSheetContext } from '#contexts/BottomSheetContext';
 import { selectSendBetaKeyStatus, sendBetaKey } from '#store/sendBetaKey';
 
 type Props = {
     betaKey: Store.Models.BetaKeys;
 };
 
-const ResendButton = ({ betaKey }: Props) => {
+const ResendBetaKeyButton = ({ betaKey }: Props) => {
     const dispatch = useDispatch();
+
+    const { closeBottomSheet } = React.useContext(BottomSheetContext);
 
     const statusSelector = React.useMemo(
         () => selectSendBetaKeyStatus(betaKey.id),
@@ -20,21 +23,15 @@ const ResendButton = ({ betaKey }: Props) => {
     const handlePress = React.useCallback(() => {
         if (status && status.includes('LOADING')) return;
         dispatch(sendBetaKey(betaKey.id));
+        closeBottomSheet();
     }, [betaKey, status]);
 
-    if (betaKey.userId) return null;
     if (!betaKey.email) return null;
+    if (betaKey.userId) return null;
 
     return (
-        <CustomButton
-            loading={(status || 'PENDING').includes('LOADING')}
-            onPress={handlePress}
-            ml="large"
-            mr="large"
-            small
-            title="resend beta key"
-        />
+        <BottomSheetButton onPress={handlePress} title="reset this beta key" />
     );
 };
 
-export default React.memo(ResendButton);
+export default ResendBetaKeyButton;

@@ -23,7 +23,7 @@ const BetaKeyCard = ({ betaKey }: Props) => {
 
     return (
         <Container>
-            <CreatedBy user={createdBy} />
+            <CreatedBy betaKey={betaKey} user={createdBy} />
             <Body betaKey={betaKey} />
         </Container>
     );

@@ -1,9 +1,13 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { selectGalerie } from '#store/galeries';
-import { selectcurrentGalerieBlackList } from '#store/galerieBlackLists';
+import {
+    getGalerieBlackList,
+    resetGalerieBlackListsCurrent,
+    selectcurrentGalerieBlackList,
+} from '#store/galerieBlackLists';
 
 import Body from './Body';
 import Footer from './Footer';
@@ -16,8 +20,11 @@ type Props = {
 };
 
 const UserGalerieBlackListScreen = ({ navigation }: Props) => {
-    const galerieBlackList = useSelector(selectcurrentGalerieBlackList);
+    const dispatch = useDispatch();
 
+    const [initialLoading, setInitialLoading] = React.useState<boolean>(true);
+
+    const galerieBlackList = useSelector(selectcurrentGalerieBlackList);
     const galerieSelector = React.useMemo(
         () =>
             selectGalerie(
@@ -29,20 +36,39 @@ const UserGalerieBlackListScreen = ({ navigation }: Props) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (!galerieBlackList) {
-                if (navigation.canGoBack()) navigation.goBack();
-                else navigation.navigate('Home');
-            }
-        }, [galerieBlackList, navigation])
+            if (!galerieBlackList) return;
+            if (!initialLoading) return;
+            setInitialLoading(false);
+            dispatch(
+                getGalerieBlackList(
+                    galerieBlackList.galerieId,
+                    galerieBlackList.id
+                )
+            );
+        }, [galerieBlackList, initialLoading])
     );
-
     useFocusEffect(
         React.useCallback(() => {
-            if (!galerie || galerie.role === 'user') {
-                if (navigation.canGoBack()) navigation.goBack();
-                else navigation.navigate('Home');
-            }
+            if (galerieBlackList) return;
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
+        }, [galerieBlackList, navigation])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (galerie && galerie.role !== 'user') return;
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
         }, [galerie, navigation])
+    );
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                setInitialLoading(true);
+                dispatch(resetGalerieBlackListsCurrent());
+            },
+            []
+        )
     );
 
     if (!galerieBlackList) return null;

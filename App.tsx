@@ -21,16 +21,8 @@ export default function App() {
     );
 }
 
-// Header on Comment/Likes
-// Profile Screen
-// Change email/password/delete account
-// Tickets
-// Show ticket
-// BetaKey
-// Better post frame
-// Update galerie
-// Forgot password
-
-// If status === 'ERROR' and allIds = [] || undefined
-// show error, refresh button
-// Change PP status => me/id
+// on a single screen, GET single
+// if model not found, remove from store
+// Change email/password/pseudonym/delete account
+// Ticket screen
+// Web app

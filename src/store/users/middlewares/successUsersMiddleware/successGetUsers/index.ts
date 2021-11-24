@@ -77,6 +77,8 @@ const successGetUsers = (
     }
 
     if (galerieId) dispatch(updateGalerieUsersStatus(galerieId, 'SUCCESS'));
+    if (notificationId)
+        dispatch(updateGalerieUsersStatus(notificationId, 'SUCCESS'));
     else dispatch(updateUsersStatus('SUCCESS'));
 
     if (galerieId) {
@@ -94,10 +96,7 @@ const successGetUsers = (
     }
 
     allIds.forEach((id) => {
-        const profilePicture =
-            getState().profilePictures.status[id] || 'PENDING';
-        if (profilePicture === 'PENDING')
-            dispatch(getUserCurrentProfilePicture(id));
+        dispatch(getUserCurrentProfilePicture(id));
     });
 };
 

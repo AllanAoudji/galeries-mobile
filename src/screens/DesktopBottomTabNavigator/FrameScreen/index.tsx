@@ -4,7 +4,7 @@ import { ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from 'styled-components/native';
 
-import { selectCurrentFrame } from '#store/frames';
+import { getFrame, selectCurrentFrame } from '#store/frames';
 import {
     getFrameGaleriePictures,
     selectFrameGaleriePicturesAllIds,
@@ -24,6 +24,10 @@ const FrameScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
     const theme = useTheme();
 
+    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
+    const [initialLoading, setInitialLoading] = React.useState<boolean>(true);
+    const [showOptions, setShowOptions] = React.useState<boolean>(false);
+
     const currentFrame = useSelector(selectCurrentFrame);
     const galeriePicturesAllIdsSelector = React.useMemo(
         () =>
@@ -42,34 +46,36 @@ const FrameScreen = ({ navigation }: Props) => {
     );
     const galeriePicturesStatus = useSelector(galeriePicturesStatusSelector);
 
-    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
-    const [showOptions, setShowOptions] = React.useState<boolean>(false);
-
     const handleHideOptions = React.useCallback(() => {
         setShowOptions(false);
     }, []);
-    const handleShowOptions = React.useCallback(() => setShowOptions(true), []);
     const handlePressBack = React.useCallback(() => {
         if (navigation.canGoBack()) navigation.goBack();
         else navigation.navigate('Home');
     }, [navigation]);
+    const handleShowOptions = React.useCallback(() => setShowOptions(true), []);
 
     React.useEffect(() => {
-        if (
-            currentFrame &&
-            !galeriePicturesAllIds &&
-            (!galeriePicturesStatus ||
-                galeriePicturesStatus.includes('LOADING'))
-        )
-            dispatch(getFrameGaleriePictures(currentFrame.id));
+        if (!currentFrame) return;
+        if (galeriePicturesAllIds) return;
+        if (galeriePicturesStatus && galeriePicturesStatus.includes('LOADING'))
+            return;
+        dispatch(getFrameGaleriePictures(currentFrame.id));
     }, [currentFrame, galeriePicturesAllIds, galeriePicturesStatus]);
 
     useFocusEffect(
         React.useCallback(() => {
-            if (!currentFrame) {
-                if (navigation.canGoBack()) navigation.goBack();
-                else navigation.navigate('Home');
-            }
+            if (!currentFrame) return;
+            if (!initialLoading) return;
+            setInitialLoading(false);
+            dispatch(getFrame(currentFrame.id));
+        }, [currentFrame, initialLoading])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (currentFrame) return;
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
         }, [currentFrame])
     );
     useFocusEffect(
@@ -77,6 +83,7 @@ const FrameScreen = ({ navigation }: Props) => {
             () => () => {
                 handleHideOptions();
                 setCurrentIndex(0);
+                setInitialLoading(true);
             },
             []
         )
