@@ -2,8 +2,12 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { apiMiddlewares } from './api';
+import { betaKeysMiddleware, betaKeysReducer } from './betaKeys';
 import { commentsMiddlewares, commentsReducer } from './comments';
-import { forgotYourPasswordReducer } from './forgotYourPassword';
+import {
+    confirmAccountMiddlewares,
+    confirmAccountReducers,
+} from './confirmAccount';
 import { framesMiddlewares, framesReducer } from './frames';
 import { galeriesMiddleware, galeriesReducer } from './galeries';
 import {
@@ -27,12 +31,18 @@ import {
     profilePicturesReducer,
 } from './profilePictures';
 import { reportsMiddlewares, reportsReducer } from './reports';
-import { signinReducer } from './signin';
+import {
+    resetPasswordMiddleware,
+    resetPasswordReducers,
+} from './resetPassword';
+import { sendBetaKeyReducers, sendBetaKeyMiddlewares } from './sendBetaKey';
+import { signinReducer, signinMiddlewares } from './signin';
 import { usersMiddleware, usersReducer } from './users';
 
 const reducers = combineReducers({
+    betaKeys: betaKeysReducer,
     comments: commentsReducer,
-    forgotYourPassword: forgotYourPasswordReducer,
+    confirmAccount: confirmAccountReducers,
     frames: framesReducer,
     galeries: galeriesReducer,
     galerieBlackLists: galerieBlackListsReducer,
@@ -47,6 +57,8 @@ const reducers = combineReducers({
     notification: notificationReducer,
     profilePictures: profilePicturesReducer,
     reports: reportsReducer,
+    resetPassword: resetPasswordReducers,
+    sendBetaKey: sendBetaKeyReducers,
     signin: signinReducer,
     users: usersReducer,
 });
@@ -55,7 +67,9 @@ export default createStore(
     reducers,
     composeWithDevTools(
         applyMiddleware(
+            ...betaKeysMiddleware,
             ...commentsMiddlewares,
+            ...confirmAccountMiddlewares,
             ...framesMiddlewares,
             ...galeriesMiddleware,
             ...galerieBlackListsMiddlewares,
@@ -69,6 +83,9 @@ export default createStore(
             ...notificationsMiddleware,
             ...profilePicturesMiddlewares,
             ...reportsMiddlewares,
+            ...resetPasswordMiddleware,
+            ...sendBetaKeyMiddlewares,
+            ...signinMiddlewares,
             ...usersMiddleware,
             ...apiMiddlewares
         )

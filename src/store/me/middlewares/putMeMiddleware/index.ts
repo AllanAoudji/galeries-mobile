@@ -1,7 +1,13 @@
 import { Middleware } from 'redux';
 
-import { dispatchPutUsersMeHasNewNotifications } from '#store/dispatchers';
+import {
+    dispatchPutEmail,
+    dispatchPutPassword,
+    dispatchPutPseudonym,
+    dispatchPutUsersMeHasNewNotifications,
+} from '#store/dispatchers';
 import { ME_PUT } from '#store/me/actionTypes';
+import { updateMeLoadingPut } from '#store/me/actionCreators';
 
 const putMeMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>
@@ -15,6 +21,20 @@ const putMeMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.payload.hasNewNotifications)
             dispatchPutUsersMeHasNewNotifications(dispatch);
+        else if (action.payload.pseudonym) {
+            dispatch(updateMeLoadingPut('LOADING'));
+            dispatchPutPseudonym(dispatch, action.payload);
+        } else if (
+            action.payload.confirmNewPassword &&
+            action.payload.currentPassword &&
+            action.payload.newPassword
+        ) {
+            dispatch(updateMeLoadingPut('LOADING'));
+            dispatchPutPassword(dispatch, action.payload);
+        } else if (action.payload.password) {
+            dispatch(updateMeLoadingPut('LOADING'));
+            dispatchPutEmail(dispatch, action.payload);
+        }
     };
 
 export default putMeMiddleware;

@@ -1,8 +1,8 @@
 import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { selectCurrentInvitation } from '#store/invitations';
+import { getInvitation, selectCurrentInvitation } from '#store/invitations';
 
 import Body from './Body';
 import Footer from './Footer';
@@ -15,15 +15,32 @@ type Props = {
 };
 
 const InvitationScreen = ({ navigation }: Props) => {
+    const dispatch = useDispatch();
     const invitation = useSelector(selectCurrentInvitation);
+
+    const [initialLoading, setInitialLoading] = React.useState<boolean>(true);
 
     useFocusEffect(
         React.useCallback(() => {
-            if (!invitation) {
-                if (navigation.canGoBack()) navigation.goBack();
-                else navigation.navigate('Home');
-            }
+            if (invitation) return;
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
         }, [invitation, navigation])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!invitation) return;
+            if (!initialLoading) return;
+            dispatch(getInvitation(invitation.id));
+        }, [initialLoading, invitation])
+    );
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                setInitialLoading(true);
+            },
+            []
+        )
     );
 
     if (!invitation) return null;

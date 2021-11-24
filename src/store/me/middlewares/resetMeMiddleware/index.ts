@@ -1,6 +1,11 @@
 import { Middleware } from 'redux';
 
-import { resetMeId, resetMeStatus } from '#store/me/actionCreators';
+import {
+    resetMeFieldsError,
+    resetMeId,
+    resetMeLoadingPut,
+    resetMeStatus,
+} from '#store/me/actionCreators';
 import { ME_RESET } from '#store/me/actionTypes';
 
 const resetMeMiddleware: Middleware<{}, Store.Reducer> =
@@ -10,6 +15,8 @@ const resetMeMiddleware: Middleware<{}, Store.Reducer> =
         next(action);
         if (action.type === ME_RESET) {
             dispatch(resetMeId());
+            dispatch(resetMeFieldsError());
+            dispatch(resetMeLoadingPut());
             dispatch(resetMeStatus());
         }
     };

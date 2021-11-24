@@ -6,7 +6,7 @@ import profilePicturesCurrentReducer from './profilePicturesCurrentReducer';
 import profilePicturesEndReducer from './profilePicturesEndReducer';
 import profilePicturesIdReducer from './profilePicturesIdReducer';
 import profilepicturesLoadingReducer from './profilePicturesLoadingReducers';
-import profilePicturesPreviousReducer from './profilePicturesPreviousInitialState';
+import profilePicturesPreviousReducer from './profilePicturesPreviousReducer';
 import profilePicturesStatusReducer from './profilePicturesStatusReducer';
 
 // eslint-disable-next-line import/prefer-default-export

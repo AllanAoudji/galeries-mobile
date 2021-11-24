@@ -9,12 +9,11 @@ import { Container } from './styles';
 
 const BetaKeysHeader = () => {
     const navigation =
-        useNavigation<Screen.ModeratorStack.BetaKeyScreenNavigationProp>();
+        useNavigation<Screen.ModeratorStack.BetaKeysScreenNavigationProp>();
 
     const handlePress = React.useCallback(() => {
         Keyboard.dismiss();
-        if (navigation.canGoBack()) navigation.goBack();
-        else navigation.navigate('ModerationNavigationScreen');
+        navigation.navigate('ModerationNavigationScreen');
     }, [navigation]);
 
     return (
@@ -30,7 +29,7 @@ const BetaKeysHeader = () => {
                 pr="small"
                 variant="arrow-left"
             />
-            <Typography color="primary" fontFamily="bold" fontSize={24}>
+            <Typography color="primary" fontFamily="light" fontSize={24}>
                 beta keys
             </Typography>
         </Container>

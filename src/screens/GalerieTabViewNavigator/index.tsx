@@ -23,7 +23,11 @@ import {
 import { UnsubscribeGalerieProvider } from '#contexts/UnsubscribeGalerieContext';
 import clamp from '#helpers/clamp';
 import GalerieTabViewMaxScroll from '#helpers/GalerieTabViewMaxScroll';
-import { resetGaleriesCurrent, selectCurrentGalerie } from '#store/galeries';
+import {
+    getGalerieId,
+    resetGaleriesCurrent,
+    selectCurrentGalerie,
+} from '#store/galeries';
 
 import AboutScreen from './AboutScreen';
 import FramesScreen from './FramesScreen';
@@ -58,6 +62,7 @@ const GalerieTabViewNavigator = () => {
     const galerie = useSelector(selectCurrentGalerie);
 
     const [currentRoute, setCurrentRoute] = React.useState<string>('frames');
+    const [initialLoading, setInitialLoading] = React.useState<boolean>(true);
     const [navigationState, setNavigationState] =
         React.useState<NavigationState<Route> | null>({
             index: 0,
@@ -220,23 +225,29 @@ const GalerieTabViewNavigator = () => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (!galerie) {
-                if (navigation.canGoBack()) navigation.goBack();
-                else navigation.navigate('Home');
-            }
+            if (!galerie) return;
+            if (!initialLoading) return;
+            setInitialLoading(false);
+            dispatch(getGalerieId(galerie.id));
+        }, [galerie, initialLoading])
+    );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (galerie) return;
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
         }, [galerie])
     );
     useFocusEffect(
         React.useCallback(() => {
-            if (!navigationState) {
-                setNavigationState({
-                    index: 0,
-                    routes:
-                        galerie && galerie.role === 'user'
-                            ? userRoleRoutes
-                            : adminRoleRoutes,
-                });
-            }
+            if (navigationState) return;
+            setNavigationState({
+                index: 0,
+                routes:
+                    galerie && galerie.role === 'user'
+                        ? userRoleRoutes
+                        : adminRoleRoutes,
+            });
         }, [galerie, navigationState])
     );
     useFocusEffect(
@@ -256,6 +267,14 @@ const GalerieTabViewNavigator = () => {
                 );
             };
         }, [])
+    );
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                setInitialLoading(true);
+            },
+            []
+        )
     );
 
     React.useEffect(() => {

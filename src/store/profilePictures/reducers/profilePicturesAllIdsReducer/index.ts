@@ -11,16 +11,15 @@ const profilePicturesAllIdsReducer = (
 ) => {
     switch (action.type) {
         case PROFILE_PICTURES_ALL_ID_REMOVE:
-            if (typeof action.payload === 'string')
-                return state.filter(
-                    (profilePictureId) => profilePictureId !== action.payload
-                );
-            return state;
+            if (typeof action.payload !== 'string') return state;
+            return state.filter(
+                (profilePictureId) => profilePictureId !== action.payload
+            );
         case PROFILE_PICTURES_ALL_ID_RESET:
             return initialState;
         case PROFILE_PICTURES_ALL_ID_SET:
-            if (Array.isArray(action.payload)) return action.payload;
-            return state;
+            if (!Array.isArray(action.payload)) return state;
+            return action.payload;
         default:
             return state;
     }

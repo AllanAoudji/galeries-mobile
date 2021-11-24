@@ -1,12 +1,20 @@
 import { Dispatch } from 'redux';
 
-import { dispatchErrorNotification } from '#store/dispatchers';
+import {
+    updateMeFieldsError,
+    updateMeLoadingPut,
+} from '#store/me/actionCreators';
 
 const errorPutMethod = (
     dispatch: Dispatch<Store.Action>,
     action: Store.Action
 ) => {
-    dispatchErrorNotification(dispatch, action.payload);
+    if (
+        typeof action.payload === 'object' &&
+        typeof action.payload.pseudonym === 'string'
+    )
+        dispatch(updateMeFieldsError(action.payload));
+    dispatch(updateMeLoadingPut('ERROR'));
 };
 
 export default errorPutMethod;

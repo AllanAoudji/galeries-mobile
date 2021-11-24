@@ -197,7 +197,7 @@ declare global {
                 CreateBetakeyScreen: undefined;
                 ModerationNavigationScreen: undefined;
             };
-            type BetaKeyScreenNavigationProp = StackNavigationProp<
+            type BetaKeysScreenNavigationProp = StackNavigationProp<
                 ParamList,
                 'BetakeysScreen'
             >;
@@ -212,12 +212,18 @@ declare global {
         }
         namespace RootStack {
             type ParamList = {
+                ConfirmYourAccount: undefined;
                 Desktop: NavigatorScreenParams<DesktopDrawer.ParamList>;
                 ForgotYourPassword: undefined;
+                ForgotYourPasswordLanding: undefined;
                 Landing: undefined;
                 Login: undefined;
                 Signin: undefined;
             };
+            type ConfirmYourAccountNavigationProp = StackNavigationProp<
+                ParamList,
+                'ConfirmYourAccount'
+            >;
             type DesktopNavigationProp = StackNavigationProp<
                 ParamList,
                 'Desktop'
@@ -225,6 +231,10 @@ declare global {
             type ForgotYourPasswordNavigationProp = StackNavigationProp<
                 ParamList,
                 'ForgotYourPassword'
+            >;
+            type ForgotYourPasswordLandingNavigationProp = StackNavigationProp<
+                ParamList,
+                'ForgotYourPasswordLanding'
             >;
             type LandingScreenNavigationProp = StackNavigationProp<
                 ParamList,
@@ -239,6 +249,20 @@ declare global {
                 'Signin'
             >;
         }
+        namespace SettingsStack {
+            type ParamList = {
+                DeleteAccount: undefined;
+                SettingsFields: undefined;
+            };
+            type DeleteAccountScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'DeleteAccount'
+            >;
+            type SettingsFieldsScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'SettingsFields'
+            >;
+        }
     }
 
     namespace Store {
@@ -249,6 +273,7 @@ declare global {
         };
         type Entity =
             | '[BETA KEYS]'
+            | '[CONFIRM ACCOUNT]'
             | '[COMMENTS]'
             | '[FORGOT YOUR PASSWORD]'
             | '[FRAMES]'
@@ -266,6 +291,8 @@ declare global {
             | '[ME]'
             | '[PROFILE PICTURE]'
             | '[REPORT]'
+            | '[RESET PASSWORD]'
+            | '[SEND BETA KEY]'
             | '[SIGNIN]'
             | '[UI]'
             | '[USERS]';
@@ -288,6 +315,21 @@ declare global {
             | 'ROLE_CHANGE'
             | 'USER_SUBSCRIBE';
         type Reducer = {
+            betaKeys: {
+                allIds: string[];
+                byId: { [key: string]: Store.Models.BetaKeys };
+                current: string | null;
+                end: boolean;
+                fieldsError: {
+                    email?: string;
+                };
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                };
+                previous: string;
+                status: Store.Status;
+            };
             comments: {
                 allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.Comment };
@@ -300,10 +342,7 @@ declare global {
                 previous: { [key: string]: string };
                 status: { [key: string]: Store.Status };
             };
-            forgotYourPassword: {
-                fieldsError: {
-                    email?: string;
-                };
+            confirmAccount: {
                 status: Store.Status;
             };
             frames: {
@@ -399,7 +438,21 @@ declare global {
                 status: Store.Status;
             };
             me: {
+                fieldsError: {
+                    confirmNewPassword: string;
+                    currentPassword: string;
+                    deleteAccountSentence: string;
+                    deletePassword: string;
+                    emailPassword: string;
+                    newPassword: string;
+                    pseudonym: string;
+                    userNameOrEmail: string;
+                };
                 id: string | null;
+                loading: {
+                    delete: Store.Status;
+                    put: Store.Status;
+                };
                 status: Status;
             };
             profilePictures: {
@@ -416,9 +469,21 @@ declare global {
                 previous: string;
                 status: { [key: string]: Store.Status };
             };
+            resetPassword: {
+                current: string | null;
+                fieldsError: {
+                    email?: string;
+                };
+                status: Store.Status;
+            };
             reports: {
                 loading: {
                     post: Store.Status;
+                };
+            };
+            sendBetaKey: {
+                status: {
+                    id: { [key: string]: Store.Status };
                 };
             };
             notifications: {
@@ -432,7 +497,7 @@ declare global {
                 previous: string;
                 status: Store.Status;
             };
-            notification: Store.Models.Notification | null;
+            notification: Store.Models.GlobalNotification | null;
             signin: {
                 fieldsError: {
                     userName: string;
@@ -464,6 +529,16 @@ declare global {
             | 'REFRESH'
             | 'SUCCESS';
         namespace Models {
+            type BetaKeys = {
+                autoIncrementId: string;
+                code: string;
+                createdAt: string;
+                createdById: string | null;
+                email: string | null;
+                id: string;
+                updatedAt: string;
+                userId: string;
+            };
             type Comment = {
                 autoIncrementId: string;
                 body: string;
@@ -517,7 +592,7 @@ declare global {
                 current: boolean;
                 frameId: string;
                 id: string;
-                index: string;
+                index: number;
                 originalImage: Image & { cachedSignedUrl: string };
                 pendingHexes: string;
                 updatedAt: string;
@@ -583,6 +658,7 @@ declare global {
             type User = {
                 createdAt: Date;
                 defaultProfilePicture: string | null;
+                email: string;
                 hasNewNotifications?: boolean;
                 id: string;
                 isBlackListed: boolean;
@@ -651,6 +727,8 @@ declare global {
             | 'home-stroke'
             | 'invitation-fill'
             | 'invitation-stroke'
+            | 'key-fill'
+            | 'key-stroke'
             | 'logout-left'
             | 'logout-right'
             | 'moderation-fill'

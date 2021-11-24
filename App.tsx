@@ -1,83 +1,27 @@
 import 'react-native-gesture-handler';
 
 import { enableScreens } from 'react-native-screens';
-import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { Provider } from 'react-redux';
 
 import { Notification, PostingImageLoader } from '#components';
-import { BottomSheetProvider } from '#contexts/BottomSheetContext';
-import { CreateFrameProvider } from '#contexts/CreateFrameContext';
-import { CreateProfilePictureProvider } from '#contexts/CreateProfilePictureContext';
-import { DeleteCommentModalProvider } from '#contexts/DeleteCommentModalContext';
-import { DeleteFrameModalProvider } from '#contexts/DeleteFrameModalContext';
-import { DeleteGalerieBlackListModalProvider } from '#contexts/DeleteGalerieBlackListModalContext';
-import { DeleteGalerieUserModalProvider } from '#contexts/DeleteGalerieUserModalContext';
-import { DeleteInvitationModalProvider } from '#contexts/DeleteInvitationModalContext';
-import { DeleteNotificationModalProvider } from '#contexts/DeleteNotificationModalContext';
-import { DeleteProfilePictureModalProvider } from '#contexts/DeleteProfilePictureModalContext';
-import { GaleriesSearchProvider } from '#contexts/GaleriesSearchContext';
-import ThemeProvider from '#contexts/ThemeContext';
-import Loader from '#helpers/Loader';
 import RootStackNavigator from '#screens/RootStackNavigator';
-import store from '#store';
+import ContextsProvider from '#helpers/ContextsProvider';
 
 export default function App() {
     enableScreens();
 
     return (
-        <ThemeProvider>
-            <Provider store={store}>
-                <Loader>
-                    <NavigationContainer>
-                        <CreateFrameProvider>
-                            <CreateProfilePictureProvider>
-                                <DeleteFrameModalProvider>
-                                    <DeleteGalerieBlackListModalProvider>
-                                        <DeleteCommentModalProvider>
-                                            <DeleteGalerieUserModalProvider>
-                                                <DeleteInvitationModalProvider>
-                                                    <DeleteNotificationModalProvider>
-                                                        <DeleteProfilePictureModalProvider>
-                                                            <GaleriesSearchProvider>
-                                                                <BottomSheetProvider>
-                                                                    <RootStackNavigator />
-                                                                    <PostingImageLoader />
-                                                                    <Notification />
-                                                                    <StatusBar style="auto" />
-                                                                </BottomSheetProvider>
-                                                            </GaleriesSearchProvider>
-                                                        </DeleteProfilePictureModalProvider>
-                                                    </DeleteNotificationModalProvider>
-                                                </DeleteInvitationModalProvider>
-                                            </DeleteGalerieUserModalProvider>
-                                        </DeleteCommentModalProvider>
-                                    </DeleteGalerieBlackListModalProvider>
-                                </DeleteFrameModalProvider>
-                            </CreateProfilePictureProvider>
-                        </CreateFrameProvider>
-                    </NavigationContainer>
-                </Loader>
-            </Provider>
-        </ThemeProvider>
+        <ContextsProvider>
+            <RootStackNavigator />
+            <PostingImageLoader />
+            <Notification />
+            <StatusBar style="auto" />
+        </ContextsProvider>
     );
 }
 
-// TODO:
-// Animate add button
-// select camera or galerie to post PP
-
-// Header on Comment/Likes
-// Profile Screen
-// Change email/password/delete account
-// Tickets
-// Show ticket
-// BetaKey
-// Better post frame
-// Update galerie
-// Forgot password
-
-// If status === 'ERROR' and allIds = [] || undefined
-// show error, refresh button
-// Change PP status => me/id
+// Ticket screen
+// Web app
+// Better transition login/logout/delete
+// Issue when not user and AsyncStorage have token

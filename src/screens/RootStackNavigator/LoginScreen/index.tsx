@@ -9,17 +9,22 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CustomButton, CustomTextInput, Typography } from '#components';
+import {
+    CustomButton,
+    CustomTextInput,
+    RootFooter,
+    Typography,
+} from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { loginSchema } from '#helpers/schemas';
 import {
     login,
+    resetLoginFieldErrors,
+    resetLoginStatus,
     selectLoginFieldsError,
     selectLoginStatus,
     updateLoginFieldsError,
 } from '#store/login';
-
-import FooterNavigation from '../FooterNavigation';
 
 import {
     ButtonContainer,
@@ -112,6 +117,17 @@ const LoginScreen = ({ navigation }: Props) => {
         }, [loading])
     );
 
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                dispatch(resetLoginStatus());
+                dispatch(resetLoginFieldErrors());
+                formik.resetForm();
+            },
+            []
+        )
+    );
+
     return (
         <Container>
             <KeyboardAvoidingView
@@ -175,7 +191,7 @@ const LoginScreen = ({ navigation }: Props) => {
                     </ButtonContainer>
                 </ScrollViewStyle>
             </KeyboardAvoidingView>
-            <FooterNavigation
+            <RootFooter
                 onPress={handlePressSignin}
                 title="You don't have an account yet?"
             />

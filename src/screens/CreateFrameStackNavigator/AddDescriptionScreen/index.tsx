@@ -43,12 +43,6 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
     const formik = useFormik({
         onSubmit: (values) => {
             if (!currentGalerie) return;
-            navigation
-                .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
-                .reset({
-                    index: 0,
-                    routes: [{ name: 'Galerie' }],
-                });
             postGalerieFrame(currentGalerie.id, values);
         },
         initialValues,
@@ -81,6 +75,17 @@ const AddDescriptionScreen = ({ navigation }: Props) => {
         if (!loading.includes('LOADING')) navigation.navigate('AddPictures');
     }, [loading, navigation]);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!loading.includes('LOADING')) return;
+            navigation
+                .getParent<NavigationProp<Screen.DesktopBottomTab.ParamList>>()
+                .reset({
+                    index: 0,
+                    routes: [{ name: 'Galerie' }],
+                });
+        }, [loading, navigation])
+    );
     useFocusEffect(
         React.useCallback(
             () => () => {

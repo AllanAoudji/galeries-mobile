@@ -164,9 +164,9 @@ export const setProfilePicturesById: (payload: {
     payload,
     type: PROFILE_PICTURES_BY_ID_SET,
 });
-export const updateProfilePicturesCurrent: (
-    payload: string | null
-) => Store.Action = (payload) => ({
+export const updateProfilePicturesCurrent: (payload: string) => Store.Action = (
+    payload
+) => ({
     meta: {},
     payload,
     type: PROFILE_PICTURES_CURRENT_UPDATE,

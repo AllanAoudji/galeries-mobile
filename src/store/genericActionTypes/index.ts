@@ -1,5 +1,7 @@
 // Entities
+export const BETA_KEYS: Store.Entity = '[BETA KEYS]';
 export const COMMENTS: Store.Entity = '[COMMENTS]';
+export const CONFIRM_ACCOUNT: Store.Entity = '[CONFIRM ACCOUNT]';
 export const FRAMES: Store.Entity = '[FRAMES]';
 export const FORGOT_YOUR_PASSWORD: Store.Entity = '[FORGOT YOUR PASSWORD]';
 export const GALERIES: Store.Entity = '[GALERIES]';
@@ -16,6 +18,8 @@ export const NOTIFICATION: Store.Entity = '[NOTIFICATION]';
 export const NOTIFICATIONS: Store.Entity = '[NOTIFICATIONS]';
 export const PROFILE_PICTURES: Store.Entity = '[PROFILE PICTURE]';
 export const REPORTS: Store.Entity = '[REPORT]';
+export const RESET_PASSWORD: Store.Entity = '[RESET PASSWORD]';
+export const SEND_BETA_KEY: Store.Entity = '[SEND BETA KEY]';
 export const SIGNIN: Store.Entity = '[SIGNIN]';
 export const USERS: Store.Entity = '[USERS]';
 

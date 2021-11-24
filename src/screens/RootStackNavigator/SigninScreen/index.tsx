@@ -9,16 +9,22 @@ import {
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CustomButton, CustomTextInput, Typography } from '#components';
+import {
+    CustomButton,
+    CustomTextInput,
+    RootFooter,
+    Typography,
+} from '#components';
 import { GLOBAL_STYLE } from '#helpers/constants';
 import { signinSchema } from '#helpers/schemas';
 import {
+    resetSigninFieldsError,
+    resetSigninStatus,
     selectSigninFieldsError,
     selectSigninStatus,
+    signin,
     updateSigninFieldsError,
 } from '#store/signin';
-
-import FooterNavigation from '../FooterNavigation';
 
 import {
     ButtonContainer,
@@ -41,12 +47,14 @@ type Props = {
 
 const SigninScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
-    const loading = useSelector(selectSigninStatus);
     const fieldsError = useSelector(selectSigninFieldsError);
+    const status = useSelector(selectSigninStatus);
 
     const formik = useFormik({
         initialValues,
-        onSubmit: async (values) => console.log(values),
+        onSubmit: async (values) => {
+            dispatch(signin(values));
+        },
         validateOnBlur: true,
         validateOnChange: false,
         validationSchema: signinSchema,
@@ -135,13 +143,31 @@ const SigninScreen = ({ navigation }: Props) => {
         [fieldsError, formik.errors]
     );
     const handlePressLogin = React.useCallback(() => {
-        if (!loading.includes('LOADING')) navigation.navigate('Login');
-    }, [loading, navigation]);
+        if (!status.includes('LOADING')) navigation.navigate('Login');
+    }, [status, navigation]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (status === 'SUCCESS') {
+                navigation.navigate('ConfirmYourAccount');
+            }
+        }, [status])
+    );
+    useFocusEffect(
+        React.useCallback(
+            () => () => {
+                dispatch(resetSigninStatus());
+                dispatch(resetSigninFieldsError());
+                formik.resetForm();
+            },
+            []
+        )
+    );
 
     useFocusEffect(
         React.useCallback(() => {
             let BackHandlerListerner: any;
-            if (loading.includes('LOADING'))
+            if (status.includes('LOADING'))
                 BackHandlerListerner = BackHandler.addEventListener(
                     'hardwareBackPress',
                     () => true
@@ -150,7 +176,7 @@ const SigninScreen = ({ navigation }: Props) => {
             return () => {
                 if (BackHandlerListerner) BackHandlerListerner.remove();
             };
-        }, [loading])
+        }, [status])
     );
 
     return (
@@ -180,57 +206,62 @@ const SigninScreen = ({ navigation }: Props) => {
                     </TextContainer>
                     <CustomTextInput
                         error={userNameError}
-                        loading={loading.includes('LOADING')}
+                        loading={status.includes('LOADING')}
                         label="user name"
                         mt="normal"
                         onBlur={formik.handleBlur('userName')}
                         onChangeText={handeChangeUserNameText}
+                        removeEmoji
                         touched={formik.touched.userName || false}
                         value={formik.values.userName}
                     />
                     <CustomTextInput
                         error={emailError}
                         keyboardType="email-address"
-                        loading={loading.includes('LOADING')}
+                        loading={status.includes('LOADING')}
                         label="email"
                         onBlur={formik.handleBlur('email')}
                         onChangeText={handleChangeEmailText}
+                        removeEmoji
                         touched={formik.touched.email || false}
                         value={formik.values.email}
                     />
                     <CustomTextInput
                         error={passwordError}
-                        loading={loading.includes('LOADING')}
+                        loading={status.includes('LOADING')}
                         label="password"
                         onBlur={formik.handleBlur('password')}
                         onChangeText={handleChangePasswordText}
+                        removeEmoji
                         touched={formik.touched.password || false}
                         secureTextEntry
                         value={formik.values.password}
                     />
                     <CustomTextInput
                         error={confirmPasswordError}
-                        loading={loading.includes('LOADING')}
+                        loading={status.includes('LOADING')}
                         label="confirm password"
                         onBlur={formik.handleBlur('confirmPassword')}
                         onChangeText={handleChangeConfirmPasswordText}
+                        removeEmoji
                         touched={formik.touched.confirmPassword || false}
                         secureTextEntry
                         value={formik.values.confirmPassword}
                     />
                     <CustomTextInput
                         error={betaKeyError}
-                        loading={loading.includes('LOADING')}
+                        loading={status.includes('LOADING')}
                         label="beta key"
                         onBlur={formik.handleBlur('betaKey')}
                         onChangeText={handleChangeBetaKeyText}
+                        removeEmoji
                         touched={formik.touched.betaKey || false}
                         value={formik.values.betaKey}
                     />
                     <ButtonContainer>
                         <CustomButton
                             disable={disableButton}
-                            loading={loading.includes('LOADING')}
+                            loading={status.includes('LOADING')}
                             mt="normal"
                             onPress={formik.handleSubmit}
                             title="sign-in"
@@ -238,7 +269,7 @@ const SigninScreen = ({ navigation }: Props) => {
                     </ButtonContainer>
                 </ScrollViewStyle>
             </KeyboardAvoidingView>
-            <FooterNavigation
+            <RootFooter
                 onPress={handlePressLogin}
                 title="You already have an account?"
             />

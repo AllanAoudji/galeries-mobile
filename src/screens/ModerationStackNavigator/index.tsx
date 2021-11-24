@@ -1,5 +1,6 @@
 import {
     createStackNavigator,
+    StackHeaderProps,
     StackNavigationOptions,
 } from '@react-navigation/stack';
 import * as React from 'react';
@@ -12,6 +13,8 @@ import BetaKeysScreen from './BetaKeysScreen';
 import CreateBetakeyScreen from './CreateBetakeyScreen';
 import ModerationNavigationScreen from './ModerationNavigationScreen';
 import ModerationNavigationHeader from './ModerationNavigationHeader';
+import { DefaultHeader } from '#components';
+import { selectBetaKeysLoadingPost } from '#store/betaKeys';
 
 const Stack = createStackNavigator<Screen.ModeratorStack.ParamList>();
 
@@ -21,6 +24,27 @@ type Props = {
 
 const betaKeysNavigationOptions: StackNavigationOptions = {
     header: BetaKeysHeader,
+};
+
+const createBetaKeyScreenHeader = ({ navigation }: StackHeaderProps) => {
+    const loading = useSelector(selectBetaKeysLoadingPost);
+    const handlePress = React.useCallback(() => {
+        if (loading.includes('loading')) return;
+        navigation.navigate('BetakeysScreen');
+    }, [loading]);
+
+    return (
+        <DefaultHeader
+            color="primary-dark"
+            onPress={handlePress}
+            textColor="secondary-light"
+            title="create beta key"
+            variant="secondary"
+        />
+    );
+};
+const createBetaKeyNavigationOptions: StackNavigationOptions = {
+    header: createBetaKeyScreenHeader,
 };
 const moderationNavigationOptions: StackNavigationOptions = {
     header: ModerationNavigationHeader,
@@ -49,6 +73,7 @@ const ModerationStackNavigator = ({ navigation }: Props) => {
             <Stack.Screen
                 component={CreateBetakeyScreen}
                 name="CreateBetakeyScreen"
+                options={createBetaKeyNavigationOptions}
             />
             <Stack.Screen
                 component={ModerationNavigationScreen}

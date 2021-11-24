@@ -4,10 +4,6 @@ const ButtonContainer = styled.View`
     padding: ${({ theme }) =>
         `0 ${theme.spacings.smallest} ${theme.spacings.normal}`};
 `;
-const Container = styled.View`
-    background-color: ${({ theme }) => theme.colors['secondary-light']};
-    flex: 1;
-`;
 const ForgotYourPasswordContainer = styled.Pressable`
     align-items: flex-end;
     padding: ${({ theme }) =>
@@ -22,7 +18,6 @@ const TextContainer = styled.View`
 
 export {
     ButtonContainer,
-    Container,
     ForgotYourPasswordContainer,
     ScrollViewStyle,
     TextContainer,

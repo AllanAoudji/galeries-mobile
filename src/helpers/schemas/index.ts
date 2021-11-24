@@ -1,10 +1,15 @@
+export { default as createBetaKeySchema } from './createBetaKeySchema';
 export { default as createCommentSchema } from './createCommentSchema';
 export { default as createGaleriesSchema } from './createGaleriesSchema';
 export { default as createInvitationSchema } from './createInvitationSchema';
+export { default as deleteMeSchema } from './deleteMeSchema';
 export { default as deleteGalerieSchema } from './deleteGalerieSchema';
 export { default as forgotPassworSchema } from './forgotPassworSchema';
 export { default as frameDescriptionSchema } from './frameDescriptionSchema';
 export { default as loginSchema } from './loginSchema';
 export { default as putFrameSchema } from './putFrameSchema';
 export { default as putGalerieSchema } from './putGalerieSchema';
+export { default as putUserEmail } from './putUserEmail';
+export { default as putUserPassword } from './putUserPassword';
+export { default as putUserPseudonym } from './putUserPseudonym';
 export { default as signinSchema } from './signinSchema';

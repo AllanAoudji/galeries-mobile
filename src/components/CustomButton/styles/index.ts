@@ -27,7 +27,7 @@ const Container = styled.Pressable<ContainerProps>`
     margin-left: ${({ ml, theme }) => (ml ? theme.spacings[ml] : 0)};
     margin-right: ${({ mr, theme }) => (mr ? theme.spacings[mr] : 0)};
     margin-top: ${({ mt, theme }) => (mt ? theme.spacings[mt] : 0)};
-    padding: 0 6px;
+    padding: 0 16px;
     opacity: ${({ disable }) => (disable ? 0.5 : 1)};
 `;
 

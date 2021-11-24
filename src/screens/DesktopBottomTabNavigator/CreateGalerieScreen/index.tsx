@@ -9,7 +9,11 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CustomButton, CustomTextInput } from '#components';
+import {
+    CustomButton,
+    CustomTextInput,
+    FullScreenContainer,
+} from '#components';
 import { FIELD_REQUIREMENT, GLOBAL_STYLE } from '#helpers/constants';
 import { createGaleriesSchema } from '#helpers/schemas';
 import {
@@ -21,7 +25,7 @@ import {
     resetGaleriesFieldsError,
 } from '#store/galeries';
 
-import { ButtonContainer, Container, ScrollViewStyle } from './styles';
+import { ButtonContainer, ScrollViewStyle } from './styles';
 
 type Props = {
     navigation: Screen.DesktopBottomTab.CreateGalerieProp;
@@ -128,7 +132,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
             keyboardVerticalOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
             style={styles.keyboardAvoidingViewStyle}
         >
-            <Container>
+            <FullScreenContainer>
                 <ScrollViewStyle
                     keyboardShouldPersistTaps="handled"
                     overScrollMode="never"
@@ -176,7 +180,7 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
                         />
                     </ButtonContainer>
                 </ScrollViewStyle>
-            </Container>
+            </FullScreenContainer>
         </KeyboardAvoidingView>
     );
 };

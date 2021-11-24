@@ -13,7 +13,12 @@ import { ANIMATIONS, CLOSE_NOTIFICATION_DELAY } from '#helpers/constants';
 import normalizeError from '#helpers/normalizeError';
 import { resetNotification, selectNotification } from '#store/notification';
 
-import { Button, Container, InnerContainer } from './styles';
+import {
+    Button,
+    Container,
+    InnerContainer,
+    NotificationContainer,
+} from './styles';
 
 const resetNotificationAction = resetNotification();
 
@@ -38,7 +43,10 @@ const Notification = () => {
 
     const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
     const clearTimer = React.useCallback(() => {
-        if (timer.current) clearTimeout(timer.current);
+        if (timer.current) {
+            clearTimeout(timer.current);
+            timer.current = null;
+        }
     }, []);
 
     const closeNotification = React.useCallback(() => {
@@ -80,9 +88,11 @@ const Notification = () => {
     return (
         <Container style={style}>
             <InnerContainer onPress={handlePress} status={notification.status}>
-                <Typography color="secondary-light" fontSize={18}>
-                    {normalizeError(notification.text)}
-                </Typography>
+                <NotificationContainer>
+                    <Typography color="secondary-light" fontSize={18}>
+                        {normalizeError(notification.text)}
+                    </Typography>
+                </NotificationContainer>
                 <Button>
                     <Typography
                         color="secondary-light"

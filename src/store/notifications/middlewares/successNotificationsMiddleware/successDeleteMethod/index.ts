@@ -21,11 +21,9 @@ const successDeleteNotification = (
         dispatch(updateNotificationsLoadingDelete('ERROR'));
         return;
     }
+
     const notification = getState().notifications.byId[notificationId];
-    if (!notification) {
-        dispatch(updateNotificationsLoadingDelete('ERROR'));
-        return;
-    }
+    if (!notification) return;
 
     dispatch(removeNotificationsAllIds(notificationId));
     dispatch(removeNotificationsById(notificationId));

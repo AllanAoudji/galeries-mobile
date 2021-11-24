@@ -13,16 +13,15 @@ const errorLoginMiddleware: Middleware<{}, Store.Reducer> =
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type === `${LOGIN} ${API_ERROR}`) {
-            if (
-                typeof action.payload === 'object' &&
-                (typeof action.payload.password === 'string' ||
-                    typeof action.payload.userNameOrEmail === 'string')
-            ) {
-                dispatch(updateLoginFieldsError(action.payload));
-            } else dispatchErrorNotification(dispatch, action);
-            dispatch(updateLoginStatus('ERROR'));
-        }
+        if (action.type !== `${LOGIN} ${API_ERROR}`) return;
+        if (
+            typeof action.payload === 'object' &&
+            (typeof action.payload.password === 'string' ||
+                typeof action.payload.userNameOrEmail === 'string')
+        ) {
+            dispatch(updateLoginFieldsError(action.payload));
+        } else dispatchErrorNotification(dispatch, action);
+        dispatch(updateLoginStatus('ERROR'));
     };
 
 export default errorLoginMiddleware;

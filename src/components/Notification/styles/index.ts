@@ -36,5 +36,8 @@ const InnerContainer = styled.Pressable<InnerContainerProps>`
     position: absolute;
     width: 100%;
 `;
+const NotificationContainer = styled.View`
+    flex: 1;
+`;
 
-export { Button, Container, InnerContainer };
+export { Button, Container, InnerContainer, NotificationContainer };

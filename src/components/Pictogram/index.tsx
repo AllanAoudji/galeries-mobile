@@ -23,6 +23,8 @@ import HomeFill from './HomeFill';
 import HomeStroke from './HomeStroke';
 import InvitationFill from './InvitationFill';
 import InvitationStroke from './InvitationStroke';
+import KeyFill from './KeyFill';
+import KeyStroke from './KeyStroke';
 import LogoutLeft from './LogoutLeft';
 import LogoutRight from './LogoutRight';
 import ModerationFill from './ModerationFill';
@@ -93,6 +95,8 @@ const variants = {
     'home-stroke': HomeStroke,
     'invitation-fill': InvitationFill,
     'invitation-stroke': InvitationStroke,
+    'key-fill': KeyFill,
+    'key-stroke': KeyStroke,
     'logout-left': LogoutLeft,
     'logout-right': LogoutRight,
     'moderation-fill': ModerationFill,

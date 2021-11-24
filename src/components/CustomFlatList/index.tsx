@@ -16,6 +16,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useTheme } from 'styled-components/native';
 
+import FullScreenLoader from '#components/FullScreenLoader';
+
 type Props = {
     allIds: string[];
     editScrollY?: (offsetY: number) => void;
@@ -158,7 +160,7 @@ const CustomFlatList = ({
     // TODO:
     // need a way to scroll top when a new model is posted
 
-    if (!didFinishInitialAnimation) return null;
+    if (!didFinishInitialAnimation) return <FullScreenLoader show />;
 
     return (
         <AnimatedFlatList
