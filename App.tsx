@@ -21,6 +21,7 @@ export default function App() {
     );
 }
 
-// Change email/password/pseudonym/delete account
 // Ticket screen
 // Web app
+// Better transition login/logout/delete
+// Issue when not user and AsyncStorage have token

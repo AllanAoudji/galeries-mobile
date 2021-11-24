@@ -11,6 +11,7 @@ import {
 import { useTheme } from 'styled-components';
 
 import { FullScreenContainer } from '#components';
+import { GLOBAL_STYLE } from '#helpers/constants';
 import convertPixelToNum from '#helpers/convertPixelToNum';
 import { resetMeFieldsError, selectMe } from '#store/me';
 
@@ -43,6 +44,7 @@ const SettingsScreen = () => {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
             style={styles(stylesProps).keyboardAvoidingViewStyle}
         >
             <FullScreenContainer>

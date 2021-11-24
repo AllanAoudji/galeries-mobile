@@ -45,7 +45,11 @@ const apiRequestMiddleware: Middleware<{}, Store.Reducer> =
     ({ dispatch }) =>
     (next) =>
     async (action: Store.Action) => {
-        if (action && action.type.includes(API_REQUEST)) {
+        if (
+            action &&
+            typeof action.type === 'string' &&
+            action.type.includes(API_REQUEST)
+        ) {
             if (action.meta.entity && action.meta.method && action.meta.url) {
                 let expiresIn: string | null = null;
                 let token: string | null = null;
@@ -124,8 +128,10 @@ const apiRequestMiddleware: Middleware<{}, Store.Reducer> =
                     });
                     apiRequestSuccessMiddleware(response, dispatch, action);
                 } catch (err) {
-                    if (axios.isAxiosError(err))
+                    if (axios.isAxiosError(err)) {
+                        console.log(err.response?.data);
                         apiRequestErrorMiddleware(err, dispatch, action);
+                    }
                 }
             }
         }

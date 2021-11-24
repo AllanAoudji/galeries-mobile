@@ -17,7 +17,7 @@ const successMeMiddleware: Middleware<{}, Store.Reducer> =
         if (action.type === `${ME} ${API_SUCCESS}`) {
             switch (action.meta.method) {
                 case 'DELETE':
-                    successDeleteMethod(action);
+                    successDeleteMethod(dispatch);
                     break;
                 case 'POST':
                     successPostMethod(dispatch, getState, action);
