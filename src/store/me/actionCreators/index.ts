@@ -13,12 +13,6 @@ import {
     ME_STATUS_UPDATE,
 } from '#store/me/actionTypes';
 
-export const putMePseudonym: (payload: { pseudonym: string }) => Store.Action =
-    (payload) => ({
-        meta: {},
-        payload,
-        type: ME_PUT,
-    });
 export const deleteMe: () => Store.Action = () => ({
     meta: {},
     payload: {},
@@ -37,6 +31,21 @@ export const putMe: () => Store.Action = () => ({
 export const putMeHasNewNotification: () => Store.Action = () => ({
     meta: {},
     payload: { hasNewNotifications: true },
+    type: ME_PUT,
+});
+export const putMePseudonym: (payload: { pseudonym: string }) => Store.Action =
+    (payload) => ({
+        meta: {},
+        payload,
+        type: ME_PUT,
+    });
+export const putMePassword: (payload: {
+    confirmNewPassword: string;
+    currentPassword: string;
+    newPassword: string;
+}) => Store.Action = (payload) => ({
+    meta: {},
+    payload,
     type: ME_PUT,
 });
 export const resetMe: () => Store.Action = () => ({
@@ -65,6 +74,9 @@ export const resetMeStatus: () => Store.Action = () => ({
     type: ME_STATUS_RESET,
 });
 export const updateMeFieldsError: (payload: {
+    confirmNewPassword?: string;
+    currentPassword?: string;
+    newPassword?: string;
     pseudonym?: string;
 }) => Store.Action = (payload) => ({
     meta: {},

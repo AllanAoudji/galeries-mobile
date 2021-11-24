@@ -1,8 +1,9 @@
 import { Middleware } from 'redux';
 
 import {
-    dispatchPutUsersMeHasNewNotifications,
+    dispatchPutPassword,
     dispatchPutPseudonym,
+    dispatchPutUsersMeHasNewNotifications,
 } from '#store/dispatchers';
 import { ME_PUT } from '#store/me/actionTypes';
 import { updateMeLoadingPut } from '#store/me/actionCreators';
@@ -22,6 +23,13 @@ const putMeMiddleware: Middleware<{}, Store.Reducer> =
         else if (action.payload.pseudonym) {
             dispatch(updateMeLoadingPut('LOADING'));
             dispatchPutPseudonym(dispatch, action.payload);
+        } else if (
+            action.payload.confirmNewPassword &&
+            action.payload.currentPassword &&
+            action.payload.newPassword
+        ) {
+            dispatch(updateMeLoadingPut('LOADING'));
+            dispatchPutPassword(dispatch, action.payload);
         }
     };
 

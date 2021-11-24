@@ -1,4 +1,5 @@
-import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import * as React from 'react';
 import {
     KeyboardAvoidingView,
@@ -11,14 +12,17 @@ import { useTheme } from 'styled-components';
 
 import { FullScreenContainer, OptionSlice } from '#components';
 import convertPixelToNum from '#helpers/convertPixelToNum';
-import { selectMe } from '#store/me';
+import { resetMeFieldsError, selectMe } from '#store/me';
 
 import ChangePseudonym from './ChangePseudonym';
+import UpdatePassword from './UpdatePassword';
 
 import { ScrollViewStyle } from './styles';
 
 const SettingsScreen = () => {
+    const dispatch = useDispatch();
     const theme = useTheme();
+
     const me = useSelector(selectMe);
 
     const stylesProps = React.useMemo(
@@ -26,6 +30,10 @@ const SettingsScreen = () => {
             paddingBottom: convertPixelToNum(theme.spacings.large),
         }),
         [theme]
+    );
+
+    useFocusEffect(
+        React.useCallback(() => () => dispatch(resetMeFieldsError()), [])
     );
 
     if (!me) return null;
@@ -44,10 +52,7 @@ const SettingsScreen = () => {
                     showsVerticalScrollIndicator={false}
                 >
                     <ChangePseudonym user={me} />
-                    <OptionSlice
-                        separaror
-                        title="update password"
-                    ></OptionSlice>
+                    <UpdatePassword />
                     <OptionSlice
                         separaror
                         subTitle="Register your new email. A mail gonna be send to you. Click on the link on this mail to change your email"

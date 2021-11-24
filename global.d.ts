@@ -439,7 +439,10 @@ declare global {
             };
             me: {
                 fieldsError: {
-                    pseudonym?: string;
+                    confirmNewPassword: string;
+                    currentPassword: string;
+                    newPassword: string;
+                    pseudonym: string;
                 };
                 id: string | null;
                 loading: {

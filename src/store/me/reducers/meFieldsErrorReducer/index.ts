@@ -11,7 +11,10 @@ const meFieldsErrorReducer = (state = initialState, action: Store.Action) => {
         case ME_FIELDS_ERROR_UPDATE:
             if (
                 typeof action.payload === 'object' &&
-                typeof action.payload.pseudym === 'string'
+                (typeof action.payload.pseudym === 'string' ||
+                    typeof action.payload.confirmNewPassword === 'string' ||
+                    typeof action.payload.currentPassword === 'string' ||
+                    typeof action.payload.newPassword === 'string')
             )
                 return {
                     ...state,

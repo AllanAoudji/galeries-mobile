@@ -53,6 +53,7 @@ const ChangePseudonym = ({ user }: Props) => {
         },
         [fieldsError, formik.errors]
     );
+
     useFocusEffect(
         React.useCallback(
             () => () => {
@@ -77,7 +78,7 @@ const ChangePseudonym = ({ user }: Props) => {
                 disable={disableButton}
                 loading={loading.includes('LOADING')}
                 onPress={formik.handleSubmit}
-                title="update galerie"
+                title="change pseudonym"
             />
         </OptionSlice>
     );
