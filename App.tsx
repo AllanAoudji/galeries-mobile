@@ -25,3 +25,7 @@ export default function App() {
 // Web app
 // Better transition login/logout/delete
 // Issue when not user and AsyncStorage have token
+// Issue with login return arrow header (need to reset loginstate ?)
+// block navigation when login
+// block navigation when signin
+// block navigation when delete account

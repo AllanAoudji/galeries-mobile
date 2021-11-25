@@ -294,7 +294,7 @@ declare global {
             | '[RESET PASSWORD]'
             | '[SEND BETA KEY]'
             | '[SIGNIN]'
-            | '[TICKET]'
+            | '[TICKETS]'
             | '[UI]'
             | '[USERS]';
         type Meta = {
