@@ -2,6 +2,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import moment from 'moment';
 import { FullScreenContainer, ProfilePicture, Typography } from '#components';
 import { getTicket, selectCurrentTicket } from '#store/tickets';
 import { selectUser } from '#store/users';
@@ -58,7 +59,11 @@ const Ticket = ({ navigation }: Props) => {
         <FullScreenContainer>
             <Container>
                 <PostedByContainer>
-                    <Typography fontSize={24} textAlign="right">
+                    <Typography
+                        fontFamily="bold"
+                        fontSize={18}
+                        textAlign="right"
+                    >
                         Posted by
                     </Typography>
                     <UserContainer>
@@ -78,6 +83,9 @@ const Ticket = ({ navigation }: Props) => {
                 <BodyContainer>
                     <Typography fontSize={18}>{currentTicket.body}</Typography>
                 </BodyContainer>
+                <Typography fontSize={11} textAlign="right">
+                    there is {moment(currentTicket.createdAt).fromNow()}
+                </Typography>
             </Container>
         </FullScreenContainer>
     );
