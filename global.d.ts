@@ -196,6 +196,8 @@ declare global {
                 BetakeysScreen: undefined;
                 CreateBetakeyScreen: undefined;
                 ModerationNavigationScreen: undefined;
+                Ticket: undefined;
+                Tickets: undefined;
             };
             type BetaKeysScreenNavigationProp = StackNavigationProp<
                 ParamList,
@@ -208,6 +210,14 @@ declare global {
             type ModerationNavigationScreenNavigationProp = StackNavigationProp<
                 ParamList,
                 'ModerationNavigationScreen'
+            >;
+            type TicketScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'Ticket'
+            >;
+            type TicketsScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'Tickets'
             >;
         }
         namespace RootStack {
@@ -261,6 +271,17 @@ declare global {
             type SettingsFieldsScreenNavigationProp = StackNavigationProp<
                 ParamList,
                 'SettingsFields'
+            >;
+        }
+        namespace TicketsStack {
+            type ParamList = {
+                SendTicket: undefined;
+                Ticket: undefined;
+                Tickets: undefined;
+            };
+            type SendTicketsScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'SendTicket'
             >;
         }
     }

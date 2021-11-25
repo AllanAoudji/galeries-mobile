@@ -6,6 +6,8 @@ import {
 import * as React from 'react';
 import { useSelector } from 'react-redux';
 
+import { DefaultHeader } from '#components';
+import { selectBetaKeysLoadingPost } from '#store/betaKeys';
 import { selectMe } from '#store/me';
 
 import BetaKeysHeader from './BetaKeysHeader';
@@ -13,8 +15,8 @@ import BetaKeysScreen from './BetaKeysScreen';
 import CreateBetakeyScreen from './CreateBetakeyScreen';
 import ModerationNavigationScreen from './ModerationNavigationScreen';
 import ModerationNavigationHeader from './ModerationNavigationHeader';
-import { DefaultHeader } from '#components';
-import { selectBetaKeysLoadingPost } from '#store/betaKeys';
+import TicketsHeader from './TicketsHeader';
+import TicketsScreen from './TicketsScreen';
 
 const Stack = createStackNavigator<Screen.ModeratorStack.ParamList>();
 
@@ -49,6 +51,9 @@ const createBetaKeyNavigationOptions: StackNavigationOptions = {
 const moderationNavigationOptions: StackNavigationOptions = {
     header: ModerationNavigationHeader,
 };
+const ticketsNavigationOptions: StackNavigationOptions = {
+    header: TicketsHeader,
+};
 
 const ModerationStackNavigator = ({ navigation }: Props) => {
     const me = useSelector(selectMe);
@@ -79,6 +84,11 @@ const ModerationStackNavigator = ({ navigation }: Props) => {
                 component={ModerationNavigationScreen}
                 name="ModerationNavigationScreen"
                 options={moderationNavigationOptions}
+            />
+            <Stack.Screen
+                component={TicketsScreen}
+                name="Tickets"
+                options={ticketsNavigationOptions}
             />
         </Stack.Navigator>
     );

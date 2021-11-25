@@ -12,6 +12,9 @@ const ModerationNavigationScreen = ({ navigation }: Props) => {
     const handlePressBetaKeys = React.useCallback(() => {
         navigation.navigate('BetakeysScreen');
     }, [navigation]);
+    const handlePressTickets = React.useCallback(() => {
+        navigation.navigate('Tickets');
+    }, [navigation]);
 
     return (
         <FullScreenContainer>
@@ -22,6 +25,13 @@ const ModerationNavigationScreen = ({ navigation }: Props) => {
                     onPress={handlePressBetaKeys}
                     title="beta keys"
                     pictogram="key-fill"
+                />
+                <ModerationNavigationButton
+                    mb="smallest"
+                    mt="small"
+                    onPress={handlePressTickets}
+                    title="tickets"
+                    pictogram="ticket-fill"
                 />
             </Container>
         </FullScreenContainer>
