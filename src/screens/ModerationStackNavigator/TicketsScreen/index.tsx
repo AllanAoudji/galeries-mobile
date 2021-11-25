@@ -20,8 +20,8 @@ import {
 
 import RenderItem from './RenderItem';
 
-const renderItem = ({ item }: ListRenderItemInfo<string>) => (
-    <RenderItem item={item} />
+const renderItem = ({ index, item }: ListRenderItemInfo<string>) => (
+    <RenderItem index={index} item={item} />
 );
 
 const TicketsScreen = () => {
