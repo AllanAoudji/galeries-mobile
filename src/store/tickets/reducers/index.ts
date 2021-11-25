@@ -4,6 +4,7 @@ import ticketsAllIdsReducer from './ticketsAllIdsReducer';
 import ticketsByIdReducer from './ticketsByIdReducer';
 import ticketsCurrentReducer from './ticketsCurrentReducer';
 import ticketsEndReducer from './ticketsEndReducer';
+import ticketsFieldsErrorReducer from './ticketsFieldsErrorReducer';
 import ticketsLoadingReducer from './ticketsLoadingReducer';
 import ticketsPreviousReducer from './ticketsPreviousReducer';
 import ticketsStatusReducer from './ticketsStatusReducer';
@@ -14,6 +15,7 @@ export const ticketsReducer = combineReducers({
     byId: ticketsByIdReducer,
     current: ticketsCurrentReducer,
     end: ticketsEndReducer,
+    fieldsError: ticketsFieldsErrorReducer,
     loading: ticketsLoadingReducer,
     previous: ticketsPreviousReducer,
     status: ticketsStatusReducer,

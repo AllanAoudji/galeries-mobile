@@ -8,6 +8,7 @@ export { default as dispatchDeleteInvitation } from './dispatchDeleteInvitation'
 export { default as dispatchDeleteMe } from './dispatchDeleteMe';
 export { default as dispatchDeleteNotification } from './dispatchDeleteNotification';
 export { default as dispatchDeleteProfilePicture } from './dispatchDeleteProfilePicture';
+export { default as dispatchDeleteTicket } from './dispatchDeleteTicket';
 export { default as dispatchErrorNotification } from './dispatchErrorNotification';
 export { default as dispatchGetBetaKey } from './dispatchGetBetaKey';
 export { default as dispatchGetBetaKeys } from './dispatchGetBetaKeys';
@@ -38,6 +39,8 @@ export { default as dispatchGetNotifications } from './dispatchGetNotifications'
 export { default as dispatchGetNotificationUsers } from './dispatchGetNotificationUsers';
 export { default as dispatchGetprofilePicture } from './dispatchGetprofilePicture';
 export { default as dispatchGetProfilePictures } from './dispatchGetProfilePictures';
+export { default as dispatchGetTicket } from './dispatchGetTicket';
+export { default as dispatchGetTickets } from './dispatchGetTickets';
 export { default as dispatchGetUser } from './dispatchGetUser';
 export { default as dispatchGetUserCurrentProfilePicture } from './dispatchGetUserCurrentProfilePicture';
 export { default as dispatchGetUsers } from './dispatchGetUsers';
@@ -80,6 +83,7 @@ export { default as dispatchRefreshGalerieBlackLists } from './dispatchRefreshGa
 export { default as dispatchRefreshGalerieInvitations } from './dispatchRefreshGalerieInvitations';
 export { default as dispatchRefreshGalerieUsers } from './dispatchRefreshGalerieUsers';
 export { default as dispatchRefreshNotifications } from './dispatchRefreshNotifications';
+export { default as dispatchRefreshTickets } from './dispatchRefreshTickets';
 export { default as dispatchRefreshUsers } from './dispatchRefreshUsers';
 export { default as dispatchSendBetaKey } from './dispatchSendBetaKey';
 export { default as dispatchSignin } from './dispatchSignin';

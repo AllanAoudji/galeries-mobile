@@ -23,10 +23,10 @@ const successDeleteNotification = (
     }
 
     const notification = getState().notifications.byId[notificationId];
-    if (!notification) return;
-
-    dispatch(removeNotificationsAllIds(notificationId));
-    dispatch(removeNotificationsById(notificationId));
+    if (notification) {
+        dispatch(removeNotificationsAllIds(notificationId));
+        dispatch(removeNotificationsById(notificationId));
+    }
     dispatch(updateNotificationsLoadingDelete('SUCCESS'));
 };
 

@@ -37,6 +37,7 @@ import {
 } from './resetPassword';
 import { sendBetaKeyReducers, sendBetaKeyMiddlewares } from './sendBetaKey';
 import { signinReducer, signinMiddlewares } from './signin';
+import { ticketsReducer, ticketsMiddlewares } from './tickets';
 import { usersMiddleware, usersReducer } from './users';
 
 const reducers = combineReducers({
@@ -60,6 +61,7 @@ const reducers = combineReducers({
     resetPassword: resetPasswordReducers,
     sendBetaKey: sendBetaKeyReducers,
     signin: signinReducer,
+    tickets: ticketsReducer,
     users: usersReducer,
 });
 
@@ -86,6 +88,7 @@ export default createStore(
             ...resetPasswordMiddleware,
             ...sendBetaKeyMiddlewares,
             ...signinMiddlewares,
+            ...ticketsMiddlewares,
             ...usersMiddleware,
             ...apiMiddlewares
         )

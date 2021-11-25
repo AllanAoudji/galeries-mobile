@@ -510,10 +510,14 @@ declare global {
                 status: Store.Status;
             };
             tickets: {
-                allIds: { [key: string]: string[] };
+                allIds: string[];
                 byId: { [key: string]: Store.Models.Ticket };
                 current: string | null;
                 end: boolean;
+                fieldsError: {
+                    body: string;
+                    header: string;
+                };
                 loading: {
                     delete: Store.Status;
                     post: Store.Status;
@@ -679,7 +683,7 @@ declare global {
                 header: string;
                 id: string;
                 updatedAt: string;
-                userId: string;
+                userId?: string;
             };
             type User = {
                 createdAt: Date;

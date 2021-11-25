@@ -77,6 +77,7 @@ export const END_POINT = {
     SEND: '/send',
     SIGNIN: '/signin',
     SUBSCRIBE: '/subscribe',
+    TICKETS: '/tickets',
     UNSUBSCRIBE: '/unsubscribe',
     USERS: '/users',
 };

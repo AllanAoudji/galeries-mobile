@@ -1,33 +1,33 @@
 import { Middleware } from 'redux';
 
 import { API_ERROR } from '#store/api/actionTypes';
-import { ME } from '#store/genericActionTypes';
+import { TICKETS } from '#store/genericActionTypes';
 
 import errorDefaultMethod from './errorDefaultMethod';
 import errorDeleteMethod from './errorDeleteMethod';
 import errorGetMethod from './errorGetMethod';
-import errorPutMethod from './errorPutMethod';
+import errorPostMethod from './errorPostMethod';
 
-const errorMeMiddleware: Middleware<{}, Store.Reducer> =
-    ({ dispatch }) =>
+const errorTicketsMiddleware: Middleware<{}, Store.Reducer> =
+    ({ dispatch, getState }) =>
     (next) =>
     (action: Store.Action) => {
         next(action);
-        if (action.type !== `${ME} ${API_ERROR}`) return;
+        if (action.type !== `${TICKETS} ${API_ERROR}`) return;
 
         switch (action.meta.method) {
             case 'DELETE':
-                errorDeleteMethod(dispatch, action);
+                errorDeleteMethod(dispatch, getState, action);
                 break;
             case 'GET':
-                errorGetMethod(action);
+                errorGetMethod(dispatch, getState, action);
                 break;
-            case 'PUT':
-                errorPutMethod(dispatch, action);
+            case 'POST':
+                errorPostMethod(dispatch, action);
                 break;
             default:
                 errorDefaultMethod(dispatch);
         }
     };
 
-export default errorMeMiddleware;
+export default errorTicketsMiddleware;

@@ -10,6 +10,8 @@ import {
     TICKETS_DELETE,
     TICKETS_END_RESET,
     TICKETS_END_UPDATE,
+    TICKETS_FIELDS_ERROR_RESET,
+    TICKETS_FIELDS_ERROR_UPDATE,
     TICKETS_GET,
     TICKETS_LOADING_DELETE_RESET,
     TICKETS_LOADING_DELETE_UPDATE,
@@ -18,6 +20,7 @@ import {
     TICKETS_POST,
     TICKETS_PREVIOUS_RESET,
     TICKETS_PREVIOUS_UPDATE,
+    TICKETS_REFRESH,
     TICKETS_RESET,
     TICKETS_STATUS_RESET,
     TICKETS_STATUS_UPDATE,
@@ -45,6 +48,11 @@ export const postTickets: (payload: {
     meta: {},
     payload,
     type: TICKETS_POST,
+});
+export const refreshTickets: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: TICKETS_REFRESH,
 });
 export const removeTicketsAllIds: (payload: string) => Store.Action = (
     payload
@@ -84,6 +92,11 @@ export const resetTicketsEnd: () => Store.Action = () => ({
     meta: {},
     payload: {},
     type: TICKETS_END_RESET,
+});
+export const resetTicketsFieldsError: () => Store.Action = () => ({
+    meta: {},
+    payload: {},
+    type: TICKETS_FIELDS_ERROR_RESET,
 });
 export const resetTicketsLoadingDelete: () => Store.Action = () => ({
     meta: {},
@@ -130,6 +143,14 @@ export const updateTicketsEnd: (payload: boolean) => Store.Action = (
     meta: {},
     payload,
     type: TICKETS_END_UPDATE,
+});
+export const updateTicketsFieldsError: (payload: {
+    body?: string;
+    header?: string;
+}) => Store.Action = (payload) => ({
+    meta: {},
+    payload,
+    type: TICKETS_FIELDS_ERROR_UPDATE,
 });
 export const updateTicketsLoadingDelete: (
     payload: Store.Status

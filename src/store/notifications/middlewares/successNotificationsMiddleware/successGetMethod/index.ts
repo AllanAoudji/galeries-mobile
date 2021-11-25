@@ -14,13 +14,17 @@ import {
 import { getFrame, getNotificationFrames } from '#store/frames/actionCreators';
 import { getGalerieId } from '#store/galeries/actionCreators';
 import { getNotificationUsers } from '#store/users/actionCreators';
+import { updateTicketsStatus } from '#store/tickets/actionCreators';
 
 const successGetMethod = (
     dispatch: Dispatch<Store.Action>,
     getState: () => Store.Reducer,
     action: Store.Action
 ) => {
-    if (typeof action.payload.data !== 'object') return;
+    if (typeof action.payload.data !== 'object') {
+        dispatch(updateTicketsStatus('ERROR'));
+        return;
+    }
 
     const allIds: string[] = [];
     const byId: { [key: string]: Store.Models.Notification } = {};
