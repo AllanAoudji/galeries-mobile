@@ -19,10 +19,10 @@ import { createGaleriesSchema } from '#helpers/schemas';
 import {
     postGalerie,
     selectGaleriesFieldsError,
-    updateGaleriesFieldsError,
     selectGaleriesLoadingPost,
     resetGaleriesLoadingPost,
     resetGaleriesFieldsError,
+    updateGaleriesFieldsError,
 } from '#store/galeries';
 
 import { ButtonContainer, ScrollViewStyle } from './styles';
@@ -39,7 +39,7 @@ const initialValues = {
 const CreateGalerieScreen = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
-    const galeriesFieldsError = useSelector(selectGaleriesFieldsError);
+    const fieldsError = useSelector(selectGaleriesFieldsError);
     const loading = useSelector(selectGaleriesLoadingPost);
 
     const formik = useFormik({
@@ -53,39 +53,38 @@ const CreateGalerieScreen = ({ navigation }: Props) => {
     });
 
     const descriptionError = React.useMemo(
-        () => formik.errors.description || galeriesFieldsError.description,
-        [formik.errors.description, galeriesFieldsError]
+        () => formik.errors.description || fieldsError.description,
+        [formik.errors, fieldsError]
     );
     const disableButton = React.useMemo(() => {
         const clientHasError =
             !!formik.errors.description || !!formik.errors.name;
-        const serverHasError =
-            !!galeriesFieldsError.description || !!galeriesFieldsError.name;
+        const serverHasError = !!fieldsError.description || !!fieldsError.name;
         return clientHasError || serverHasError;
-    }, [formik.errors, galeriesFieldsError]);
+    }, [formik.errors, fieldsError]);
     const nameError = React.useMemo(
-        () => formik.errors.name || galeriesFieldsError.name,
-        [formik.errors.name, galeriesFieldsError]
+        () => formik.errors.name || fieldsError.name,
+        [formik.errors.name, fieldsError]
     );
 
     const handleChangeDescriptionText = React.useCallback(
         (e: string) => {
-            if (galeriesFieldsError.description)
+            if (fieldsError.description)
                 dispatch(updateGaleriesFieldsError({ description: '' }));
             if (formik.errors.description)
                 formik.setFieldError('description', '');
             formik.setFieldValue('description', e);
         },
-        [formik.errors, galeriesFieldsError]
+        [formik.errors, fieldsError]
     );
     const handleChangeNameText = React.useCallback(
         (e: string) => {
-            if (galeriesFieldsError.name)
+            if (fieldsError.name)
                 dispatch(updateGaleriesFieldsError({ name: '' }));
             if (formik.errors.name) formik.setFieldError('name', '');
             formik.setFieldValue('name', e);
         },
-        [formik.errors, galeriesFieldsError]
+        [formik.errors, fieldsError]
     );
     const handlePressBack = React.useCallback(() => {
         if (loading.includes('LOADING')) return;

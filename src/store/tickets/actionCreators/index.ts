@@ -118,9 +118,11 @@ export const resetTicketsStatus: () => Store.Action = () => ({
     payload: {},
     type: TICKETS_STATUS_RESET,
 });
-export const setTicketsAllIds: (payload: string[]) => Store.Action = () => ({
+export const setTicketsAllIds: (payload: string[]) => Store.Action = (
+    payload
+) => ({
     meta: {},
-    payload: {},
+    payload,
     type: TICKETS_ALL_IDS_SET,
 });
 export const setTicketsById: (payload: {

@@ -1,10 +1,10 @@
 import { Dispatch } from 'redux';
 
-import { updateTicketsStatus } from '#store/tickets/actionCreators';
+import { updateTicketsLoadingPost } from '#store/tickets/actionCreators';
 import { updateNotification } from '#store/notification/actionCreators';
 
 const successPostMethod = (dispatch: Dispatch<Store.Action>) => {
-    dispatch(updateTicketsStatus('SUCCESS'));
+    dispatch(updateTicketsLoadingPost('SUCCESS'));
     dispatch(
         updateNotification({
             status: 'success',

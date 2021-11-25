@@ -60,6 +60,7 @@ export { default as dispatchPostLike } from './dispatchPostLike';
 export { default as dispatchPostProfilePicture } from './dispatchPostProfilePicture';
 export { default as dispatchPostProfilePictureIdReports } from './dispatchPostProfilePictureIdReports';
 export { default as dispatchPostResetPassword } from './dispatchPostResetPassword';
+export { default as dispatchPostTicket } from './dispatchPostTicket';
 export { default as dispatchPostUsersConfirmation } from './dispatchPostUsersConfirmation';
 export { default as dispatchPutEmail } from './dispatchPutEmail';
 export { default as dispatchPutFrame } from './dispatchPutFrame';
