@@ -43,5 +43,6 @@ export { default as SearchBar } from './SearchBar';
 export { default as SplashScreen } from './SplashScreen';
 export { default as SubGalerieScreenHeader } from './SubGalerieScreenHeader';
 export { default as TabViewNavigatorHeader } from './TabViewNavigatorHeader';
+export { default as TicketCard } from './TicketCard';
 export { default as Typography } from './Typography';
 export { default as UserCard } from './UserCard';

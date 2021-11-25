@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import * as React from 'react';
 import { ListRenderItemInfo, useWindowDimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,15 +21,17 @@ import {
 
 import RenderItem from './RenderItem';
 
+type Props = {
+    navigation: Screen.ModeratorStack.BetaKeysScreenNavigationProp;
+};
+
 const renderItem = ({ item }: ListRenderItemInfo<string>) => (
     <RenderItem item={item} />
 );
 
-const BetaKeysScreen = () => {
+const BetaKeysScreen = ({ navigation }: Props) => {
     const dimension = useWindowDimensions();
     const dispatch = useDispatch();
-    const navigation =
-        useNavigation<Screen.ModeratorStack.BetaKeysScreenNavigationProp>();
 
     const allIds = useSelector(selectBetaKeysAllIds);
     const status = useSelector(selectBetaKeysStatus);

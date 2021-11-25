@@ -15,4 +15,4 @@ const RenderItem = ({ item }: Props) => {
     return <BetaKeyCard betaKey={betaKey} />;
 };
 
-export default RenderItem;
+export default React.memo(RenderItem);
