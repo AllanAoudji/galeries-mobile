@@ -17,6 +17,7 @@ import ModerationNavigationScreen from './ModerationNavigationScreen';
 import ModerationNavigationHeader from './ModerationNavigationHeader';
 import TicketsHeader from './TicketsHeader';
 import TicketsScreen from './TicketsScreen';
+import TicketHeader from './TicketHeader';
 import TicketScreen from './TicketScreen';
 
 const Stack = createStackNavigator<Screen.ModeratorStack.ParamList>();
@@ -52,6 +53,9 @@ const createBetaKeyNavigationOptions: StackNavigationOptions = {
 const moderationNavigationOptions: StackNavigationOptions = {
     header: ModerationNavigationHeader,
 };
+const ticketNavigationOption: StackNavigationOptions = {
+    header: TicketHeader,
+};
 const ticketsNavigationOptions: StackNavigationOptions = {
     header: TicketsHeader,
 };
@@ -86,7 +90,11 @@ const ModerationStackNavigator = ({ navigation }: Props) => {
                 name="ModerationNavigationScreen"
                 options={moderationNavigationOptions}
             />
-            <Stack.Screen component={TicketScreen} name="Ticket" />
+            <Stack.Screen
+                component={TicketScreen}
+                name="Ticket"
+                options={ticketNavigationOption}
+            />
             <Stack.Screen
                 component={TicketsScreen}
                 name="Tickets"
