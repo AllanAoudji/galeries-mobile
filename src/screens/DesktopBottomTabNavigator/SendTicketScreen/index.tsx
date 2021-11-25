@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import { Typography } from '#components';
 
-const SendTicketScreen = () => <Typography>Send Ticket</Typography>;
+const SendTicketScreen = () => {
+    return <Typography>send ticket screen</Typography>;
+};
 
 export default SendTicketScreen;

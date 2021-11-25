@@ -33,6 +33,8 @@ import ProfilePictureScreen from './ProfilePictureScreen';
 import ReportCommentScreen from './ReportCommentScreen';
 import ReportFrameScreen from './ReportFrameScreen';
 import ReportProfilePictureScreen from './ReportProfilePictureScreen';
+import SendTicketHeader from './SendTicketHeader';
+import SendTicketScreen from './SendTicketScreen';
 import SubscribeGalerieScreen from './SubscribeGalerieScreen';
 import TabBar from './TabBar';
 import UpdateFrameScreen from './UpdateFrameScreen';
@@ -136,6 +138,10 @@ const reportProfilePictureScreenOption: BottomTabNavigationOptions = {
 };
 const screenOptions: BottomTabNavigationOptions = {
     headerShown: false,
+};
+const sendTicketScreenOptions: BottomTabNavigationOptions = {
+    header: SendTicketHeader,
+    headerShown: true,
 };
 const updateFrameScreenHeader = () => (
     <DefaultHeader
@@ -244,6 +250,11 @@ const DesktopBottomTabNavigator = () => {
             <Tab.Screen
                 component={SubscribeGalerieScreen}
                 name="SubscribeGalerie"
+            />
+            <Tab.Screen
+                component={SendTicketScreen}
+                name="SendTicket"
+                options={sendTicketScreenOptions}
             />
             <Tab.Screen
                 component={UpdateFrameScreen}

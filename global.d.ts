@@ -64,6 +64,7 @@ declare global {
                 ReportComment: undefined;
                 ReportFrame: undefined;
                 ReportProfilePicture: undefined;
+                SendTicket: undefined;
                 SubscribeGalerie: undefined;
                 UpdateFrame: undefined;
                 UpdateGalerie: undefined;
@@ -148,6 +149,10 @@ declare global {
             type ReportProfilePictureNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'ReportProfilePicture'
+            >;
+            type SendTicketNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'SendTicket'
             >;
             type SubscribeGalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,
@@ -271,17 +276,6 @@ declare global {
             type SettingsFieldsScreenNavigationProp = StackNavigationProp<
                 ParamList,
                 'SettingsFields'
-            >;
-        }
-        namespace TicketsStack {
-            type ParamList = {
-                SendTicket: undefined;
-                Ticket: undefined;
-                Tickets: undefined;
-            };
-            type SendTicketsScreenNavigationProp = StackNavigationProp<
-                ParamList,
-                'SendTicket'
             >;
         }
     }

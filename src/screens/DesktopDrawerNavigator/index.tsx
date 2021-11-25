@@ -10,7 +10,6 @@ import { selectMe } from '#store/me';
 import DrawerContent from './DrawerContent';
 import MainScreen from './MainScreen';
 import ModerationScreen from './ModerationScreen';
-import SendTicketScreen from './SendTicketScreen';
 import SettingsScreen from './SettingsScreen';
 
 const Drawer = createDrawerNavigator<Screen.DesktopDrawer.ParamList>();
@@ -25,16 +24,8 @@ const DesktopStack = () => {
 
     const drawerContent = React.useCallback(
         (props) => <DrawerContent role={me ? me.role : 'user'} {...props} />,
-        []
+        [me]
     );
-
-    const displayScreen = React.useMemo(() => {
-        return !!me && me.role === 'user' ? (
-            <Drawer.Screen component={SendTicketScreen} name="SendTicket" />
-        ) : (
-            <Drawer.Screen component={ModerationScreen} name="Moderation" />
-        );
-    }, [me]);
 
     return (
         <Drawer.Navigator
@@ -44,7 +35,9 @@ const DesktopStack = () => {
         >
             <Drawer.Screen component={MainScreen} name="Main" />
             <Drawer.Screen component={SettingsScreen} name="Settings" />
-            {displayScreen}
+            {!!me && me.role !== 'user' && (
+                <Drawer.Screen component={ModerationScreen} name="Moderation" />
+            )}
         </Drawer.Navigator>
     );
 };

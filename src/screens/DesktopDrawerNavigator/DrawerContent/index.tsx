@@ -36,7 +36,10 @@ const DrawerContent = ({
         navigation.navigate('Moderation');
     }, [navigation]);
     const handlePressSendTicket = React.useCallback(
-        () => navigation.navigate('SendTicket'),
+        () =>
+            navigation.navigate('Main', {
+                screen: 'SendTicket',
+            }),
         [navigation]
     );
 
@@ -60,7 +63,10 @@ const DrawerContent = ({
 
     const handlePressLogout = React.useCallback(() => dispatch(logout()), []);
     const handlePressMain = React.useCallback(
-        () => navigation.navigate('Main'),
+        () =>
+            navigation.navigate('Main', {
+                screen: 'Landing',
+            }),
         [navigation]
     );
 
