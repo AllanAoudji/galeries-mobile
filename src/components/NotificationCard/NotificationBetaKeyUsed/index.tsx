@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 
 import NotificationCardContainer from '#components/NotificationCardContainer';
-import ProfilePicture from '#components/ProfilePicture';
 import Typography from '#components/Typography';
-import { selectUser } from '#store/users';
+
+import Users from './Users';
 
 type Props = {
     notification: Store.Models.Notification;
@@ -14,12 +13,6 @@ type Props = {
 const onPress = () => {};
 
 const NotificationBetakeyUsed = ({ notification, onLongPress }: Props) => {
-    const userSelector = React.useMemo(
-        () => selectUser(notification.userId),
-        [notification]
-    );
-    const user = useSelector(userSelector);
-
     return (
         <NotificationCardContainer
             notification={notification}
@@ -27,11 +20,15 @@ const NotificationBetakeyUsed = ({ notification, onLongPress }: Props) => {
             onPress={onPress}
             seen={notification.seen}
         >
+            <Users notification={notification} />
             <Typography>
-                <Typography fontFamily="bold">A new user</Typography>
-                use your beta key to create an account
+                <Typography fontFamily="bold">
+                    {notification.num} new user
+                    {notification.num > 1 && 's'}{' '}
+                </Typography>
+                use your beta key{notification.num > 1 && 's'} to create an
+                account
             </Typography>
-            <ProfilePicture user={user} size="small" />
         </NotificationCardContainer>
     );
 };

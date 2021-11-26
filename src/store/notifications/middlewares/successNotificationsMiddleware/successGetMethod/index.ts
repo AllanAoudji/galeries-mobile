@@ -14,7 +14,6 @@ import {
 import { getFrame, getNotificationFrames } from '#store/frames/actionCreators';
 import { getGalerieId } from '#store/galeries/actionCreators';
 import { getNotificationUsers } from '#store/users/actionCreators';
-import { updateTicketsStatus } from '#store/tickets/actionCreators';
 
 const successGetMethod = (
     dispatch: Dispatch<Store.Action>,
@@ -22,7 +21,7 @@ const successGetMethod = (
     action: Store.Action
 ) => {
     if (typeof action.payload.data !== 'object') {
-        dispatch(updateTicketsStatus('ERROR'));
+        dispatch(updateNotificationsStatus('ERROR'));
         return;
     }
 
