@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "galerie",
-    "slug": "galerie_mobile",
-    "version": "1.0.0",
+    "name": "Galeries",
+    "slug": "Galeries",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -21,13 +21,14 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.azihuber.galerie",
+      "package": "com.azihubert.galeries",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#fffff4"
       }
     },
+    "description": "An app to share pictures with your friends and famiy",
     "web": {
       "favicon": "./assets/favicon.png"
     }
