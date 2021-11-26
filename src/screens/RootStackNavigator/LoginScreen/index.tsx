@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     CustomButton,
     CustomTextInput,
+    FullScreenContainer,
     RootFooter,
     Typography,
 } from '#components';
@@ -25,10 +26,10 @@ import {
     selectLoginStatus,
     updateLoginFieldsError,
 } from '#store/login';
+import { selectNotification } from '#store/notification';
 
 import {
     ButtonContainer,
-    Container,
     ForgotYourPasswordContainer,
     ScrollViewStyle,
     TextContainer,
@@ -48,6 +49,7 @@ const LoginScreen = ({ navigation }: Props) => {
 
     const fieldsError = useSelector(selectLoginFieldsError);
     const loading = useSelector(selectLoginStatus);
+    const notification = useSelector(selectNotification);
 
     const formik = useFormik({
         initialValues,
@@ -127,9 +129,18 @@ const LoginScreen = ({ navigation }: Props) => {
             []
         )
     );
+    useFocusEffect(
+        React.useCallback(() => {
+            if (!notification) return;
+            if (notification.status === 'success') return;
+            if (notification.text === "You're account need to be confimed") {
+                navigation.navigate('LoginWithoutConfirm');
+            }
+        }, [navigation, notification])
+    );
 
     return (
-        <Container>
+        <FullScreenContainer>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 keyboardVerticalOffset={GLOBAL_STYLE.HEADER_TAB_HEIGHT}
@@ -195,7 +206,7 @@ const LoginScreen = ({ navigation }: Props) => {
                 onPress={handlePressSignin}
                 title="You don't have an account yet?"
             />
-        </Container>
+        </FullScreenContainer>
     );
 };
 

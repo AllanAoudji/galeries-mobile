@@ -13,4 +13,5 @@ export { default as putGalerieSchema } from './putGalerieSchema';
 export { default as putUserEmail } from './putUserEmail';
 export { default as putUserPassword } from './putUserPassword';
 export { default as putUserPseudonym } from './putUserPseudonym';
+export { default as resendConfirmationSchema } from './resendConfirmationSchema';
 export { default as signinSchema } from './signinSchema';

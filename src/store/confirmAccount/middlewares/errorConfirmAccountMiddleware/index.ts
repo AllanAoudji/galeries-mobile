@@ -1,6 +1,9 @@
 import { Middleware } from 'redux';
 
-import { updateConfirmAccountState } from '#store/confirmAccount/actionCreators';
+import {
+    updateConfirmAccountFieldsError,
+    updateConfirmAccountState,
+} from '#store/confirmAccount/actionCreators';
 import { API_ERROR } from '#store/api/actionTypes';
 import { dispatchErrorNotification } from '#store/dispatchers';
 import { CONFIRM_ACCOUNT } from '#store/genericActionTypes';
@@ -13,7 +16,12 @@ const errorConfirmAccountMiddleware: Middleware<{}, Store.Reducer> =
 
         if (action.type !== `${CONFIRM_ACCOUNT} ${API_ERROR}`) return;
 
-        dispatchErrorNotification(dispatch, action);
+        if (
+            typeof action.payload === 'object' &&
+            typeof action.payload.email === 'string'
+        )
+            dispatch(updateConfirmAccountFieldsError(action.payload));
+        else dispatchErrorNotification(dispatch, action);
         dispatch(updateConfirmAccountState('ERROR'));
     };
 

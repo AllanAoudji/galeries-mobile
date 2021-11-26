@@ -3,15 +3,15 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import { DefaultHeader } from '#components';
-import { selectLoginStatus } from '#store/login';
+import { selectConfirmAccountStatus } from '#store/confirmAccount';
 
-const LoginHeader = ({ navigation }: StackHeaderProps) => {
-    const loading = useSelector(selectLoginStatus);
+const ConfirmYourAccountHeader = ({ navigation }: StackHeaderProps) => {
+    const status = useSelector(selectConfirmAccountStatus);
 
     const handlePress = React.useCallback(() => {
-        if (loading.includes('loading')) return;
-        navigation.navigate('Login');
-    }, [loading, navigation]);
+        if (status.includes('loading')) return;
+        navigation.navigate('Landing');
+    }, [navigation, status]);
 
     return (
         <DefaultHeader
@@ -24,4 +24,4 @@ const LoginHeader = ({ navigation }: StackHeaderProps) => {
     );
 };
 
-export default LoginHeader;
+export default ConfirmYourAccountHeader;

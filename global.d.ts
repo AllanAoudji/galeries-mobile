@@ -233,6 +233,7 @@ declare global {
                 ForgotYourPasswordLanding: undefined;
                 Landing: undefined;
                 Login: undefined;
+                LoginWithoutConfirm: undefined;
                 Signin: undefined;
             };
             type ConfirmYourAccountNavigationProp = StackNavigationProp<
@@ -256,8 +257,12 @@ declare global {
                 'Landing'
             >;
             type LoginScreenNavigationProp = StackNavigationProp<
-                HomeStackParamList,
+                ParamList,
                 'Login'
+            >;
+            type LoginWithoutConfirmNavigationProp = StackNavigationProp<
+                ParamList,
+                'LoginWithoutConfirm'
             >;
             type SigninScreenNavigationProp = StackNavigationProp<
                 ParamList,
@@ -359,6 +364,9 @@ declare global {
                 status: { [key: string]: Store.Status };
             };
             confirmAccount: {
+                fieldsError: {
+                    email: string;
+                };
                 status: Store.Status;
             };
             frames: {
