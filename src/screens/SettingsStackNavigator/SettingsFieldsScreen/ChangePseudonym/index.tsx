@@ -55,6 +55,12 @@ const ChangePseudonym = ({ user }: Props) => {
     );
 
     useFocusEffect(
+        React.useCallback(() => {
+            if (loading !== 'SUCCESS') return;
+            formik.resetForm();
+        }, [loading])
+    );
+    useFocusEffect(
         React.useCallback(
             () => () => {
                 formik.resetForm();

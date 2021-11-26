@@ -92,18 +92,18 @@ const UpdatePassword = () => {
     );
 
     useFocusEffect(
+        React.useCallback(() => {
+            if (loading !== 'SUCCESS') return;
+            formik.resetForm();
+        }, [loading])
+    );
+    useFocusEffect(
         React.useCallback(
             () => () => {
                 formik.resetForm();
             },
             []
         )
-    );
-    useFocusEffect(
-        React.useCallback(() => {
-            if (loading !== 'SUCCESS') return;
-            formik.resetForm();
-        }, [loading])
     );
 
     return (

@@ -82,7 +82,7 @@ const SigninScreen = ({ navigation }: Props) => {
             !!fieldsError.password ||
             !!fieldsError.userName;
         return clientHasError || serverHasError;
-    }, [formik.submitCount, formik.errors]);
+    }, [fieldsError, formik.errors]);
     const emailError = React.useMemo(
         () => formik.errors.email || fieldsError.email,
         [fieldsError, formik.errors.email]
