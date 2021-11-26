@@ -18,6 +18,8 @@ import ForgotYourPasswordLandingScreen from './ForgotYourPasswordLandingScreen';
 import LangingScreen from './LandingScreen';
 import LoginHeader from './LoginHeader';
 import LoginScreen from './LoginScreen';
+import LoginWithoutConfirmHeader from './LoginWithoutConfirmHeader';
+import LoginWithoutConfirmScreen from './LoginWithoutConfirmScreen';
 import SigninHeader from './SigninHeader';
 import SigninScreen from './SigninScreen';
 
@@ -38,6 +40,9 @@ const forgotYourPasswordLandingOptions: StackNavigationOptions = {
 const landingOptions: StackNavigationOptions = { headerShown: false };
 const loginOption: StackNavigationOptions = {
     header: LoginHeader,
+};
+const loginWithoutConfirmOptions: StackNavigationOptions = {
+    header: LoginWithoutConfirmHeader,
 };
 const screenOptions: StackNavigationOptions = {
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -84,6 +89,11 @@ const RootStackNavigator = () => {
                         component={LoginScreen}
                         name="Login"
                         options={loginOption}
+                    />
+                    <Stack.Screen
+                        component={LoginWithoutConfirmScreen}
+                        name="LoginWithoutConfirm"
+                        options={loginWithoutConfirmOptions}
                     />
                     <Stack.Screen
                         component={SigninScreen}

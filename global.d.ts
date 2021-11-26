@@ -64,6 +64,7 @@ declare global {
                 ReportComment: undefined;
                 ReportFrame: undefined;
                 ReportProfilePicture: undefined;
+                SendTicket: undefined;
                 SubscribeGalerie: undefined;
                 UpdateFrame: undefined;
                 UpdateGalerie: undefined;
@@ -149,6 +150,10 @@ declare global {
                 ParamList,
                 'ReportProfilePicture'
             >;
+            type SendTicketNavigationProp = BottomTabNavigationProp<
+                ParamList,
+                'SendTicket'
+            >;
             type SubscribeGalerieNavigationProp = BottomTabNavigationProp<
                 ParamList,
                 'SubscribeGalerie'
@@ -196,6 +201,8 @@ declare global {
                 BetakeysScreen: undefined;
                 CreateBetakeyScreen: undefined;
                 ModerationNavigationScreen: undefined;
+                Ticket: undefined;
+                Tickets: undefined;
             };
             type BetaKeysScreenNavigationProp = StackNavigationProp<
                 ParamList,
@@ -209,6 +216,14 @@ declare global {
                 ParamList,
                 'ModerationNavigationScreen'
             >;
+            type TicketScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'Ticket'
+            >;
+            type TicketsScreenNavigationProp = StackNavigationProp<
+                ParamList,
+                'Tickets'
+            >;
         }
         namespace RootStack {
             type ParamList = {
@@ -218,6 +233,7 @@ declare global {
                 ForgotYourPasswordLanding: undefined;
                 Landing: undefined;
                 Login: undefined;
+                LoginWithoutConfirm: undefined;
                 Signin: undefined;
             };
             type ConfirmYourAccountNavigationProp = StackNavigationProp<
@@ -241,8 +257,12 @@ declare global {
                 'Landing'
             >;
             type LoginScreenNavigationProp = StackNavigationProp<
-                HomeStackParamList,
+                ParamList,
                 'Login'
+            >;
+            type LoginWithoutConfirmNavigationProp = StackNavigationProp<
+                ParamList,
+                'LoginWithoutConfirm'
             >;
             type SigninScreenNavigationProp = StackNavigationProp<
                 ParamList,
@@ -294,6 +314,7 @@ declare global {
             | '[RESET PASSWORD]'
             | '[SEND BETA KEY]'
             | '[SIGNIN]'
+            | '[TICKETS]'
             | '[UI]'
             | '[USERS]';
         type Meta = {
@@ -343,6 +364,9 @@ declare global {
                 status: { [key: string]: Store.Status };
             };
             confirmAccount: {
+                fieldsError: {
+                    email: string;
+                };
                 status: Store.Status;
             };
             frames: {
@@ -508,11 +532,31 @@ declare global {
                 };
                 status: Store.Status;
             };
+            tickets: {
+                allIds: string[];
+                byId: { [key: string]: Store.Models.Ticket };
+                current: string | null;
+                end: boolean;
+                fieldsError: {
+                    body: string;
+                    header: string;
+                };
+                loading: {
+                    delete: Store.Status;
+                    post: Store.Status;
+                };
+                previous: string;
+                status: Store.Status;
+            };
             users: {
                 allIds: { [key: string]: string[] };
                 byId: { [key: string]: Store.Models.User };
                 current: string | null;
                 end: { [key: string]: boolean };
+                fieldsError: {
+                    body: string;
+                    header: string;
+                };
                 loading: {
                     delete: Store.Status;
                 };
@@ -654,6 +698,15 @@ declare global {
                 pendingHexes: string;
                 updatedAt: string;
                 userId: string;
+            };
+            type Ticket = {
+                autoIncrementId: string;
+                body: string;
+                createdAt: string;
+                header: string;
+                id: string;
+                updatedAt: string;
+                userId?: string;
             };
             type User = {
                 createdAt: Date;

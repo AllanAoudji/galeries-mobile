@@ -18,7 +18,7 @@ const LoginHeader = ({ navigation }: StackHeaderProps) => {
             color="primary-dark"
             onPress={handlePress}
             textColor="secondary-light"
-            title="log-in"
+            title="sign-in"
             variant="secondary"
         />
     );

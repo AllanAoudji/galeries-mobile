@@ -20,6 +20,7 @@ import { resetReports } from '#store/reports/actionCreators';
 import { resetResetPassword } from '#store/resetPassword/actionCreators';
 import { resetSendBetaKey } from '#store/sendBetaKey/actionCreators';
 import { resetSignin } from '#store/signin/actionCreators';
+import { resetTickets } from '#store/tickets/actionCreators';
 import { resetUsers } from '#store/users/actionCreators';
 
 const successDeleteMethod = (dispatch: Dispatch<Store.Action>) => {
@@ -42,6 +43,7 @@ const successDeleteMethod = (dispatch: Dispatch<Store.Action>) => {
         dispatch(resetSendBetaKey());
         dispatch(resetSignin());
         dispatch(resetUsers());
+        dispatch(resetTickets());
         dispatch(resetReports());
         dispatch(
             updateNotification({

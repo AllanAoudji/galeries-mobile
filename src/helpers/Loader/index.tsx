@@ -33,7 +33,10 @@ const Loader: React.FC<{}> = ({ children }) => {
         if (meStatus === 'PENDING') dispatch(getMe());
     }, [meStatus]);
     React.useEffect(() => {
-        if (!me && timer.current) clearInterval(timer.current);
+        if (!me && timer.current) {
+            clearInterval(timer.current);
+            timer.current = null;
+        }
         if (me && !timer.current)
             timer.current = setInterval(() => {
                 dispatch(getMe());
@@ -41,7 +44,10 @@ const Loader: React.FC<{}> = ({ children }) => {
     }, [me]);
     React.useEffect(
         () => () => {
-            if (timer.current) clearInterval(timer.current);
+            if (timer.current) {
+                clearInterval(timer.current);
+                timer.current = null;
+            }
         },
         []
     );

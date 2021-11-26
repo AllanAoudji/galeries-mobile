@@ -77,6 +77,7 @@ export const END_POINT = {
     SEND: '/send',
     SIGNIN: '/signin',
     SUBSCRIBE: '/subscribe',
+    TICKETS: '/tickets',
     UNSUBSCRIBE: '/unsubscribe',
     USERS: '/users',
 };
@@ -108,6 +109,10 @@ export const FIELD_REQUIREMENT = {
     PASSWORD_MAX_LENGTH: 30,
     PSEUDONYM_MAX_LENGTH: 30,
     PSEUDONYM_MIN_LENGTH: 3,
+    TICKET_BODY_MAX_LENGTH: 200,
+    TICKET_BODY_MIN_LENGTH: 10,
+    TICKET_HEADER_MIN_LENGTH: 5,
+    TICKET_HEADER_MAX_LENGTH: 30,
     USERNAME_MIN_LENGTH: 3,
     USERNAME_MAX_LENGTH: 30,
 };

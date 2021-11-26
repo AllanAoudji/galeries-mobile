@@ -36,9 +36,9 @@ const DefaultHeader = ({
 
     const handlePressPictogram = React.useCallback(() => {
         Keyboard.dismiss();
-        if (navigation.canGoBack() && variant === 'secondary') {
-            if (onPress) onPress();
-            else navigation.goBack();
+        if (variant === 'secondary') {
+            if (navigation.canGoBack()) navigation.goBack();
+            else if (onPress) onPress();
         } else navigation.dispatch(DrawerActions.openDrawer());
     }, [navigation, variant]);
 

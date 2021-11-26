@@ -23,13 +23,13 @@ const errorGetMethod = (
     else if (invitationId) {
         const invitation = getState().invitations.byId[invitationId];
         if (invitation) {
-            dispatch(removeInvitationsById(invitationId));
             dispatch(
                 removeGalerieInvitationsAllIds(
                     invitation.galerieId,
                     invitationId
                 )
             );
+            dispatch(removeInvitationsById(invitationId));
         }
     }
 

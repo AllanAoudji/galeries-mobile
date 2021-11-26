@@ -31,6 +31,7 @@ const InvitationScreen = ({ navigation }: Props) => {
         React.useCallback(() => {
             if (!invitation) return;
             if (!initialLoading) return;
+            setInitialLoading(false);
             dispatch(getInvitation(invitation.id));
         }, [initialLoading, invitation])
     );

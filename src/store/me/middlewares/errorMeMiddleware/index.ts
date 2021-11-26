@@ -5,6 +5,7 @@ import { ME } from '#store/genericActionTypes';
 
 import errorDefaultMethod from './errorDefaultMethod';
 import errorDeleteMethod from './errorDeleteMethod';
+import errorGetMethod from './errorGetMethod';
 import errorPutMethod from './errorPutMethod';
 
 const errorMeMiddleware: Middleware<{}, Store.Reducer> =
@@ -17,6 +18,9 @@ const errorMeMiddleware: Middleware<{}, Store.Reducer> =
         switch (action.meta.method) {
             case 'DELETE':
                 errorDeleteMethod(dispatch, action);
+                break;
+            case 'GET':
+                errorGetMethod(action);
                 break;
             case 'PUT':
                 errorPutMethod(dispatch, action);

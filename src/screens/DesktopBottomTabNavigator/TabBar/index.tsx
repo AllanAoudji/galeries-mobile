@@ -73,7 +73,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
             currentRouteName === 'Profile' ? 'profile-fill' : 'profile-stroke',
         [currentRouteName]
     );
-    const showTabBar = React.useMemo(
+    const doNotShowTabBar = React.useMemo(
         () =>
             currentRouteName === 'Comments' ||
             currentRouteName === 'CreateFrame' ||
@@ -90,6 +90,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
             currentRouteName === 'ReportComment' ||
             currentRouteName === 'ReportFrame' ||
             currentRouteName === 'ReportProfilePicture' ||
+            currentRouteName === 'SendTicket' ||
             currentRouteName === 'SubscribeGalerie' ||
             currentRouteName === 'UpdateFrame' ||
             currentRouteName === 'UserGalerieBlackList' ||
@@ -150,7 +151,7 @@ const TabBar = ({ navigation, state }: BottomTabBarProps) => {
         }
     }, [currentRouteName, me, timer]);
 
-    if (showTabBar) return null;
+    if (doNotShowTabBar) return null;
 
     return (
         <Container width={dimension.width}>
