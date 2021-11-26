@@ -52,12 +52,7 @@ const Loader: React.FC<{}> = ({ children }) => {
         []
     );
 
-    if (
-        !assets ||
-        !fontsLoaded ||
-        meStatus === 'PENDING' ||
-        meStatus === 'INITIAL_LOADING'
-    ) {
+    if (!assets || !fontsLoaded || meStatus === 'INITIAL_LOADING') {
         return <SplashScreen />;
     }
 
