@@ -77,9 +77,11 @@ const DeleteAccountScreen = ({ navigation }: Props) => {
             !!fieldsError.deleteAccountSentence ||
             !!fieldsError.deletePassword ||
             !!fieldsError.userNameOrEmail;
-
         return clientHasError || serverHasError;
     }, [formik.errors, fieldsError]);
+
+    console.log(disableButton, formik.errors, fieldsError);
+
     const userNameOrEmailError = React.useMemo(
         () => formik.errors.userNameOrEmail || fieldsError.userNameOrEmail,
         [fieldsError, formik.errors]
@@ -100,7 +102,7 @@ const DeleteAccountScreen = ({ navigation }: Props) => {
             if (fieldsError.deletePassword)
                 dispatch(updateMeFieldsError({ deletePassword: '' }));
             if (formik.errors.deletePassword)
-                formik.setFieldValue('deletePassword', '');
+                formik.setFieldError('deletePassword', '');
             formik.setFieldValue('deletePassword', e);
         },
         [formik.errors, fieldsError]

@@ -41,7 +41,7 @@ const UpdatePassword = () => {
         [fieldsError, formik.errors]
     );
     const currentPasswordError = React.useMemo(
-        () => formik.errors.currentPassword || fieldsError.confirmNewPassword,
+        () => formik.errors.currentPassword || fieldsError.currentPassword,
         [fieldsError, formik.errors]
     );
     const disableButton = React.useMemo(() => {

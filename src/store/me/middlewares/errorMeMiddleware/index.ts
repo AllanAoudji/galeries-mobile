@@ -6,6 +6,7 @@ import { ME } from '#store/genericActionTypes';
 import errorDefaultMethod from './errorDefaultMethod';
 import errorDeleteMethod from './errorDeleteMethod';
 import errorGetMethod from './errorGetMethod';
+import errorPostMethod from './errorPostMethod';
 import errorPutMethod from './errorPutMethod';
 
 const errorMeMiddleware: Middleware<{}, Store.Reducer> =
@@ -20,7 +21,10 @@ const errorMeMiddleware: Middleware<{}, Store.Reducer> =
                 errorDeleteMethod(dispatch, action);
                 break;
             case 'GET':
-                errorGetMethod(action);
+                errorGetMethod(dispatch, action);
+                break;
+            case 'POST':
+                errorPostMethod(dispatch, action);
                 break;
             case 'PUT':
                 errorPutMethod(dispatch, action);

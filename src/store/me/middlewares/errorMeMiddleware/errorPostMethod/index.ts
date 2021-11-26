@@ -1,8 +1,9 @@
 import { Dispatch } from 'redux';
 
+import { dispatchErrorNotification } from '#store/dispatchers';
 import {
-    updateMeFieldsError,
     updateMeLoadingPut,
+    updateMeFieldsError,
 } from '#store/me/actionCreators';
 
 const errorPutMethod = (
@@ -11,12 +12,10 @@ const errorPutMethod = (
 ) => {
     if (
         typeof action.payload === 'object' &&
-        (typeof action.payload.pseudonym === 'string' ||
-            typeof action.payload.confirmNewPassword === 'string' ||
-            typeof action.payload.currentPassword === 'string' ||
-            typeof action.payload.newPassword === 'string')
+        typeof action.payload.emailPassword === 'string'
     )
         dispatch(updateMeFieldsError(action.payload));
+    else dispatchErrorNotification(dispatch, action);
     dispatch(updateMeLoadingPut('ERROR'));
 };
 

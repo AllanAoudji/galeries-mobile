@@ -12,6 +12,7 @@ import {
 import { apiSuccess, apiError } from '#store/api/actionCreators';
 import { API_REQUEST } from '#store/api/actionTypes';
 import normalizeExpiresIn from '#helpers/normalizeExpiresIn';
+import resetStore from '#store/resetStore';
 
 const apiRequestSuccessMiddleware = (
     response: AxiosResponse,
@@ -129,7 +130,12 @@ const apiRequestMiddleware: Middleware<{}, Store.Reducer> =
                     apiRequestSuccessMiddleware(response, dispatch, action);
                 } catch (err) {
                     if (axios.isAxiosError(err)) {
-                        console.log(err.response?.data);
+                        if (
+                            err.response &&
+                            err.response.data &&
+                            err.response.data.errors === 'No auth token'
+                        )
+                            resetStore(dispatch);
                         apiRequestErrorMiddleware(err, dispatch, action);
                     }
                 }
