@@ -92,7 +92,7 @@ export const ERROR_MESSAGE = {
         `should have a minimum length of ${number}`,
     FIELD_SHOULD_BE_AN_EMAIL: 'should be a valid email',
     FIELD_SHOULD_BE_A_PASSWORD:
-        'need at least on lowercase, one uppercase, one number and one special charneed at least on lowercase, one uppercase, one number and one special char',
+        'need at least on lowercase, one uppercase, one number and one special character',
     FIELD_SHOULD_MATCH: (type: 'password') => `must match ${type}`,
     METHOD_NOT_FOUND: 'Method not found',
     USER_SHOULD_NOT_BE_AUTHENTICATED: 'you are already authenticated',
