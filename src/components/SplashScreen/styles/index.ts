@@ -6,6 +6,9 @@ const Container = styled.View`
     flex: 1;
     justify-content: center;
 `;
+const ImageBackgroundStyle = styled.ImageBackground`
+    flex: 1;
+    width: 100%;
+`;
 
-// eslint-disable-next-line import/prefer-default-export
-export { Container };
+export { Container, ImageBackgroundStyle };
