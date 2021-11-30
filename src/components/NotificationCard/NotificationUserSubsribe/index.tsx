@@ -10,7 +10,7 @@ import { selectGalerie, updateGaleriesCurrent } from '#store/galeries';
 
 import Users from './Users';
 
-import { Container } from './styles';
+import { Container, TextContainer } from './styles';
 import { putNotification } from '#store/notifications';
 
 type Props = {
@@ -46,16 +46,18 @@ const NotificationUserSubscribe = ({ notification, onLongPress }: Props) => {
             <Users notification={notification} />
             {galerie && (
                 <Container>
-                    <Typography>
-                        <Typography fontFamily="bold">
-                            {notification.num} new user
-                            {notification.num > 1 && 's'}{' '}
+                    <TextContainer>
+                        <Typography>
+                            <Typography fontFamily="bold">
+                                {notification.num} new user
+                                {notification.num > 1 && 's'}{' '}
+                            </Typography>
+                            subscribe to{' '}
+                            <Typography fontFamily="bold">
+                                {galerie.name}
+                            </Typography>
                         </Typography>
-                        subscribe to galerie{' '}
-                        <Typography fontFamily="bold">
-                            {galerie.name}
-                        </Typography>
-                    </Typography>
+                    </TextContainer>
                     <GalerieCoverPicture
                         borderRadius={
                             GLOBAL_STYLE.NOTIFICATION_CARD_IMAGE_BORDER_RADIUS

@@ -53,12 +53,19 @@ const successGetFrames = (
 
     if (galerieId) {
         if (frame === undefined) {
-            let oldAllIds: string[];
-            if (action.meta.refresh) oldAllIds = [];
-            else oldAllIds = getState().frames.allIds[galerieId] || [];
+            const oldAllIds = getState().frames.allIds[''] || [];
+            let galeriesOldAllIds: string[];
+            if (action.meta.refresh) galeriesOldAllIds = [];
+            else galeriesOldAllIds = getState().frames.allIds[galerieId] || [];
+            const galeriesNewAllIds = combineFramesAllIds(
+                getState,
+                galeriesOldAllIds,
+                allIds
+            );
             const newAllIds = combineFramesAllIds(getState, oldAllIds, allIds);
 
-            dispatch(setGalerieFramesAllIds(galerieId, newAllIds));
+            dispatch(setGalerieFramesAllIds(galerieId, galeriesNewAllIds));
+            dispatch(setFramesAllIds(newAllIds));
             dispatch(updateGalerieFramesEnd(galerieId, allIds.length < 20));
             if (previous)
                 dispatch(updateGalerieFramesPrevious(galerieId, previous));

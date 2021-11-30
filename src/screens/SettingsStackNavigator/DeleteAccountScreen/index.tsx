@@ -80,8 +80,6 @@ const DeleteAccountScreen = ({ navigation }: Props) => {
         return clientHasError || serverHasError;
     }, [formik.errors, fieldsError]);
 
-    console.log(disableButton, formik.errors, fieldsError);
-
     const userNameOrEmailError = React.useMemo(
         () => formik.errors.userNameOrEmail || fieldsError.userNameOrEmail,
         [fieldsError, formik.errors]

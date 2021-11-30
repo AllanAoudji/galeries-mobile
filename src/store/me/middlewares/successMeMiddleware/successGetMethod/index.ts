@@ -14,13 +14,13 @@ const successGetMethod = (
 ) => {
     const { user } = action.payload.data;
     if (typeof user === 'object' && typeof user.id === 'string') {
-        dispatch(updateMeStatus('SUCCESS'));
         dispatch(updateMeId(user.id));
         dispatch(setUsersById({ [user.id]: user }));
         const notificationsStatus = getState().notifications.status;
         if (notificationsStatus !== 'PENDING' && user.hasNewNotifications)
             dispatch(resetNotifications());
         dispatch(getMeCurrentProfilePicture());
+        dispatch(updateMeStatus('SUCCESS'));
     } else {
         dispatch(updateMeStatus('ERROR'));
         dispatchErrorNotification(

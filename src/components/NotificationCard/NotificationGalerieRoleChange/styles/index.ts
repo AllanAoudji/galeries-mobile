@@ -8,6 +8,7 @@ const Container = styled.View`
 `;
 const TextContainer = styled.View`
     flex: 1;
+    justify-content: center;
 `;
 
 export { Container, TextContainer };

@@ -9,7 +9,7 @@ import { GLOBAL_STYLE } from '#helpers/constants';
 import { selectGalerie, updateGaleriesCurrent } from '#store/galeries';
 import { putNotification } from '#store/notifications';
 
-import { Container } from './styles';
+import { Container, TextContainer } from './styles';
 
 type Props = {
     notification: Store.Models.Notification;
@@ -42,17 +42,19 @@ const NotificationFramePosted = ({ notification, onLongPress }: Props) => {
             seen={notification.seen}
         >
             <Container>
-                <Typography>
-                    <Typography fontFamily="bold">
-                        {notification.num} new frame
-                        {notification.num > 1 && 's'}{' '}
+                <TextContainer>
+                    <Typography>
+                        <Typography fontFamily="bold">
+                            {notification.num} new frame
+                            {notification.num > 1 && 's'}{' '}
+                        </Typography>
+                        are posted on
+                        <Typography fontFamily="bold">
+                            {' '}
+                            {galerie ? galerie.name : 'galerie not found'}
+                        </Typography>
                     </Typography>
-                    are posted on
-                    <Typography fontFamily="bold">
-                        {' '}
-                        {galerie ? galerie.name : 'galerie not found'}
-                    </Typography>
-                </Typography>
+                </TextContainer>
                 <GalerieCoverPicture
                     borderRadius={
                         GLOBAL_STYLE.NOTIFICATION_CARD_IMAGE_BORDER_RADIUS

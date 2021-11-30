@@ -35,7 +35,11 @@ const getMeMiddleware: Middleware<{}, Store.Reducer> =
             return;
         }
 
-        dispatch(updateMeStatus('LOADING'));
+        const { status } = getState().me;
+        const newStatus: Store.Status =
+            status === 'PENDING' ? 'INITIAL_LOADING' : 'LOADING';
+
+        dispatch(updateMeStatus(newStatus));
         dispatchGetMe(dispatch, action);
     };
 

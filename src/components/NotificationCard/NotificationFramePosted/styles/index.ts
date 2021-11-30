@@ -6,6 +6,9 @@ const Container = styled.View`
     flex-direction: row;
     justify-content: space-between;
 `;
+const TextContainer = styled.View`
+    flex: 1;
+    justify-content: center;
+`;
 
-// eslint-disable-next-line import/prefer-default-export
-export { Container };
+export { Container, TextContainer };

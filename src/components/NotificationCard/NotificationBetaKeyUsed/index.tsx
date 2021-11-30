@@ -5,6 +5,8 @@ import Typography from '#components/Typography';
 
 import Users from './Users';
 
+import { TextContainer } from './styles';
+
 type Props = {
     notification: Store.Models.Notification;
     onLongPress: () => void;
@@ -21,14 +23,16 @@ const NotificationBetakeyUsed = ({ notification, onLongPress }: Props) => {
             seen={notification.seen}
         >
             <Users notification={notification} />
-            <Typography>
-                <Typography fontFamily="bold">
-                    {notification.num} new user
-                    {notification.num > 1 && 's'}{' '}
+            <TextContainer>
+                <Typography>
+                    <Typography fontFamily="bold">
+                        {notification.num} new user
+                        {notification.num > 1 && 's'}{' '}
+                    </Typography>
+                    use your beta key{notification.num > 1 && 's'} to create an
+                    account
                 </Typography>
-                use your beta key{notification.num > 1 && 's'} to create an
-                account
-            </Typography>
+            </TextContainer>
         </NotificationCardContainer>
     );
 };

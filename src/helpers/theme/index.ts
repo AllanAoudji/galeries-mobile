@@ -1,6 +1,7 @@
 import { DefaultTheme } from 'styled-components/native';
+import { Dimensions } from 'react-native';
 
-const DEFAULT_SPACING = 15;
+const DEFAULT_SPACING = Dimensions.get('window').width < 380 ? 11 : 15;
 
 const theme: DefaultTheme = {
     colors: {
